@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>MyFirstPost</title>
+    <link href="/2022/12/08/MyFirstPost/"/>
+    <url>/2022/12/08/MyFirstPost/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Hello"><a href="#Hello" class="headerlink" title="Hello"></a>Hello</h1><p>这是我的第一个条博文，为了建立这个博客我花费了整整一晚上。<br>有时候真希望我是一个好的前端程序员，因为我看不懂这些layout的设置:)<br>下面测试一下功能。</p><h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><blockquote><p>引用块</p></blockquote><figure class="highlight java"><figcaption><span>title:java_code</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Hello</span>&#123;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> main&#123;<br>System.out.print(<span class="hljs-string">&quot;Hello!&quot;</span>);<br>&#125;<br>&#125;<br></code></pre></td></tr></table></figure><p>或许反引号代码块更好用，我习惯这点</p><figure class="highlight java"><figcaption><span>java_code</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Hello</span>&#123;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> main&#123;<br>System.out.print(<span class="hljs-string">&quot;Hello!&quot;</span>);<br>&#125;<br>&#125;<br></code></pre></td></tr></table></figure><h1 id="Quote"><a href="#Quote" class="headerlink" title="Quote"></a>Quote</h1><blockquote class="pullquote"><p>引用</p></blockquote><h1 id="Link："><a href="#Link：" class="headerlink" title="Link："></a>Link：</h1><a href="https://hexo.io/zh-cn/docs/tag-plugins" title="" target="">外链</a><h1 id="Picture"><a href="#Picture" class="headerlink" title="Picture"></a>Picture</h1><p><img src="/2022/12/08/MyFirstPost/avatar.png" alt="我的头像"></p><h1 id="Tag"><a href="#Tag" class="headerlink" title="Tag"></a>Tag</h1><div class="note note-primary">            <p>primary</p>          </div><div class="note note-secondary">            <p>secondary</p>          </div><div class="note note-success">            <p>success</p>          </div><div class="note note-danger">            <p>danger</p>          </div><div class="note note-warning">            <p>warning</p>          </div><div class="note note-info">            <p>info</p>          </div><div class="note note-light">            <p>light</p>          </div>]]></content>
+    
+    
+    <categories>
+      
+      <category>Others</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  
+</search>
