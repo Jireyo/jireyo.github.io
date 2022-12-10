@@ -18,38 +18,39 @@
   
     <meta name="description" content="一、TCP&#x2F;IP网络模型主要针对TCP&#x2F;IP网络模型。 应用层应用层（Application Layer）只专注于提供应用功能，比如 HTTP、FTP、Telnet、DNS、SMTP等。 应用层是工作在操作系统中的用户态，传输层及以下则工作在内核态。 传输层应用层的数据包会传给传输层，传输层（Transport Layer）是为应用层提供网络支持的。  传输层会有两个传输协议，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一、计算机网络基础篇">
-<meta property="og:url" content="http://example.com/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/index.html">
+<meta property="og:title" content="计算机网络-基础篇">
+<meta property="og:url" content="http://example.com/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/index.html">
 <meta property="og:site_name" content="Jireyo&#39;s Blog">
 <meta property="og:description" content="一、TCP&#x2F;IP网络模型主要针对TCP&#x2F;IP网络模型。 应用层应用层（Application Layer）只专注于提供应用功能，比如 HTTP、FTP、Telnet、DNS、SMTP等。 应用层是工作在操作系统中的用户态，传输层及以下则工作在内核态。 传输层应用层的数据包会传给传输层，传输层（Transport Layer）是为应用层提供网络支持的。  传输层会有两个传输协议，">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/%E5%BA%94%E7%94%A8%E5%B1%82.png">
-<meta property="og:image" content="http://example.com/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/TCP%E6%AE%B5.png">
-<meta property="og:image" content="http://example.com/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%BD%91%E7%BB%9C%E5%B1%82.png">
-<meta property="og:image" content="http://example.com/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/12.jpg">
-<meta property="og:image" content="http://example.com/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E5%B1%82.png">
-<meta property="og:image" content="http://example.com/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/tcpip%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B.drawio.png">
-<meta property="og:image" content="http://example.com/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/%E5%B0%81%E8%A3%85.png">
-<meta property="og:image" content="http://example.com/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/2.webp">
-<meta property="og:image" content="http://example.com/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/3.webp">
-<meta property="og:image" content="http://example.com/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/4.webp">
-<meta property="og:image" content="http://example.com/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/5.webp">
-<meta property="og:image" content="http://example.com/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/6.webp">
-<meta property="og:image" content="http://example.com/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/7.webp">
-<meta property="og:image" content="http://example.com/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/8.webp">
-<meta property="og:image" content="http://example.com/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.drawio.webp">
-<meta property="og:image" content="http://example.com/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/11.webp">
-<meta property="og:image" content="http://example.com/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/12.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E5%BA%94%E7%94%A8%E5%B1%82.png">
+<meta property="og:image" content="http://example.com/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/TCP%E6%AE%B5.png">
+<meta property="og:image" content="http://example.com/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%BD%91%E7%BB%9C%E5%B1%82.png">
+<meta property="og:image" content="http://example.com/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/12.jpg">
+<meta property="og:image" content="http://example.com/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E5%B1%82.png">
+<meta property="og:image" content="http://example.com/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/tcpip%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B.drawio.png">
+<meta property="og:image" content="http://example.com/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E5%B0%81%E8%A3%85.png">
+<meta property="og:image" content="http://example.com/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/2.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/3.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/4.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/5.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/6.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/7.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/8.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.drawio.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/11.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/12.webp">
 <meta property="article:published_time" content="2022-12-09T15:04:35.000Z">
-<meta property="article:modified_time" content="2022-12-09T22:05:06.768Z">
+<meta property="article:modified_time" content="2022-12-10T13:08:33.393Z">
 <meta property="article:author" content="Jireyo">
-<meta property="article:tag" content="计算机网络，八股">
+<meta property="article:tag" content="计算机网络">
+<meta property="article:tag" content="八股">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/%E5%BA%94%E7%94%A8%E5%B1%82.png">
+<meta name="twitter:image" content="http://example.com/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E5%BA%94%E7%94%A8%E5%B1%82.png">
   
   
   
-  <title>一、计算机网络基础篇 - Jireyo&#39;s Blog</title>
+  <title>计算机网络-基础篇 - Jireyo&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -91,7 +92,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -117,7 +118,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>Jireyo&#39;s Blog</strong>
+      <strong style="color: #fff;">Jireyo&#39;s Blog</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -226,7 +227,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="一、计算机网络基础篇"></span>
+            <span id="subtitle" data-typed-text="计算机网络-基础篇"></span>
           
         </div>
 
@@ -249,7 +250,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4k 字
+          7.1k 字
         
       </span>
     
@@ -260,7 +261,7 @@
         
         
         
-          34 分钟
+          59 分钟
         
       </span>
     
@@ -298,7 +299,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">一、计算机网络基础篇</h1>
+            <h1 style="display: none">计算机网络-基础篇</h1>
             
             
               <div class="markdown-body">
@@ -307,18 +308,18 @@
 <h2 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h2><p><strong>应用层</strong>（<em>Application Layer</em>）只专注于提供应用功能，比如 HTTP、FTP、Telnet、DNS、SMTP等。</p>
 <p>应用层是工作在操作系统中的用户态，传输层及以下则工作在内核态。</p>
 <h2 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h2><p>应用层的数据包会传给传输层，<strong>传输层</strong>（<em>Transport Layer</em>）是为应用层提供网络支持的。</p>
-<p><img src="/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/%E5%BA%94%E7%94%A8%E5%B1%82.png" srcset="/img/loading.gif" lazyload alt="传输层"></p>
+<p><img src="/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E5%BA%94%E7%94%A8%E5%B1%82.png" srcset="/img/loading.gif" lazyload alt="传输层"></p>
 <p>传输层会有两个传输协议，分别是 TCP 和 UDP。</p>
 <p><strong>TCP</strong> 的全称叫传输控制协议（<em>Transmission Control Protocol</em>），大部分应用使用的正是 TCP 传输层协议，比如 HTTP 应用层协议。TCP 相比 UDP 多了很多特性，比如流量控制、超时重传、拥塞控制等，这些都是为了保证数据包能可靠地传输给对方。</p>
 <p><strong>UDP</strong> 只负责发送数据包，不保证数据包是否能抵达对方。但它实时性相对更好，传输效率也高。当然，UDP 也可以实现可靠传输，把 TCP 的特性在应用层上实现就可以，不过要实现一个商用的可靠 UDP 传输协议，也不是一件简单的事情。</p>
 <h3 id="应用层与传输层的交互"><a href="#应用层与传输层的交互" class="headerlink" title="应用层与传输层的交互"></a>应用层与传输层的交互</h3><p>应用需要传输的数据可能会非常大，因此当传输层的数据包大小超过 MSS（TCP 最大报文段长度），就要将数据包分块，这样即使中途有一个分块丢失或损坏了，只需要重新发送这一个分块，而不用重新发送整个数据包。在 TCP 协议中，我们把每个分块称为一个 <strong>TCP 段</strong>（<em>TCP Segment</em>）。</p>
-<p><img src="/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/TCP%E6%AE%B5.png" srcset="/img/loading.gif" lazyload alt="TCP段"></p>
+<p><img src="/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/TCP%E6%AE%B5.png" srcset="/img/loading.gif" lazyload alt="TCP段"></p>
 <p>传输层其实并不负责整个传输过程，它的作用是相对应用层而言的，即它可以帮助应用层实现数据传输。</p>
 <p>到传输层数据到达目标设备时，传输层则要负责把数据包传给应用，但一台设备有多个应用，这时需要使用端口号将应用区分开来。对于浏览器（客户端）中的每个标签栏都是一个独立的进程，操作系统会为这些进程分配临时的端口号。传输层报文中携带端口号，因此可以识别数据要发给哪个应用。</p>
 <h2 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h2><p>如上所述，传输层其实主要做区分应用，把应用数据下发的作用，真正使数据在互联网上传输的功能在<strong>网络层</strong>（<em>Internet Layer</em>）上。</p>
-<p><img src="/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%BD%91%E7%BB%9C%E5%B1%82.png" srcset="/img/loading.gif" lazyload alt="网络层"></p>
+<p><img src="/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%BD%91%E7%BB%9C%E5%B1%82.png" srcset="/img/loading.gif" lazyload alt="网络层"></p>
 <p>网络层最常使用的是 IP 协议（<em>Internet Protocol</em>），IP 协议会将传输层的报文作为数据部分，再加上 IP 包头组装成 IP 报文，如果 IP 报文大小超过 MTU（以太网中一般为 1500 字节）就会<strong>再次进行分片</strong>，得到一个即将发送到网络的 IP 报文。</p>
-<p><img src="/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/12.jpg" srcset="/img/loading.gif" lazyload alt="MAC"></p>
+<p><img src="/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/12.jpg" srcset="/img/loading.gif" lazyload alt="MAC"></p>
 <h3 id="IP地址"><a href="#IP地址" class="headerlink" title="IP地址"></a>IP地址</h3><p>对于 IPv4 协议， IP 地址共 32 位，分成了四段（比如，192.168.100.1），每段是 8 位。</p>
 <p>将IP 地址分成两种意义：</p>
 <ul>
@@ -330,28 +331,29 @@
 <p>寻找目标地址的过程，就是一个寻找网络-&gt;寻找主机的过程。</p>
 <p><strong>IP 协议的寻址作用是告诉我们去往下一个目的地该朝哪个方向走，路由则是根据「下一个目的地」选择路径。寻址更像在导航，路由更像在操作方向盘</strong>。</p>
 <h2 id="网路接口层"><a href="#网路接口层" class="headerlink" title="网路接口层"></a>网路接口层</h2><p>生成了 IP 头部之后，接下来要交给<strong>网络接口层</strong>（<em>Link Layer</em>）在 IP 头部的前面加上 MAC 头部，并封装成数据帧（Data frame）发送到网络上。</p>
-<p><img src="/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E5%B1%82.png" srcset="/img/loading.gif" lazyload alt="网络接口层"></p>
+<p><img src="/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E5%B1%82.png" srcset="/img/loading.gif" lazyload alt="网络接口层"></p>
 <p>网络层实现了信息在互联网上传输的功能，而要将信息传输到互联网，我们还需要经过网络接口层。</p>
 <p>网络接口层的功能主要体现在以太网技术上，即通过局域网把网络包发送到目的地。</p>
 <p>MAC 头部是以太网使用的头部，它包含了接收方和发送方的 MAC 地址等信息，我们可以通过 ARP 协议获取对方的 MAC 地址。</p>
 <p>所以说，网络接口层主要为网络层提供「链路级别」传输的服务。个人理解是在数据的传输中，数据包会经过很多交换机，交换机会将数据包解包至网络接口层，然后再封装，发送。</p>
 <h3 id="MAC地址"><a href="#MAC地址" class="headerlink" title="MAC地址"></a>MAC地址</h3><p>使用 MAC 地址，我们可以标识网络上的设备，实现在以太网、WiFi 这样的底层网络上发送原始数据包。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>综上所述，TCP&#x2F;IP 网络通常是由上到下分成 4 层，分别是<strong>应用层，传输层，网络层和网络接口层</strong>。</p>
-<p><img src="/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/tcpip%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B.drawio.png" srcset="/img/loading.gif" lazyload alt="tcpip参考模型"></p>
+<p><img src="/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/tcpip%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B.drawio.png" srcset="/img/loading.gif" lazyload alt="tcpip参考模型"></p>
 <p>封装格式：</p>
-<p><img src="/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/%E5%B0%81%E8%A3%85.png" srcset="/img/loading.gif" lazyload alt="封装"></p>
-<blockquote>
-<p>网络接口层的传输单位是帧（frame），IP 层的传输单位是包（packet），TCP 层的传输单位是段（segment），HTTP 的传输单位则是消息或报文（message）。但这些名词并没有什么本质的区分，可以统称为数据包。</p>
-</blockquote>
+<p><img src="/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E5%B0%81%E8%A3%85.png" srcset="/img/loading.gif" lazyload alt="封装"></p>
+<div class="note note-info">
+            <p>网络接口层的传输单位是帧（frame），IP 层的传输单位是包（packet），TCP 层的传输单位是段（segment），HTTP 的传输单位则是消息或报文（message）。但这些名词并没有什么本质的区分，可以统称为数据包。</p>
+          </div>
+
 <blockquote>
 <p>应用层负责将应用产生的数据传递给传输层，将从传输层接受到的数据组合，返回给应用。</p>
 <p>传输层负责将从应用层接受到的数据包传递给网络层，这个过程会携带应用端口</p>
 <p>网络层负责将从传输层接受到的数据包发送到网络，这个过程会携带IP地址（网络号+主机号&#x2F;子网掩码）</p>
 <p>网络接口层负责将网络层的数据通过以太网技术的方式发送到数据库</p>
 </blockquote>
-<h1 id="二、浏览器请求过程"><a href="#二、浏览器请求过程" class="headerlink" title="二、浏览器请求过程"></a>二、浏览器请求过程</h1><p><img src="/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/2.webp" srcset="/img/loading.gif" lazyload></p>
-<h2 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h2><h3 id="1-解析URL"><a href="#1-解析URL" class="headerlink" title="1.解析URL"></a>1.解析URL</h3><p>浏览器先解析URL地址，然后生成给WEB服务器的信息。<br><img src="/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/3.webp" srcset="/img/loading.gif" lazyload><br>如果省略资源路径，则会访问Web服务根目录的<code>index.html</code>或<code>default.html</code></p>
-<h3 id="2-生成HTTP请求信息"><a href="#2-生成HTTP请求信息" class="headerlink" title="2.生成HTTP请求信息"></a>2.生成HTTP请求信息</h3><p><img src="/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/4.webp" srcset="/img/loading.gif" lazyload></p>
+<h1 id="二、浏览器请求过程"><a href="#二、浏览器请求过程" class="headerlink" title="二、浏览器请求过程"></a>二、浏览器请求过程</h1><p><img src="/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/2.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h2><h3 id="1-解析URL"><a href="#1-解析URL" class="headerlink" title="1.解析URL"></a>1.解析URL</h3><p>浏览器先解析URL地址，然后生成给WEB服务器的信息。<br><img src="/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/3.webp" srcset="/img/loading.gif" lazyload><br>如果省略资源路径，则会访问Web服务根目录的<code>index.html</code>或<code>default.html</code></p>
+<h3 id="2-生成HTTP请求信息"><a href="#2-生成HTTP请求信息" class="headerlink" title="2.生成HTTP请求信息"></a>2.生成HTTP请求信息</h3><p><img src="/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/4.webp" srcset="/img/loading.gif" lazyload></p>
 <div class="note note-primary">
             <p>HTTP报文三要素：</p><ul><li>请求报文：请求行(req)+请求头(head)+请求体(body)</li><li>响应报文：状态行(status)+消息头(head)+消息体(body)</li></ul>
           </div>
@@ -359,17 +361,22 @@
 <h2 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h2><p>消息发送前需要<strong>查询服务器域名对应的 IP 地址</strong><br>因为委托操作系统发送消息时，必须提供通信对象的 IP 地址。</p>
 <h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>DNS是一种服务器，其专门保存了 <code>Web</code> 服务器域名与 <code>IP</code> 的对应关系。<br>DNS 中的域名都是用<strong>句点</strong>来分隔的，比如 <code>www.server.com</code>，这里的句点代表了不同层次之间的<strong>界限</strong>。<br>在域名中，<strong>越靠右</strong>的位置表示其层级<strong>越高</strong>，这与中文相反。</p>
 <p>实际上域名最后还有一个点，比如 <code>www.server.com.</code>，这个最后的一个点代表根域名。即<code>.</code> 根域是在最顶层，它的下一层就是 <code>.com</code> 顶级域，再下面是 <code>server.com</code></p>
-<p>所以实际上是 .  –&gt; .com –&gt;server<br><img src="/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/5.webp" srcset="/img/loading.gif" lazyload></p>
+<p>所以实际上是 .  –&gt; .com –&gt;server<br><img src="/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/5.webp" srcset="/img/loading.gif" lazyload></p>
 <h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><p>根域的 DNS 服务器信息保存在互联网中所有的 DNS 服务器中。这样任何 DNS 服务器就都可以找到并访问根域 DNS 服务器了。因此，客户端只要能够找到任意一台 DNS 服务器，就可以通过它找到根域 DNS 服务器，然后再一路顺藤摸瓜找到位于下层的某台目标 DNS 服务器。</p>
-<div class="note note-primary">
-            <p>也就是说，查询域名IP时：</p><ol><li>客户端只会向最近的本地DNS服务器请求ip地址。</li><li>本地DNS服务器若记录了ip地址，则直接返回，若没有记录，则进行以下操作。</li><li>本地DNS向根DNS服务器请求ip地址，根DNS将.com的DNS服务器给本地DNS服务器。</li><li>本地DNS服务器再向.com的DNS（顶级域名服务器）请求ip地址，顶级域名服务器将<a target="_blank" rel="noopener" href="http://www.server.com的权威/">www.server.com的权威</a> DNS 服务器给本地DNS服务器。</li><li>权威 DNS 服务器查询后将对应的 IP 地址 X.X.X.X 告诉本地 DNS。</li><li>本地 DNS 再将 IP 地址返回客户端，然后客户端和目标建立连接。</li></ol>
-          </div>
-
+<p>也就是说，查询域名IP时：</p>
+<ol>
+<li>客户端只会向最近的本地DNS服务器请求ip地址。</li>
+<li>本地DNS服务器若记录了ip地址，则直接返回，若没有记录，则进行以下操作。</li>
+<li>本地DNS向根DNS服务器请求ip地址，根DNS将.com的DNS服务器给本地DNS服务器。</li>
+<li>本地DNS服务器再向.com的DNS（顶级域名服务器）请求ip地址，顶级域名服务器将<a target="_blank" rel="noopener" href="http://www.server.com的权威/">www.server.com的权威</a> DNS 服务器给本地DNS服务器。</li>
+<li>权威 DNS 服务器查询后将对应的 IP 地址 X.X.X.X 告诉本地 DNS。</li>
+<li>本地 DNS 再将 IP 地址返回客户端，然后客户端和目标建立连接。</li>
+</ol>
 <div class="note note-warning">
             <p>根域名服务器是最高层次的，它不直接用于域名解析，但能指明目标服务器的位置。</p>
           </div>
 
-<p><img src="/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/6.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/6.webp" srcset="/img/loading.gif" lazyload></p>
 <blockquote>
 <p>DNS 域名解析的过程是一个<strong>只指路不带路</strong>的过程。</p>
 </blockquote>
@@ -383,8 +390,8 @@
           </div>
 
 <p>协议栈的内部分为几个部分，分别承担不同的工作。上下关系是有一定的规则的，上面的部分会向下面的部分委托工作，下面的部分收到委托的工作并执行。</p>
-<p><img src="/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/7.webp" srcset="/img/loading.gif" lazyload></p>
-<p>应用程序（浏览器）通过&#x3D;&#x3D;调用 Socket 库&#x3D;&#x3D;，来委托协议栈工作。</p>
+<p><img src="/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/7.webp" srcset="/img/loading.gif" lazyload></p>
+<p>应用程序（浏览器）通过调用 Socket 库，来委托协议栈工作。</p>
 <p>协议栈的上半部分有两块，分别是负责收发数据的 TCP 和 UDP 协议，这两个传输协议会接受应用层的委托执行收发数据的操作。</p>
 <p>协议栈的下面一半是用 IP 协议控制网络包收发操作，在互联网上传数据时，数据会被切分成一块块的网络包，而将网络包发送给对方的操作就是由 IP 负责的。</p>
 <p>此外 IP 中还包括 <code>ICMP</code> 协议和 <code>ARP</code> 协议。</p>
@@ -394,7 +401,7 @@
 </ul>
 <p>IP 下面的网卡驱动程序负责控制网卡硬件，而最下面的网卡则负责完成实际的收发操作，也就是对网线中的信号执行发送和接收操作。</p>
 <p>进入协议栈后，就依靠各层协议一步一步完成数据传输。 </p>
-<h2 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h2><p>HTTP 是&#x3D;&#x3D;基于 TCP 协议&#x3D;&#x3D;传输的，TCP报文格式如下：<br><img src="/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/8.webp" srcset="/img/loading.gif" lazyload alt="TCP报文"></p>
+<h2 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h2><p>HTTP 是<strong>基于 TCP 协议</strong>传输的，TCP报文格式如下：<br><img src="/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/8.webp" srcset="/img/loading.gif" lazyload alt="TCP报文"></p>
 <p>理解：</p>
 <ul>
 <li><strong>源端口号</strong>和<strong>目标端口</strong>号：这是与应用层交互的关键识别信息。</li>
@@ -403,7 +410,7 @@
 <li><strong>状态位</strong>。例如 <code>SYN</code> 是发起一个连接，<code>ACK</code> 是回复，<code>RST</code> 是重新连接，<code>FIN</code> 是结束连接等。TCP 是面向连接的，因而双方要维护连接的状态，这些带状态位的包的发送，会引起双方的状态变更。</li>
 <li><strong>窗口大小</strong>：TCP 要做<strong>流量控制</strong>，通信双方各声明一个窗口（缓存大小），标识自己当前能够的处理能力，从而实现<strong>拥塞控制</strong>：即控制发送的速度。</li>
 </ul>
-<h3 id="TCP三次握手"><a href="#TCP三次握手" class="headerlink" title="TCP三次握手"></a>TCP三次握手</h3><p>所谓的握手就是使通讯双方维护一个状态机。<br><img src="/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.drawio.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="TCP三次握手"><a href="#TCP三次握手" class="headerlink" title="TCP三次握手"></a>TCP三次握手</h3><p>所谓的握手就是使通讯双方维护一个状态机。<br><img src="/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.drawio.webp" srcset="/img/loading.gif" lazyload></p>
 <blockquote>
 <p>SYN指<strong>SYN：同步序列编号</strong>（ Synchronize Sequence Numbers ）<br>ACK指<strong>ACK：确认字符</strong>（Acknowledge character）</p>
 </blockquote>
@@ -415,17 +422,15 @@
             <p>TCP 的连接状态查看，在 Linux 可以通过 <code>netstat -napt</code> 命令查看。</p>
           </div>
 
-<h3 id="TCP数据分割"><a href="#TCP数据分割" class="headerlink" title="TCP数据分割"></a>TCP数据分割</h3><p>若HTTP请求报文较长，超过了 <code>MSS</code> 的长度则需要拆解。<br><img src="/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/11.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="TCP数据分割"><a href="#TCP数据分割" class="headerlink" title="TCP数据分割"></a>TCP数据分割</h3><p>若HTTP请求报文较长，超过了 <code>MSS</code> 的长度则需要拆解。<br><img src="/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/11.webp" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li><code>MTU</code>：一个网络包的最大长度，以太网中一般为 <code>1500</code> 字节。</li>
 <li><code>MSS</code>：除去 IP 和 TCP 头部之后，一个网络包所能容纳的 TCP 数据的最大长度。</li>
 </ul>
-<p><img src="/2022/12/09/%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%AF%87/12.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2022/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/12.webp" srcset="/img/loading.gif" lazyload></p>
 <p>拆分出来的每一块数据都会被放进单独的网络包中，分别加上 TCP 头信息，然后交给 IP 模块来发送数据。</p>
-<p>todo:<br>TCP报文生成</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><a href="https://xiaolincoding.com/network/1_base/what_happen_url.html#%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93-tcp" title="" target="">小林coding</a>
-
-<p><a target="_blank" rel="noopener" href="https://xiaolincoding.com/network/1_base/what_happen_url.html#%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93-tcp">xiaolincoding</a></p>
+<h3 id="TCP报文生成"><a href="#TCP报文生成" class="headerlink" title="TCP报文生成"></a>TCP报文生成</h3><p>todo:<br>TCP报文生成<br><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1875682#:~:text=%E5%BD%93%E8%B7%AF%E7%94%B1%E5%99%A8%E6%94%B6%E5%88%B0%E4%B8%80%E4%B8%AAIP%E6%95%B0%E6%8D%AE%E5%8C%85%E6%97%B6%EF%BC%8C%E8%B7%AF%E7%94%B1%E5%99%A8%E4%BC%9A%E8%A7%A3%E6%9E%90%E5%87%BAIP%E6%95%B0%E6%8D%AE%E5%8C%85%E4%B8%AD%E7%9A%84%20%E7%9B%AE%E7%9A%84IP%E5%9C%B0%E5%9D%80%20%EF%BC%8C%E7%84%B6%E5%90%8E%E6%A0%B9%E6%8D%AE%E7%9B%AE%E7%9A%84IP%E5%9C%B0%E5%9D%80%E6%9F%A5%E6%89%BE%E8%B7%AF%E7%94%B1%E8%A1%A8%EF%BC%8C%E4%BE%9D%E6%8D%AE,%E6%9C%80%E9%95%BF%E6%8E%A9%E7%A0%81%E5%8C%B9%E9%85%8D%E5%8E%9F%E5%88%99%20%EF%BC%8C%E6%89%BE%E5%88%B0%E5%AF%B9%E5%BA%94%E7%9A%84%E8%B7%AF%E7%94%B1%E6%9D%A1%E7%9B%AE%EF%BC%8C%E6%A0%B9%E6%8D%AE%E8%B7%AF%E7%94%B1%E6%9D%A1%E7%9B%AE%E4%B8%AD%E7%9A%84%E4%B8%8B%E4%B8%80%E8%B7%B3%E6%88%96%E8%80%85%E5%87%BA%E6%8E%A5%E5%8F%A3%E5%B0%86%E6%8A%A5%E6%96%87%E8%BD%AC%E5%8F%91%E5%87%BA%E5%8E%BB%EF%BC%8C%E8%BF%99%E5%B0%B1%E6%98%AF%20%E8%B7%AF%E7%94%B1%20%E3%80%82">https://cloud.tencent.com/developer/article/1875682#:~:text=%E5%BD%93%E8%B7%AF%E7%94%B1%E5%99%A8%E6%94%B6%E5%88%B0%E4%B8%80%E4%B8%AAIP%E6%95%B0%E6%8D%AE%E5%8C%85%E6%97%B6%EF%BC%8C%E8%B7%AF%E7%94%B1%E5%99%A8%E4%BC%9A%E8%A7%A3%E6%9E%90%E5%87%BAIP%E6%95%B0%E6%8D%AE%E5%8C%85%E4%B8%AD%E7%9A%84%20%E7%9B%AE%E7%9A%84IP%E5%9C%B0%E5%9D%80%20%EF%BC%8C%E7%84%B6%E5%90%8E%E6%A0%B9%E6%8D%AE%E7%9B%AE%E7%9A%84IP%E5%9C%B0%E5%9D%80%E6%9F%A5%E6%89%BE%E8%B7%AF%E7%94%B1%E8%A1%A8%EF%BC%8C%E4%BE%9D%E6%8D%AE,%E6%9C%80%E9%95%BF%E6%8E%A9%E7%A0%81%E5%8C%B9%E9%85%8D%E5%8E%9F%E5%88%99%20%EF%BC%8C%E6%89%BE%E5%88%B0%E5%AF%B9%E5%BA%94%E7%9A%84%E8%B7%AF%E7%94%B1%E6%9D%A1%E7%9B%AE%EF%BC%8C%E6%A0%B9%E6%8D%AE%E8%B7%AF%E7%94%B1%E6%9D%A1%E7%9B%AE%E4%B8%AD%E7%9A%84%E4%B8%8B%E4%B8%80%E8%B7%B3%E6%88%96%E8%80%85%E5%87%BA%E6%8E%A5%E5%8F%A3%E5%B0%86%E6%8A%A5%E6%96%87%E8%BD%AC%E5%8F%91%E5%87%BA%E5%8E%BB%EF%BC%8C%E8%BF%99%E5%B0%B1%E6%98%AF%20%E8%B7%AF%E7%94%B1%20%E3%80%82</a><br><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzIwOTcyNjA3Mw==&mid=2247500748&idx=1&sn=08b9a324a2c33a6c80e26a7711cfef96&chksm=976dfcdaa01a75ccc0cf85569f92ed3d0597bfaeac736a3a3114e0d34fac821b1c0458269fb9&scene=21#wechat_redirect">https://mp.weixin.qq.com/s?__biz=MzIwOTcyNjA3Mw==&amp;mid=2247500748&amp;idx=1&amp;sn=08b9a324a2c33a6c80e26a7711cfef96&amp;chksm=976dfcdaa01a75ccc0cf85569f92ed3d0597bfaeac736a3a3114e0d34fac821b1c0458269fb9&amp;scene=21#wechat_redirect</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/mefj/p/14543955.html#:~:text=%E4%B8%80%E3%80%81%E6%9C%80%E9%95%BF%E6%8E%A9%E7%A0%81%E5%8C%B9%E9%85%8D%E5%8E%9F%E5%88%99%20%E6%9C%80%E9%95%BF%E6%8E%A9%E7%A0%81%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99%20%EF%BC%9A%E6%9C%89%E5%A4%9A%E6%9D%A1%E8%B7%AF%E7%94%B1%E9%83%BD%E8%83%BD%E5%8C%B9%E9%85%8D%E7%9B%AE%E7%9A%84%E5%9C%B0%E5%9D%80%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E9%80%89%E6%8B%A9%E5%85%B6%E4%B8%AD%E6%8E%A9%E7%A0%81%E6%9C%80%E9%95%BF%E7%9A%84%E8%B7%AF%E7%94%B1%20%E4%BE%8B%EF%BC%9A%E5%A6%82%E4%B8%8B%E5%BD%93%E6%9C%89%2F24%E5%92%8C%2F25%E4%BD%8D%E7%9A%84%E6%8E%A9%E7%A0%81%E9%83%BD%E8%83%BD%E5%8C%B9%E9%85%8D%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E8%BF%9B%E8%A1%8C%E6%9C%80%E9%95%BF%E6%8E%A9%E7%A0%81%E5%8C%B9%E9%85%8D%EF%BC%8C%E9%80%89%E6%8B%A9%2F25%E7%9A%84%E8%B7%AF%E7%94%B1%E6%8E%A5%E5%8F%A3E0%E3%80%82%20%E4%BA%8C%E3%80%81%20%E7%AE%A1%E7%90%86%E6%80%A7%E8%B7%9D%E7%A6%BB%20%28AD%29%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99%20%E7%AE%A1%E7%90%86%E6%80%A7%E8%B7%9D%E7%A6%BB,%EF%BC%9A%E6%9C%89%E5%A4%9A%E6%9D%A1%E8%B7%AF%E7%94%B1%E9%83%BD%E8%83%BD%E5%8C%B9%E9%85%8D%E7%9B%AE%E7%9A%84%E5%9C%B0%E5%9D%80%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E4%B8%94%E8%BF%99%E6%97%B6%E5%80%99%E6%8E%A9%E7%A0%81%E4%B8%80%E6%A0%B7%20%28%E8%B7%B3%E8%BF%87%E6%9C%80%E9%95%BF%E6%8E%A9%E7%A0%81%E5%8C%B9%E9%85%8D%E5%8E%9F%E5%88%99%29%EF%BC%8C%E4%B8%94%E8%BF%99%E6%97%B6%E5%80%99%E7%AE%A1%E7%90%86%E6%80%A7%E8%B7%9D%E7%A6%BB%E4%B8%80%E6%A0%B7%20%28%E7%9B%B8%E5%90%8C%E5%8D%8F%E8%AE%AE%2C%E8%BF%99%E6%97%B6%E5%80%99%E8%B7%B3%E8%BF%87%E7%AE%A1%E7%90%86%E6%80%A7%E8%B7%9D%E7%A6%BB%20%28AD%29%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99%29%E3%80%82%20%E5%9C%A8%E5%90%8C%E4%B8%80%E4%B8%AA%E5%8D%8F%E8%AE%AE%E5%86%85%E5%88%A4%E5%BA%A6%E9%87%8F%E5%80%BC%20%E6%80%BB%E7%BB%93%EF%BC%9A%20%E4%BD%9C%E8%80%85%EF%BC%9A%20%E8%BF%90%E7%BB%B4%E5%AF%86%E7%A0%81">https://www.cnblogs.com/mefj/p/14543955.html#:~:text=%E4%B8%80%E3%80%81%E6%9C%80%E9%95%BF%E6%8E%A9%E7%A0%81%E5%8C%B9%E9%85%8D%E5%8E%9F%E5%88%99%20%E6%9C%80%E9%95%BF%E6%8E%A9%E7%A0%81%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99%20%EF%BC%9A%E6%9C%89%E5%A4%9A%E6%9D%A1%E8%B7%AF%E7%94%B1%E9%83%BD%E8%83%BD%E5%8C%B9%E9%85%8D%E7%9B%AE%E7%9A%84%E5%9C%B0%E5%9D%80%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E9%80%89%E6%8B%A9%E5%85%B6%E4%B8%AD%E6%8E%A9%E7%A0%81%E6%9C%80%E9%95%BF%E7%9A%84%E8%B7%AF%E7%94%B1%20%E4%BE%8B%EF%BC%9A%E5%A6%82%E4%B8%8B%E5%BD%93%E6%9C%89%2F24%E5%92%8C%2F25%E4%BD%8D%E7%9A%84%E6%8E%A9%E7%A0%81%E9%83%BD%E8%83%BD%E5%8C%B9%E9%85%8D%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E8%BF%9B%E8%A1%8C%E6%9C%80%E9%95%BF%E6%8E%A9%E7%A0%81%E5%8C%B9%E9%85%8D%EF%BC%8C%E9%80%89%E6%8B%A9%2F25%E7%9A%84%E8%B7%AF%E7%94%B1%E6%8E%A5%E5%8F%A3E0%E3%80%82%20%E4%BA%8C%E3%80%81%20%E7%AE%A1%E7%90%86%E6%80%A7%E8%B7%9D%E7%A6%BB%20%28AD%29%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99%20%E7%AE%A1%E7%90%86%E6%80%A7%E8%B7%9D%E7%A6%BB,%EF%BC%9A%E6%9C%89%E5%A4%9A%E6%9D%A1%E8%B7%AF%E7%94%B1%E9%83%BD%E8%83%BD%E5%8C%B9%E9%85%8D%E7%9B%AE%E7%9A%84%E5%9C%B0%E5%9D%80%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E4%B8%94%E8%BF%99%E6%97%B6%E5%80%99%E6%8E%A9%E7%A0%81%E4%B8%80%E6%A0%B7%20%28%E8%B7%B3%E8%BF%87%E6%9C%80%E9%95%BF%E6%8E%A9%E7%A0%81%E5%8C%B9%E9%85%8D%E5%8E%9F%E5%88%99%29%EF%BC%8C%E4%B8%94%E8%BF%99%E6%97%B6%E5%80%99%E7%AE%A1%E7%90%86%E6%80%A7%E8%B7%9D%E7%A6%BB%E4%B8%80%E6%A0%B7%20%28%E7%9B%B8%E5%90%8C%E5%8D%8F%E8%AE%AE%2C%E8%BF%99%E6%97%B6%E5%80%99%E8%B7%B3%E8%BF%87%E7%AE%A1%E7%90%86%E6%80%A7%E8%B7%9D%E7%A6%BB%20%28AD%29%E9%80%89%E8%B7%AF%E5%8E%9F%E5%88%99%29%E3%80%82%20%E5%9C%A8%E5%90%8C%E4%B8%80%E4%B8%AA%E5%8D%8F%E8%AE%AE%E5%86%85%E5%88%A4%E5%BA%A6%E9%87%8F%E5%80%BC%20%E6%80%BB%E7%BB%93%EF%BC%9A%20%E4%BD%9C%E8%80%85%EF%BC%9A%20%E8%BF%90%E7%BB%B4%E5%AF%86%E7%A0%81</a><br><a target="_blank" rel="noopener" href="https://bbs.huaweicloud.com/blogs/359221">https://bbs.huaweicloud.com/blogs/359221</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/61805945">https://zhuanlan.zhihu.com/p/61805945</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/liyuanhong/p/13585654.html">https://www.cnblogs.com/liyuanhong/p/13585654.html</a></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a target="_blank" rel="noopener" href="https://xiaolincoding.com/network/">小林coding-图解网络</a></p>
 
                 
               </div>
@@ -444,8 +449,22 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%A4%8D%E4%B9%A0/" class="category-chain-item">复习</a>
+  
+  
+
+  
+
   
 
       </span>
@@ -459,7 +478,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%8C%E5%85%AB%E8%82%A1/">#计算机网络，八股</a>
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">#计算机网络</a>
+      
+        <a href="/tags/%E5%85%AB%E8%82%A1/">#八股</a>
       
     </div>
   
@@ -471,8 +492,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>一、计算机网络基础篇</div>
-      <div>http://example.com/2022/12/09/一、计算机网络基础篇/</div>
+      <div>计算机网络-基础篇</div>
+      <div>http://example.com/2022/12/09/计算机网络-基础篇/</div>
     </div>
     <div class="license-meta">
       
@@ -515,6 +536,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2022/12/10/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC1%E7%AB%A0%EF%BC%88%E6%A6%82%E8%BF%B0%EF%BC%89/" title="计算机网络第1章（概述）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">计算机网络第1章（概述）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

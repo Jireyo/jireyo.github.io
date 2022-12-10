@@ -1,0 +1,31 @@
+/* 滚动条加粗 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 10px;
+}
+
+code {
+  color: #FF7F00;
+}
+
+em {
+  color: rgb(238, 128, 240);
+}
+
+strong {
+  color: #99FF33;
+}
+
+blockquote {
+  background-color: rgba(200, 200, 200, 0.1);
+}
+
+/* em 是 斜体** */
+/* strong是 高亮==x==*/
+/* blockquote是引用 > */
+
+/** color备选
+lightcoral
+
+#99FF33
+**/
