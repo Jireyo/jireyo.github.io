@@ -55,7 +55,7 @@
 <meta property="og:image" content="http://example.com/2022/12/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-98353d62c0ef033f.webp">
 <meta property="og:image" content="http://example.com/2022/12/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-ac35b15f5f22bf7d.webp">
 <meta property="article:published_time" content="2022-12-10T18:48:09.000Z">
-<meta property="article:modified_time" content="2022-12-11T15:31:29.894Z">
+<meta property="article:modified_time" content="2022-12-11T18:10:27.291Z">
 <meta property="article:author" content="Jireyo">
 <meta property="article:tag" content="计算机网络">
 <meta property="article:tag" content="八股">
@@ -275,7 +275,7 @@
         
         
         
-          51 分钟
+          52 分钟
         
       </span>
     
@@ -503,7 +503,10 @@
 <blockquote>
 <p><strong>目的站为什么正确接收数据帧后还要等待一段时间SIFS才能发送ACK帧？</strong></p>
 <ul>
-<li>SIFS是最短的帧间间隔，用来分隔开属于一次对话的各帧，在这段时间内，一个站点应当能够从发送方式切换到接收方式<br><strong>源站为什么在检测到信道空闲后还要再等待一段时间DIFS？</strong></li>
+<li>SIFS是最短的帧间间隔，用来分隔开属于一次对话的各帧，在这段时间内，一个站点应当能够从发送方式切换到接收方式</li>
+</ul>
+<p><strong>源站为什么在检测到信道空闲后还要再等待一段时间DIFS？</strong></p>
+<ul>
 <li>考虑到可能有其他的站有高优先级的帧要发送。若有，就要让高优先级帧先发送</li>
 </ul>
 </blockquote>
@@ -518,7 +521,7 @@
 <p><strong>CSMA&#x2F;CA协议的退避算法</strong><br><img src="/2022/12/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-1de197cb6f859f3c.webp" srcset="/img/loading.gif" lazyload></p>
 <p>示例：<br><img src="/2022/12/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-12262e66fc986d52.webp" srcset="/img/loading.gif" lazyload></p>
 <div class="note note-primary">
-            <p><strong>碰撞检测CD</strong>的思想类似于<strong>乐观锁</strong>，即先发送，发送后碰撞则进行退避处理。<br><strong>碰撞避免CA</strong>的思想类似于<strong>悲观锁</strong>，需要尽可能的保证信道通畅然后再发送。<br>载波监听则是一种判断是否有锁的工具。</p><p>在CD中，如果当前信道空闲则直接发送信号，失败后则停止发送并等待，随后尝试重新发送。<br>在CA中，如果当前信道空闲，<strong>首先要等待一个DIFS时间</strong>，等待<strong>优先级</strong>更高的站点先尝试获取信道，这个时间之后，<strong>再根据信道的状况判断是否需要加长退避时间。</strong></p><ul><li><strong>DIFS时间是DCF模式（分布式协调功能）下的退避时间的基本单位。</strong></li><li><strong>默认的DIFS间隔时间并不在退避算法中</strong>。其是整个共享信道的处理完一个帧之后的间隙时间，各个站点以通过信道的这个间隙时间来判断信道进入了空闲状态（空闲了一个DIFS时间），然后解冻倒计时，进行<strong>优先级</strong>争夺。</li></ul>
+            <p><strong>碰撞检测CD</strong>的思想类似于<strong>乐观锁</strong>，即先发送，发送后碰撞则进行退避处理。<br><strong>碰撞避免CA</strong>的思想类似于<strong>悲观锁</strong>，需要尽可能的保证信道通畅（通过退避的方式）然后再发送。<br>载波监听则是一种判断是否有锁的工具。</p><p>在CD中，如果当前信道空闲则直接发送信号，失败后则停止发送并等待，随后尝试重新发送。<br>在CA中，如果当前信道空闲，<strong>首先要等待一个DIFS时间</strong>，等待<strong>优先级</strong>更高的站点先尝试获取信道，这个时间之后，<strong>再根据信道的状况判断是否需要进行退避。</strong></p><ul><li><strong>DIFS时间是DCF模式（分布式协调功能）下的退避时间的基本单位。</strong></li><li><strong>默认的DIFS间隔时间并不在退避算法中</strong>。其是整个共享信道的处理完一个帧之后的间隙时间，各个站点以通过信道的这个间隙时间来判断信道进入了空闲状态（空闲了一个DIFS时间），然后解冻倒计时，进行<strong>优先级</strong>争夺。</li></ul>
           </div>
 <h4 id="信道预约和虚拟载波监听"><a href="#信道预约和虚拟载波监听" class="headerlink" title="信道预约和虚拟载波监听"></a>信道预约和虚拟载波监听</h4><p><img src="/2022/12/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-98353d62c0ef033f.webp" srcset="/img/loading.gif" lazyload><br><img src="/2022/12/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-ac35b15f5f22bf7d.webp" srcset="/img/loading.gif" lazyload></p>
 <div class="note note-primary">
