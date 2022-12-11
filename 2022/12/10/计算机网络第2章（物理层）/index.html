@@ -37,7 +37,7 @@
 <meta property="og:image" content="http://example.com/2022/12/10/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC2%E7%AB%A0%EF%BC%88%E7%89%A9%E7%90%86%E5%B1%82%EF%BC%89/24878825-7f0b54d1c14702ca.webp">
 <meta property="og:image" content="http://example.com/2022/12/10/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC2%E7%AB%A0%EF%BC%88%E7%89%A9%E7%90%86%E5%B1%82%EF%BC%89/24878825-039cdf67599ebe3b.webp">
 <meta property="article:published_time" content="2022-12-10T14:46:30.000Z">
-<meta property="article:modified_time" content="2022-12-10T21:17:15.377Z">
+<meta property="article:modified_time" content="2022-12-11T12:02:54.182Z">
 <meta property="article:author" content="Jireyo">
 <meta property="article:tag" content="计算机网络">
 <meta property="article:tag" content="八股">
@@ -349,7 +349,7 @@
 </blockquote>
 <h2 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h2><p><strong>不归零编码</strong><br><img src="/2022/12/10/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC2%E7%AB%A0%EF%BC%88%E7%89%A9%E7%90%86%E5%B1%82%EF%BC%89/24878825-0732d0edc74846b5.webp" srcset="/img/loading.gif" lazyload><br>缺点：没有时钟同步。<br><strong>归零编码</strong><br><img src="/2022/12/10/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC2%E7%AB%A0%EF%BC%88%E7%89%A9%E7%90%86%E5%B1%82%EF%BC%89/24878825-8aa838a116fdafb4.webp" srcset="/img/loading.gif" lazyload><br>缺点：每个码元都要归零，数据量太大，编码效率低。<br><strong>曼彻斯特编码</strong><br><img src="/2022/12/10/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC2%E7%AB%A0%EF%BC%88%E7%89%A9%E7%90%86%E5%B1%82%EF%BC%89/24878825-a34a686a9d052e9c.webp" srcset="/img/loading.gif" lazyload><br>通过跳变方向判断比特位。</p>
 <div class="note note-primary">
-            <p>相对归零编码，省去了当比特变化为<code>10101010</code>样式时的归零行为，不过对于<code>11111111</code>形式的编码，数据量仍比较大，每次上升后需要在码元间隙下降，如上图的第二个0后面，以便于下一次上升。</p><p>问题：<br>这个码元间隙的下降行为是否导致时钟的误判问题。<br>解释：<br>所谓时钟同步，可以理解为一个打点计时器（？），设备根据打点瞬间电信号的电平判断这个比特位为0还是1，所以若是打点计时器的频率或初始时间与发送端不一致，就会得到失真的信号，这种现象也叫时钟滑移。<br>而曼彻斯特码元间的下降&#x2F;上升行为其实不会被视为下降沿&#x2F;上升沿，因为其实这种编码还是有一个隐藏时钟。对于设备来说，其可以判断接受到的电信号的最短时间间隔，从而判断一个码元的时间长度。（1个码元时间&#x3D;2个最短时间间隔），这样就解决了频率问题。<br>而一个码元单元必然有一个跳变，码元之间不一定有，从而解决了相位问题。</p>
+            <p>相对归零编码，省去了当比特变化为<code>10101010</code>样式时的归零行为，不过对于<code>00000000</code>形式的编码，数据量仍比较大，每次上升后需要在码元间隙下降，如上图的第二个0后面，以便于下一次上升。</p><p>问题：<br>这个码元间隙的下降行为是否导致时钟的误判问题。<br>解释：<br>所谓时钟同步，可以理解为一个打点计时器（？），设备根据打点瞬间电信号的电平判断这个比特位为0还是1，所以若是打点计时器的频率或初始时间与发送端不一致，就会得到失真的信号，这种现象也叫时钟滑移。<br>而曼彻斯特码元间的下降&#x2F;上升行为其实不会被视为下降沿&#x2F;上升沿，因为其实这种编码还是有一个隐藏时钟。对于设备来说，其可以判断接受到的电信号的最短时间间隔，从而判断一个码元的时间长度。（1个码元时间&#x3D;2个最短时间间隔），这样就解决了频率问题。<br>而一个码元单元必然有一个跳变，码元之间不一定有，从而解决了相位问题。</p>
           </div>
 
 <p><strong>差分曼彻斯特编码</strong><br><img src="/2022/12/10/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC2%E7%AB%A0%EF%BC%88%E7%89%A9%E7%90%86%E5%B1%82%EF%BC%89/24878825-9a758474e374329a.webp" srcset="/img/loading.gif" lazyload><br>在每个码元时间的中间时刻，信号都会发送跳变，但与<strong>曼彻斯特不同</strong></p>
@@ -391,7 +391,7 @@
           </div>
 
 <div class="note note-info">
-            <p>奈氏准则主要指出<strong>码元比特量</strong>对的传输极限的影响。<br>香农准则主要指出<strong>信噪比</strong>对传输极限的影响。</p>
+            <p>奈氏准则主要指出<strong>码元比特量</strong>对传输极限的影响。<br>香农准则主要指出<strong>信噪比</strong>对传输极限的影响。</p>
           </div>
 
 <h1 id="六、信道复用技术"><a href="#六、信道复用技术" class="headerlink" title="六、信道复用技术"></a>六、信道复用技术</h1><h2 id="复用技术类型"><a href="#复用技术类型" class="headerlink" title="复用技术类型"></a>复用技术类型</h2><ul>
