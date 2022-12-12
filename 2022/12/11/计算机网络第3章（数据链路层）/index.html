@@ -66,7 +66,7 @@
 <meta property="og:image" content="http://example.com/2022/12/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-44a2e259c33ecfd3.webp">
 <meta property="og:image" content="http://example.com/2022/12/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-a93996aae716c6aa.webp">
 <meta property="article:published_time" content="2022-12-10T18:48:09.000Z">
-<meta property="article:modified_time" content="2022-12-12T16:22:32.148Z">
+<meta property="article:modified_time" content="2022-12-12T16:24:46.947Z">
 <meta property="article:author" content="Jireyo">
 <meta property="article:tag" content="计算机网络">
 <meta property="article:tag" content="八股">
@@ -658,9 +658,9 @@
             <p>注意本处的自学习和前面提到的ARP的异同：<br>异：</p><ul><li>ARP记录的是IP和MAC地址之间的映射关系，记录在ARP高速缓存表中。交换机的自学习记录的是MAC地址与自己的端口的关系，记录在帧交换表中。</li><li>ARP高速缓存表主要用于根据上层的目的IP地址填入目的MAC地址。交换机帧纪录表则用于根据目的MAC地址选择往哪个端口发送。</li><li>实现在不同层面，ARP的实现在逻辑上，依赖于非目标主机会自行舍弃帧；交换机实现在物理上，依赖于只发送给目标机。可以认为交换机是对ARP的总线结构下的一种信道层面优化，减少了各个客户端识别帧的负担并解决碰撞问题。<br>同：</li><li>有已知记录时都会直接发送，没有时都会进行广播学习。</li></ul>
           </div>
 
-<h1 id="七、生成树协议STP"><a href="#七、生成树协议STP" class="headerlink" title="七、生成树协议STP"></a>七、生成树协议STP</h1><h1 id="目的-1"><a href="#目的-1" class="headerlink" title="目的"></a>目的</h1><p>想要提高以太网的<strong>可靠性</strong>，可以尽可能多的添加交换机之间的连线（<strong>冗余链路</strong>）。这样两个交换机之间就不会因为一条链路出现故障而无法通讯。但这样会造成重复广播等问题，因此需要避免<strong>逻辑上的环路</strong>（保留物理上的环路以备用）。</p>
+<h1 id="七、生成树协议STP"><a href="#七、生成树协议STP" class="headerlink" title="七、生成树协议STP"></a>七、生成树协议STP</h1><h2 id="目的-1"><a href="#目的-1" class="headerlink" title="目的"></a>目的</h2><p>想要提高以太网的<strong>可靠性</strong>，可以尽可能多的添加交换机之间的连线（<strong>冗余链路</strong>）。这样两个交换机之间就不会因为一条链路出现故障而无法通讯。但这样会造成重复广播等问题，因此需要避免<strong>逻辑上的环路</strong>（保留物理上的环路以备用）。</p>
 <p><img src="/2022/12/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-a65d811129786ec6.webp" srcset="/img/loading.gif" lazyload></p>
-<blockquote>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><blockquote>
 <p>STP的工作过程如下：首先进行根网桥的选举，其依据是网桥优先级（bridge priority）和MAC地址组合生成的桥ID，桥ID最小的网桥将成为网络中的根桥（bridge root）。在此基础上，计算每个节点到根桥的距离，并由这些路径得到各冗余链路的代价，选择最小的成为通信路径（相应的端口状态变为forwarding），其它的就成为备份路径(相应的端口状态变为blocking)。STP生成过程中的通信任务由BPDU完成，这种数据包又分为包含配置信息的配置BPDU（其大小不超过35B）和包含拓扑变化信息的通知BPDU（其长度不超过4B）。</p>
 </blockquote>
 <blockquote>
@@ -682,7 +682,7 @@
 <li>IEEE 802.1Q 对虚拟局域网 VLAN 的<strong>定义</strong>： <strong>虚拟局域网 VLAN</strong> 是由一些局域网网段构成的<strong>与物理位置无关的逻辑组</strong>，而这些网段具有某些共同的需求。每一个 VLAN 的帧都有一个明确的标识符，指明发送这个帧的计算机是属于哪一个 VLAN。</li>
 </ul>
 </blockquote>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>本质上是要求使用<strong>交换机</strong>实现逻辑上将一个局域网划分成几个虚拟局域网，即判断一条广播消息属于哪一个组，因此这种MAC帧需要多一个明确的标识符以供交换机判断。</p>
+<h2 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h2><p>本质上是要求使用<strong>交换机</strong>实现逻辑上将一个局域网划分成几个虚拟局域网，即判断一条广播消息属于哪一个组，因此这种MAC帧需要多一个明确的标识符以供交换机判断。</p>
 <ul>
 <li>能够处理带有VLAN标记的帧——IEEE 802.1 Q帧<br><img src="/2022/12/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-5d3549cc02f9a3b4.webp" srcset="/img/loading.gif" lazyload><br><img src="/2022/12/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-6af352f81b800a98.webp" srcset="/img/loading.gif" lazyload></li>
 </ul>
