@@ -23,16 +23,17 @@
 <meta property="og:site_name" content="Jireyo&#39;s Blog">
 <meta property="og:description" content="一、概述 网络层的主要任务是实现网络互连，进而实现数据包在各网络之间的传输 为了实现这个任务，有以下问题： 网络层提供可靠传输还是不可靠传输 网络层怎么寻址(IP地址做导航) 网络层路由选择(路由器根据路由表转发，为了记录路由需要人工配置或实现各种路由选择协议)     网络层（网际层）,除了IP协议外，还有之前介绍过的地址解析协议ARP，还有网际控制报文协议ICMP，网际组管理协议IGMP">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/24878825-617a75508f564e07.webp">
-<meta property="og:image" content="http://example.com/24878825-5006c8be601f1a11.webp">
-<meta property="og:image" content="http://example.com/24878825-5e9d1b71bd598e62.webp">
+<meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-617a75508f564e07.webp">
+<meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-5006c8be601f1a11.webp">
+<meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-5e9d1b71bd598e62.webp">
+<meta property="og:image" content="http://example.com/routeUnion.jpg">
 <meta property="article:published_time" content="2022-12-14T12:48:03.000Z">
-<meta property="article:modified_time" content="2022-12-14T16:48:31.541Z">
+<meta property="article:modified_time" content="2022-12-14T17:11:01.696Z">
 <meta property="article:author" content="Jireyo">
 <meta property="article:tag" content="计算机网络">
 <meta property="article:tag" content="八股">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/24878825-617a75508f564e07.webp">
+<meta name="twitter:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-617a75508f564e07.webp">
   
   
   
@@ -236,7 +237,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.8k 字
+          3.9k 字
         
       </span>
     
@@ -247,7 +248,7 @@
         
         
         
-          32 分钟
+          33 分钟
         
       </span>
     
@@ -332,7 +333,7 @@
           </div>
 
 <p>IPv4的编址方法经历了3个阶段：<br>分类编址 -&gt; 划分子网 -&gt; 无分类编址</p>
-<h2 id="分类编址"><a href="#分类编址" class="headerlink" title="分类编址"></a>分类编址</h2><p><img src="/24878825-617a75508f564e07.webp" srcset="/img/loading.gif" lazyload><br>其中有2个网络号无法分配，即A类地址：</p>
+<h2 id="分类编址"><a href="#分类编址" class="headerlink" title="分类编址"></a>分类编址</h2><p><img src="/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-617a75508f564e07.webp" srcset="/img/loading.gif" lazyload><br>其中有2个网络号无法分配，即A类地址：</p>
 <ul>
 <li><strong>最小网络号为0，保留不做指派</strong></li>
 <li><strong>最大网络号为127，是本地回环测试地址，保留不做指派</strong></li>
@@ -354,8 +355,8 @@
 <li><strong>用转发器或网桥连接起来的若干个局域网仍为一个网络</strong></li>
 </ul>
 </blockquote>
-<h2 id="划分子网的IPv4地址"><a href="#划分子网的IPv4地址" class="headerlink" title="划分子网的IPv4地址"></a>划分子网的IPv4地址</h2><p>两级的IP地址会导致IP地址空间的利用率很低。<br>子网即从主机号借一部分作为子网号，从而将一个网络号分为多个子网。<br><img src="/24878825-5006c8be601f1a11.webp" srcset="/img/loading.gif" lazyload><br>划分子网的工具即<strong>子网掩码</strong>。<br>其将<strong>两级的IP地址</strong>变成了<strong>三级的IP地址</strong>。</p>
-<p><strong>默认子网掩码</strong><br><img src="/24878825-5e9d1b71bd598e62.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="划分子网的IPv4地址"><a href="#划分子网的IPv4地址" class="headerlink" title="划分子网的IPv4地址"></a>划分子网的IPv4地址</h2><p>两级的IP地址会导致IP地址空间的利用率很低。<br>子网即从主机号借一部分作为子网号，从而将一个网络号分为多个子网。<br><img src="/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-5006c8be601f1a11.webp" srcset="/img/loading.gif" lazyload><br>划分子网的工具即<strong>子网掩码</strong>。<br>其将<strong>两级的IP地址</strong>变成了<strong>三级的IP地址</strong>。</p>
+<p><strong>默认子网掩码</strong><br><img src="/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-5e9d1b71bd598e62.webp" srcset="/img/loading.gif" lazyload></p>
 <p>IPv4地址与子网掩码相与即得到所在子网的网络地址。</p>
 <blockquote>
 <p>对于在因特网上传输的数据报，仍然是根据<strong>目的网络号</strong>net-id寻找下一跳路由器。到了该网络号的路由器时，路由器再根据<strong>目的网络号</strong> net-id 和<strong>子网号</strong> subnet-id 找到目的子网。</p>
@@ -394,8 +395,9 @@
 <blockquote>
 <p>举个例子，如果路由器1与路由器2连接，路由器2的各个端口连接了不同的网络（本质上是多个子网）。<br>经过路由器交换学习，路由器1会得知路由器2所在网络的子网掩码，而路由器2的不同接口在不同的网络中，因此路由器1学习到了路由器2的多个网络的子网。（如<code>67.67.0.0/18</code>，<code>67.67.64/18</code>, <code>67.67.128.0/18</code>,<code>67.67.192.0/18</code>)<br>此时，路由器1发现虽然有多个网络，但他们都指向自身的同一个端口（指向路由器2），并且具有相同前缀（<code>67.67.0.0/16</code>）。因此会将这些记录合并，这种行为叫做路由聚合，也叫构造一个超网。</p>
 </blockquote>
+<p><strong>最长匹配原则</strong><br>最长匹配 是指存在多条目的网段相同的路由时，匹配掩码最长的那一条。因为掩码越长，表示的网段就越小，匹配也就越精确。</p>
 <div class="note note-primary">
-            <p>从区别上讲：<br>条件：</p><ul><li>路由器1：外部路由器。</li><li>路由器2：连接多个子网路由器。</li><li>路由器1与路由器2相连。</li></ul><p>对于划分子网的IPv4地址，同一网络号的不同子网的记录只是在该网络号的中转的路由器中2。对于路由器1，其只需要知道路由器2的网络号即可，子网的划分对路由器1是屏蔽的。</p><p>但CIDR不再区分子网，路由器1会学习与之相连接的路由器2的所有网络号（IP和网络前缀）。这导致路由器2所在的子网对路由器1也是可见的，因此需要将这些网络号在本路由器的路由表中聚合起来，避免路由表内存浪费。</p><p>总结：CIDR的网络划分更加松散，因此需要更多</p>
+            <p>条件：</p><ul><li>路由器1：外部路由器。</li><li>路由器2：连接多个网段（子网）路由器。</li><li>路由器3：连接路由器2的一个子网路由器。</li><li>网段3：路由器3所在的网络。</li><li>3个路由器两两相连。</li></ul><p><img src="/routeUnion.jpg" srcset="/img/loading.gif" lazyload></p><p>对于划分子网的IPv4地址，同一网络号的不同子网的记录只保存在该网络的中转的路由器2中。对于路由器1，其只需要知道路由器2的总网络号即可，其子网的划分对路由器1是屏蔽的。</p><p>但CIDR不再区分子网，路由器1会学习与之相连接的路由器2的所有网络号（IP和网络前缀）。这导致路由器2所在的子网对路由器1也是可见的，因此需要将这些网络号在本路由器的路由表中聚合起来，避免路由表内存浪费。</p><p>至于最长匹配原则，则可以当某个数据包要从路由器1要发往子网3。此时路由器1会优先匹配到最长的网段3，并将数据转发到路由器3。</p>
           </div>
                 
               </div>
