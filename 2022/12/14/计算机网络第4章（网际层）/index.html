@@ -26,8 +26,8 @@
 <meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-617a75508f564e07.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-5006c8be601f1a11.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-5e9d1b71bd598e62.webp">
-<meta property="og:image" content="http://example.com/routeUnion.jpg">
-<meta property="og:image" content="http://example.com/24878825-0351946f5505b37a.webp">
+<meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/routeUnion.png">
+<meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-0351946f5505b37a.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-caeddc52bde20f9c.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-d8107f8fc71dd1f4.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-9e37d1229ec7836e.webp">
@@ -72,7 +72,7 @@
 <meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-d2fd109d060e4853.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-ff43ea52e61da271.webp">
 <meta property="article:published_time" content="2022-12-14T12:48:03.000Z">
-<meta property="article:modified_time" content="2022-12-17T19:57:42.315Z">
+<meta property="article:modified_time" content="2022-12-17T20:12:38.151Z">
 <meta property="article:author" content="Jireyo">
 <meta property="article:tag" content="计算机网络">
 <meta property="article:tag" content="八股">
@@ -443,9 +443,10 @@
 </blockquote>
 <h3 id="最长匹配原则"><a href="#最长匹配原则" class="headerlink" title="最长匹配原则"></a>最长匹配原则</h3><p>最长匹配 是指存在多条目的网段相同的路由时，匹配掩码最长的那一条。因为掩码越长，表示的网段就越小，匹配也就越精确。</p>
 <div class="note note-primary">
-            <p>条件：</p><ul><li>路由器1：外部路由器。</li><li>路由器2：连接多个网段（子网）路由器。</li><li>路由器3：连接路由器2的一个子网路由器。</li><li>网段3：路由器3所在的网络。</li><li>3个路由器两两相连。</li></ul><p><img src="/routeUnion.jpg" srcset="/img/loading.gif" lazyload></p><p>对于划分子网的IPv4地址，同一网络号的不同子网的记录只保存在该网络的中转的路由器2中。对于路由器1，其只需要知道路由器2的总网络号即可，其子网的划分对路由器1是<strong>屏蔽的</strong>。</p><p>但CIDR不再区分子网，路由器1会学习与之相连接的路由器2的所有网络号（IP和网络前缀）。这导致路由器2所在的子网对路由器1也是<strong>可见的</strong>，因此需要将这些网络号在本路由器的路由表中聚合起来，避免路由表内存浪费。</p><p>至于最长匹配原则，则可以当某个数据包要从路由器1要发往子网3。此时路由器1会优先匹配到最长的网段3，并将数据转发到路由器3。</p>
+            <p>条件：</p><ul><li>路由器1：外部路由器。</li><li>路由器2：连接多个网段（子网）路由器。</li><li>路由器3：连接路由器2的一个子网路由器。</li><li>网段3：路由器3所在的网络。</li><li>3个路由器两两相连。<br>对于划分子网的IPv4地址，同一网络号的不同子网的记录只保存在该网络的中转的路由器2中。对于路由器1，其只需要知道路由器2的总网络号即可，其子网的划分对路由器1是<strong>屏蔽的</strong>。</li></ul><p>但CIDR不再区分子网，路由器1会学习与之相连接的路由器2的所有网络号（IP和网络前缀）。这导致路由器2所在的子网对路由器1也是<strong>可见的</strong>，因此需要将这些网络号在本路由器的路由表中聚合起来，避免路由表内存浪费。</p><p>至于最长匹配原则，则可以当某个数据包要从路由器1要发往子网3。此时路由器1会优先匹配到最长的网段3，并将数据转发到路由器3。</p>
           </div>
 
+<p><img src="/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/routeUnion.png" srcset="/img/loading.gif" lazyload></p>
 <h2 id="应用规划"><a href="#应用规划" class="headerlink" title="应用规划"></a>应用规划</h2><ul>
 <li>定长的子网掩码FLSM（<em>Fixed Length Subnet Mask</em>）</li>
 <li>变长的子网掩码VLSM（<em>Variable Length Subnet Mask</em>）<blockquote>
@@ -459,9 +460,10 @@
 <ul>
 <li>如果<strong>目的网络地址</strong>和<strong>源网络地址</strong> <strong>相同</strong>，就是<strong>在同一个网络</strong>中，属于<strong>直接交付</strong></li>
 <li>如果<strong>目的网络地址</strong>和<strong>源网络地址</strong> <strong>不相同</strong>，就<strong>不在同一个网络</strong>中，属于<strong>间接交付</strong>，传输给主机所在网络的<strong>默认网关</strong>,由默认网关帮忙转发</li>
-<li>为了让本网络中的主机能和其他网络中的主机进行通信，就必须给其指定本网络的一个路由器的接口，由该路由器帮忙进行转发，所指定的路由器，也被称为<strong>默认网关</strong>。（具体地，默认网关指的是与本机网络直接相连的路由器<strong>接口</strong>，即下图中的0。通俗的讲，默认网关就是本网络与外网的默认接口）<br><img src="/24878825-0351946f5505b37a.webp" srcset="/img/loading.gif" lazyload></li>
+<li>为了让本网络中的主机能和其他网络中的主机进行通信，就必须给其指定本网络的一个路由器的接口，由该路由器帮忙进行转发，所指定的路由器，也被称为<strong>默认网关</strong>。（具体地，默认网关指的是与本机网络直接相连的路由器<strong>接口</strong>，即下图中的0。通俗的讲，默认网关就是本网络与外网的默认接口）</li>
 </ul>
 </blockquote>
+<p><img src="/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-0351946f5505b37a.webp" srcset="/img/loading.gif" lazyload></p>
 <div class="note note-primary">
             <p>前提：</p><ul><li>本机IP ＆ 本机掩码 &#x3D; 本机网络</li><li>目的IP ＆ 目的掩码 &#x3D; 目的网络</li></ul><p>正向来看：<br>如果：目的网络 &#x3D;&#x3D; 本机网络（即目的掩码 &#x3D; 本机掩码）<br>那么：目的IP ＆ 本机掩码 &#x3D;&#x3D; 本机网络（目的网络）</p><p>反向来看：<br>条件：目的IP ＆ 本机掩码 &#x3D;&#x3D; 本机网络<br>问题：目的网络是否为本机网络呢？<br>答案：<strong>是</strong>。考虑这个问题的时候主要在想以下情形：<br>”如果目的网络（<code>190.68.16.128/25</code>）是本机网络（<code>190.68.16.0/24</code>）的子网，那么上面条件是成立的，但该子网和该网络并不能划等号。“<br>但实际上这个想法本质就是错误的，在<strong>CIDR和变长的子网掩码</strong>中：</p><ol><li>IP网络之间的关系已经没有了父子关系，</li><li>对于变长子网掩码，不同的子网之间的关系依然是并列的。也就是说，如果本机IP的网络会被划分成（<code>190.68.16.0/24</code>），就说明已经有一个网段包含了<code>190.68.16.xxx</code>的所有主机，<code>190.68.16.128/25</code>网络根本就不可能存在，即若有某主机IP为<code>190.68.16.129</code>，其子网掩码也一定是<code>/24</code>。</li></ol><p>以上证明了可以根据本机掩码和目的IP判断目的网络是否为本机网络，但如果不是本机网络，则不能直接判断目的网络的具体掩码长度，不过对于本机而言，只需要操心一个IP是由自己直接交付（本机网络）还是交给路由器（外网网络）处理即可。</p>
           </div>
@@ -773,6 +775,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2022/12/18/routeUnion.png/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
