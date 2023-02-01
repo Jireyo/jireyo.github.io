@@ -24,7 +24,7 @@
 <meta property="og:description" content="一、基本类型基本类型基本类型有boolean(1),byte(8),char(16),short(16);int(32),long(64),float(32),double(64); 括号表示类型占的bit数，其中，char,byte,short不会互相转换，其计算时首先转换为int。              java分内码和外码，内码指运行时内存中编码方式。除了内码的都是外码（如class文件">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-01-07T07:05:37.000Z">
-<meta property="article:modified_time" content="2023-01-08T14:19:29.327Z">
+<meta property="article:modified_time" content="2023-01-10T12:22:20.250Z">
 <meta property="article:author" content="Jireyo">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary_large_image">
@@ -290,7 +290,8 @@
 <div class="note note-primary">
             <p>java分内码和外码，内码指运行时内存中编码方式。除了内码的都是外码（如class文件，序列化等）。</p><ul><li>boolean：实际上JVM规范将boolean当作int来处理，也就是都占用4个字节。true为1，false为0。</li><li>char：内码中使用UTF16编码，一个字符占2个或4个字节(相当于用两个char表示一个字符)。外码中char使用UTF8编码，一个字符占1-6个字节。</li><li>其他的与括号内的字节相同?todo。</li></ul>
           </div>
-<h2 id="转换"><a href="#转换" class="headerlink" title="转换"></a>转换</h2><h3 id="String-x2F-Integer-x2F-int"><a href="#String-x2F-Integer-x2F-int" class="headerlink" title="String&#x2F;Integer&#x2F;int"></a>String&#x2F;Integer&#x2F;int</h3><p>基本类型之间，char,byte,short可以转化为int,int-&gt;long-&gt;float-&gt;double可以链式转换，反向转换需要强制类型转换，可能造成数据精度损失。<br>String与Integer互相转化：</p>
+<h2 id="转换"><a href="#转换" class="headerlink" title="转换"></a>转换</h2><h3 id="String-x2F-Integer-x2F-int"><a href="#String-x2F-Integer-x2F-int" class="headerlink" title="String&#x2F;Integer&#x2F;int"></a>String&#x2F;Integer&#x2F;int</h3><p>基本类型之间，char,byte,short可以转化为int,int-&gt;long-&gt;float-&gt;double可以链式转换，反向转换需要强制类型转换，可能造成数据精度损失。</p>
+<p>String与Integer互相转化：</p>
 <ul>
 <li>String.valueOf(Integer)</li>
 <li>Integer.valueOf(String)<br>String与int互相转化：</li>
@@ -298,7 +299,7 @@
 <li>Integer.parseInt(“int”)<br>Integer与int互相转化：</li>
 <li>Integer.valueOf()</li>
 <li>integer.intValue()<div class="note note-primary">
-            <p>可见，对于具体类（如String,Integer）,valueOf是一个将其他类型转化为本类型的通用方法。涉及到其他类型转化为基本类型时，需要使用<code>Integer.parseInt(string)</code>和<code>integer.intValue()</code>这种特殊方法。</p>
+            <p>可见，对于具体类（String,Integer）,valueOf是一个将其他类型转化为本类型的通用方法。涉及到其他类型转化为基本类型时，需要使用<code>Integer.parseInt(string)</code>和<code>integer.intValue()</code>这种特殊方法。</p>
           </div></li>
 </ul>
 <h3 id="隐式类型"><a href="#隐式类型" class="headerlink" title="隐式类型"></a>隐式类型</h3><h4 id="float与double"><a href="#float与double" class="headerlink" title="float与double"></a>float与double</h4><p>1.1字面量是double类型的。<br><code>float f = 1.1f</code></p>
@@ -386,17 +387,17 @@
 </ul>
 <h4 id="取反"><a href="#取反" class="headerlink" title="取反~"></a>取反~</h4><p>~n &#x3D; -(n+1)<br>eg:</p>
 <ul>
-<li>正数：<br><del>3 &#x3D; -(3+1) &#x3D; -4<br>&#96;</del>0011<code>= -(0011+0001) = -0100 =</code>1100&#96;</li>
-<li>负数：<br><del>(-3) &#x3D; -(-3+1) &#x3D; 2<br>&#96;</del>1101<code>= -(1101+0001) = -1110 =</code>0010&#96;</li>
+<li>正数：<br>~ 3 &#x3D; -(3+1) &#x3D; -4<br>~0011 &#x3D; -(0011+0001) &#x3D; -0100 &#x3D; 1100</li>
+<li>负数：<br>~ (-3) &#x3D; -(-3+1) &#x3D; 2<br>~1101 &#x3D; -(1101+0001) &#x3D; -1110 &#x3D; 0010</li>
 </ul>
 <div class="note note-primary">
-            <p>由上可见，在二进制上，取反相当于把1置0，把0置1。<br>在具体值上，我们是对原值的补码进行求反，得到的是答案的补码。<br>如果是正数，符号变正，且绝对值+1。<br>如果是负数，符号变负，且绝对值-1。<br>注意到这个过程是可以相互抵消的，即<del>(</del>n) &#x3D; n，从二进制角度来看，也很符合常理。</p><p>如何求-n的补码：<br>~n+1 &#x3D; -(n+1)+1 &#x3D; -n</p>
+            <p>由上可见，在二进制上，取反相当于把1置0，把0置1。<br>在具体值上，我们是对原值的补码进行求反，得到的是答案的补码。<br>如果是正数，符号变正，且绝对值+1。<br>如果是负数，符号变负，且绝对值-1。<br>注意到这个过程是可以相互抵消的，即<del>(</del>n) &#x3D; n，从二进制角度来看，也很符合常理。</p><p>如何求-n的补码：<br>~ n+1 &#x3D; -(n+1)+1 &#x3D; -n</p>
           </div>
 
 <h4 id="自增"><a href="#自增" class="headerlink" title="自增++"></a>自增++</h4><p>自增++线程不安全</p>
 <h2 id="参数传递"><a href="#参数传递" class="headerlink" title="参数传递"></a>参数传递</h2><p>java只有值传递，对于对象，传递的是对象的引用指针。</p>
 <h2 id="流程控制"><a href="#流程控制" class="headerlink" title="流程控制"></a>流程控制</h2><h3 id="switch"><a href="#switch" class="headerlink" title="switch"></a>switch</h3><p>switch条件判断语句中可以使用<br>byte,short,char,int,枚举(jdk5.0)，String对象(jdk7.0)，但不能使用long类。<br><strong>PS</strong>：实际上能string对象也只是一个语法糖，底层通过string对象的hash值处理。</p>
-<h1 id="三、其他"><a href="#三、其他" class="headerlink" title="三、其他"></a>三、其他</h1><h3 id="Java-中的编译期常量是什么-使用它又什么风险"><a href="#Java-中的编译期常量是什么-使用它又什么风险" class="headerlink" title="Java 中的编译期常量是什么? 使用它又什么风险?"></a>Java 中的编译期常量是什么? 使用它又什么风险?</h3><p>这些变量在编译时会被替换掉，因为编译器知道这些变量的值，并且知道这些变量在运行时不能改变。<br>这种方式存在的一个问题是你使用了一个内部的或第三方库中的公有编译时常量，但是这个值后面被其他人改变了，但是你的客户端仍然在使用老的值，甚至你已经部署了一个新的jar。为了避免这种情况，当你在更新依赖 JAR 文件时，确保重新编译你的程序。</p>
+<h1 id="三、其他"><a href="#三、其他" class="headerlink" title="三、其他"></a>三、其他</h1><h3 id="Java-中的编译期常量是什么-使用它有什么风险"><a href="#Java-中的编译期常量是什么-使用它有什么风险" class="headerlink" title="Java 中的编译期常量是什么? 使用它有什么风险?"></a>Java 中的编译期常量是什么? 使用它有什么风险?</h3><p>这些变量在编译时会被替换掉，因为编译器知道这些变量的值，并且知道这些变量在运行时不能改变。<br>这种方式存在的一个问题是你使用了一个内部的或第三方库中的公有编译时常量，但是这个值后面被其他人改变了，但是你的客户端仍然在使用老的值，甚至你已经部署了一个新的jar。为了避免这种情况，当你在更新依赖 JAR 文件时，确保重新编译你的程序。</p>
 <h3 id="Java-中，Serializable-与-Externalizable-的区别"><a href="#Java-中，Serializable-与-Externalizable-的区别" class="headerlink" title="Java 中，Serializable 与 Externalizable 的区别?"></a>Java 中，Serializable 与 Externalizable 的区别?</h3><p>Serializable 接口是一个序列化 Java 类的接口，以便于它们可以在网络上传输或者可以将它们的状态保存在磁盘上，是 JVM 内嵌的默认序列化方式，成本高、脆弱而且不安全。<br>Externalizable 允许你控制整个序列化过程，指定特定的二进制格式，增加安全机制。</p>
 <h3 id="Object有哪些公用方法"><a href="#Object有哪些公用方法" class="headerlink" title="Object有哪些公用方法?"></a>Object有哪些公用方法?</h3><p>clone equals hashcode wait notify notifyall finalize toString getClass 除了clone和finalize其他均为公共方法。</p>
 <h3 id="接口和抽象类"><a href="#接口和抽象类" class="headerlink" title="接口和抽象类"></a>接口和抽象类</h3><ul>

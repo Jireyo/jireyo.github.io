@@ -16,20 +16,22 @@
   <meta name="author" content="Jireyo">
   <meta name="keywords" content="">
   
-    <meta name="description" content="集合知识体系集合主要分Map和Collection两个体系:  Map SortedMap NavigableMap     Collection List Queue Deque   Set SortedSet NavigableSet             以上都是接口，从功能角度上对集合进行了分类。Map作为字典，重要的是其搜索能力，所以其有sorted-&gt;navigable的继承接">
+    <meta name="description" content="集合知识体系集合主要分Map和Collection两个体系:  Map SortedMap NavigableMap     Collection List Queue Deque   Set SortedSet NavigableSet                     以上都是接口，从功能角度上对集合进行了分类。Map作为字典，重要的是其搜索能力，所以其有sorted-&gt;navig">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java第5章（集合）">
 <meta property="og:url" content="http://example.com/2023/01/09/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/index.html">
 <meta property="og:site_name" content="Jireyo&#39;s Blog">
-<meta property="og:description" content="集合知识体系集合主要分Map和Collection两个体系:  Map SortedMap NavigableMap     Collection List Queue Deque   Set SortedSet NavigableSet             以上都是接口，从功能角度上对集合进行了分类。Map作为字典，重要的是其搜索能力，所以其有sorted-&gt;navigable的继承接">
+<meta property="og:description" content="集合知识体系集合主要分Map和Collection两个体系:  Map SortedMap NavigableMap     Collection List Queue Deque   Set SortedSet NavigableSet                     以上都是接口，从功能角度上对集合进行了分类。Map作为字典，重要的是其搜索能力，所以其有sorted-&gt;navig">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2023/01/09/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230109204736.png">
 <meta property="og:image" content="http://example.com/2023/01/09/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230109213925.png">
 <meta property="og:image" content="http://example.com/2023/01/09/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230109214209.png">
 <meta property="og:image" content="http://example.com/2023/01/09/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230109232400.png">
 <meta property="og:image" content="http://example.com/2023/01/09/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230109233801.png">
+<meta property="og:image" content="http://example.com/2023/01/09/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230110203318.png">
+<meta property="og:image" content="http://example.com/2023/01/09/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230110204320.png">
 <meta property="article:published_time" content="2023-01-09T12:38:00.000Z">
-<meta property="article:modified_time" content="2023-01-09T23:35:55.305Z">
+<meta property="article:modified_time" content="2023-02-01T16:55:04.820Z">
 <meta property="article:author" content="Jireyo">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary_large_image">
@@ -237,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.8k 字
+          8k 字
         
       </span>
     
@@ -248,7 +250,7 @@
         
         
         
-          32 分钟
+          67 分钟
         
       </span>
     
@@ -308,16 +310,18 @@
 </li>
 <li>Set<ul>
 <li>SortedSet<ul>
-<li>NavigableSet<div class="note note-primary">
+<li>NavigableSet</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="note note-primary">
             <p>以上都是接口，从功能角度上对集合进行了分类。</p><ul><li>Map作为字典，重要的是其搜索能力，所以其有sorted-&gt;navigable的继承接口。</li><li>Collection中<ul><li>List体现的是对数组的封装，可以随机获取。</li><li>Queue体现单端的进出（堆）<ul><li>Deque实现双端的任意出入</li></ul></li><li>Set需要去重，重要的同样是其搜索能力，所以与map类似，有sorted-&gt;navigable的继承。</li></ul></li></ul>
-          </div></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+          </div>
+
 <div class="note note-success">
             <p>从基本的实现来看:</p><ul><li>Map<ul><li>map的朴素实现是HashMap<ul><li>HashMap有时需要保留先后顺序，LinkedHashMap继承自HashMap</li></ul></li><li>map搜索增强的实现是TreeMap</li><li>还有一些功能性Map(不做重点)，直接继承Map<ul><li>WeakHashMap，软引用，处于缓存角度，键值可以被回收</li><li>IdentifyHashMap，判断两值相等，只看其引用地址的16位hash（强相等）</li><li>EnumMap，只允许key为指定枚举值，底层其实是array实现。</li></ul></li></ul></li><li>Collection<ul><li>list的朴素实现是ArrayList<ul><li>vector还继承了list，是线程安全的，但已不推荐使用。<ul><li>stack继承了vector，先入先出</li></ul></li></ul></li><li>queue的实现是PriorityQueue(堆)<ul><li>deque的朴素实现是<strong>LinkedList</strong>，这个类也继承了List和Queue，三姓家奴</li><li>deque的另一个实现是ArrayDeque</li></ul></li><li>set与map类似，有HashSet-&gt;LinkedHashSet,TreeSet等实现。</li></ul></li></ul>
           </div>
@@ -403,7 +407,7 @@
             <p>注意，ArrayList扩容是1.5倍，ArrayDeque扩容是2倍。</p>
           </div>
 
-<h2 id="PriorityQueue"><a href="#PriorityQueue" class="headerlink" title="PriorityQueue"></a>PriorityQueue</h2><h3 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h3><p><strong>优先队列的作用是能保证每次取出的元素都是队列中权值最小的</strong>(Java的优先队列每次取最小元素，C++的优先队列每次取最大元素)。这里牵涉到了大小关系，<strong>元素大小的评判可以通过元素本身的自然顺序(<em>natural ordering</em>)，也可以通过构造时传入的比较器</strong>(_Comparator_，类似于C++的仿函数)。</p>
+<h2 id="PriorityQueue"><a href="#PriorityQueue" class="headerlink" title="PriorityQueue"></a>PriorityQueue</h2><h3 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h3><p><strong>优先队列的作用是能保证每次取出的元素都是队列中权值最小的</strong>(Java的优先队列每次取最小元素，C++的优先队列每次取最大元素)。这里牵涉到了大小关系，元素大小的评判可以通过元素本身的自然顺序(natural ordering)，也可以通过构造时传入的比较器(Comparator，类似于C++的仿函数)。</p>
 <ul>
 <li>优先队列不允许放入<code>null</code>元素。</li>
 <li>其通过完全二叉树的小顶堆实现。</li>
@@ -418,7 +422,136 @@
           </div>
 
 <h4 id="remove-Object-o"><a href="#remove-Object-o" class="headerlink" title="remove(Object o)"></a>remove(Object o)</h4><p>遍历数组删除第一个equals的元素。</p>
-<p>todo，哪些集合容许add null。<br>todo，哪些集合线程安全。</p>
+<h1 id="HashSet-amp-HashMap"><a href="#HashSet-amp-HashMap" class="headerlink" title="HashSet&amp;HashMap"></a>HashSet&amp;HashMap</h1><p>二者在Java里有着相同的实现，前者仅仅是对后者做了一层包装，即默认value &#x3D;&#x3D; null。</p>
+<h2 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h2><p>HashTable是同步的HashMap。该map不保证元素顺序。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>哈希表有两种实现方式，一种开放地址方式(Open addressing)，另一种是冲突链表方式(Separate chaining with linked lists)。</p>
+<h3 id="Java7"><a href="#Java7" class="headerlink" title="Java7"></a>Java7</h3><p>HashMap采用的是冲突链表方式**。<br><img src="/2023/01/09/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230110203318.png" srcset="/img/loading.gif" lazyload></p>
+<p>可见put，get方法可以在常数时间完成，但若table过大，对map进行遍历就会很耗时。</p>
+<p>有<strong>两个参数</strong>可以影响HashMap的性能: 初始容量(<em>inital capacity</em>)和负载系数(<em>load factor</em>)。</p>
+<ul>
+<li>初始容量指定了初始<code>table</code>的大小</li>
+<li>负载系数用来指定自动扩容的临界值。<br>当<code>entry</code>的数量超过<code>capacity*load_factor</code>时，容器将自动扩容并重新哈希。对于插入元素较多的场景，将初始容量设大可以减少重新哈希的次数。</li>
+</ul>
+<p>将对象放入到HashMap或HashSet中时，有<strong>两个方法</strong>需要特别关心：<code>hashCode()</code>和<code>equals()</code>。</p>
+<ul>
+<li><strong><code>hashCode()</code>方法决定了对象会被放到哪个<code>bucket</code>里，当多个对象的哈希值冲突时，<code>equals()</code>方法决定了这些对象是否是“同一个对象”</strong>。</li>
+<li>所以，如果要将自定义的对象放入到<code>HashMap</code>或<code>HashSet</code>中，需要@Override <code>hashCode()</code>和<code>equals()</code>方法。</li>
+</ul>
+<h4 id="get-1"><a href="#get-1" class="headerlink" title="get()"></a>get()</h4><p>先<code>getEntry</code>，然后<code>getValue</code><br>其中getEntry先通过hashCode判断bucket，然后通过equals遍历判断。</p>
+<p>求bucket的过程：<br><code>hash(k)&amp;(table.length-1)</code>，与list扩容类似，取模。</p>
+<h4 id="put"><a href="#put" class="headerlink" title="put()"></a>put()</h4><p>先<code>getEntry</code>，如果没有则<code>addEntry</code>。在链表中使用头插法。</p>
+<h4 id="remove-2"><a href="#remove-2" class="headerlink" title="remove()"></a>remove()</h4><p>先<code>getEntry</code>，然后remove。</p>
+<h3 id="Java8"><a href="#Java8" class="headerlink" title="Java8"></a>Java8</h3><p>由 <strong>数组+链表+红黑树</strong> 组成。<br>当链表中的元素达到了 8 个时，会将链表转换为红黑树，在这些位置进行查找的时候可以降低时间复杂度为 O(logN)。<br><img src="/2023/01/09/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230110204320.png" srcset="/img/loading.gif" lazyload><br>链表的元素为<code>Node</code>，红黑树的元素为<code>TreeNode</code>，通过头节点的类型判断是链表还是红黑树。</p>
+<h4 id="数组扩容"><a href="#数组扩容" class="headerlink" title="数组扩容"></a>数组扩容</h4><p>resize() 方法用于初始化数组或数组扩容，每次扩容后，容量为原来的 <strong>2 倍</strong>，并进行数据迁移。<br>ps:java7是先扩容再插值，java8是先插值再扩容。</p>
+<h4 id="get-2"><a href="#get-2" class="headerlink" title="get()"></a>get()</h4><p>判断是红黑树还是链表，采用不同方法取值。</p>
+<p>具体红黑树讲解见TreeMap</p>
+<h2 id="HashSet"><a href="#HashSet" class="headerlink" title="HashSet"></a>HashSet</h2><p>就是对HashMap的一层包装。</p>
+<h1 id="LinkedHashMap-amp-LinkedHashSet"><a href="#LinkedHashMap-amp-LinkedHashSet" class="headerlink" title="LinkedHashMap&amp;LinkedHashSet"></a>LinkedHashMap&amp;LinkedHashSet</h1><h2 id="LinkedHashMap"><a href="#LinkedHashMap" class="headerlink" title="LinkedHashMap"></a>LinkedHashMap</h2><p>实现了map接口，<strong>允许放入key或value为null的元素</strong>，也是HashMap的子类。其使用双向链表将所有entry相连接。并多了header和tail指向<code>头部</code>和<code>尾部</code>。</p>
+<p>优点：遍历时不用遍历所有bucket，只用遍历entrylist即可。</p>
+<p>有<strong>两个参数</strong>可以影响LinkedHashMap的性能: 初始容量(inital capacity)和负载系数(load factor)。<br>将对象放入到LinkedHashMap或LinkedHashSet中时，有<strong>两个方法</strong>需要特别关心: <code>hashCode()</code>和<code>equals()</code>。</p>
+<p>这点与HashMao相同。<br>其没有同步化实现，若需要同步，可使用：<br><code>Map m = Collections.synchronizedMap(new LinkedHashMap(...));</code></p>
+<h3 id="get-3"><a href="#get-3" class="headerlink" title="get()"></a>get()</h3><p>同HashMap</p>
+<h3 id="put-1"><a href="#put-1" class="headerlink" title="put()"></a>put()</h3><p>也是先getEntry，然后再addEntry<br>add时，既要使用头插法插入bucket链表头部，也要将其插入linkedlist的尾部。</p>
+<h3 id="remove-3"><a href="#remove-3" class="headerlink" title="remove()"></a>remove()</h3><p>同样先get，然后remove，同时维护两个链表。</p>
+<h2 id="LinkedHashSet"><a href="#LinkedHashSet" class="headerlink" title="LinkedHashSet"></a>LinkedHashSet</h2><p>是LinkedHashMap的简单包装。</p>
+<h1 id="TreeSet-amp-TreeMap"><a href="#TreeSet-amp-TreeMap" class="headerlink" title="TreeSet&amp;TreeMap"></a>TreeSet&amp;TreeMap</h1><h2 id="TreeMap"><a href="#TreeMap" class="headerlink" title="TreeMap"></a>TreeMap</h2><p>TreeSet是对TreeMap的一层包装。</p>
+<p>底层通过红黑树实现。意味着<code>containsKey()</code>, <code>get()</code>, <code>put()</code>, <code>remove()</code>都有着<code>log(n)</code>的时间复杂度。</p>
+<p>TreeSort是非同步的，若需要同步，可以使用：<br><code>SortedMap m = Collections.synchronizedSortedMap(new TreeMap(...));</code></p>
+<h2 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h2><p>参考视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1d64y1z7Uk?p=20&vd_source=7324e975d0c1b4b4719d1194e3649ff8">bilibili</a><br>参考blog：<a target="_blank" rel="noopener" href="https://www.bilibili.com/read/cv17486236">bilibili</a><br><strong>红黑树是一种近似平衡的二叉查找树，它能够确保任何一个节点的左右子树的高度差不会超过二者中较低那个的一倍</strong>。</p>
+<p>性质：</p>
+<ol>
+<li>每个节点要么是红色，要么是黑色。</li>
+<li>根节点必须是黑色</li>
+<li>红色节点不能连续(也即是，红色节点的孩子和父亲都不能是红色)。</li>
+<li>对于每个节点，从该点至<code>null</code>(树尾端)的任何路径，都含有相同个数的黑色节点。<br>树结构改变时，任意破坏3，4，因此需要调整。</li>
+</ol>
+<h3 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h3><h4 id="234树"><a href="#234树" class="headerlink" title="234树"></a>234树</h4><p>一种特殊的搜索树。</p>
+<ul>
+<li>2节点表示3个key组成的一个节点</li>
+<li>3节点表示3个key组成的一个节点</li>
+<li>4节点表示3个key组成的一个节点</li>
+</ul>
+<p>当给234树添加节点时</p>
+<ul>
+<li>通过搜索找到应该插入的节点。</li>
+<li>如果该节点位置已经有不超过3个节点，则可以进行合并。</li>
+<li>如果已经为4节点，则需要拆解出节点并向上移动。</li>
+</ul>
+<p>因为这样自底向上的插入性质，其所有根节点的高度总是相等的。</p>
+<h4 id="红黑树-1"><a href="#红黑树-1" class="headerlink" title="红黑树"></a>红黑树</h4><p>红黑树是可以和234树等价的。</p>
+<ul>
+<li>2节点表示一个黑节点</li>
+<li>3节点表示一个红节点和其一个黑子节点</li>
+<li>4节点表示一个红节点和其两个黑子节点</li>
+</ul>
+<p>另外红黑树每个叶子节点都是黑节点（一般是隐藏的，其不会影响红黑树的3，4性质）</p>
+<h4 id="左旋-x2F-右旋"><a href="#左旋-x2F-右旋" class="headerlink" title="左旋&#x2F;右旋"></a>左旋&#x2F;右旋</h4><p>以x节点为中心左旋，其右子节点r会成为x节点的父节点。右子节点r的左节点rl会称为x的右节点。<br>右旋同理，左右旋主要是为了调整树的节点构造，在不影响整体高度的情况下达到我们想要构造。</p>
+<h4 id="节点后继"><a href="#节点后继" class="headerlink" title="节点后继"></a>节点后继</h4><p>搜索树中某节点x有前继pre（比x小的最大节点）和后继post（比x大的最小节点）节点。这两个节点可以完美替换节点x。</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><h4 id="get-4"><a href="#get-4" class="headerlink" title="get()"></a>get()</h4><p>按照常规二叉搜索树寻找即可。<br>底层根据compareTo()的返回值判断进行迭代。</p>
+<h4 id="put-2"><a href="#put-2" class="headerlink" title="put()"></a>put()</h4><p>先查找，若没有，则add。<br>其可能破坏红黑树约束条件，因此需要调整。<br>1.默认插入RED节点。<br>2.1.若其父节点也为BLACK节点，不影响高度（return）。<br>2.2.若其父节点也为RED，需要调整父节点及其叔叔节点为BLACK(+1)，并让爷爷节点为RED(-1)。<br>3.迭代至根节点。</p>
+<h4 id="remove-4"><a href="#remove-4" class="headerlink" title="remove()"></a>remove()</h4><p>先查找，若有，则remove。<br>其可能破坏红黑树约束条件，因此需要调整。</p>
+<p>1.可能移除树中任意位置的节点，可以通过<strong>值替换</strong>的方式转化为移除其前继或<strong>后继</strong>节点，最终只会删除叶子节点或有单侧叶子节点的节点</p>
+<p>2.1.若移除的是RED节点，不影响高度(return)。<br>2.1.1如果该节点是叶子节点，直接(return)<br>2.1.2如果该节点有单侧叶子节点，由叶子节点替代该节点（return）。</p>
+<p>2.2.若移除的是BALCK节点L，需要调整。<br>2.2.1如果该节点是叶子节点，需要先调整，再移除<br>2.2.2如果该节点有单侧子节点，由子节点替代该节点后，再调整。</p>
+<div class="note note-primary">
+            <p>所谓调整，本质上是一个方法 f(Node node)，其能让node节点这一侧补充一个黑色节点高度。核心思想是，由于移除了黑色节点L，该侧高度（-1），需要找一个节点（且为黑色）补充回来。</p><ul><li>如果L有红色子节点，将其提升后染黑即可。</li><li>如果L没有红色子节点，需要将其父节点P的左&#x2F;右旋，将P移到该侧填补黑色节点。然后由其兄弟节点提升多余节点（兄弟节点有红色子节点）代替父节点并进行调整。</li><li>如果兄弟节点R没有多余红色节点，则将兄弟节点一起染红，然后迭代其父节点P作为L。</li></ul>
+          </div>
+
+<p>2.3.1.如果替代上来的节点是红色节点，将其染黑即可(return)<br>2.3.2.如果原节点(2.2.1)或替代上来的节点是黑色节点(2.2.2)，需要进行旋转调整。<br>2.3.3.事实上这不会容易，父节点P左旋时，其右节点R会成为新的父节点，这会导致右侧减去一个节点R，因此，右旋时要保证右侧的高度也不变，需要满足以下几种条件之一：<br>2.4.1.如果兄弟节点为红色，说明其不是真正的兄弟节点（因为234树中3节点和4节点都应该是黑色节点为根），此时应该<strong>调整兄弟节点成黑色节点为根的形态</strong>(通过左&#x2F;右旋并调整颜色实现，达到2.4.2)。<br>2.4.2.如果兄弟节点为黑色，考虑其子节点是否有红色节点可以借用。<br>2.4.2.1.兄弟节点有红色子节点：</p>
+<ul>
+<li>将父节点左旋，并染黑，补充L侧的黑节点个数</li>
+<li>原兄弟节点成为新的父节点，将其调整为原父节点P的颜色</li>
+<li>原兄弟节点的子节点成为新父节点的右节点，将其染黑补充R侧的黑节点个数</li>
+<li>return<br>2.4.2.2.兄弟节点没有红色子节点:</li>
+<li>将兄弟节点染红，则导致父节点到叶子的路径总体-1，以父节点为新的L迭代2.2.1步，可以将其视为一个整体。<br>2.5最终达到root时，return。</li>
+</ul>
+<h1 id="WeakHashMap"><a href="#WeakHashMap" class="headerlink" title="WeakHashMap"></a>WeakHashMap</h1><p>具体实现类似HashMap，弱引用可以访问对象，但这不是有效引用，即被引用的对象可以被GC回收。<br>WeakHashMap内部通过弱引用管理entry。<br>想要获取HashSet，需要使用：<br><code>Collections.newSetFromMap(Map&lt;E,Boolean&gt; map)</code>，其可以将任意map转化为set。</p>
+<h1 id="Null"><a href="#Null" class="headerlink" title="Null"></a>Null</h1><p>PriorityQueue，TreeSet不允许传入空值，因为其需要比较，其他集合都可以传入Null。</p>
+<h1 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h1><table>
+<thead>
+<tr>
+<th>不安全</th>
+<th>安全实现</th>
+<th>ConCurrent</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ArrayList</td>
+<td>Vector&#x2F;Stack</td>
+<td>暂无</td>
+</tr>
+<tr>
+<td>LinkedList</td>
+<td>Collections.synchronizedList(List)</td>
+<td>暂无</td>
+</tr>
+<tr>
+<td>PriorityQueue</td>
+<td>无</td>
+<td>暂无</td>
+</tr>
+<tr>
+<td>HashMap</td>
+<td>Hashtable</td>
+<td>暂无</td>
+</tr>
+<tr>
+<td>LinkedHashMap</td>
+<td>Collections.synchronizedMap(Map)</td>
+<td>暂无</td>
+</tr>
+<tr>
+<td>TreeMap</td>
+<td>Collections.synchronizedSortedMap(SortedMap);</td>
+<td>暂无</td>
+</tr>
+<tr>
+<td>NavigableMap</td>
+<td>Collections.synchronizedNavigableMap(NavigableMap)</td>
+<td>暂无</td>
+</tr>
+</tbody></table>
+<p>Set的Collections包装方法类似map，待补充todo。</p>
 
                 
               </div>
@@ -523,12 +656,18 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2023/01/23/JVM%E4%B8%8A%E7%AF%87-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" title="JVM上篇:内存与垃圾回收">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JVM上篇:内存与垃圾回收</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/01/09/Java%E7%AC%AC4%E7%AB%A0%EF%BC%88%E6%B3%A8%E8%A7%A3%E3%80%81%E5%BC%82%E5%B8%B8%E3%80%81%E5%8F%8D%E5%B0%84%EF%BC%89/" title="Java第4章（注解）">
-                        <span class="hidden-mobile">Java第4章（注解）</span>
+                      <a href="/2023/01/09/Java%E7%AC%AC4%E7%AB%A0%EF%BC%88%E6%B3%A8%E8%A7%A3%E3%80%81%E5%BC%82%E5%B8%B8%E3%80%81%E5%8F%8D%E5%B0%84%EF%BC%89/" title="Java第4章（注解、异常、反射）">
+                        <span class="hidden-mobile">Java第4章（注解、异常、反射）</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
