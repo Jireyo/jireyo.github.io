@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://example.com/2023/01/09/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230110203318.png">
 <meta property="og:image" content="http://example.com/2023/01/09/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230110204320.png">
 <meta property="article:published_time" content="2023-01-09T12:38:00.000Z">
-<meta property="article:modified_time" content="2023-02-01T16:55:04.820Z">
+<meta property="article:modified_time" content="2023-02-02T18:01:35.355Z">
 <meta property="article:author" content="Jireyo">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary_large_image">
@@ -502,9 +502,13 @@
 <li>将父节点左旋，并染黑，补充L侧的黑节点个数</li>
 <li>原兄弟节点成为新的父节点，将其调整为原父节点P的颜色</li>
 <li>原兄弟节点的子节点成为新父节点的右节点，将其染黑补充R侧的黑节点个数</li>
-<li>return<br>2.4.2.2.兄弟节点没有红色子节点:</li>
-<li>将兄弟节点染红，则导致父节点到叶子的路径总体-1，以父节点为新的L迭代2.2.1步，可以将其视为一个整体。<br>2.5最终达到root时，return。</li>
+<li>return</li>
 </ul>
+<p>2.4.2.2.兄弟节点没有红色子节点:</p>
+<ul>
+<li>将兄弟节点染红，则导致父节点到叶子的路径总体-1，以父节点为新的L迭代2.2.1步，可以将其视为一个整体。</li>
+</ul>
+<p>2.5最终达到root时，return。</p>
 <h1 id="WeakHashMap"><a href="#WeakHashMap" class="headerlink" title="WeakHashMap"></a>WeakHashMap</h1><p>具体实现类似HashMap，弱引用可以访问对象，但这不是有效引用，即被引用的对象可以被GC回收。<br>WeakHashMap内部通过弱引用管理entry。<br>想要获取HashSet，需要使用：<br><code>Collections.newSetFromMap(Map&lt;E,Boolean&gt; map)</code>，其可以将任意map转化为set。</p>
 <h1 id="Null"><a href="#Null" class="headerlink" title="Null"></a>Null</h1><p>PriorityQueue，TreeSet不允许传入空值，因为其需要比较，其他集合都可以传入Null。</p>
 <h1 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h1><table>

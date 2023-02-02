@@ -44,7 +44,6 @@
 <meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-bbed8a0d31bf19c3.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-6b8e10e2d82cfa6f.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-4239eee0b6040f52.webp">
-<meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-6420e503df73b7ef.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-725b3aab5aa350b1.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-5aae9c53795e17a7.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-04fe6f98036db57c.webp">
@@ -72,7 +71,7 @@
 <meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-d2fd109d060e4853.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-ff43ea52e61da271.webp">
 <meta property="article:published_time" content="2022-12-14T12:48:03.000Z">
-<meta property="article:modified_time" content="2022-12-17T20:12:38.151Z">
+<meta property="article:modified_time" content="2023-02-02T17:54:18.354Z">
 <meta property="article:author" content="Jireyo">
 <meta property="article:tag" content="计算机网络">
 <meta property="article:tag" content="八股">
@@ -568,11 +567,8 @@
             <p>总结，OSPF是一个路由器通过获取AS内所有路由器之间边信息，然后建立一个以自己为根节点的无环图的过程。<br>具体地，相邻路由器会通过Hello分组维护关系，并互相简单介绍自己已知的路由信息，然后各自通过路由信息请求、路由信息返回、路由信息确认等过程逐步获得整个AS内的路由信息，最后构建各自的路由表。</p>
           </div>
 
-<h4 id="OSPF存在的问题"><a href="#OSPF存在的问题" class="headerlink" title="OSPF存在的问题"></a>OSPF存在的问题</h4><h5 id="大量多播分组"><a href="#大量多播分组" class="headerlink" title="大量多播分组"></a>大量多播分组</h5><p>多点接入（较多路由器互联）时，会产生大量的多播分组，通讯量过大。<br><strong>解决方法</strong></p>
-<ol>
-<li><p>屏蔽部分路径，因此只与部分路由器进行数据交换。<br><img src="/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-6420e503df73b7ef.webp" srcset="/img/loading.gif" lazyload><br>DR出现问题后使用BDR替换。</p>
-</li>
-<li><p>路由分区，<strong>为了使OSPF能够用于规模很大的网络，OSPF把一个自治系统再划分为若干个更小的范围，叫做区域（Area）</strong><br><img src="/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-725b3aab5aa350b1.webp" srcset="/img/loading.gif" lazyload></p>
+<h4 id="OSPF存在的问题"><a href="#OSPF存在的问题" class="headerlink" title="OSPF存在的问题"></a>OSPF存在的问题</h4><h5 id="大量多播分组"><a href="#大量多播分组" class="headerlink" title="大量多播分组"></a>大量多播分组</h5><p>多点接入（较多路由器互联）时，会产生大量的多播分组，通讯量过大。<br><strong>解决方法</strong><br>1）屏蔽部分路径，因此只与部分路由器进行数据交换。DR出现问题后使用BDR替换。</p>
+<p> 2）路由分区，<strong>为了使OSPF能够用于规模很大的网络，OSPF把一个自治系统再划分为若干个更小的范围，叫做区域（Area）</strong><br><img src="/2022/12/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-725b3aab5aa350b1.webp" srcset="/img/loading.gif" lazyload></p>
 <blockquote>
 <p>实现细节：</p>
 <ul>
@@ -581,8 +577,6 @@
 <li>划分区域的好处就是，利用洪泛法交换链路状态信息局限于每一个区域而不是自治系统，这样减少整个网络上的通信量。</li>
 </ul>
 </blockquote>
-</li>
-</ol>
 <h4 id="OSPF的优缺点"><a href="#OSPF的优缺点" class="headerlink" title="OSPF的优缺点"></a>OSPF的优缺点</h4><div class="note note-primary">
             <p>优点：</p><ul><li>从算法上避免了环路的产生。</li><li>基于链路状态，相比RIP考虑了更多对链路代价的影响因素。</li><li>不限制网络规模（没有最长距离限制）</li></ul><p>缺点：</p><ul><li>实现较复杂。</li><li>路由器需要获取AS内所有路由器信息，通信量大，可以通过<strong>指定路由器</strong>和<strong>划分区域</strong>的手段解决。</li></ul>
           </div>
