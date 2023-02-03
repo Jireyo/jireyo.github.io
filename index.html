@@ -235,6 +235,156 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2023/02/03/JUC%E7%AC%AC5%E7%AB%A0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/" target="_self">
+          JUC第5章（线程池）
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/02/03/JUC%E7%AC%AC5%E7%AB%A0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/" target="_self">
+        <div>
+          
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-02-03 20:19" pubdate>
+              2023-02-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/JUC/" class="category-chain-item">JUC</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JUC/">#JUC</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/02/03/JUC%E7%AC%AC4%E7%AB%A0%EF%BC%88%E5%B9%B6%E5%8F%91%E9%9B%86%E5%90%88%E4%B8%8E%E5%B7%A5%E5%85%B7%E7%B1%BB%EF%BC%89/" target="_self">
+          JUC第4章（并发集合与工具类）
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/02/03/JUC%E7%AC%AC4%E7%AB%A0%EF%BC%88%E5%B9%B6%E5%8F%91%E9%9B%86%E5%90%88%E4%B8%8E%E5%B7%A5%E5%85%B7%E7%B1%BB%EF%BC%89/" target="_self">
+        <div>
+          一、并发集合J.U.C 为每一类集合都提供了线程安全的实现，且大多都是以 Concurrent 或者 CopyOnWrite 开头的。 Collection接口1)List  Vector（这个没啥好说的，它就是把 ArrayList 中所有的方法统统加上 synchronized ） CopyOnWriteArrayList  2)Set  CopyOnWriteArraySet Concurr
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-02-03 17:36" pubdate>
+              2023-02-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/JUC/" class="category-chain-item">JUC</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JUC/">#JUC</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2023/02/02/JUC%E7%AC%AC3%E7%AB%A0%EF%BC%88Lock%E6%8E%A5%E5%8F%A3%EF%BC%89/" target="_self">
           JUC第3章（Lock接口）
         </a>
@@ -243,7 +393,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/02/02/JUC%E7%AC%AC3%E7%AB%A0%EF%BC%88Lock%E6%8E%A5%E5%8F%A3%EF%BC%89/" target="_self">
         <div>
-          
+          一、CAS概念乐观锁的目的就是在不使用锁（悲观锁）的情况下保证线程安全。乐观锁在 Java 中是采用 CAS 算法实现的，J.U.C 包中的原子类就是通过 CAS 算法来实现了乐观锁。使用这种 CAS 算法的代码也常被称为 无锁 编程（Lock-Free）。**现代处理器基本都已经内置了实现 CAS 的指令，比如 x86 指令集上的 CAMPXCHG**。当多个线程尝试使用 CAS 同时更新主内存
         </div>
       </a>
 
@@ -272,12 +422,12 @@
   
     <span>></span>
     
-  <a href="/categories/%E5%85%AB%E8%82%A1/JUC/" class="category-chain-item">JUC</a>
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/" class="category-chain-item">Java</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E5%85%AB%E8%82%A1/JUC/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/JUC/" class="category-chain-item">JUC</a>
   
   
 
@@ -347,12 +497,12 @@
   
     <span>></span>
     
-  <a href="/categories/%E5%85%AB%E8%82%A1/JUC/" class="category-chain-item">JUC</a>
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/" class="category-chain-item">Java</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E5%85%AB%E8%82%A1/JUC/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/JUC/" class="category-chain-item">JUC</a>
   
   
 
@@ -422,12 +572,12 @@
   
     <span>></span>
     
-  <a href="/categories/%E5%85%AB%E8%82%A1/JUC/" class="category-chain-item">JUC</a>
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/" class="category-chain-item">Java</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E5%85%AB%E8%82%A1/JUC/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/JUC/" class="category-chain-item">JUC</a>
   
   
 
@@ -497,12 +647,12 @@
   
     <span>></span>
     
-  <a href="/categories/%E5%85%AB%E8%82%A1/JVM/" class="category-chain-item">JVM</a>
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/" class="category-chain-item">Java</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E5%85%AB%E8%82%A1/JVM/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/JVM/" class="category-chain-item">JVM</a>
   
   
 
@@ -572,12 +722,12 @@
   
     <span>></span>
     
-  <a href="/categories/%E5%85%AB%E8%82%A1/JVM/" class="category-chain-item">JVM</a>
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/" class="category-chain-item">Java</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E5%85%AB%E8%82%A1/JVM/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/JVM/" class="category-chain-item">JVM</a>
   
   
 
@@ -647,12 +797,12 @@
   
     <span>></span>
     
-  <a href="/categories/%E5%85%AB%E8%82%A1/JVM/" class="category-chain-item">JVM</a>
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/" class="category-chain-item">Java</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E5%85%AB%E8%82%A1/JVM/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/JVM/" class="category-chain-item">JVM</a>
   
   
 
@@ -748,6 +898,8 @@
             
               <a href="/tags/Java/">#Java</a>
             
+              <a href="/tags/%E5%85%AB%E8%82%A1/">#八股</a>
+            
           </div>
         
       </div>
@@ -823,155 +975,7 @@
             
               <a href="/tags/Java/">#Java</a>
             
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/01/08/Java%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%B3%9B%E5%9E%8B%EF%BC%89/" target="_self">
-          Java第3章（泛型）
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/08/Java%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%B3%9B%E5%9E%8B%EF%BC%89/" target="_self">
-        <div>
-          一、什么是泛型泛型的功能代码复用，使用一个代码流程适配多个类型。如： 1234567891011121314private static int add(int a, int b) &#123;    System.out.println(a + &quot;+&quot; + b + &quot;=&quot; + (a + b));    return a + b;&#125;private
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-01-08 22:22" pubdate>
-              2023-01-08
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%85%AB%E8%82%A1/Java/" class="category-chain-item">Java</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%85%AB%E8%82%A1/Java/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
-  
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Java/">#Java</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/01/07/Java%E7%AC%AC2%E7%AB%A0%EF%BC%88%E7%9F%A5%E8%AF%86%E7%82%B9%EF%BC%89/" target="_self">
-          Java第2章（知识点）
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/07/Java%E7%AC%AC2%E7%AB%A0%EF%BC%88%E7%9F%A5%E8%AF%86%E7%82%B9%EF%BC%89/" target="_self">
-        <div>
-          一、基本类型基本类型基本类型有boolean(1),byte(8),char(16),short(16);int(32),long(64),float(32),double(64); 括号表示类型占的bit数，其中，char,byte,short不会互相转换，其计算时首先转换为int。              java分内码和外码，内码指运行时内存中编码方式。除了内码的都是外码（如class文件
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-01-07 15:05" pubdate>
-              2023-01-07
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%85%AB%E8%82%A1/Java/" class="category-chain-item">Java</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%85%AB%E8%82%A1/Java/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
-  
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Java/">#Java</a>
+              <a href="/tags/%E5%85%AB%E8%82%A1/">#八股</a>
             
           </div>
         
