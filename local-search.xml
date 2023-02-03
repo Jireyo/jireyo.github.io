@@ -8,7 +8,7 @@
     <link href="/2023/02/03/JUC%E7%AC%AC5%E7%AB%A0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/"/>
     <url>/2023/02/03/JUC%E7%AC%AC5%E7%AB%A0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/</url>
     
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[<h1 id="一、线程池工作原理"><a href="#一、线程池工作原理" class="headerlink" title="一、线程池工作原理"></a>一、线程池工作原理</h1><h2 id="线程池的好处"><a href="#线程池的好处" class="headerlink" title="线程池的好处"></a>线程池的好处</h2><ul><li>降低资源消耗：通过重复利用已创建的线程降低线程创建和销毁造成的消耗。</li><li>提高响应速度：当任务到达时，任务可以不需要等到线程创建就能立即执行。</li><li><strong>提高线程的可管理性</strong>：系统的资源是有限的，所以线程作为一个消耗系统资源的东西，就不可能无限制的创建。这样，我们通过引入线程池，对线程进行进行统一地分配和监控，降低手动管理每个线程的复杂度。</li></ul><blockquote><p>阿里巴巴的《Java 开发手册》中也强制规定了：<strong>线程资源必须通过线程池提供，不允许在应用中自行显式创建线程</strong>。</p></blockquote><h2 id="线程池工作原理"><a href="#线程池工作原理" class="headerlink" title="线程池工作原理"></a>线程池工作原理</h2><p>线程池的组成：</p><ul><li>核心线程池（存储线程）</li><li>工作队列（存储任务）</li></ul><p><img src="/2023/02/03/JUC%E7%AC%AC5%E7%AB%A0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/Pasted-image-20230203232839.png"><br>当提交一个新任务到线程池时，线程池的处理流程分如下三步走：</p><ol><li>判断核心线程池里的线程是否都在执行任务（<strong>核心线程池是否已满</strong>）：<ul><li>如果不是，则创建一个新的工作线程来执行任务。</li><li>如果核心线程池里的线程都在执行任务，则进入下一步。</li></ul></li><li>判断<strong>工作队列是否已满</strong>：<ul><li>如果工作队列没有满，则将新提交的任务存储在这个工作队列里。</li><li>如果工作队列满了，则进入下一步。</li></ul></li><li>判断线程池中的所有线程是否都处于工作状态（<strong>线程池是否已满</strong>）：<ul><li>如果没有，则创建一个新的工作线程来执行任务。</li><li>如果已经满了，则交给<strong>饱和策略</strong>来处理这个任务。</li></ul></li><li>饱和策略有以下几种：<ul><li>AbortPolicy（默认）：无法处理新任务时直接抛出异常</li><li>CallerRunsPolicy：使用调用者所在的线程来运行新任务（这个很好理解，一般我们都是主线程提交任务，然后扔进线程池执行，对吧。当线程池满了后，如果使用这个策略，就会调用主线程来执行新任务）</li><li>DiscardOldestPolicy：丢弃队列里最近的一个任务，并将新任务加入队列</li><li>DiscardPolicy：不做任何处理，直接将新任务丢弃掉，粗暴！</li></ul></li></ol><p><img src="/2023/02/03/JUC%E7%AC%AC5%E7%AB%A0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/Pasted-image-20230203233411.png"></p><div class="note note-primary">            <p>总的思路是<strong>尽量使用核心线程池的线程执行任务</strong>，实在不行再请求新线程，还不行就走饱和策略。</p>          </div><p><strong>工作队列何时出列？</strong><br>线程在执行完任务后，就会主动从工作队列中获取任务来执行。</p><p><strong>为什么这样设计？</strong><br>创建新线程永远不是最优先的选择，而是尽可能地复用已存在的线程。</p><h1 id="二、创建线程池"><a href="#二、创建线程池" class="headerlink" title="二、创建线程池"></a>二、创建线程池</h1><p>线程池的创建方法总体来说可分为 2 大类：</p><ul><li>一种是通过 <code>Executors</code> 创建的线程池</li><li>另一种是通过 <code>ThreadPoolExecutor</code> 创建的线程池</li></ul><h2 id="Executors"><a href="#Executors" class="headerlink" title="Executors"></a>Executors</h2><p>Executors 封装了 6 种方法，对应创建 6 种不同的线程池：</p><ul><li>FixedThreadPool</li><li>CachedThreadPool</li><li>SingleThreadExecutor</li><li>WorkStealingPool</li><li>ScheduledThreadPool</li><li>SingleThreadScheduledExecutor</li></ul><h3 id="FixedThreadPool"><a href="#FixedThreadPool" class="headerlink" title="FixedThreadPool"></a>FixedThreadPool</h3><p>创建一个固定大小的线程池，可控制并发的线程数，超出的线程会在队列中等待。<br><img src="/2023/02/03/JUC%E7%AC%AC5%E7%AB%A0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/Pasted-image-20230203234231.png"><br>基本使用：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 创建包含 2 个线程的线程池</span><br><span class="hljs-type">ExecutorService</span> <span class="hljs-variable">fixedThreadPool</span> <span class="hljs-operator">=</span> Executors.newFixedThreadPool(<span class="hljs-number">2</span>);<br><br><span class="hljs-comment">// 创建任务</span><br><span class="hljs-type">Runnable</span> <span class="hljs-variable">runnable</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Runnable</span>() &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">run</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 执行任务&quot;</span>);<br>    &#125;<br>&#125;;<br>fixedThreadPool.submit(runnable);<br>fixedThreadPool.execute(runnable);<br></code></pre></td></tr></table></figure><p>execute和submit </p><ul><li>execute用于提交不需要返回值的任务，所以无法判断任务是否被线程池执行成功。</li><li>submit用于提交需要返回值的任务，线程池会返回一个 Future 类型的对象。</li></ul><h3 id="CachedThreadPool"><a href="#CachedThreadPool" class="headerlink" title="CachedThreadPool"></a>CachedThreadPool</h3><p>创建一个可缓存的线程池，若线程数超过处理任务所需（供 &gt; 求），多出来的线程缓存一段时间后会被回收掉；而如果线程数不够（供 &lt; 求），则线程池会新建一些线程出来。<br><img src="/2023/02/03/JUC%E7%AC%AC5%E7%AB%A0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/Pasted-image-20230203234225.png"></p><h3 id="SingleThreadExecutor"><a href="#SingleThreadExecutor" class="headerlink" title="SingleThreadExecutor"></a>SingleThreadExecutor</h3><p>创建只包含一个线程的线程池，它可以保证任务先进先出的执行顺序。也就说，先被扔进线程池的任务，就会被先执行<br><img src="/2023/02/03/JUC%E7%AC%AC5%E7%AB%A0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/Pasted-image-20230203234321.png"></p><h3 id="WorkStealingPool"><a href="#WorkStealingPool" class="headerlink" title="WorkStealingPool"></a>WorkStealingPool</h3><p><img src="/2023/02/03/JUC%E7%AC%AC5%E7%AB%A0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/Pasted-image-20230203234401.png"><br>和 SingleThreadExecutor相反，WorkStealingPool创建的是一个抢占式执行的线程池，也即任务执行顺序不确定。</p><h3 id="ScheduledThreadPool"><a href="#ScheduledThreadPool" class="headerlink" title="ScheduledThreadPool"></a>ScheduledThreadPool</h3><p>创建一个可以执行延迟&#x2F;定时任务的线程池。<br><img src="/2023/02/03/JUC%E7%AC%AC5%E7%AB%A0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/Pasted-image-20230203234413.png"><br>这时就不再使用<code>execute/submit</code>了，而是<code>schedule</code>。<br><img src="/2023/02/03/JUC%E7%AC%AC5%E7%AB%A0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/Pasted-image-20230203234500.png"></p><h3 id="SingleThreadScheduledExecutor"><a href="#SingleThreadScheduledExecutor" class="headerlink" title="SingleThreadScheduledExecutor"></a>SingleThreadScheduledExecutor</h3><p>这个方法创建的是仅包含 1 个线程线程池，并且它可以执行延迟任务。</p><h2 id="ThreadPoolExecutor"><a href="#ThreadPoolExecutor" class="headerlink" title="ThreadPoolExecutor"></a>ThreadPoolExecutor</h2><p>上述Executors的6种方法，其底层最终调用的都是ThreadPoolExecutor的构造函数，只不过参数不同。可以简单理解为，<code>ThreadPoolExecutor</code>是最基本的创建线程池的方式，<code>Executors</code>对其做了一定的封装。</p><blockquote><p>在阿里巴巴的《Java 开发手册》上，明确规定了：<br>【强制要求】线程池不允许使用 Executors 去创建，而是通过 ThreadPoolExecutor 的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险。</p></blockquote><h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><p><img src="/2023/02/03/JUC%E7%AC%AC5%E7%AB%A0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/Pasted-image-20230203234656.png"></p><ol><li>corePoolSize：核心线程数</li><li>maximumPoolSize：最大线程数</li><li>keepAliveTime：最大线程数可以存活的时间，当线程中没有任务执行时，最大线程就会销毁一部分，最终保持核心线程数量的线程。</li><li>unit：即keepAliveTime的单位</li><li>workQueue：阻塞队列</li><li>threadFactory：线程工厂，主要用来创建线程，默认为正常优先级、非守护线程。</li><li>handler：拒绝策略，即饱和策略<ul><li>AbortPolicy (默认策略)：拒绝执行并抛出异常</li><li>CallerRunsPolicy：使用当前调用的线程来执行此任务</li><li>DiscardOldestPolicy：抛弃阻塞队列头部（最旧）的一个任务，并执行当前任务</li><li>DiscardPolicy：忽略并抛弃当前任务</li></ul></li></ol><div class="note note-primary">            <p><strong>核心线程数</strong>、<strong>最大线程数</strong>、<strong>阻塞队列</strong>是限制大小的。<br><strong>存活时间</strong>和<strong>单位</strong>是管理非核心线程的。<br><strong>工厂</strong>管理生成线程策略。<br><strong>处理器</strong>决定饱和策略。</p>          </div><p>后两个参数一般默认，常用的是5参数版本：<br><img src="/2023/02/03/JUC%E7%AC%AC5%E7%AB%A0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/Pasted-image-20230203235208.png"></p><h3 id="为什么不要使用Executors创建线程池"><a href="#为什么不要使用Executors创建线程池" class="headerlink" title="为什么不要使用Executors创建线程池"></a>为什么不要使用Executors创建线程池</h3><ul><li>FixedThreadPool 和 SingleThreadPool：允许的请求队列长度为 Integer.MAX_VALUE，可能会堆积大量的请求，从而导致OOM。</li><li>CachedThreadPool：允许的创建线程数量为Integer.MAX_VALUE，可能会创建大量的线程，从而导致OOM。</li></ul><h1 id="三、Executor"><a href="#三、Executor" class="headerlink" title="三、Executor"></a>三、Executor</h1><p>Executor是一个接口，更是一个框架！<br><img src="/2023/02/03/JUC%E7%AC%AC5%E7%AB%A0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/Pasted-image-20230203235700.png"></p><p><img src="/2023/02/03/JUC%E7%AC%AC5%E7%AB%A0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/Pasted-image-20230204002439.png"></p><ul><li>任务：包括被执行任务需要实现的接口：<code>Runnable/Callable</code>接口</li><li>任务的执行：包括任务执行机制的核心接口<code>Executor</code>，以及继承自 <code>Executor</code>的<code>ExecutorService</code>接口。<ul><li><code>Executor</code>框架有两个关键类实现了<code>ExecutorService</code>接口，分别为<code>ThreadPoolExecutor</code>和<code>ScheduledThreadPoolExecutor</code></li></ul></li><li>任务执行的结果：包括接口<code>Future</code>和实现<code>Future</code>接口的<code>FutureTask</code>类。</li></ul><h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><p><img src="/2023/02/03/JUC%E7%AC%AC5%E7%AB%A0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/Pasted-image-20230204002726.png"></p><ol><li>创建Runnable&#x2F;Callable</li><li>提交给ExecutorService，ExecutorService根据具体实现来处理任务。</li><li>返回Future&#x2F;FutureTask(FutureTask是Future的实现类)</li></ol><h2 id="Executors、Executor、ExecutorService"><a href="#Executors、Executor、ExecutorService" class="headerlink" title="Executors、Executor、ExecutorService"></a>Executors、Executor、ExecutorService</h2><p>区别：</p><ul><li><code>ExecutorService</code>接口继承了<code>Executor</code>接口<ul><li><code>execute()</code>方法在<code>Executor</code>中定义，而<code>submit()</code>在<code>ExecutorService</code>中定义。</li><li><code>ExecutorService</code>提供了很多控制线程池的方法，如<code>shutdown</code>。</li></ul></li><li><code>Executors</code>只是一个工具类，快速生成<code>ExecutorService</code>的子类，如<code>ThreadPoolExecutor</code>和<code>ScheduledThreadPoolExecutor</code>。</li></ul><h1 id="四、配置线程池"><a href="#四、配置线程池" class="headerlink" title="四、配置线程池"></a>四、配置线程池</h1><p><img src="/2023/02/03/JUC%E7%AC%AC5%E7%AB%A0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/Pasted-image-20230204003341.png"><br>三个参数：<code>corePoolSize</code>核心线程数、<code>maximumPoolSize</code>最大线程数和 <code>workQueue</code>阻塞队列，就是我们在创建线程池时应该关注的重点。</p><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><h3 id="线上与线下"><a href="#线上与线下" class="headerlink" title="线上与线下"></a>线上与线下</h3><p><strong>线上 - 响应速度优先</strong>：需要快速响应用户的请求，应该不设置阻塞队列去缓冲并发任务，调高 <code>corePoolSize</code> 和 <code>maxPoolSize</code> 去创造尽可能多的线程快速执行任务。<br><strong>线下 - 吞吐量优先</strong>：需要尽可能快地批量处理任务，应该设置阻塞队列去缓冲并发任务，调整合适的<code>corePoolSize</code>去设置处理任务的核心线程数。</p><h3 id="任务类型"><a href="#任务类型" class="headerlink" title="任务类型"></a>任务类型</h3><p><strong>CPU密集型任务</strong>：充分利用CPU，设置corePoolSize为CPU数+1（备用，防止其他线程暂停不工作）。<br><strong>IO密集型任务</strong>：尽可能多配置核心线程，IO等待时让其他线程占用CPU。<br>主要还是看实际生产情况灵活调整。</p>]]></content>
     
     
     <categories>
@@ -179,9 +179,9 @@
     
     <tags>
       
-      <tag>JVM</tag>
-      
       <tag>八股</tag>
+      
+      <tag>JVM</tag>
       
     </tags>
     
@@ -210,9 +210,9 @@
     
     <tags>
       
-      <tag>JVM</tag>
-      
       <tag>八股</tag>
+      
+      <tag>JVM</tag>
       
     </tags>
     
@@ -241,9 +241,9 @@
     
     <tags>
       
-      <tag>JVM</tag>
-      
       <tag>八股</tag>
+      
+      <tag>JVM</tag>
       
     </tags>
     
@@ -272,9 +272,9 @@
     
     <tags>
       
-      <tag>Java</tag>
-      
       <tag>八股</tag>
+      
+      <tag>Java</tag>
       
     </tags>
     
@@ -303,9 +303,9 @@
     
     <tags>
       
-      <tag>Java</tag>
-      
       <tag>八股</tag>
+      
+      <tag>Java</tag>
       
     </tags>
     
@@ -334,9 +334,9 @@
     
     <tags>
       
-      <tag>Java</tag>
-      
       <tag>八股</tag>
+      
+      <tag>Java</tag>
       
     </tags>
     
@@ -365,9 +365,9 @@
     
     <tags>
       
-      <tag>Java</tag>
-      
       <tag>八股</tag>
+      
+      <tag>Java</tag>
       
     </tags>
     
@@ -396,9 +396,9 @@
     
     <tags>
       
-      <tag>Java</tag>
-      
       <tag>八股</tag>
+      
+      <tag>Java</tag>
       
     </tags>
     
@@ -457,6 +457,8 @@
     
     
     <tags>
+      
+      <tag>八股</tag>
       
       <tag>Redis</tag>
       
