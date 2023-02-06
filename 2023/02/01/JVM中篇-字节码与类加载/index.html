@@ -1,0 +1,1759 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jireyo">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、Class文件结构   类型 名称 说明 长度 数量    魔数 u4 magic 魔数,识别Class文件格式 4个字节   版本号 u2 minor_version 副版本号(小版本) 2个字节    u2 major_version 主版本号(大版本) 2个字节   常量池集合 u2 constant_pool_count 常量池计数器 2个字节    cp_info constant_">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM中篇:字节码与类加载">
+<meta property="og:url" content="http://example.com/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/index.html">
+<meta property="og:site_name" content="Jireyo&#39;s Blog">
+<meta property="og:description" content="一、Class文件结构   类型 名称 说明 长度 数量    魔数 u4 magic 魔数,识别Class文件格式 4个字节   版本号 u2 minor_version 副版本号(小版本) 2个字节    u2 major_version 主版本号(大版本) 2个字节   常量池集合 u2 constant_pool_count 常量池计数器 2个字节    cp_info constant_">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230201163645.png">
+<meta property="og:image" content="http://example.com/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230201172429.png">
+<meta property="og:image" content="http://example.com/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230201180946.png">
+<meta property="og:image" content="http://example.com/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230201182105.png">
+<meta property="og:image" content="http://example.com/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230201182705.png">
+<meta property="og:image" content="http://example.com/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202001557.png">
+<meta property="og:image" content="http://example.com/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202002835.png">
+<meta property="og:image" content="http://example.com/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202003613.png">
+<meta property="og:image" content="http://example.com/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202003843.png">
+<meta property="og:image" content="http://example.com/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202003849.png">
+<meta property="og:image" content="http://example.com/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202003938.png">
+<meta property="og:image" content="http://example.com/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202003950.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/323cfcda53f98034ed15372c0ea43685.png">
+<meta property="og:image" content="http://example.com/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202004846.png">
+<meta property="article:published_time" content="2023-02-01T08:17:20.000Z">
+<meta property="article:modified_time" content="2023-02-06T04:33:12.709Z">
+<meta property="article:author" content="Jireyo">
+<meta property="article:tag" content="八股">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230201163645.png">
+  
+  
+  
+  <title>JVM中篇:字节码与类加载 - Jireyo&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jireyo&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="JVM中篇:字节码与类加载"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-01 16:17" pubdate>
+          2023年2月1日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          12k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          101 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JVM中篇:字节码与类加载</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、Class文件结构"><a href="#一、Class文件结构" class="headerlink" title="一、Class文件结构"></a>一、Class文件结构</h1><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>名称</th>
+<th>说明</th>
+<th>长度</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>魔数</td>
+<td>u4</td>
+<td>magic</td>
+<td>魔数,识别Class文件格式</td>
+<td>4个字节</td>
+</tr>
+<tr>
+<td>版本号</td>
+<td>u2</td>
+<td>minor_version</td>
+<td>副版本号(小版本)</td>
+<td>2个字节</td>
+</tr>
+<tr>
+<td></td>
+<td>u2</td>
+<td>major_version</td>
+<td>主版本号(大版本)</td>
+<td>2个字节</td>
+</tr>
+<tr>
+<td>常量池集合</td>
+<td>u2</td>
+<td>constant_pool_count</td>
+<td>常量池计数器</td>
+<td>2个字节</td>
+</tr>
+<tr>
+<td></td>
+<td>cp_info</td>
+<td>constant_pool</td>
+<td>常量池表</td>
+<td>n个字节</td>
+</tr>
+<tr>
+<td>访问标识</td>
+<td>u2</td>
+<td>access_flags</td>
+<td>访问标识</td>
+<td>2个字节</td>
+</tr>
+<tr>
+<td>索引集合</td>
+<td>u2</td>
+<td>this_class</td>
+<td>类索引</td>
+<td>2个字节</td>
+</tr>
+<tr>
+<td></td>
+<td>u2</td>
+<td>super_class</td>
+<td>父类索引</td>
+<td>2个字节</td>
+</tr>
+<tr>
+<td></td>
+<td>u2</td>
+<td>interfaces_count</td>
+<td>接口计数器</td>
+<td>2个字节</td>
+</tr>
+<tr>
+<td></td>
+<td>u2</td>
+<td>interfaces</td>
+<td>接口索引集合</td>
+<td>2个字节</td>
+</tr>
+<tr>
+<td>字段表集合</td>
+<td>u2</td>
+<td>fields_count</td>
+<td>字段计数器</td>
+<td>2个字节</td>
+</tr>
+<tr>
+<td></td>
+<td>field_info</td>
+<td>fields</td>
+<td>字段表</td>
+<td>n个字节</td>
+</tr>
+<tr>
+<td>方法表集合</td>
+<td>u2</td>
+<td>methods_count</td>
+<td>方法计数器</td>
+<td>2个字节</td>
+</tr>
+<tr>
+<td></td>
+<td>method_info</td>
+<td>methods</td>
+<td>方法表</td>
+<td>n个字节</td>
+</tr>
+<tr>
+<td>属性表集合</td>
+<td>u2</td>
+<td>attributes_count</td>
+<td>属性计数器</td>
+<td>2个字节</td>
+</tr>
+<tr>
+<td></td>
+<td>attribute_info</td>
+<td>attributes</td>
+<td>属性表</td>
+<td>n个字节</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>其中un表示有n个字节。</p>
+</blockquote>
+<h2 id="魔数"><a href="#魔数" class="headerlink" title="魔数"></a>魔数</h2><p>u4<br><code>0xCAFEBABE</code></p>
+<h2 id="版本号"><a href="#版本号" class="headerlink" title="版本号"></a>版本号</h2><p>u2+u2<br>主版本号和副版本号一起构成版本号：M.m<br>不同编译器的class文件不同，目前JVM可以向下兼容。</p>
+<h2 id="常量池集合"><a href="#常量池集合" class="headerlink" title="常量池集合"></a>常量池集合</h2><p>u2(常量数量)+ cp_info（常量表大小）</p>
+<h3 id="constant-pool-count"><a href="#constant-pool-count" class="headerlink" title="constant_pool_count"></a>constant_pool_count</h3><p>u2，从1开始计数，所以constant_pool_count&#x3D;1时说明有0个常量。</p>
+<div class="note note-primary">
+            <p>因为0索引被空出来作为“空常量”</p>
+          </div>
+
+<h3 id="constant-pool"><a href="#constant-pool" class="headerlink" title="constant_pool"></a>constant_pool</h3><p>1 ~ constant_pool_count - 1为索引<br>主要存放<strong>字面量Literal</strong>和<strong>符号引用Symbolic References</strong>，其包含该class文件中如下内容：</p>
+<ul>
+<li>字面量<ul>
+<li>字符串</li>
+<li>final常量</li>
+</ul>
+</li>
+<li>符号引用<ul>
+<li>类，接口名</li>
+<li>方法名</li>
+<li>字段名</li>
+</ul>
+</li>
+</ul>
+<h4 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h4><p>使用1byte表示该常量的类型：如字符串、符号引用等，即下表中的tag，剩余的部分根据类型不同而不同。<br><img src="/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230201163645.png" srcset="/img/loading.gif" lazyload><br>其中：只有CONSTANT_utf8_info的长度是不固定的，其本身也代表字符串，其他常量项的属性可以指向CONSTANT_utf8_info。</p>
+<h2 id="访问标识"><a href="#访问标识" class="headerlink" title="访问标识"></a>访问标识</h2><table>
+<thead>
+<tr>
+<th>标志名称</th>
+<th>标志值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ACC_PUBLIC</td>
+<td>0x0001</td>
+<td>标志为public类型</td>
+</tr>
+<tr>
+<td>ACC_FINAL</td>
+<td>0x0010</td>
+<td>标志被声明为final，只有类可以设置</td>
+</tr>
+<tr>
+<td>ACC_SUPER</td>
+<td>0x0020</td>
+<td>标志允许使用invokespecial字节码指令的新语义，JDK1.0.2之后编译出来的类的这个标志默认为真。（使用增强的方法调用父类方法）</td>
+</tr>
+<tr>
+<td>ACC_INTERFACE</td>
+<td>0x0200</td>
+<td>标志这是一个接口</td>
+</tr>
+<tr>
+<td>ACC_ABSTRACT</td>
+<td>0x0400</td>
+<td>是否为abstract类型，对于接口或者抽象类来说，次标志值为真，其他类型为假</td>
+</tr>
+<tr>
+<td>ACC_SYNTHETIC</td>
+<td>0x1000</td>
+<td>标志此类并非由用户代码产生（即：由编译器产生的类，没有源码对应）</td>
+</tr>
+<tr>
+<td>ACC_ANNOTATION</td>
+<td>0x2000</td>
+<td>标志这是一个注解</td>
+</tr>
+<tr>
+<td>ACC_ENUM</td>
+<td>0x4000</td>
+<td>标志这是一个枚举</td>
+</tr>
+</tbody></table>
+<p>每一种类型的表示都是通过设置访问标记的32位中的特定位来实现的，即bitmap，这样只使用<strong>2byte</strong>即可表达所有访问标志。</p>
+<h3 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h3><ul>
+<li>带有ACC_INTERFACE标志的class文件表示的是接口而不是类，反之则表示的是类而不是接口。</li>
+<li>ACC_SUPER标志用于确定类或接口里面的invokespecial指令使用的是哪一种执行语义。JDK8后，默认每个class文件都设置了ACC_SUPER标志，目的是向后兼容。</li>
+</ul>
+<h2 id="类索引、父类索引、接口索引"><a href="#类索引、父类索引、接口索引" class="headerlink" title="类索引、父类索引、接口索引"></a>类索引、父类索引、接口索引</h2><h3 id="this-class（类索引）"><a href="#this-class（类索引）" class="headerlink" title="this_class（类索引）"></a>this_class（类索引）</h3><p>2byte，指向常量池</p>
+<h3 id="super-class（父类索引）"><a href="#super-class（父类索引）" class="headerlink" title="super_class（父类索引）"></a>super_class（父类索引）</h3><p>2byte，指向常量池</p>
+<h3 id="interfaces"><a href="#interfaces" class="headerlink" title="interfaces"></a>interfaces</h3><p>指向常量池索引集合。</p>
+<h4 id="interfaces-count（接口计数器）"><a href="#interfaces-count（接口计数器）" class="headerlink" title="interfaces_count（接口计数器）"></a>interfaces_count（接口计数器）</h4><p>2byte，interfaces_count项的值表示当前类或接口的直接超接口数量。</p>
+<h4 id="interfaces（接口索引集合）"><a href="#interfaces（接口索引集合）" class="headerlink" title="interfaces（接口索引集合）"></a>interfaces（接口索引集合）</h4><p><code>interfaces_count*2byte</code><br>每个成员的值必须是对常量池表中某项的有效索引值，长度为interfaces_count</p>
+<h2 id="字段表集合"><a href="#字段表集合" class="headerlink" title="字段表集合"></a>字段表集合</h2><h3 id="fields-count"><a href="#fields-count" class="headerlink" title="fields_count"></a>fields_count</h3><p>fields_count的值表示当前class文件fields表的成员个数。使用两个字节来表示。</p>
+<h3 id="fields-table"><a href="#fields-table" class="headerlink" title="fields_table"></a>fields_table</h3><h4 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>标志值</th>
+<th>含义</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>u2</td>
+<td>access_flags</td>
+<td>访问标志</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>name_index</td>
+<td>字段名索引</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>descriptor_index</td>
+<td>描述符索引</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>attributes_count</td>
+<td>属性计数器</td>
+<td>1</td>
+</tr>
+<tr>
+<td>attribute_info</td>
+<td>attributes</td>
+<td>属性集合</td>
+<td>attributes_count</td>
+</tr>
+</tbody></table>
+<h4 id="访问标识符"><a href="#访问标识符" class="headerlink" title="访问标识符"></a>访问标识符</h4><table>
+<thead>
+<tr>
+<th>标志名称</th>
+<th>标志值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ACC_PUBLIC</td>
+<td>0x0001</td>
+<td>字段是否为public</td>
+</tr>
+<tr>
+<td>ACC_PRIVATE</td>
+<td>0x0002</td>
+<td>字段是否为private</td>
+</tr>
+<tr>
+<td>ACC_PROTECTED</td>
+<td>0x0004</td>
+<td>字段是否为protected</td>
+</tr>
+<tr>
+<td>ACC_STATIC</td>
+<td>0x0008</td>
+<td>字段是否为static</td>
+</tr>
+<tr>
+<td>ACC_FINAL</td>
+<td>0x0010</td>
+<td>字段是否为final</td>
+</tr>
+<tr>
+<td>ACC_VOLATILE</td>
+<td>0x0040</td>
+<td>字段是否为volatile</td>
+</tr>
+<tr>
+<td>ACC_TRANSTENT</td>
+<td>0x0080</td>
+<td>字段是否为transient</td>
+</tr>
+<tr>
+<td>ACC_SYNCHETIC</td>
+<td>0x1000</td>
+<td>字段是否为由编译器自动产生</td>
+</tr>
+<tr>
+<td>ACC_ENUM</td>
+<td>0x4000</td>
+<td>字段是否为enum</td>
+</tr>
+</tbody></table>
+<h4 id="描述符索引"><a href="#描述符索引" class="headerlink" title="描述符索引"></a>描述符索引</h4><table>
+<thead>
+<tr>
+<th>标志符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>B</td>
+<td>基本数据类型byte</td>
+</tr>
+<tr>
+<td>C</td>
+<td>基本数据类型char</td>
+</tr>
+<tr>
+<td>D</td>
+<td>基本数据类型double</td>
+</tr>
+<tr>
+<td>F</td>
+<td>基本数据类型float</td>
+</tr>
+<tr>
+<td>I</td>
+<td>基本数据类型int</td>
+</tr>
+<tr>
+<td>J</td>
+<td>基本数据类型long</td>
+</tr>
+<tr>
+<td>S</td>
+<td>基本数据类型short</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>基本数据类型boolean</td>
+</tr>
+<tr>
+<td>V</td>
+<td>代表void类型</td>
+</tr>
+<tr>
+<td>L</td>
+<td>对象类型，比如：<code>Ljava/lang/Object</code>;</td>
+</tr>
+<tr>
+<td><code>[</code></td>
+<td>数组类型，代表一维数组。比如：<code>double[][][] is [[[D </code></td>
+</tr>
+</tbody></table>
+<h4 id="属性集合"><a href="#属性集合" class="headerlink" title="属性集合"></a>属性集合</h4><p>每个字段还可以拥有不同的属性，如初始值，注释信息。这些属性的数量放在属性计数器attribute_count中，内容放在属性集合attributes中。</p>
+<p>比如某常量字段拥有下面三个属性：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">ConstantValue_attribute&#123;<br>	u2 attribute_name_index;<br>	u4 attribute_length;<br>    u2 constantvalue_index;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="方法表集合"><a href="#方法表集合" class="headerlink" title="方法表集合"></a>方法表集合</h2><h3 id="methods-count"><a href="#methods-count" class="headerlink" title="methods_count"></a>methods_count</h3><p>methods_count的值表示当前class文件methods表的成员个数。使用两个字节来表示。</p>
+<h3 id="methods"><a href="#methods" class="headerlink" title="methods"></a>methods</h3><p>methods表中的每个成员都必须是一个method_info结构：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>标志值</th>
+<th>含义</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>u2</td>
+<td>access_flags</td>
+<td>访问标志</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>name_index</td>
+<td>方法名索引</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>descriptor_index</td>
+<td>描述符索引</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>attributes_count</td>
+<td>属性计数器</td>
+<td>1</td>
+</tr>
+<tr>
+<td>attribute_info</td>
+<td>attributes</td>
+<td>属性集合</td>
+<td>attributes_count</td>
+</tr>
+</tbody></table>
+<h4 id="访问标识-1"><a href="#访问标识-1" class="headerlink" title="访问标识"></a>访问标识</h4><table>
+<thead>
+<tr>
+<th>标志名称</th>
+<th>标志值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ACC_PUBLIC</td>
+<td>0x0001</td>
+<td>public，方法可以从包外访问</td>
+</tr>
+<tr>
+<td>ACC_PRIVATE</td>
+<td>0x0002</td>
+<td>private，方法只能本类访问</td>
+</tr>
+<tr>
+<td>ACC_PROTECTED</td>
+<td>0x0004</td>
+<td>protected，方法在自身和子类可以访问</td>
+</tr>
+<tr>
+<td>ACC_STATIC</td>
+<td>0x0008</td>
+<td>static，静态方法</td>
+</tr>
+</tbody></table>
+<h2 id="属性表集合"><a href="#属性表集合" class="headerlink" title="属性表集合"></a>属性表集合</h2><p>这里与字段&#x2F;方法表中的属性集合要分开，字段&#x2F;方法中属性集合是描述字段&#x2F;方法属性的，本处的属性表集合用来描述class文件的附加信息。</p>
+<h3 id="attributes-count"><a href="#attributes-count" class="headerlink" title="attributes_count"></a>attributes_count</h3><p>attributes_count的值表示当前class文件属性表的成员个数。</p>
+<h3 id="attributes"><a href="#attributes" class="headerlink" title="attributes"></a>attributes</h3><p>属性表中每一项都是一个attribute_info结构。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>名称</th>
+<th>数量</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>u2</td>
+<td>attribute_name_index</td>
+<td>1</td>
+<td>属性名索引</td>
+</tr>
+<tr>
+<td>u4</td>
+<td>attribute_length</td>
+<td>1</td>
+<td>属性长度</td>
+</tr>
+<tr>
+<td>u1</td>
+<td>info</td>
+<td>attribute_length</td>
+<td>属性表</td>
+</tr>
+</tbody></table>
+<p>各种属性的含义见官网，具体问题具体分析。</p>
+<h1 id="二、字节码指令集"><a href="#二、字节码指令集" class="headerlink" title="二、字节码指令集"></a>二、字节码指令集</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="字节码与数据类型"><a href="#字节码与数据类型" class="headerlink" title="字节码与数据类型"></a>字节码与数据类型</h3><p>对于大部分与数据类型相关的字节码指令，它们的操作码助记符中都有特殊的字符来表明专门为哪种数据类型服务：</p>
+<ul>
+<li>i代表对int类型的数据操作，</li>
+<li>l代表long</li>
+<li>s代表short</li>
+<li>b代表byte</li>
+<li>c代表char</li>
+<li>f代表float</li>
+<li>d代表double</li>
+</ul>
+<div class="note note-primary">
+            <p>注意，编译器会将boolean,byte,char,short作为int使用i开头的指令处理。</p>
+          </div>
+
+<h2 id="加载与存储"><a href="#加载与存储" class="headerlink" title="加载与存储"></a>加载与存储</h2><ul>
+<li>xload，将<strong>局部变量</strong>加载到操作数栈。</li>
+<li>iconst、bipush等，<strong>常量入操作数栈</strong></li>
+<li>xstore，<strong>出栈装入局部变量表</strong></li>
+</ul>
+<div class="note note-primary">
+            <ul><li>x为a表示对象操作，如aload，即加载一个对象到操作数栈。</li><li>在x后加a表示从数组中操作，如iaload，即从<code>int[]</code>数组中取数。</li></ul>
+          </div>
+
+
+<h2 id="算数指令"><a href="#算数指令" class="headerlink" title="算数指令"></a>算数指令</h2><h3 id="类型说明"><a href="#类型说明" class="headerlink" title="类型说明"></a>类型说明</h3><p><img src="/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230201172429.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="运算模式"><a href="#运算模式" class="headerlink" title="运算模式"></a>运算模式</h3><p><strong>向最接近数舍入模式</strong>：JVM要求在进行浮点数计算时，所有的运算结果都必须舍入到适当的精度，非精确结果必须舍入为可被表示的最接近的精确值，如果有两种可表示的形式与该值一样接近，将优先选择最低有效位为零的；<br><strong>向零舍入模式</strong>：将浮点数转换为整数时，采用该模式，该模式将在目标数值类型中选择一个最接近但是不大于原值的数字作为最精确的舍入结果；</p>
+<h3 id="NaN值使用"><a href="#NaN值使用" class="headerlink" title="NaN值使用"></a>NaN值使用</h3><p>对于浮点数，有特殊的表达式：<br>1&#x2F;0.0 &#x3D; Infinity<br>0.0&#x2F;0.0 &#x3D; NaN</p>
+<h3 id="算数指令-1"><a href="#算数指令-1" class="headerlink" title="算数指令"></a>算数指令</h3><table>
+<thead>
+<tr>
+<th>算数指令</th>
+<th>int(boolean,byte,char,short)</th>
+<th>long</th>
+<th>float</th>
+<th>double</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>加法指令</td>
+<td>iadd</td>
+<td>ladd</td>
+<td>fadd</td>
+<td>dadd</td>
+</tr>
+<tr>
+<td>减法指令</td>
+<td>isub</td>
+<td>lsub</td>
+<td>fsub</td>
+<td>dsub</td>
+</tr>
+<tr>
+<td>乘法指令</td>
+<td>imul</td>
+<td>lmul</td>
+<td>fmul</td>
+<td>dmul</td>
+</tr>
+<tr>
+<td>除法指令</td>
+<td>idiv</td>
+<td>ldiv</td>
+<td>fdiv</td>
+<td>ddiv</td>
+</tr>
+<tr>
+<td>求余指令</td>
+<td>irem</td>
+<td>lrem</td>
+<td>frem</td>
+<td>drem</td>
+</tr>
+<tr>
+<td>取反指令</td>
+<td>ineg</td>
+<td>lneg</td>
+<td>fneg</td>
+<td>dneg</td>
+</tr>
+<tr>
+<td>自增指令</td>
+<td>iinc</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>位运算指令</td>
+<td>按位或指令</td>
+<td>ior</td>
+<td>lor</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>按位或指令</td>
+<td>ior</td>
+<td>lor</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>按位与指令</td>
+<td>iand</td>
+<td>land</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>按位异或指令</td>
+<td>ixor</td>
+<td>lxor</td>
+<td></td>
+</tr>
+<tr>
+<td>比较指令</td>
+<td></td>
+<td>lcmp</td>
+<td>fcmpg &#x2F; fcmpl</td>
+<td>dcmpg &#x2F; dcmpl</td>
+</tr>
+</tbody></table>
+<h2 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h2><table>
+<thead>
+<tr>
+<th>转化</th>
+<th>byte</th>
+<th>char</th>
+<th>short</th>
+<th>int</th>
+<th>long</th>
+<th>float</th>
+<th>double</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>int</td>
+<td>i2b</td>
+<td>i2c</td>
+<td>i2s</td>
+<td>○</td>
+<td>i2l</td>
+<td>i2f</td>
+<td>i2d</td>
+</tr>
+<tr>
+<td>long</td>
+<td>l2i i2b</td>
+<td>l2i i2c</td>
+<td>l2i i2s</td>
+<td>l2i</td>
+<td>○</td>
+<td>l2f</td>
+<td>l2d</td>
+</tr>
+<tr>
+<td>float</td>
+<td>f2i i2b</td>
+<td>f2i i2c</td>
+<td>f2i i2s</td>
+<td>f2i</td>
+<td>f2l</td>
+<td>○</td>
+<td>f2d</td>
+</tr>
+<tr>
+<td>double</td>
+<td>d2i i2b</td>
+<td>d2i i2c</td>
+<td>d2i i2s</td>
+<td>d2i</td>
+<td>d2l</td>
+<td>d2f</td>
+<td>○</td>
+</tr>
+</tbody></table>
+<p><strong>宽化类型转换</strong>，可能有精度损失，如long-&gt;double，但结果不会偏离太远。<br><strong>窄化类型转换</strong>，可能造成数据溢出导致结果不正确，并有下面的规律：</p>
+<ul>
+<li>浮点-&gt;整数<ul>
+<li>NaN -&gt; 0</li>
+<li>其他 -&gt; 向0取整 或 转换为整数能表示的最大值</li>
+</ul>
+</li>
+<li>浮点-&gt;浮点(d2f)<ul>
+<li>过小 -&gt; 0</li>
+<li>过大 -&gt; 正负无穷大</li>
+<li>NaN -&gt; NaN</li>
+</ul>
+</li>
+</ul>
+<h2 id="对象创建与访问"><a href="#对象创建与访问" class="headerlink" title="对象创建与访问"></a>对象创建与访问</h2><h3 id="对象创建"><a href="#对象创建" class="headerlink" title="对象创建"></a>对象创建</h3><table>
+<thead>
+<tr>
+<th>创建指令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>new</td>
+<td>创建类实例</td>
+</tr>
+<tr>
+<td>newarray</td>
+<td>创建基本类型数组</td>
+</tr>
+<tr>
+<td>anewarray</td>
+<td>创建引用类型数组</td>
+</tr>
+<tr>
+<td>multilanewarra</td>
+<td>创建多维数组</td>
+</tr>
+</tbody></table>
+<h3 id="字段访问"><a href="#字段访问" class="headerlink" title="字段访问"></a>字段访问</h3><table>
+<thead>
+<tr>
+<th>字段访问指令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getstatic、putstatic</td>
+<td>访问类字段（static字段，或者称为类变量）的指令</td>
+</tr>
+<tr>
+<td>getfield、 putfield</td>
+<td>访问类实例字段（非static字段，或者称为实例变量）的指令</td>
+</tr>
+</tbody></table>
+<h3 id="数组操作"><a href="#数组操作" class="headerlink" title="数组操作"></a>数组操作</h3><table>
+<thead>
+<tr>
+<th>数组指令</th>
+<th>byte(boolean)</th>
+<th>char</th>
+<th>short</th>
+<th>long</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>xaload</td>
+<td>baload</td>
+<td>caload</td>
+<td>saload</td>
+<td>iaload</td>
+</tr>
+<tr>
+<td>xastore</td>
+<td>bastore</td>
+<td>castore</td>
+<td>sastore</td>
+<td>iastore</td>
+</tr>
+</tbody></table>
+<h3 id="类型检查指令"><a href="#类型检查指令" class="headerlink" title="类型检查指令"></a>类型检查指令</h3><table>
+<thead>
+<tr>
+<th>类型检查指令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>instanceof</td>
+<td>判断给定对象是否是某一个类的实例</td>
+</tr>
+<tr>
+<td>checkcast</td>
+<td>检查类型强制转换是否可以进行</td>
+</tr>
+</tbody></table>
+<ul>
+<li>指令instanceof用来判断给定对象是否是某一个类的实例，它会将判断结果压入操作数栈</li>
+<li>指令checkcast用于检查类型强制转换是否可以进行。如果可以进行，那么checkcast指令不会改变操作数栈，否则它会抛出ClassCastException异常</li>
+</ul>
+<h2 id="方法调用与返回"><a href="#方法调用与返回" class="headerlink" title="方法调用与返回"></a>方法调用与返回</h2><h3 id="方法调用"><a href="#方法调用" class="headerlink" title="方法调用"></a>方法调用</h3><table>
+<thead>
+<tr>
+<th>方法调用指令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>invokevirtual</td>
+<td>调用对象的实例方法</td>
+</tr>
+<tr>
+<td>invokeinterface</td>
+<td>调用接口方法</td>
+</tr>
+<tr>
+<td>invokespecial</td>
+<td>调用一些需要特殊处理的实例方法，包括实例初始化方法（构造器）、私有方法和父类方法</td>
+</tr>
+<tr>
+<td>invokestatic</td>
+<td>调用命名类中的类方法（static方法）</td>
+</tr>
+<tr>
+<td>invokedynamic</td>
+<td>调用动态绑定的方法</td>
+</tr>
+</tbody></table>
+<ul>
+<li>invokevirtual，调用对象的实例方法，<strong>支持多态</strong>。</li>
+<li>invokespecial，调用特殊方法，静态绑定。</li>
+<li>invokestatic，静态绑定。</li>
+<li>invokedynamic，动态解析方法，并执行。该指令的分派逻辑是由用户所设定的引导方法决定的，而前面4条调用指令的分派逻辑都固化在java虚拟机内部。</li>
+</ul>
+<div class="note note-primary">
+            <p>invokedynamic是lambda表达式的具体底层实现，使用较少，类似于通过方法句柄调用方法，与反射不同，有点难理解，不要过度关注。</p>
+          </div>
+
+<h3 id="方法返回指令"><a href="#方法返回指令" class="headerlink" title="方法返回指令"></a>方法返回指令</h3><table>
+<thead>
+<tr>
+<th>方法返回指令</th>
+<th>void</th>
+<th>int</th>
+<th>long</th>
+<th>float</th>
+<th>double</th>
+<th>reference</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>xreturn</td>
+<td>return</td>
+<td>ireturn</td>
+<td>lreturn</td>
+<td>freutrn</td>
+<td>dreturn</td>
+<td>areturn</td>
+</tr>
+</tbody></table>
+<p>如果当前返回的是synchronized方法，那么还会执行一个隐含的monitorexit指令，退出临界区。</p>
+<h3 id="操作数栈管理"><a href="#操作数栈管理" class="headerlink" title="操作数栈管理"></a>操作数栈管理</h3><ul>
+<li>pop，出栈</li>
+<li>dup，复制栈顶<ul>
+<li>dupm表示复制m个slot并压入栈顶</li>
+<li>dupm_xn表示复制m个slot，并插入到栈顶下的（m+n）slot的位置。</li>
+</ul>
+</li>
+<li>swap，交换栈顶两个slot数值，long,double不可用（占用两个slot）</li>
+<li>nop，占位</li>
+</ul>
+<h2 id="控制转移"><a href="#控制转移" class="headerlink" title="控制转移"></a>控制转移</h2><ol>
+<li>比较指令</li>
+<li>条件跳转指令</li>
+<li>比较条件跳转指令</li>
+<li>多条件分支跳转指令。</li>
+<li>无条件跳转指令等。</li>
+</ol>
+<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><h3 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h3><p>athrow 抛出异常或错误。将栈顶异常抛出<br>jsr 跳转到子例程<br>jsr_w 跳转到子例程（宽索引）<br>ret 从子例程返回</p>
+<h3 id="athrow"><a href="#athrow" class="headerlink" title="athrow"></a>athrow</h3><p>即throw语句<br>在抛异常时，Java虚拟机会清除操作数栈上的所有内容，而后将异常实例压入调用者操作数栈上。</p>
+<h3 id="异常表"><a href="#异常表" class="headerlink" title="异常表"></a>异常表</h3><p>异常表保存了每个异常处理信息。比如：</p>
+<ul>
+<li>起始位置</li>
+<li>结束位置</li>
+<li>程序计数器记录的代码处理的偏移地址</li>
+<li>被捕获的异常类在常量池中的索引</li>
+</ul>
+<h3 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h3><p>当一个异常被抛出时，JVM会在当前的方法里寻找一个匹配的处理，如果没有找到，这个方法会强制结束并弹出当前栈帧，并且异常会重新抛给上层调用的方法（在调用方法栈帧）。<br>如果在所有栈帧弹出前仍然没有找到合适的异常处理，这个线程将终止。如果这个异常在最后一个非守护线程里抛出，将会导致JVM自己终止，比如这个线程是个main线程。</p>
+<p>如果有finally块，则finally块必然执行，finally块在return前执行，但不影响return的结果，因此最好不要在非finally块中使用return。</p>
+<h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><h3 id="同步方法"><a href="#同步方法" class="headerlink" title="同步方法"></a>同步方法</h3><p>虚拟机可以从方法常量池的方法表结构中的ACC_SYNCHRONIZED访问标志得知一个方法是否声明为同步方法；不需要显式的用字节码表示。</p>
+<h4 id="锁释放"><a href="#锁释放" class="headerlink" title="锁释放"></a>锁释放</h4><ul>
+<li>如果设置了同步，执行线程将先持有同步锁，然后执行方法。最后在方法完成（无论是正常完成还是非正常完成）时释放同步锁。</li>
+<li>在方法执行期间，执行线程持有了同步锁，其他任何线程都无法再获得同一个锁。</li>
+<li>如果一个同步方法执行期间抛出了异常，并且在方法内部无法处理此异常，那这个<strong>同步方法所持有的锁将在异常抛到同步方法之外时自动释放。</strong></li>
+</ul>
+<h3 id="同步代码块"><a href="#同步代码块" class="headerlink" title="同步代码块"></a>同步代码块</h3><p>jvm的指令集有monitorenter和monitorexit 两条指令来支持synchronized关键字的语义。</p>
+<h4 id="锁释放-1"><a href="#锁释放-1" class="headerlink" title="锁释放"></a>锁释放</h4><p>为了保证在方法异常完成时monitorenter和monitorexit指令依然可以正确配对执行，编译器会自动产生一个异常处理器，这个异常处理器声明可处理所有的异常，它的目的就是用来执行monitorexit指令。</p>
+<h1 id="三、类的加载过程"><a href="#三、类的加载过程" class="headerlink" title="三、类的加载过程"></a>三、类的加载过程</h1><p>在Java中数据类型分为基本数据类型和引用数据类型。基本数据类型由虚拟机预先定义，引用数据类型则需要进行类的加载。<br><img src="/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230201180946.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h2><h3 id="加载过程"><a href="#加载过程" class="headerlink" title="加载过程"></a>加载过程</h3><p>加载阶段，简言之，查找并加载类的二进制数据，生成Class的实例。<br><img src="/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230201182105.png" srcset="/img/loading.gif" lazyload></p>
+<ol>
+<li>通过类的全名，获取类的二进制数据流，来源有：<ul>
+<li>本地文件</li>
+<li>压缩包</li>
+<li>网络</li>
+<li>数据库</li>
+<li>实时生成</li>
+</ul>
+</li>
+<li>解析类的二进制数据流为方法区内的数据结构（Java类模型）：<ul>
+<li>JDK8前：永久代</li>
+<li>JDK8后：元空间</li>
+</ul>
+</li>
+<li>创建java.lang.Class类的实例（堆中），表示该类型。作为方法区这个类的各种数据的访问入口</li>
+</ol>
+<div class="note note-primary">
+            <p>此时Class类中的成员还没有初始化。</p>
+          </div>
+
+<h3 id="数组类的加载"><a href="#数组类的加载" class="headerlink" title="数组类的加载"></a>数组类的加载</h3><p><strong>数组类本身并不是由类加载器负责创建</strong>，而是由JVM在运行时根据需要而直接创建的。</p>
+<ul>
+<li>因此，若数组元素是引用类型，则先加载引用类型，然后JVM自动创建其数组类型。</li>
+<li>数组的访问权限由其元素类型的访问权限决定。</li>
+</ul>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><p><img src="/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230201182705.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="整体说明"><a href="#整体说明" class="headerlink" title="整体说明"></a>整体说明</h4><ul>
+<li><strong>加载过程中，只进行格式检查</strong></li>
+<li>把class文件加载到方法区后，再进行后续的检查</li>
+</ul>
+<h4 id="具体说明"><a href="#具体说明" class="headerlink" title="具体说明"></a>具体说明</h4><ol>
+<li>格式验证：是否以魔数0XCAFEBABE开头，主版本和副版本号是否在当前Java虚拟机的支持范围内，数据中每一个项是否都拥有正确的长度等。</li>
+<li>语义检查：Java虚拟机会进行字节码的语义检查，但凡在语义上不符合规范的。如父类不存在，接口未实现等。</li>
+<li>字节码验证：主要检查是否有不合理的跳转，赋值，调用。（检查手段是有限的，即使通过了这阶段检查也不代表没问题。）</li>
+<li>符号引用的验证：校验器还将进符号引用的验证。Class文件在其常量池会通过字符串记录自己将要使用的其他类或者方法。因此，在验证阶段，<strong>虚拟机就会检查这些类或者方法确实是存在的，并有访问权限</strong>。</li>
+</ol>
+<div class="note note-primary">
+            <p>验证行为贯穿整个类的加载过程</p><ul><li>在加载阶段进行格式检查。</li><li>在链接阶段的验证环节进行语义和字节码验证。</li><li>在链接阶段的解析环节继续拿符号引用验证。</li></ul>
+          </div>
+
+<h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>为类分配内存空间，并设置初始值0值。</p>
+<div class="note note-primary">
+            <p>不包含<strong>基本数据类型的字段</strong>用<strong>static final</strong>修饰的情况，因为final在编译的时候就会分配了，准备阶段会显式赋值。<br>此外，类变量(static)存放在<strong>堆</strong>中class对象中。</p>
+          </div>
+
+<div class="note note-success">
+            <p><strong>static与static final</strong><br>根据虚拟机规范定义，类变量（static）应该被放入方法区，而java中方法区的具体实践是：</p><ul><li>类元信息放入元空间</li><li>字符串常量池和静态变量放入堆中，其中静态变量是伴随着Class对象分配空间的。<ul><li>如果静态变量是final且是基本数据类型（包括字符串），那么其值会在类加载过程中的<strong>链接环节的准备过程</strong>中初始化赋值，否则在这里赋0值。</li><li>如果静态变量不是final且是基本数据类型（包括字符串），那么其在类加载过程中的<strong>初始化环节</strong>中会初始化赋值。</li><li>所以，无论是否final，基本类型的static成员变量都在堆中（伴随Class对象）</li></ul></li></ul>
+          </div>
+<p>例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//根据常量池的字面量在准备阶段赋值</span><br><span class="hljs-keyword">static</span> <span class="hljs-type">final</span> <span class="hljs-variable">String</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Hello world&quot;</span><br><span class="hljs-comment">//属于引用类型，在初始化阶段赋值</span><br><span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">str</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(<span class="hljs-string">&quot;Hello world&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+
+<h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><p>解析阶段（Resolution），简言之，将类、接口、字段和方法的符号引用转为直接引用。<br>通过解析操作，符号引用就可以转变为目标方法在类中方法表中的位置，从而使得方法被成功调用。</p>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><h3 id="static与final的搭配问题"><a href="#static与final的搭配问题" class="headerlink" title="static与final的搭配问题"></a>static与final的搭配问题</h3><ul>
+<li>对于基本数据类型的字段来说，如果使用static final修饰，则显式赋值</li>
+<li>对于String来说，如果使用字面量的方式赋值，使用static final修饰的话，则显式赋值通常是在链接阶段的准备环节进行，即<code>String a = &quot;12&quot;</code>形式。</li>
+<li>在初始化阶段<code>&lt;clinit&gt;()</code>中赋值的情况： 排除上述的在准备环节赋值的情况之外的情况。</li>
+</ul>
+<h3 id="clinit"><a href="#clinit" class="headerlink" title="clinit"></a>clinit</h3><p>该方法是带锁，线程安全的。只会被执行一次。</p>
+<h3 id="类的初始化情况"><a href="#类的初始化情况" class="headerlink" title="类的初始化情况"></a>类的初始化情况</h3><h4 id="主动使用"><a href="#主动使用" class="headerlink" title="主动使用"></a>主动使用</h4><p>总之是需要使用到类的字段或方法的情况。</p>
+<ul>
+<li>实例化</li>
+<li>调用静态方法</li>
+<li>获取静态字段</li>
+<li>使用反射（包括<strong>forName</strong>）</li>
+<li>继承该类</li>
+<li>default方法</li>
+<li>包含main方法</li>
+<li>被指定调用MethodHandler</li>
+</ul>
+<h4 id="被动使用"><a href="#被动使用" class="headerlink" title="被动使用"></a>被动使用</h4><p>除了以上情况都是被动使用，比如：</p>
+<ul>
+<li>通过子类引用父类的静态变量，子类不会初始化。</li>
+<li>数组定义，定义某种类型的数组</li>
+<li>引用某个的常量static final（常量在链接的准备阶段就已经完成赋值）</li>
+<li><code>loadClass()</code>也不会主动初始化。</li>
+</ul>
+<h2 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h2><p><strong>类加载器</strong>与<strong>被该加载器加载的类</strong>的内部实现中，存在着双向引用。因此根据GC的原理，当某一个类的Class对象不再被引用时，即可回收，因此回收类的前提是回收其加载器。</p>
+<h3 id="类的卸载"><a href="#类的卸载" class="headerlink" title="类的卸载"></a>类的卸载</h3><ul>
+<li><strong>启动类加载器</strong>加载的类型在整个运行期间是<strong>不可能被卸载的。</strong></li>
+<li><strong>系统类加载器和扩展类加载器</strong>加载的类型在运行期间<strong>不太可能被卸载</strong>。</li>
+<li>被开发者<strong>自定义的类加载器</strong>实例加载的类型<strong>只有在很简单的上下文环境中才能被卸载</strong>，而且一般还要借助于强制调用虚拟机的垃圾收集功能才可以做到。</li>
+</ul>
+<h3 id="卸载前提"><a href="#卸载前提" class="headerlink" title="卸载前提"></a>卸载前提</h3><ul>
+<li>所有类实例被回收</li>
+<li>所有对该类的引用被回收</li>
+<li>该类的加载器被回收</li>
+</ul>
+<h1 id="四、类加载器"><a href="#四、类加载器" class="headerlink" title="四、类加载器"></a>四、类加载器</h1><h2 id="概述-1"><a href="#概述-1" class="headerlink" title="概述"></a>概述</h2><p>ClassLoader是Java的核心组件，所有的Class都是由ClassLoader进行加载的，ClassLoader负责通过各种方式将Class信息的二进制数据流读入JVM内部，转换为一个与目标类对应的java.lang.Class对象实例。</p>
+<p>ClassLoader在整个装载阶段，<strong>只能影响到类的加载，而无法通过ClassLoader去改变类的链接和初始化行为</strong>。至于它是否可以运行，则由Execution Engine决定。</p>
+<div class="note note-primary">
+            <p>ClassLoader只定义类加载中的<strong>加载环节的细节</strong>。</p>
+          </div>
+
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="加载方式分类"><a href="#加载方式分类" class="headerlink" title="加载方式分类"></a>加载方式分类</h3><ul>
+<li>显式加载：反射</li>
+<li>隐式加载：JVM加载</li>
+</ul>
+<h3 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h3><ul>
+<li>每个类加载器都有自己的命名空间，命名空间由该加载器及所有的父加载器所加载的类组成。</li>
+<li>在同一命名空间中，不会出现类的完整名字（包括类的包名）相同的两个类</li>
+<li>在不同的命名空间中，有可能会出现类的完整名字（包括类的包名）相同的两个类</li>
+</ul>
+<p><strong>类的唯一性：由加载器和该类共同决定其唯一性。</strong></p>
+<h3 id="基本特征"><a href="#基本特征" class="headerlink" title="基本特征"></a>基本特征</h3><ul>
+<li>可见性，子加载器可以看见父加载器加载的类型，反之则不行。</li>
+<li>单一性，由于可见性，父加载器加载的类不会被子加载器重复加载。</li>
+</ul>
+<h2 id="加载器分类"><a href="#加载器分类" class="headerlink" title="加载器分类"></a>加载器分类</h2><ul>
+<li>引导类加载器（Bootstrap ClassLoader）</li>
+<li>自定义类加载器（User-Defined ClassLoader）</li>
+</ul>
+<p>加载器之间不是继承关系，而是<strong>包含关系</strong>，子加载器包含父加载器的引用，因此其可以看见父加载器加载的内容（可见性），以及调用父加载器（实现双亲委派机制）。</p>
+<h3 id="引导类加载器"><a href="#引导类加载器" class="headerlink" title="引导类加载器"></a>引导类加载器</h3><h4 id="启动类加载器（Bootstrap-ClassLoader）"><a href="#启动类加载器（Bootstrap-ClassLoader）" class="headerlink" title="启动类加载器（Bootstrap ClassLoader）"></a>启动类加载器（Bootstrap ClassLoader）</h4><ul>
+<li>C&#x2F;C++实现，在JVM内部实现</li>
+<li>加载核心库</li>
+<li>没有父加载器</li>
+</ul>
+<h3 id="自定义加载器"><a href="#自定义加载器" class="headerlink" title="自定义加载器"></a>自定义加载器</h3><h4 id="扩展类加载器（Extension-ClassLoader）"><a href="#扩展类加载器（Extension-ClassLoader）" class="headerlink" title="扩展类加载器（Extension ClassLoader）"></a>扩展类加载器（Extension ClassLoader）</h4><ul>
+<li>Java语言编写，由sun.misc.Launcher$ExtClassLoader实现。</li>
+<li>加载ext.dirs目录下的类库</li>
+<li>父类加载器为启动类加载器</li>
+<li>直接继承于URLClassLoader，最终继承于ClassLoader类（一个抽象类）</li>
+</ul>
+<h4 id="系统类加载器（AppClassLoader）"><a href="#系统类加载器（AppClassLoader）" class="headerlink" title="系统类加载器（AppClassLoader）"></a>系统类加载器（AppClassLoader）</h4><ul>
+<li>java语言编写，由sun.misc.Launcher$AppClassLoader实现</li>
+<li>它负责加载环境变量classpath或系统属性java.class.path 指定路径下的类库</li>
+<li>父类加载器为扩展类加载器</li>
+<li>直接继承于URLClassLoader，最终继承于ClassLoader类（一个抽象类）</li>
+</ul>
+<h4 id="用户自定义加载器"><a href="#用户自定义加载器" class="headerlink" title="用户自定义加载器"></a>用户自定义加载器</h4><p>可以通过自定义实现插件机制，此外加载器可以实现应用隔离。</p>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><h3 id="ClassLoader主要方法"><a href="#ClassLoader主要方法" class="headerlink" title="ClassLoader主要方法"></a>ClassLoader主要方法</h3><p>ClassLoader是一个抽象类，基本java实现的加载器都继承自它。<br>其有以下方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> ClassLoader <span class="hljs-title function_">getParent</span><span class="hljs-params">()</span><br><span class="hljs-comment">//加载</span><br><span class="hljs-keyword">public</span> Class&lt;?&gt; loadClass(String name) <span class="hljs-keyword">throws</span> ClassNotFoundException<br><span class="hljs-keyword">protected</span> Class&lt;?&gt; findClass(String name) <span class="hljs-keyword">throws</span> ClassNotFoundException<br><span class="hljs-comment">//链接</span><br><span class="hljs-keyword">protected</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">resolveClass</span><span class="hljs-params">(Class&lt;?&gt; c)</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>其中，<code>loadClass()</code>会调用<code>findClass()</code>，而loadClass中实现了双亲委派机制，因此自定义加载器时，尽量只重写findClass()及其调用的方法。</li>
+<li><code>findClass()</code>会调用<code>defineClass()</code>，其指明如何将byte流解析成Class对象。</li>
+</ul>
+<h3 id="SecureClassLoader与URLClassLoader"><a href="#SecureClassLoader与URLClassLoader" class="headerlink" title="SecureClassLoader与URLClassLoader"></a>SecureClassLoader与URLClassLoader</h3><ul>
+<li>SecureClassLoader继承并扩展了ClassLoader功能，添加了权限认证。</li>
+<li>URLClassLoader继承并扩展了SecureClassLoader，其对ClassLoader中的许多抽象方法做了具体的实现。</li>
+<li>一般自定义加载类直接继承URLClassLoader非常方便。</li>
+</ul>
+<h3 id="ExtClassLoader与AppClassLoader"><a href="#ExtClassLoader与AppClassLoader" class="headerlink" title="ExtClassLoader与AppClassLoader"></a>ExtClassLoader与AppClassLoader</h3><ul>
+<li>JDK8中，这两个类都继承自URLClassLoader</li>
+<li>JDK9中，这两个类都继承自BuiltinClassLoader</li>
+</ul>
+<h3 id="Class-forName-与ClassLoader-loadClass"><a href="#Class-forName-与ClassLoader-loadClass" class="headerlink" title="Class.forName()与ClassLoader.loadClass()"></a>Class.forName()与ClassLoader.loadClass()</h3><ul>
+<li>前者会初始化，后者不会。</li>
+<li>后者需要指定一个具体的加载器加载。</li>
+</ul>
+<h2 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>先交给父类加载器加载，加载失败再由子类加载。<br><img src="/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202001557.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><h4 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h4><ol>
+<li>搜索类，有则返回</li>
+<li>有父类则委托加载</li>
+<li>无父类则使用引导类加载器加载（必须委托一次引导类，实现保护的核心API的功能）</li>
+<li>都失败则主动加载</li>
+</ol>
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>避免重复加载</li>
+<li>保护核心类库</li>
+</ul>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ul>
+<li>顶层无法访问底层加载器，系统类无法访问应用类，无法在系统类的方法中调用应用类。</li>
+</ul>
+<div class="note note-primary">
+            <p>由于Java虚拟机规范并没有明确要求类加载器的加载机制一定要使用双亲委派模型，只是建议采用这种方式而已。</p>
+          </div>
+
+<h3 id="破坏双亲委派机制"><a href="#破坏双亲委派机制" class="headerlink" title="破坏双亲委派机制"></a>破坏双亲委派机制</h3><h4 id="第一次：覆盖loadClass"><a href="#第一次：覆盖loadClass" class="headerlink" title="第一次：覆盖loadClass"></a>第一次：覆盖loadClass</h4><p>双亲委派机制推出前就有ClassLoader存在，loadClass方法已经被用户使用自定义加载器覆盖（没有双亲委派），后来才推荐用户改写findClass。</p>
+<h4 id="第二次：线程上下文类加载器"><a href="#第二次：线程上下文类加载器" class="headerlink" title="第二次：线程上下文类加载器"></a>第二次：线程上下文类加载器</h4><p>解决系统类无法调用用户类的缺点，如JNDI服务就需要调用，管理用户类。</p>
+<h5 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h5><p>如果创建线程时还未设置，它将会从父线程中继承一个，如果在应用程序的全局范围内都没有设置过的话，那这个类加载器默认就是应用程序类加载器。<br><img src="/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202002835.png" srcset="/img/loading.gif" lazyload><br>父类加载器可以通过线程上下文类加载器委托给子类加载器完成类的加载。这样以上下文加载器为中介，使得启动类加载器中的代码也可以访问应用类加载器中的类。</p>
+<h4 id="第三次：用户的要求"><a href="#第三次：用户的要求" class="headerlink" title="第三次：用户的要求"></a>第三次：用户的要求</h4><p>第三次破坏源于用户需求：代码热替换(Hot Swap)、模块热部署(Hot Deployment)等。</p>
+<p>背景：IBM公司主导的JSR-291(即OSGiR4.2)实现模块化热部署的关键是它自定义的类加载器机制的实现，每一个程序模块(osGi中称为Bundle)都有一个自己的类加载器，当需要更换一个Bundle时，就把Bund1e连同类加载器一起换掉以实现代码的热替换。在oSGi环境下，类加载器不再双亲委派模型推荐的树状结构，而是进一步发展为更加复杂的网状结构。</p>
+<p>搜索顺序：</p>
+<ol>
+<li>java.开头，委托父类（双亲）</li>
+<li>若在委派列表名单中，委托父类（双亲）</li>
+<li>在各种列表中寻找类加载器进行加载（平行）</li>
+</ol>
+<p>PS：了解一下就行。</p>
+<h3 id="热替换的实现"><a href="#热替换的实现" class="headerlink" title="热替换的实现"></a>热替换的实现</h3><p><img src="/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202003613.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="沙箱安全机制"><a href="#沙箱安全机制" class="headerlink" title="沙箱安全机制"></a>沙箱安全机制</h2><p>Java安全模型的核心就是Java沙箱。即将Java代码限定在虚拟机（JVM）特定的运行范围中，并且严格限制代码对本地系统资源（CPU、内存、文件系统、网络）访问。</p>
+<h3 id="JDK1-0"><a href="#JDK1-0" class="headerlink" title="JDK1.0"></a>JDK1.0</h3><p><img src="/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202003843.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="JDK1-1"><a href="#JDK1-1" class="headerlink" title="JDK1.1"></a>JDK1.1</h3><p>增加了<strong>安全策略</strong>。允许用户指定代码对本地资源的访问权限。<br><img src="/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202003849.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="JDK1-2"><a href="#JDK1-2" class="headerlink" title="JDK1.2"></a>JDK1.2</h3><p>改进了安全机制，增加了<strong>代码签名</strong>。由<strong>类加载器</strong>加载到虚拟机中权限不同的运行空间，来实现差异化的代码执行权限控制。<br><img src="/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202003938.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="JDK1-6"><a href="#JDK1-6" class="headerlink" title="JDK1.6"></a>JDK1.6</h3><p>虚拟机会把所有代码加载到不同的系统域和应用域。</p>
+<p>系统域专门负责与关键资源进行交互，而各个应用域部分则通过系统域的部分代理来对各种需要的资源进行访问。</p>
+<p><img src="/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202003950.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="自定义类加载器"><a href="#自定义类加载器" class="headerlink" title="自定义类加载器"></a>自定义类加载器</h2><h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><ul>
+<li>隔离加载类（容器隔离）</li>
+<li>修改类的加载方式（动态加载）</li>
+<li>扩展加载源（数据库，网络）</li>
+<li>防止源码泄漏（加密）</li>
+</ul>
+<h3 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h3><p>方式</p>
+<ul>
+<li>方式一:重写loadClass()方法</li>
+<li>方式二:重写findclass()方法，推荐<br>说明</li>
+<li>其父类加载器是系统类加载器</li>
+</ul>
+<h2 id="Java9新特性"><a href="#Java9新特性" class="headerlink" title="Java9新特性"></a>Java9新特性</h2><ol>
+<li>扩展机制被移除，扩展类加载器由于向后兼容性的原因被保留，不过被重命名为平台类加载器(platform class loader)。可以通过classLoader的新方法getPlatformClassLoader()来获取。</li>
+<li>平台类加载器和应用程序类加载器都不再继承自java.net.URLClassLoader。现在启动类加载器、平台类加载器、应用程序类加载器全都继承于jdk.internal.loader.BuiltinClassLoader。</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/323cfcda53f98034ed15372c0ea43685.png" srcset="/img/loading.gif" lazyload><br>3. 在Java9中，类加载器有了名称。该名称在构造方法中指定，可以通过getName()方法来获取。平台类加载器的名称是platform，应用类加载器的名称是app。类加载器的名称在调试与类加载器相关的问题时会非常有用。<br>4. 启动类加载器现在是在jvm内部和java类库共同协作实现的类加载器（以前是C++实现），但为了与之前代码兼容，在获取启动类加载器的场景中仍然会返回null，而不会得到BootClassLoader实例。<br>5. 类加载的委派关系也发生了变动。当平台及应用程序类加载器收到类加载请求，在委派给父加载器加载前，要先判断该类是否能够归属到某一个系统模块中，如果可以找到这样的归属关系，就要优先委派给负责那个模块的加载器完成加载。</p>
+<p><img src="/2023/02/01/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202004846.png" srcset="/img/loading.gif" lazyload></p>
+<div class="note note-primary">
+            <p>总结就是：</p><ol><li>ext改名plat</li><li>新增getName()方法</li><li>plat和app不再继承url，而是builtin</li><li>引导类由java实现</li><li>双亲委托前可直接判断所属系统并交付</li></ol>
+          </div>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/JVM/" class="category-chain-item">JVM</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%85%AB%E8%82%A1/">#八股</a>
+      
+        <a href="/tags/JVM/">#JVM</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>JVM中篇:字节码与类加载</div>
+      <div>http://example.com/2023/02/01/JVM中篇-字节码与类加载/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jireyo</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年2月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/02/02/JVM%E4%B8%8B%E7%AF%87-%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%E4%B8%8E%E8%B0%83%E4%BC%98/" title="JVM下篇:性能监控与调优">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JVM下篇:性能监控与调优</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/23/JVM%E4%B8%8A%E7%AF%87-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" title="JVM上篇:内存与垃圾回收">
+                        <span class="hidden-mobile">JVM上篇:内存与垃圾回收</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
