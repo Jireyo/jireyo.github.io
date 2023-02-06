@@ -1,0 +1,18 @@
+{
+  "snippets_file": "hquote : {% blockquote %}$end${% endblockquote %}\nhcode : {% codeblock lang:java %}$end${% endcodeblock %}\nhlink : {% link $end$ url %}\nhnote : {% note primary %}$end${% endnote %}\nhlable : {% label primary @$end$%}",
+  "snippets": [
+    "hquote : {% blockquote %}$end${% endblockquote %}",
+    "hcode : {% codeblock lang:java %}$end${% endcodeblock %}",
+    "hlink : {% link $end$ url %}",
+    "hnote : {% note primary %}$end${% endnote %}",
+    "hlable : {% label primary @$end$%}"
+  ],
+  "endSymbol": "$end$",
+  "newlineSymbol": "$nl$",
+  "stopSymbol": "$tb$",
+  "pasteSymbol": "$pst$",
+  "useTab": false,
+  "useSpace": false,
+  "wordDelimiters": "$()[]{}<>,.!?;:'\"\\/",
+  "isWYSIWYG": true
+}

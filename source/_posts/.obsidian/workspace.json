@@ -1,0 +1,150 @@
+{
+  "main": {
+    "id": "be3147a18c9569ff",
+    "type": "split",
+    "children": [
+      {
+        "id": "34c32064cb95255b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ca47b4807dd79730",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "JUC第5章（线程池）.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "038fb94a848e10a2",
+    "type": "split",
+    "children": [
+      {
+        "id": "6090289d6c71b7c5",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8a406a220e9c7c57",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "1ec30fafd0d11989",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "弱引用",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "f2b72ba70456be77",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 216.5,
+    "collapsed": true
+  },
+  "right": {
+    "id": "533cc6dcdaae54ff",
+    "type": "split",
+    "children": [
+      {
+        "id": "f881b8aeee424a83",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "013679658bc400f0",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "JUC第5章（线程池）.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "03981f21fd60844a",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "JUC第5章（线程池）.md",
+                "collapseAll": true,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "e5557ddbc60d5b4c",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "JUC第5章（线程池）.md"
+              }
+            }
+          },
+          {
+            "id": "23a6f9f269015dc7",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 2
+      }
+    ],
+    "direction": "horizontal",
+    "width": 278.5
+  },
+  "active": "ca47b4807dd79730",
+  "lastOpenFiles": [
+    "JVM上篇-内存与垃圾回收.md",
+    "JUC第5章（线程池）/Pasted image 20230203232839.png",
+    "JUC第3章（Lock接口）/Pasted image 20230203173352.png",
+    "JUC第3章（Lock接口）/Pasted-image-20230203134948.png",
+    "JUC第3章（Lock接口）/Pasted image 20230203172742.png",
+    "JUC第3章（Lock接口）/Pasted image 20230203170223.png",
+    "JUC第3章（Lock接口）/Pasted image 20230203163610.png",
+    "JUC第3章（Lock接口）/Pasted image 20230203164710.png",
+    "JUC第3章（Lock接口）/Pasted image 20230203164823.png",
+    "JUC第5章（线程池）.md"
+  ]
+}

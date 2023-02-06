@@ -1,0 +1,12 @@
+{
+  "accentColor": "#a2d7bc",
+  "cssTheme": "Minimal",
+  "theme": "moonstone",
+  "baseFontSize": 19,
+  "translucency": false,
+  "textFontFamily": "Consolas,Segoe UI,Microsoft YaHei",
+  "interfaceFontFamily": "Microsoft YaHei,Consolas",
+  "monospaceFontFamily": "Fira Code,Consolas",
+  "baseFontSizeAction": true,
+  "nativeMenus": false
+}
