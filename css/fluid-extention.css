@@ -16,9 +16,16 @@ strong {
   color: rgb(67, 200, 71);
 }
 
-blockquote {
-  background-color: rgba(200, 200, 200, 0.1);
+.markdown-body blockquote {
+  color: rgb(150, 150, 150);
+  background-color: rgba(32, 72, 248, 0.1);
+  border-left-color: #2a2adfbe;
 }
+
+
+
+
+/* rgba(200, 200, 200, 0.1) */
 
 /* em 是 斜体** */
 /* strong是 高亮==x==*/

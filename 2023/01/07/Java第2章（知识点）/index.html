@@ -24,7 +24,7 @@
 <meta property="og:description" content="一、基本类型基本类型基本类型有boolean(1),byte(8),char(16),short(16);int(32),long(64),float(32),double(64); 括号表示类型占的bit数，其中，char,byte,short不会互相转换，其计算时首先转换为int。              java分内码和外码，内码指运行时内存中编码方式。除了内码的都是外码（如class文件">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-01-07T07:05:37.000Z">
-<meta property="article:modified_time" content="2023-02-06T07:37:28.324Z">
+<meta property="article:modified_time" content="2023-02-07T06:09:08.927Z">
 <meta property="article:author" content="Jireyo">
 <meta property="article:tag" content="八股">
 <meta property="article:tag" content="Java">
@@ -289,7 +289,7 @@
                 <h1 id="一、基本类型"><a href="#一、基本类型" class="headerlink" title="一、基本类型"></a>一、基本类型</h1><h2 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h2><p>基本类型有<br>boolean(1),byte(8),char(16),short(16);<br>int(32),long(64),float(32),double(64);</p>
 <p>括号表示类型占的bit数，其中，char,byte,short不会互相转换，其计算时首先转换为int。</p>
 <div class="note note-primary">
-            <p>java分内码和外码，内码指运行时内存中编码方式。除了内码的都是外码（如class文件，序列化等）。</p><ul><li>boolean：实际上JVM规范将boolean当作int来处理，也就是都占用4个字节。true为1，false为0。</li><li>char：内码中使用UTF16编码，一个字符占2个或4个字节(相当于用两个char表示一个字符)。外码中char使用UTF8编码，一个字符占1-6个字节。</li><li>其他的与括号内的字节相同?todo。</li></ul>
+            <p>java分内码和外码，内码指运行时内存中编码方式。除了内码的都是外码（如class文件，序列化等）。</p><ul><li>boolean：实际上JVM规范将boolean当作int来处理，也就是都占用4个字节。true为1，false为0。</li><li>char：内码中使用UTF16编码，一个字符占2个或4个字节(相当于用两个char表示一个字符)。外码中char使用UTF8编码，一个字符占1-6个字节。</li><li>其他的与括号内的字节相同?。</li></ul>
           </div>
 <h2 id="转换"><a href="#转换" class="headerlink" title="转换"></a>转换</h2><h3 id="String-x2F-Integer-x2F-int"><a href="#String-x2F-Integer-x2F-int" class="headerlink" title="String&#x2F;Integer&#x2F;int"></a>String&#x2F;Integer&#x2F;int</h3><p>基本类型之间，char,byte,short可以转化为int,int-&gt;long-&gt;float-&gt;double可以链式转换，反向转换需要强制类型转换，可能造成数据精度损失。</p>
 <p>String与Integer互相转化：</p>
