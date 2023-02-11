@@ -23,36 +23,39 @@
 <meta property="og:site_name" content="Jireyo&#39;s Blog">
 <meta property="og:description" content="一、InnoDB记录InnoDB行格式目前有4种行格式：Compact、Redundant、Dynamic和Compressed行格式可以指定表的行格式：CREATE TABLE 表名 (列的信息) ROW_FORMAT&#x3D;行格式名称 COMPACT行格式 额外信息变长字段长度列表按字段顺序，逆序存放各变长字段的长度（Null值除外）。每个可变字段可能占1到2字节来表示长度。 前提：  某个字符集中">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/169710e8fafc21aa_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
-<meta property="og:image" content="http://example.com/169710e8fe4ee6b0_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
-<meta property="og:image" content="http://example.com/169710e944a8af0c_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
-<meta property="og:image" content="http://example.com/169710e97718ef01_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
-<meta property="og:image" content="http://example.com/169710e99a69ba3d_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
-<meta property="og:image" content="http://example.com/169710e9aab47ea5_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/169710e8fafc21aa_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/169710e8fe4ee6b0_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/169710e944a8af0c_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/169710e97718ef01_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/169710e99a69ba3d_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/169710e9aab47ea5_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
 <meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/3/12/169710e9b2c2b71e~tplv-t2oaga2asx-zoom-in-crop-mark:3024:0:0:0.awebp">
-<meta property="og:image" content="http://example.com/16f13ee1e2dfac7c_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
-<meta property="og:image" content="http://example.com/16a95c10eb9d61ce_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
-<meta property="og:image" content="http://example.com/16a95c1084c440b4_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16f13ee1e2dfac7c_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a95c10eb9d61ce_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a95c1084c440b4_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
 <meta property="og:image" content="http://example.com/16a95c1084c440b4_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0%201.webp">
-<meta property="og:image" content="http://example.com/16a95c10f2e61ad5_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
-<meta property="og:image" content="http://example.com/16a01bd295fd42b5_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
-<meta property="og:image" content="http://example.com/16a01bd2a6c7a65f_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
-<meta property="og:image" content="http://example.com/16a739f33c338667_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
-<meta property="og:image" content="http://example.com/16a739f33df9307a_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
-<meta property="og:image" content="http://example.com/16a739f343654829_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
-<meta property="og:image" content="http://example.com/16a739f388927e1c_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
-<meta property="og:image" content="http://example.com/16a739f4087c4a56_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
-<meta property="og:image" content="http://example.com/16a739f4733af475_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
-<meta property="og:image" content="http://example.com/16a739f475c0ec2a_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
-<meta property="og:image" content="http://example.com/16ef3a8df380813e_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
-<meta property="og:image" content="http://example.com/16a739f48c4472a3_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a95c10f2e61ad5_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a01bd295fd42b5_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a01bd2a6c7a65f_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f33c338667_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f33df9307a_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f343654829_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f388927e1c_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f4087c4a56_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f4733af475_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f475c0ec2a_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16ef3a8df380813e_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f48c4472a3_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f4911220d8_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16efe1e5a01aeac9_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f4a99c9a08_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
 <meta property="article:published_time" content="2023-02-10T12:16:13.000Z">
-<meta property="article:modified_time" content="2023-02-11T05:53:50.479Z">
+<meta property="article:modified_time" content="2023-02-11T12:41:50.512Z">
 <meta property="article:author" content="Jireyo">
 <meta property="article:tag" content="八股">
 <meta property="article:tag" content="Mysql">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/169710e8fafc21aa_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta name="twitter:image" content="http://example.com/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/169710e8fafc21aa_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
   
   
   
@@ -256,7 +259,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          10k 字
+          12k 字
         
       </span>
     
@@ -267,7 +270,7 @@
         
         
         
-          88 分钟
+          104 分钟
         
       </span>
     
@@ -311,8 +314,8 @@
               <div class="markdown-body">
                 
                 <h1 id="一、InnoDB记录"><a href="#一、InnoDB记录" class="headerlink" title="一、InnoDB记录"></a>一、InnoDB记录</h1><h2 id="InnoDB行格式"><a href="#InnoDB行格式" class="headerlink" title="InnoDB行格式"></a>InnoDB行格式</h2><p>目前有4种行格式：<code>Compact</code>、<code>Redundant</code>、<code>Dynamic</code>和<code>Compressed</code>行格式<br>可以指定表的行格式：<code>CREATE TABLE 表名 (列的信息) ROW_FORMAT=行格式名称</code></p>
-<h2 id="COMPACT行格式"><a href="#COMPACT行格式" class="headerlink" title="COMPACT行格式"></a>COMPACT行格式</h2><p><img src="/169710e8fafc21aa_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
-<h3 id="额外信息"><a href="#额外信息" class="headerlink" title="额外信息"></a>额外信息</h3><h4 id="变长字段长度列表"><a href="#变长字段长度列表" class="headerlink" title="变长字段长度列表"></a>变长字段长度列表</h4><p><img src="/169710e8fe4ee6b0_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload><br>按字段顺序，逆序存放各变长字段的长度（Null值除外）。<br>每个可变字段可能占1到2字节来表示长度。</p>
+<h2 id="COMPACT行格式"><a href="#COMPACT行格式" class="headerlink" title="COMPACT行格式"></a>COMPACT行格式</h2><p><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/169710e8fafc21aa_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="额外信息"><a href="#额外信息" class="headerlink" title="额外信息"></a>额外信息</h3><h4 id="变长字段长度列表"><a href="#变长字段长度列表" class="headerlink" title="变长字段长度列表"></a>变长字段长度列表</h4><p><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/169710e8fe4ee6b0_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload><br>按字段顺序，逆序存放各变长字段的长度（Null值除外）。<br>每个可变字段可能占1到2字节来表示长度。</p>
 <p>前提：</p>
 <ul>
 <li>某个字符集中表示一个字符最多需要使用的字节数为<code>W</code></li>
@@ -335,8 +338,8 @@
             <p>尽量使用1字节来存储。<br>这个字段只记录变长字段如VARCHAR，长度固定的字段不用记录。<br>对于溢出数据，只保留只保留前<code>768</code>个字节和<code>20</code>个字节的溢出页面地址，所以2字节足够表达长度。</p>
           </div>
 
-<h4 id="NULL值列表"><a href="#NULL值列表" class="headerlink" title="NULL值列表"></a>NULL值列表</h4><p><img src="/169710e944a8af0c_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload><br>对于允许存null的字段，逆序排列，使用比特记录，0表示非空，1表示为空。<br>但是NULL值列表整体长度必须用字节表示，即未使用的高位会补0。</p>
-<h4 id="记录头信息"><a href="#记录头信息" class="headerlink" title="记录头信息"></a>记录头信息</h4><p><img src="/169710e97718ef01_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<h4 id="NULL值列表"><a href="#NULL值列表" class="headerlink" title="NULL值列表"></a>NULL值列表</h4><p><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/169710e944a8af0c_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload><br>对于允许存null的字段，逆序排列，使用比特记录，0表示非空，1表示为空。<br>但是NULL值列表整体长度必须用字节表示，即未使用的高位会补0。</p>
+<h4 id="记录头信息"><a href="#记录头信息" class="headerlink" title="记录头信息"></a>记录头信息</h4><p><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/169710e97718ef01_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <table>
 <thead>
 <tr>
@@ -426,7 +429,7 @@
 <li>当列采用的是定长字符集时，该列占用的字节数不会被加到变长字段长度列表</li>
 <li>而如果采用变长字符集时，该列占用的字节数也会被加到变长字段长度列表。</li>
 </ul>
-<h2 id="Redundant行格式"><a href="#Redundant行格式" class="headerlink" title="Redundant行格式"></a>Redundant行格式</h2><p>古老的行格式<br><img src="/169710e99a69ba3d_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Redundant行格式"><a href="#Redundant行格式" class="headerlink" title="Redundant行格式"></a>Redundant行格式</h2><p>古老的行格式<br><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/169710e99a69ba3d_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <blockquote>
 <p>特点是：</p>
 <ul>
@@ -437,14 +440,14 @@
 </ul>
 </blockquote>
 <h2 id="行溢出数据"><a href="#行溢出数据" class="headerlink" title="行溢出数据"></a>行溢出数据</h2><h3 id="行数据上限"><a href="#行数据上限" class="headerlink" title="行数据上限"></a>行数据上限</h3><p>除了<code>BLOB</code>或者<code>TEXT</code>类型的列之外，其他所有的列（不包括隐藏列和记录头信息）占用的字节长度加起来不能超过<code>65535</code>个字节。（<code>4*16KB</code>，即需要4个页存储）<br>所以，对于<code>VARCHAR(M)</code>类型的列最多可以占用<code>65535</code>个字节。</p>
-<p>在<code>Compact</code>和<code>Redundant</code>行格式中，对于占用存储空间非常大的列，在<code>记录的真实数据</code>处只会存储该列的一部分数据，把剩余的数据分散存储在几个其他的页中，然后<code>记录的真实数据</code>处用20个字节存储指向这些页的地址（当然这20个字节中还包括这些分散在其他页面中的数据的占用的字节数），从而可以找到剩余数据所在的页，如图所示：<br><img src="/169710e9aab47ea5_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<p>在<code>Compact</code>和<code>Redundant</code>行格式中，对于占用存储空间非常大的列，在<code>记录的真实数据</code>处只会存储该列的一部分数据，把剩余的数据分散存储在几个其他的页中，然后<code>记录的真实数据</code>处用20个字节存储指向这些页的地址（当然这20个字节中还包括这些分散在其他页面中的数据的占用的字节数），从而可以找到剩余数据所在的页，如图所示：<br><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/169710e9aab47ea5_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <h3 id="行溢出的临界点"><a href="#行溢出的临界点" class="headerlink" title="行溢出的临界点"></a>行溢出的临界点</h3><p><code>MySQL</code>中规定一个页中至少存放两行记录！所以当某列占用字节过多时就会溢出。</p>
 <blockquote>
 <p>如果一个页只放一个页面，B+树的目录层级会非常高！</p>
 </blockquote>
 <h2 id="Dynamic和Compressed行格式"><a href="#Dynamic和Compressed行格式" class="headerlink" title="Dynamic和Compressed行格式"></a>Dynamic和Compressed行格式</h2><p><code>5.7</code>版本的MYSQL默认行格式是<code>Dynamic</code>，只不过在处理<code>行溢出</code>数据时不一样，它们不会在记录的真实数据处存储字段真实数据的前<code>768</code>个字节，而是把所有的字节都存储到其他页面中，只在记录的真实数据处存储其他页面的地址：<br><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/3/12/169710e9b2c2b71e~tplv-t2oaga2asx-zoom-in-crop-mark:3024:0:0:0.awebp" srcset="/img/loading.gif" lazyload alt="image_1conbtnmr1sg1hao1nf41pi1eb72a.png-29.9kB"></p>
 <h1 id="二、InnoDB数据页结构"><a href="#二、InnoDB数据页结构" class="headerlink" title="二、InnoDB数据页结构"></a>二、InnoDB数据页结构</h1><p>InnoDB为了不同的目的而设计了不同类型的页，我们把用于存放记录的页叫做<code>数据页</code>，也可以叫<code>索引页</code>。</p>
-<h2 id="数据页结构"><a href="#数据页结构" class="headerlink" title="数据页结构"></a>数据页结构</h2><p><img src="/16f13ee1e2dfac7c_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="数据页结构"><a href="#数据页结构" class="headerlink" title="数据页结构"></a>数据页结构</h2><p><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16f13ee1e2dfac7c_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <table>
 <thead>
 <tr>
@@ -552,7 +555,7 @@
 <td></td>
 </tr>
 <tr>
-<td><img src="/16a95c10eb9d61ce_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></td>
+<td><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a95c10eb9d61ce_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></td>
 <td></td>
 <td></td>
 </tr>
@@ -695,7 +698,7 @@
 <td>表示下一条记录的相对位置</td>
 </tr>
 </tbody></table>
-<p>去除预留位，剩余的部分如下：<br><img src="/16a95c1084c440b4_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<p>去除预留位，剩余的部分如下：<br><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a95c1084c440b4_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li>heap_no，表示当前记录在<strong>本页</strong>中的位置，0代表最小记录，1代表最大记录，所以某个页中这个记录从2开始。</li>
 <li>最小记录和最大记录是哑节点，各自保存了一个字符串，且没有放在User Records部分。</li>
@@ -713,7 +716,7 @@
 
 <h2 id="页目录（Page-Directory）"><a href="#页目录（Page-Directory）" class="headerlink" title="页目录（Page Directory）"></a>页目录（Page Directory）</h2><p>为了避免查看某个页记录时通过遍历来查看索引，将正常记录（包括最大和最小记录，不包括标记为已删除的记录）划分为几个组，每个组的最后一条记录通过<code>n_owned</code>属性表示该记录拥有多少条记录，也就是该组内共有几条记录。</p>
 <p>将每个组的最后一条记录的地址偏移量单独提取出来<strong>按顺序存储</strong>到靠近<code>页</code>的尾部的地方，这个地方就是所谓的<code>Page Directory</code>。</p>
-<p><img src="/16a95c10f2e61ad5_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a95c10f2e61ad5_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <p>对于最小记录所在的分组只能有 <em><strong>1</strong></em> 条记录，最大记录所在的分组拥有的记录条数只能在 <em><strong>1~8</strong></em> 条之间，剩下的分组中记录的条数范围只能在是 <em><strong>4~8</strong></em> 条之间。</p>
 <blockquote>
 <p>初始情况下有两个分组，先填充最大记录所在分组，然后创建新分组。</p>
@@ -732,8 +735,8 @@
 <li>为保证从内存中同步到磁盘的页的完整性，在页的首部和尾部都会存储页中数据的校验和和页面最后修改时对应的<code>LSN</code>值，如果首部和尾部的校验和和<code>LSN</code>值校验不成功的话，就说明同步过程出现了问题。</li>
 </ol>
 <h1 id="三、B-树索引"><a href="#三、B-树索引" class="headerlink" title="三、B+树索引"></a>三、B+树索引</h1><h2 id="索引概念"><a href="#索引概念" class="headerlink" title="索引概念"></a>索引概念</h2><p>为了快速检索，将记录按索引顺序连接（同页或跨页），并为页其添加目录记录，和在页中将数据分组的思想类似。<br>目录记录一般叫做<code>目录项</code>，其中的两个列是<code>主键</code>和<code>页号</code>，其中主键记录的是某个页首个记录的id。</p>
-<p><img src="/16a01bd295fd42b5_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
-<h3 id="扩充"><a href="#扩充" class="headerlink" title="扩充"></a>扩充</h3><p><img src="/16a01bd2a6c7a65f_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a01bd295fd42b5_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="扩充"><a href="#扩充" class="headerlink" title="扩充"></a>扩充</h3><p><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a01bd2a6c7a65f_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <h2 id="索引类型"><a href="#索引类型" class="headerlink" title="索引类型"></a>索引类型</h2><h3 id="聚簇索引"><a href="#聚簇索引" class="headerlink" title="聚簇索引"></a>聚簇索引</h3><p>满足以下条件的就是聚簇索引：</p>
 <ul>
 <li>聚簇索引使用记录主键值的大小进行记录和页的排序</li>
@@ -903,7 +906,7 @@
 <td>索引页，也就是我们所说的数据页</td>
 </tr>
 </tbody></table>
-<h3 id="页面通用部分"><a href="#页面通用部分" class="headerlink" title="页面通用部分"></a>页面通用部分</h3><p><img src="/16a739f33c338667_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="页面通用部分"><a href="#页面通用部分" class="headerlink" title="页面通用部分"></a>页面通用部分</h3><p><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f33c338667_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <div class="note note-primary">
             <p>File Header和File Trailder都保存了LSN！</p>
           </div>
@@ -913,7 +916,7 @@
 <blockquote>
 <p>注意，这里的组与页里面几个记录为一组不是一个东西！</p>
 </blockquote>
-<p><img src="/16a739f33df9307a_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f33df9307a_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <p>信息：</p>
 <ul>
 <li>第一个页<ul>
@@ -970,7 +973,7 @@
 <td>附属于某个段的区</td>
 </tr>
 </tbody></table>
-<h3 id="XDES-Entry"><a href="#XDES-Entry" class="headerlink" title="XDES Entry"></a>XDES Entry</h3><p>为了集中管理区的状态，使用了<code>XDES Entry</code>结构保存区状态。<br><img src="/16a739f343654829_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload><br>XDES Entry保存了这个区：</p>
+<h3 id="XDES-Entry"><a href="#XDES-Entry" class="headerlink" title="XDES Entry"></a>XDES Entry</h3><p>为了集中管理区的状态，使用了<code>XDES Entry</code>结构保存区状态。<br><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f343654829_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload><br>XDES Entry保存了这个区：</p>
 <ul>
 <li>State状态：是否为空，或者是否附属于什么段。</li>
 <li>XDES指针(一前一后)：便于快速检索每个区的状态。</li>
@@ -996,18 +999,18 @@
 <li><code>FULL_FRAG</code>链表</li>
 </ul>
 <p>这三个链表是属于具体的段的，这样为该段的新数据找区分配时也可以直接找，不需要找全局申请。</p>
-<h3 id="链表基节点"><a href="#链表基节点" class="headerlink" title="链表基节点"></a>链表基节点</h3><p><code>List Base Node</code>的结构：<br><img src="/16a739f388927e1c_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload><br>每个链表都有一个这样的头节点，来描述这个链表的基本属性。</p>
+<h3 id="链表基节点"><a href="#链表基节点" class="headerlink" title="链表基节点"></a>链表基节点</h3><p><code>List Base Node</code>的结构：<br><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f388927e1c_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload><br>每个链表都有一个这样的头节点，来描述这个链表的基本属性。</p>
 <div class="note note-primary">
             <p>通过在全局维护不同类型区的链表和为每个段维护不同类型的区的链表，为管理区提供了条件。</p>
           </div>
 
-<h2 id="段的属性"><a href="#段的属性" class="headerlink" title="段的属性"></a>段的属性</h2><p>每个区使用了<code>XDES Entry</code>记录区的信息。<br>每个段使用了<code>INODE Entry</code>记录段的信息：<br><img src="/16a739f4087c4a56_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="段的属性"><a href="#段的属性" class="headerlink" title="段的属性"></a>段的属性</h2><p>每个区使用了<code>XDES Entry</code>记录区的信息。<br>每个段使用了<code>INODE Entry</code>记录段的信息：<br><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f4087c4a56_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <div class="note note-primary">
             <p>这里可见，段使用<code>INODE Entry</code>结构记录自己的信息，通过引用链表基节点<code>List Base</code>访问记录各个区信息的<code>XDES Entry</code>结构来实现对本段持有的区的管理。</p>
           </div>
 
 <h2 id="各种类型页面"><a href="#各种类型页面" class="headerlink" title="各种类型页面"></a>各种类型页面</h2><p>上面介绍了<code>XDES Entry</code>和<code>INODE Entry</code>结构分别记录区信息和段信息，现在介绍这些结构实际存储在哪里。</p>
-<h3 id="FSP-HDR"><a href="#FSP-HDR" class="headerlink" title="FSP_HDR"></a>FSP_HDR</h3><p><img src="/16a739f4733af475_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload><br><code>FSR_HDR</code>是表空间中第一个组的第一个区的第一个页面，具体信息如下：</p>
+<h3 id="FSP-HDR页面"><a href="#FSP-HDR页面" class="headerlink" title="FSP_HDR页面"></a>FSP_HDR页面</h3><p><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f4733af475_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload><br><code>FSR_HDR</code>是表空间中第一个组的第一个区的第一个页面，具体信息如下：</p>
 <table>
 <thead>
 <tr>
@@ -1125,7 +1128,7 @@
 <td>SEG_INODES_FREE链表的基节点</td>
 </tr>
 </tbody></table>
-<h3 id="XDES类型"><a href="#XDES类型" class="headerlink" title="XDES类型"></a>XDES类型</h3><p><img src="/16a739f475c0ec2a_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="XDES页面"><a href="#XDES页面" class="headerlink" title="XDES页面"></a>XDES页面</h3><p><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f475c0ec2a_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <blockquote>
 <p>这个页记录了：</p>
 <ul>
@@ -1133,8 +1136,8 @@
 </ul>
 </blockquote>
 <p>与<code>FSR_HDR</code>相似，只是没有<em>File Space Header</em>字段。</p>
-<h3 id="IBUF-BITMAP类型"><a href="#IBUF-BITMAP类型" class="headerlink" title="IBUF_BITMAP类型"></a>IBUF_BITMAP类型</h3><p>todo</p>
-<h3 id="INODE类型"><a href="#INODE类型" class="headerlink" title="INODE类型"></a>INODE类型</h3><p><img src="/16ef3a8df380813e_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="IBUF-BITMAP页面"><a href="#IBUF-BITMAP页面" class="headerlink" title="IBUF_BITMAP页面"></a>IBUF_BITMAP页面</h3><p>todo</p>
+<h3 id="INODE页面"><a href="#INODE页面" class="headerlink" title="INODE页面"></a>INODE页面</h3><p><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16ef3a8df380813e_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <blockquote>
 <p>前面说过每个段设计了一个<code>INODE Entry</code>结构，通过<code>INODE Entry</code>结构找<code>XDES Entry</code>实现段对区的管理。</p>
 </blockquote>
@@ -1186,8 +1189,8 @@
 <li><code>SEG_INODES_FREE</code>链表：该链表中的<code>INODE</code>类型的页面中还有空闲空间来存储额外的<code>INODE Entry</code>结构了。</li>
 </ul>
 <p>而这两个链表的基节点在<code>File Space Header</code>（在FSP_HDR页面中）。</p>
-<h2 id="Segment-Header-结构的运用"><a href="#Segment-Header-结构的运用" class="headerlink" title="Segment Header 结构的运用"></a>Segment Header 结构的运用</h2><p>每个段用一个<code>INODE Entry</code>记录属性，同时也需要建立段中各个页面和<code>INODE Entry</code>的对应方式。</p>
-<p>每个索引页都有一个Page Header部分（存放这个数据页的基本信息），对于每个索引的根节点，都有两个属性：</p>
+<h2 id="Segment-Header-结构"><a href="#Segment-Header-结构" class="headerlink" title="Segment Header 结构"></a>Segment Header 结构</h2><p>每个段用一个<code>INODE Entry</code>记录属性，同时也需要建立段中页面和<code>INODE Entry</code>的对应方式。</p>
+<p>每个索引页都有一个Page Header部分（存放这个数据页的基本信息），对于每个索引的<strong>根节点</strong>，都有两个属性：</p>
 <table>
 <thead>
 <tr>
@@ -1212,7 +1215,7 @@
 <td>B+树非叶子段的头部信息，仅在B+树的根页定义</td>
 </tr>
 </tbody></table>
-<p>这两个属性都对应一个<code>Segment Header</code>结构：<br><img src="/16a739f48c4472a3_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload><br>各个部分的具体释义如下：</p>
+<p>这两个属性都对应一个<code>Segment Header</code>结构：<br><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f48c4472a3_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload><br>各个部分的具体释义如下：</p>
 <table>
 <thead>
 <tr>
@@ -1241,8 +1244,298 @@
             <p>即<strong>索引的根节点</strong>的<strong>页头信息</strong>中记录了对<strong>该索引的两个段的INODE结构</strong>的指针。</p>
           </div>
 
+<h2 id="系统表空间"><a href="#系统表空间" class="headerlink" title="系统表空间"></a>系统表空间</h2><p><code>系统表空间 ID</code>（Space ID）是<code>0</code>。<br><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f4911220d8_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li><p>第一个区extend 0中有许多页来记录系统属性：</p>
+<table>
+<thead>
+<tr>
+<th>页号</th>
+<th>页面类型</th>
+<th>英文描述</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>3</td>
+<td>SYS</td>
+<td>Insert Buffer Header</td>
+<td>存储Insert Buffer的头部信息</td>
+</tr>
+<tr>
+<td>4</td>
+<td>INDEX</td>
+<td>Insert Buffer Root</td>
+<td>存储Insert Buffer的根页面</td>
+</tr>
+<tr>
+<td>5</td>
+<td>TRX_SYS</td>
+<td>Transction System</td>
+<td>事务系统的相关信息</td>
+</tr>
+<tr>
+<td>6</td>
+<td>SYS</td>
+<td>First Rollback Segment</td>
+<td>第一个回滚段的页面</td>
+</tr>
+<tr>
+<td>7</td>
+<td>SYS</td>
+<td>Data Dictionary Header</td>
+<td>数据字典头部信息</td>
+</tr>
+</tbody></table>
+</li>
+<li><p><code>extent 1</code>和<code>extent 2</code>这两个区被称为双写缓冲区</p>
+</li>
+</ul>
+<h3 id="InnoDB数据字典"><a href="#InnoDB数据字典" class="headerlink" title="InnoDB数据字典"></a>InnoDB数据字典</h3><p>InnoDB存储引擎特意定义了一些列的内部系统表（internal system table）来记录这些这些<code>元数据</code>：</p>
+<table>
+<thead>
+<tr>
+<th>表名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SYS_TABLES</td>
+<td>整个InnoDB存储引擎中所有的表的信息</td>
+</tr>
+<tr>
+<td>SYS_COLUMNS</td>
+<td>整个InnoDB存储引擎中所有的列的信息</td>
+</tr>
+<tr>
+<td>SYS_INDEXES</td>
+<td>整个InnoDB存储引擎中所有的索引的信息</td>
+</tr>
+<tr>
+<td>SYS_FIELDS</td>
+<td>整个InnoDB存储引擎中所有的索引对应的列的信息</td>
+</tr>
+<tr>
+<td>SYS_FOREIGN</td>
+<td>整个InnoDB存储引擎中所有的外键的信息</td>
+</tr>
+<tr>
+<td>SYS_FOREIGN_COLS</td>
+<td>整个InnoDB存储引擎中所有的外键对应列的信息</td>
+</tr>
+<tr>
+<td>SYS_TABLESPACES</td>
+<td>整个InnoDB存储引擎中所有的表空间信息</td>
+</tr>
+<tr>
+<td>SYS_DATAFILES</td>
+<td>整个InnoDB存储引擎中所有的表空间对应文件系统的文件路径信息</td>
+</tr>
+<tr>
+<td>SYS_VIRTUAL</td>
+<td>整个InnoDB存储引擎中所有的虚拟生成列的信息</td>
+</tr>
+<tr>
+<td>这些系统表也被称为<code>数据字典</code>。</td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="SYS-TABLES表"><a href="#SYS-TABLES表" class="headerlink" title="SYS_TABLES表"></a>SYS_TABLES表</h4><table>
+<thead>
+<tr>
+<th>列名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NAME</td>
+<td>表的名称</td>
+</tr>
+<tr>
+<td>ID</td>
+<td>InnoDB存储引擎中每个表都有一个唯一的ID</td>
+</tr>
+<tr>
+<td>N_COLS</td>
+<td>该表拥有列的个数</td>
+</tr>
+<tr>
+<td>TYPE</td>
+<td>表的类型，记录了一些文件格式、行格式、压缩等信息</td>
+</tr>
+<tr>
+<td>MIX_ID</td>
+<td>已过时，忽略</td>
+</tr>
+<tr>
+<td>MIX_LEN</td>
+<td>表的一些额外的属性</td>
+</tr>
+<tr>
+<td>CLUSTER_ID</td>
+<td>未使用，忽略</td>
+</tr>
+<tr>
+<td>SPACE</td>
+<td>该表所属表空间的ID</td>
+</tr>
+</tbody></table>
+<h4 id="SYS-COLUMNS表"><a href="#SYS-COLUMNS表" class="headerlink" title="SYS_COLUMNS表"></a>SYS_COLUMNS表</h4><table>
+<thead>
+<tr>
+<th>列名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TABLE_ID</td>
+<td>该列所属表对应的ID</td>
+</tr>
+<tr>
+<td>POS</td>
+<td>该列在表中是第几列</td>
+</tr>
+<tr>
+<td>NAME</td>
+<td>该列的名称</td>
+</tr>
+<tr>
+<td>MTYPE</td>
+<td>main data type，主数据类型，就是那堆INT、CHAR、VARCHAR、FLOAT、DOUBLE之类的东东</td>
+</tr>
+<tr>
+<td>PRTYPE</td>
+<td>precise type，精确数据类型，就是修饰主数据类型的那堆东东，比如是否允许NULL值，是否允许负数啥的</td>
+</tr>
+<tr>
+<td>LEN</td>
+<td>该列最多占用存储空间的字节数</td>
+</tr>
+<tr>
+<td>PREC</td>
+<td>该列的精度，不过这列貌似都没有使用，默认值都是0</td>
+</tr>
+</tbody></table>
+<h4 id="SYS-INDEXES表"><a href="#SYS-INDEXES表" class="headerlink" title="SYS_INDEXES表"></a>SYS_INDEXES表</h4><table>
+<thead>
+<tr>
+<th>列名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TABLE_ID</td>
+<td>该索引所属表对应的ID</td>
+</tr>
+<tr>
+<td>ID</td>
+<td>InnoDB存储引擎中每个索引都有一个唯一的ID</td>
+</tr>
+<tr>
+<td>NAME</td>
+<td>该索引的名称</td>
+</tr>
+<tr>
+<td>N_FIELDS</td>
+<td>该索引包含列的个数</td>
+</tr>
+<tr>
+<td>TYPE</td>
+<td>该索引的类型，比如聚簇索引、唯一索引、更改缓冲区的索引、全文索引、普通的二级索引等等各种类型</td>
+</tr>
+<tr>
+<td>SPACE</td>
+<td>该索引根页面所在的表空间ID</td>
+</tr>
+<tr>
+<td>PAGE_NO</td>
+<td>该索引根页面所在的页面号</td>
+</tr>
+<tr>
+<td>MERGE_THRESHOLD</td>
+<td>如果页面中的记录被删除到某个比例，就把该页面和相邻页面合并，这个值就是这个比例</td>
+</tr>
+</tbody></table>
+<h4 id="SYS-FIELDS表"><a href="#SYS-FIELDS表" class="headerlink" title="SYS_FIELDS表"></a>SYS_FIELDS表</h4><table>
+<thead>
+<tr>
+<th>列名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>INDEX_ID</td>
+<td>该索引列所属的索引的ID</td>
+</tr>
+<tr>
+<td>POS</td>
+<td>该索引列在某个索引中是第几列</td>
+</tr>
+<tr>
+<td>COL_NAME</td>
+<td>该索引列的名称</td>
+</tr>
+</tbody></table>
+<h3 id="Data-Dictionary-Header页面"><a href="#Data-Dictionary-Header页面" class="headerlink" title="Data Dictionary Header页面"></a>Data Dictionary Header页面</h3><p>以上的四个系统表描述了用户表的元数据，而这四个系统表的元数据则通过固定页面（Data Dictionary Header）来存储。</p>
+<p><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16efe1e5a01aeac9_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>中文名</th>
+<th>占用空间大小</th>
+<th>简单描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>File Header</td>
+<td>文件头部</td>
+<td>38字节</td>
+<td>页的一些通用信息</td>
+</tr>
+<tr>
+<td>Data Dictionary Header</td>
+<td>数据字典头部信息</td>
+<td>56字节</td>
+<td>记录一些基本系统表的根页面位置以及InnoDB存储引擎的一些全局信息</td>
+</tr>
+<tr>
+<td>Segment Header</td>
+<td>段头部信息</td>
+<td>10字节</td>
+<td>记录本页面所在段对应的INODE Entry位置信息</td>
+</tr>
+<tr>
+<td>Empty Space</td>
+<td>尚未使用空间</td>
+<td>16272字节</td>
+<td>用于页结构的填充，没啥实际意义</td>
+</tr>
+<tr>
+<td>File Trailer</td>
+<td>文件尾部</td>
+<td>8字节</td>
+<td>校验页是否完整</td>
+</tr>
+</tbody></table>
+<p><code>Data Dictionary Header</code>描述了整个系统分配下一个表空间ID，列ID等的策略。</p>
 <blockquote>
+<p>在<code>information_schema</code>数据库中的这些以<code>INNODB_SYS</code>开头的表并不是真正的内部系统表，但可以参考。</p>
 </blockquote>
+<h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2><p><img src="/2023/02/10/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f4a99c9a08_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<p>用户表空间结构：</p>
+<ol>
+<li>每个页通过将记录分成多组，使用页头管理</li>
+<li>每个区由64个连续页组成，通过XDES结构管理每个页的状态</li>
+<li>每个组由256个连续区组成，通过FSP_HDR&#x2F;XDES页面管理每个区的状态。</li>
+<li>每个表由若干组组成，通过INODE页面管理本表的段。</li>
+<li>每个索引由2个段组成，段是一个逻辑上的概念。</li>
+</ol>
+<p>空间分配：<br>当段占用的页面超过32个时，开始以区为单位分配空间，因此：</p>
+<ol>
+<li>每个表空间有3个全局链表，分别代表了不同状态的XDES结构。</li>
+<li>每个段也有3个链表，维护属于本段的XDES结构。</li>
+</ol>
 
                 
               </div>
@@ -1348,6 +1641,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2023/02/11/%E5%85%AB%E8%82%A1/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/" title="MySQL基础（查询与优化）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MySQL基础（查询与优化）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

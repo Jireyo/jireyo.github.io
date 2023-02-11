@@ -13,7 +13,7 @@ em {
 }
 
 strong {
-  color: rgb(67, 200, 71);
+  color: rgb(198, 71, 252);
 }
 
 .markdown-body blockquote {
@@ -22,7 +22,19 @@ strong {
   border-left-color: #0868d9;
 }
 
-/*rgb(8,104,217)*/
+.markdown-body h1 {
+  border-bottom: 0px;
+}
+
+.markdown-body h2 {
+  border-bottom: 0px;
+}
+.markdown-body h3 {
+  border-bottom: 0px;
+}
+.markdown-body h4 {
+  border-bottom: 0px;
+}
 
 
 /* rgba(200, 200, 200, 0.1) */
@@ -40,4 +52,8 @@ rgb(220, 148, 156);
 rgb(238, 128, 240);
 亮绿
 #99FF33
+
+rgb(67, 200, 71)
+
+rgb(197, 63, 255)
 **/
