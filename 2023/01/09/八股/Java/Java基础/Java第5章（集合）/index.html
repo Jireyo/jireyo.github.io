@@ -1,0 +1,970 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jireyo">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="集合知识体系集合主要分Map和Collection两个体系:  Map SortedMap NavigableMap     Collection List Queue Deque   Set SortedSet NavigableSet                     以上都是接口，从功能角度上对集合进行了分类。Map作为字典，重要的是其搜索能力，所以其有sorted-&gt;navig">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java第5章（集合）">
+<meta property="og:url" content="http://example.com/2023/01/09/%E5%85%AB%E8%82%A1/Java/Java%E5%9F%BA%E7%A1%80/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/index.html">
+<meta property="og:site_name" content="Jireyo&#39;s Blog">
+<meta property="og:description" content="集合知识体系集合主要分Map和Collection两个体系:  Map SortedMap NavigableMap     Collection List Queue Deque   Set SortedSet NavigableSet                     以上都是接口，从功能角度上对集合进行了分类。Map作为字典，重要的是其搜索能力，所以其有sorted-&gt;navig">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/01/09/%E5%85%AB%E8%82%A1/Java/Java%E5%9F%BA%E7%A1%80/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230109204736.png">
+<meta property="og:image" content="http://example.com/2023/01/09/%E5%85%AB%E8%82%A1/Java/Java%E5%9F%BA%E7%A1%80/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230109213925.png">
+<meta property="og:image" content="http://example.com/2023/01/09/%E5%85%AB%E8%82%A1/Java/Java%E5%9F%BA%E7%A1%80/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230109214209.png">
+<meta property="og:image" content="http://example.com/2023/01/09/%E5%85%AB%E8%82%A1/Java/Java%E5%9F%BA%E7%A1%80/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230109232400.png">
+<meta property="og:image" content="http://example.com/2023/01/09/%E5%85%AB%E8%82%A1/Java/Java%E5%9F%BA%E7%A1%80/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230109233801.png">
+<meta property="og:image" content="http://example.com/2023/01/09/%E5%85%AB%E8%82%A1/Java/Java%E5%9F%BA%E7%A1%80/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230110203318.png">
+<meta property="og:image" content="http://example.com/2023/01/09/%E5%85%AB%E8%82%A1/Java/Java%E5%9F%BA%E7%A1%80/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230110204320.png">
+<meta property="article:published_time" content="2023-01-09T12:38:00.000Z">
+<meta property="article:modified_time" content="2023-02-06T07:37:33.000Z">
+<meta property="article:author" content="Jireyo">
+<meta property="article:tag" content="八股">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/01/09/%E5%85%AB%E8%82%A1/Java/Java%E5%9F%BA%E7%A1%80/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230109204736.png">
+  
+  
+  
+  <title>Java第5章（集合） - Jireyo&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jireyo&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Java第5章（集合）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-09 20:38" pubdate>
+          2023年1月9日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          67 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Java第5章（集合）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="集合知识体系"><a href="#集合知识体系" class="headerlink" title="集合知识体系"></a>集合知识体系</h1><p><img src="/2023/01/09/%E5%85%AB%E8%82%A1/Java/Java%E5%9F%BA%E7%A1%80/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230109204736.png" srcset="/img/loading.gif" lazyload><br>集合主要分Map和Collection两个体系:</p>
+<ul>
+<li>Map<ul>
+<li>SortedMap<ul>
+<li>NavigableMap</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Collection<ul>
+<li>List</li>
+<li>Queue<ul>
+<li>Deque</li>
+</ul>
+</li>
+<li>Set<ul>
+<li>SortedSet<ul>
+<li>NavigableSet</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="note note-primary">
+            <p>以上都是接口，从功能角度上对集合进行了分类。</p><ul><li>Map作为字典，重要的是其搜索能力，所以其有sorted-&gt;navigable的继承接口。</li><li>Collection中<ul><li>List体现的是对数组的封装，可以随机获取。</li><li>Queue体现单端的进出（堆）<ul><li>Deque实现双端的任意出入</li></ul></li><li>Set需要去重，重要的同样是其搜索能力，所以与map类似，有sorted-&gt;navigable的继承。</li></ul></li></ul>
+          </div>
+
+<div class="note note-success">
+            <p>从基本的实现来看:</p><ul><li>Map<ul><li>map的朴素实现是HashMap<ul><li>HashMap有时需要保留先后顺序，LinkedHashMap继承自HashMap</li></ul></li><li>map搜索增强的实现是TreeMap</li><li>还有一些功能性Map(不做重点)，直接继承Map<ul><li>WeakHashMap，软引用，处于缓存角度，键值可以被回收</li><li>IdentifyHashMap，判断两值相等，只看其引用地址的16位hash（强相等）</li><li>EnumMap，只允许key为指定枚举值，底层其实是array实现。</li></ul></li></ul></li><li>Collection<ul><li>list的朴素实现是ArrayList<ul><li>vector还继承了list，是线程安全的，但已不推荐使用。<ul><li>stack继承了vector，先入先出</li></ul></li></ul></li><li>queue的实现是PriorityQueue(堆)<ul><li>deque的朴素实现是<strong>LinkedList</strong>，这个类也继承了List和Queue，三姓家奴</li><li>deque的另一个实现是ArrayDeque</li></ul></li><li>set与map类似，有HashSet-&gt;LinkedHashSet,TreeSet等实现。</li></ul></li></ul>
+          </div>
+
+
+<h1 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>继承：ArrayList实现了List接口<br>null：允许放入null<br>底层实现：array<br>同步：同步类为vector</p>
+<h2 id="机制"><a href="#机制" class="headerlink" title="机制"></a>机制</h2><h3 id="底层"><a href="#底层" class="headerlink" title="底层"></a>底层</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">transient</span> Object[] elementData;<br><span class="hljs-keyword">private</span> <span class="hljs-type">int</span> size;<br></code></pre></td></tr></table></figure>
+<h3 id="扩容"><a href="#扩容" class="headerlink" title="扩容"></a>扩容</h3><ul>
+<li>当数组capacity &#x3D;&#x3D; size时添加新元素</li>
+<li>数组扩容通过一个公开的方法<code>ensureCapacity(int minCapacity)</code>来实现。</li>
+<li>每次大约扩容1.5倍。<br><img src="/2023/01/09/%E5%85%AB%E8%82%A1/Java/Java%E5%9F%BA%E7%A1%80/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230109213925.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<h3 id="add"><a href="#add" class="headerlink" title="add"></a>add</h3><ul>
+<li>每次add前通过<code>ensureCapacity()</code>确保容量足够</li>
+<li><code>add(int index,E e)</code>，需要先对元素进行移动<br><img src="/2023/01/09/%E5%85%AB%E8%82%A1/Java/Java%E5%9F%BA%E7%A1%80/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230109214209.png" srcset="/img/loading.gif" lazyload></li>
+<li><code>addAll()</code>，注意addAll不会调用add，其需要保证modCount只+1次。</li>
+</ul>
+<h3 id="set-x2F-get"><a href="#set-x2F-get" class="headerlink" title="set()&#x2F;get()"></a>set()&#x2F;get()</h3><p>直接操作数组即可，不过要检查参数索引是否越界。</p>
+<h3 id="remove"><a href="#remove" class="headerlink" title="remove()"></a>remove()</h3><ul>
+<li><code>remove(int index)</code>移除指定坐标，原地copy数组完成</li>
+<li><code>remove(Object o)</code>移除指定对象，底层通过equals判断</li>
+</ul>
+<h3 id="trimToSize"><a href="#trimToSize" class="headerlink" title="trimToSize()"></a>trimToSize()</h3><p>将底层数组的容量调整为当前列表保存的实际元素的大小。</p>
+<h3 id="indexOf-lastIndexOf"><a href="#indexOf-lastIndexOf" class="headerlink" title="indexOf(), lastIndexOf()"></a>indexOf(), lastIndexOf()</h3><p>获取元素的第一次出现的index，也通过equals判断。</p>
+<h3 id="Fail-Fast机制"><a href="#Fail-Fast机制" class="headerlink" title="Fail-Fast机制"></a>Fail-Fast机制</h3><p>快速失败，modCount标记操作数，避免并发带来的不确定风险。</p>
+<div class="note note-primary">
+            <p>注意，除了扩容，其他的remove操作只会在原数组上进行copy，通过size维护有效数组大小即可。</p>
+          </div>
+
+<h1 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h1><p>注意不存在哑节点。</p>
+<h2 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h2><p>LinkedList同时实现了List接口和Deque接口。<br>不过现在的首选是ArrayDeque，其底层通过数组实现，性能更好。</p>
+<h2 id="机制-1"><a href="#机制-1" class="headerlink" title="机制"></a>机制</h2><h3 id="底层-1"><a href="#底层-1" class="headerlink" title="底层"></a>底层</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">transient</span> <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br><span class="hljs-keyword">transient</span> Node&lt;E&gt; first;<br><span class="hljs-keyword">transient</span> Node&lt;E&gt; last;<br></code></pre></td></tr></table></figure>
+<h3 id="get"><a href="#get" class="headerlink" title="get()"></a>get()</h3><ul>
+<li><code>getFirst()</code>, <code>getLast()</code>直接获取即可。</li>
+<li><code>get(int index)</code>，通过<code>node(index)</code>获取节点并修改。</li>
+</ul>
+<h3 id="remove-1"><a href="#remove-1" class="headerlink" title="remove()"></a>remove()</h3><p>底层调用unlink方法释放节点。</p>
+<ul>
+<li><code>removeFirst()</code>, <code>removeLast()</code>直接删除，调整指针即可。</li>
+<li><code>remove(e)</code>需要迭代equals判断</li>
+<li><code>remove(index)</code>同理（调用<code>node(index)</code>）<br>ps:</li>
+<li>注意，以上方法都会先对操作的可行性进行判断。</li>
+<li>查找指定索引节点的方法为<code>node(index)</code>，其会根据index判断从前开始找还是从后开始找速度快。</li>
+</ul>
+<h3 id="add-1"><a href="#add-1" class="headerlink" title="add()"></a>add()</h3><ul>
+<li><code>add(E e)</code>直接加到尾部</li>
+<li><code>add(int index,E e)</code>需要线性查找(也会先找<code>node(index)</code>)</li>
+</ul>
+<h3 id="addAll"><a href="#addAll" class="headerlink" title="addAll()"></a>addAll()</h3><p>同arraylist，不会调用add()。</p>
+<h3 id="clear"><a href="#clear" class="headerlink" title="clear()"></a>clear()</h3><p>会迭代将node之间引用清空，加快清理速度。</p>
+<h3 id="indexOf"><a href="#indexOf" class="headerlink" title="indexOf()"></a>indexOf()</h3><p>通过equals迭代判断。</p>
+<h3 id="Queue方法"><a href="#Queue方法" class="headerlink" title="Queue方法"></a>Queue方法</h3><p>上面都是一些list方法的实现，linkedlist还实现了queue和deque，以下是对这些类的实现。<br>peek(),element(),poll(),remove(),offer()</p>
+<ul>
+<li>peek,element,poll,remove都是操作头元素，offer操作尾元素</li>
+<li>element调用<code>getFirst()</code>会抛出空异常，peek()返回null。</li>
+</ul>
+<h3 id="Deque方法"><a href="#Deque方法" class="headerlink" title="Deque方法"></a>Deque方法</h3><p>offerFirst,offerLast,peekFirst,peekLast,pollFirst,pollLast,push,pop</p>
+<ul>
+<li>push，pop都操作头元素。</li>
+</ul>
+<div class="note note-primary">
+            <p>记忆，</p><ul><li><code>peek,push,pop</code>属于栈方法，操作头元素</li><li><code>peek,offer,poll</code>属于队列方法，默认操作头元素，不会异常，且有双端方法可以使用</li><li><code>add,remove</code>属于list方法，操作尾部元素</li></ul>
+          </div>
+
+<h1 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h1><p>stack是一个具体的实现类，而Queue却没有，这是一个反常理的事情，不过现在Java已经不推荐使用Stack了，<code>ArrayDeque</code>往往更高效。</p>
+<h1 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h1><p>Queue是一个接口，实现了Collection接口，其队列特殊方法不会抛出异常。</p>
+<h2 id="Deque"><a href="#Deque" class="headerlink" title="Deque"></a>Deque</h2><p>deque是一个接口，实现了Queue接口，表示双向队列，支持双向的队列操作。<br>deque常见的实现是LinkedList和ArrayDeque</p>
+<h3 id="ArrayDeque"><a href="#ArrayDeque" class="headerlink" title="ArrayDeque"></a>ArrayDeque</h3><p>底层通过数组实现，且数组为循环数组，即任一点都可以是起点或终点，如下图。<br><img src="/2023/01/09/%E5%85%AB%E8%82%A1/Java/Java%E5%9F%BA%E7%A1%80/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230109232400.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="机制-2"><a href="#机制-2" class="headerlink" title="机制"></a>机制</h3><p>ArrayDeque不允许放入null</p>
+<h4 id="addFirst"><a href="#addFirst" class="headerlink" title="addFirst"></a>addFirst</h4><p><code>elements[head = (head - 1) &amp; (elements.length - 1)] = e</code><br>会对head-1取模，如果<code>head-1==-1</code>,则得到的head&#x3D;<code>elements.length - 1</code>，通过判断head &#x3D;&#x3D; tail即可判断其容量满了。</p>
+<div class="note note-primary">
+            <p>elements.length总为偶数，-1后为全1。<br><code>(head - 1) &amp; (elements.length - 1)</code>相当于对<code>head-1</code>对<code>elements.length-1</code>做取模处理。</p><ul><li>head值若超过length-1，则相当于取余</li><li>head-1若为负数，相当于取对element.length的补码。</li><li>实际上head-1最小为-1，取补码后等于element.length-1。</li></ul>
+          </div>
+
+<h4 id="扩容-1"><a href="#扩容-1" class="headerlink" title="扩容"></a>扩容</h4><p>容量满了就需要扩容，方法是<code>doubleCapacity()</code>。<br><img src="/2023/01/09/%E5%85%AB%E8%82%A1/Java/Java%E5%9F%BA%E7%A1%80/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230109233801.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>第一次复制<code>head</code>右边的元素。</li>
+<li>第二次复制<code>head</code>左边的元素。</li>
+</ul>
+<h4 id="addLast"><a href="#addLast" class="headerlink" title="addLast"></a>addLast</h4><p><code>(tail = (tail + 1) &amp; (elements.length - 1)) == head</code><br>tail+1取模，若<code>tail+1==elements.length-1</code>，则得到的tail &#x3D; 0，通过判断head &#x3D;&#x3D; tail即可判断其容量满了。</p>
+<h3 id="pollFirst-pollFirst-peekLast-，pollLast"><a href="#pollFirst-pollFirst-peekLast-，pollLast" class="headerlink" title="pollFirst(),pollFirst(),peekLast()，pollLast()"></a>pollFirst(),pollFirst(),peekLast()，pollLast()</h3><p>返回对应值，为空则返回Null。</p>
+<div class="note note-primary">
+            <p>注意，ArrayList扩容是1.5倍，ArrayDeque扩容是2倍。</p>
+          </div>
+
+<h2 id="PriorityQueue"><a href="#PriorityQueue" class="headerlink" title="PriorityQueue"></a>PriorityQueue</h2><h3 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h3><p><strong>优先队列的作用是能保证每次取出的元素都是队列中权值最小的</strong>(Java的优先队列每次取最小元素，C++的优先队列每次取最大元素)。这里牵涉到了大小关系，元素大小的评判可以通过元素本身的自然顺序(natural ordering)，也可以通过构造时传入的比较器(Comparator，类似于C++的仿函数)。</p>
+<ul>
+<li>优先队列不允许放入<code>null</code>元素。</li>
+<li>其通过完全二叉树的小顶堆实现。</li>
+</ul>
+<h3 id="机制-3"><a href="#机制-3" class="headerlink" title="机制"></a>机制</h3><h4 id="底层-2"><a href="#底层-2" class="headerlink" title="底层"></a>底层</h4><p>PriorityQueue底层通过数组维护堆结构<br><code>leftNode = parentNode*2+1</code><br><code>rightNo = parentNo*2+2</code><br><code>parentNo = (nodeNo-1)/2</code></p>
+<h4 id="扩容-2"><a href="#扩容-2" class="headerlink" title="扩容"></a>扩容</h4><p>使用<code>grow()</code>函数，会复制原数组元素到新数组</p>
+<h4 id="element-peek"><a href="#element-peek" class="headerlink" title="element(),peek()"></a>element(),peek()</h4><p>一个会抛异常，一个不会。都返回下标为0的元素。</p>
+<h4 id="add-offer"><a href="#add-offer" class="headerlink" title="add(),offer()"></a>add(),offer()</h4><p>add、offer，添加在数组末尾，然后逐步向上调节。<br>会调用<code>siftUp(int k, E x)</code>，用于在指定位置插入节点并进行调整。</p>
+<h4 id="remove-poll"><a href="#remove-poll" class="headerlink" title="remove(),poll()"></a>remove(),poll()</h4><p>一个会抛异常，一个不会，都移除下标为0的元素，然后进行堆调整。<br>会调用<code>siftDown(int k, E x)</code>，用于在指定位置删除节点并进行调整。</p>
+<div class="note note-primary">
+            <p>siftUp，siftDown会根据指定元素x，不断对该位置及其上&#x2F;下的节点进行比较并移动，直到满足找到x小于&#x2F;大于目标节点的时候截至。</p>
+          </div>
+
+<h4 id="remove-Object-o"><a href="#remove-Object-o" class="headerlink" title="remove(Object o)"></a>remove(Object o)</h4><p>遍历数组删除第一个equals的元素。</p>
+<h1 id="HashSet-amp-HashMap"><a href="#HashSet-amp-HashMap" class="headerlink" title="HashSet&amp;HashMap"></a>HashSet&amp;HashMap</h1><p>二者在Java里有着相同的实现，前者仅仅是对后者做了一层包装，即默认value &#x3D;&#x3D; null。</p>
+<h2 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h2><p>HashTable是同步的HashMap。该map不保证元素顺序。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>哈希表有两种实现方式，一种开放地址方式(Open addressing)，另一种是冲突链表方式(Separate chaining with linked lists)。</p>
+<h3 id="Java7"><a href="#Java7" class="headerlink" title="Java7"></a>Java7</h3><p>HashMap采用的是冲突链表方式**。<br><img src="/2023/01/09/%E5%85%AB%E8%82%A1/Java/Java%E5%9F%BA%E7%A1%80/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230110203318.png" srcset="/img/loading.gif" lazyload></p>
+<p>可见put，get方法可以在常数时间完成，但若table过大，对map进行遍历就会很耗时。</p>
+<p>有<strong>两个参数</strong>可以影响HashMap的性能: 初始容量(<em>inital capacity</em>)和负载系数(<em>load factor</em>)。</p>
+<ul>
+<li>初始容量指定了初始<code>table</code>的大小</li>
+<li>负载系数用来指定自动扩容的临界值。<br>当<code>entry</code>的数量超过<code>capacity*load_factor</code>时，容器将自动扩容并重新哈希。对于插入元素较多的场景，将初始容量设大可以减少重新哈希的次数。</li>
+</ul>
+<p>将对象放入到HashMap或HashSet中时，有<strong>两个方法</strong>需要特别关心：<code>hashCode()</code>和<code>equals()</code>。</p>
+<ul>
+<li><strong><code>hashCode()</code>方法决定了对象会被放到哪个<code>bucket</code>里，当多个对象的哈希值冲突时，<code>equals()</code>方法决定了这些对象是否是“同一个对象”</strong>。</li>
+<li>所以，如果要将自定义的对象放入到<code>HashMap</code>或<code>HashSet</code>中，需要@Override <code>hashCode()</code>和<code>equals()</code>方法。</li>
+</ul>
+<h4 id="get-1"><a href="#get-1" class="headerlink" title="get()"></a>get()</h4><p>先<code>getEntry</code>，然后<code>getValue</code><br>其中getEntry先通过hashCode判断bucket，然后通过equals遍历判断。</p>
+<p>求bucket的过程：<br><code>hash(k)&amp;(table.length-1)</code>，与list扩容类似，取模。</p>
+<h4 id="put"><a href="#put" class="headerlink" title="put()"></a>put()</h4><p>先<code>getEntry</code>，如果没有则<code>addEntry</code>。在链表中使用头插法。</p>
+<h4 id="remove-2"><a href="#remove-2" class="headerlink" title="remove()"></a>remove()</h4><p>先<code>getEntry</code>，然后remove。</p>
+<h3 id="Java8"><a href="#Java8" class="headerlink" title="Java8"></a>Java8</h3><p>由 <strong>数组+链表+红黑树</strong> 组成。<br>当链表中的元素达到了 8 个时，会将链表转换为红黑树，在这些位置进行查找的时候可以降低时间复杂度为 O(logN)。<br><img src="/2023/01/09/%E5%85%AB%E8%82%A1/Java/Java%E5%9F%BA%E7%A1%80/Java%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89/Pasted-image-20230110204320.png" srcset="/img/loading.gif" lazyload><br>链表的元素为<code>Node</code>，红黑树的元素为<code>TreeNode</code>，通过头节点的类型判断是链表还是红黑树。</p>
+<h4 id="数组扩容"><a href="#数组扩容" class="headerlink" title="数组扩容"></a>数组扩容</h4><p>resize() 方法用于初始化数组或数组扩容，每次扩容后，容量为原来的 <strong>2 倍</strong>，并进行数据迁移。<br>ps:java7是先扩容再插值，java8是先插值再扩容。</p>
+<h4 id="get-2"><a href="#get-2" class="headerlink" title="get()"></a>get()</h4><p>判断是红黑树还是链表，采用不同方法取值。</p>
+<p>具体红黑树讲解见TreeMap</p>
+<h2 id="HashSet"><a href="#HashSet" class="headerlink" title="HashSet"></a>HashSet</h2><p>就是对HashMap的一层包装。</p>
+<h1 id="LinkedHashMap-amp-LinkedHashSet"><a href="#LinkedHashMap-amp-LinkedHashSet" class="headerlink" title="LinkedHashMap&amp;LinkedHashSet"></a>LinkedHashMap&amp;LinkedHashSet</h1><h2 id="LinkedHashMap"><a href="#LinkedHashMap" class="headerlink" title="LinkedHashMap"></a>LinkedHashMap</h2><p>实现了map接口，<strong>允许放入key或value为null的元素</strong>，也是HashMap的子类。其使用双向链表将所有entry相连接。并多了header和tail指向<code>头部</code>和<code>尾部</code>。</p>
+<p>优点：遍历时不用遍历所有bucket，只用遍历entrylist即可。</p>
+<p>有<strong>两个参数</strong>可以影响LinkedHashMap的性能: 初始容量(inital capacity)和负载系数(load factor)。<br>将对象放入到LinkedHashMap或LinkedHashSet中时，有<strong>两个方法</strong>需要特别关心: <code>hashCode()</code>和<code>equals()</code>。</p>
+<p>这点与HashMao相同。<br>其没有同步化实现，若需要同步，可使用：<br><code>Map m = Collections.synchronizedMap(new LinkedHashMap(...));</code></p>
+<h3 id="get-3"><a href="#get-3" class="headerlink" title="get()"></a>get()</h3><p>同HashMap</p>
+<h3 id="put-1"><a href="#put-1" class="headerlink" title="put()"></a>put()</h3><p>也是先getEntry，然后再addEntry<br>add时，既要使用头插法插入bucket链表头部，也要将其插入linkedlist的尾部。</p>
+<h3 id="remove-3"><a href="#remove-3" class="headerlink" title="remove()"></a>remove()</h3><p>同样先get，然后remove，同时维护两个链表。</p>
+<h2 id="LinkedHashSet"><a href="#LinkedHashSet" class="headerlink" title="LinkedHashSet"></a>LinkedHashSet</h2><p>是LinkedHashMap的简单包装。</p>
+<h1 id="TreeSet-amp-TreeMap"><a href="#TreeSet-amp-TreeMap" class="headerlink" title="TreeSet&amp;TreeMap"></a>TreeSet&amp;TreeMap</h1><h2 id="TreeMap"><a href="#TreeMap" class="headerlink" title="TreeMap"></a>TreeMap</h2><p>TreeSet是对TreeMap的一层包装。</p>
+<p>底层通过红黑树实现。意味着<code>containsKey()</code>, <code>get()</code>, <code>put()</code>, <code>remove()</code>都有着<code>log(n)</code>的时间复杂度。</p>
+<p>TreeSort是非同步的，若需要同步，可以使用：<br><code>SortedMap m = Collections.synchronizedSortedMap(new TreeMap(...));</code></p>
+<h2 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h2><p>参考视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1d64y1z7Uk?p=20&vd_source=7324e975d0c1b4b4719d1194e3649ff8">bilibili</a><br>参考blog：<a target="_blank" rel="noopener" href="https://www.bilibili.com/read/cv17486236">bilibili</a><br><strong>红黑树是一种近似平衡的二叉查找树，它能够确保任何一个节点的左右子树的高度差不会超过二者中较低那个的一倍</strong>。</p>
+<p>性质：</p>
+<ol>
+<li>每个节点要么是红色，要么是黑色。</li>
+<li>根节点必须是黑色</li>
+<li>红色节点不能连续(也即是，红色节点的孩子和父亲都不能是红色)。</li>
+<li>对于每个节点，从该点至<code>null</code>(树尾端)的任何路径，都含有相同个数的黑色节点。<br>树结构改变时，任意破坏3，4，因此需要调整。</li>
+</ol>
+<h3 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h3><h4 id="234树"><a href="#234树" class="headerlink" title="234树"></a>234树</h4><p>一种特殊的搜索树。</p>
+<ul>
+<li>2节点表示3个key组成的一个节点</li>
+<li>3节点表示3个key组成的一个节点</li>
+<li>4节点表示3个key组成的一个节点</li>
+</ul>
+<p>当给234树添加节点时</p>
+<ul>
+<li>通过搜索找到应该插入的节点。</li>
+<li>如果该节点位置已经有不超过3个节点，则可以进行合并。</li>
+<li>如果已经为4节点，则需要拆解出节点并向上移动。</li>
+</ul>
+<p>因为这样自底向上的插入性质，其所有根节点的高度总是相等的。</p>
+<h4 id="红黑树-1"><a href="#红黑树-1" class="headerlink" title="红黑树"></a>红黑树</h4><p>红黑树是可以和234树等价的。</p>
+<ul>
+<li>2节点表示一个黑节点</li>
+<li>3节点表示一个红节点和其一个黑子节点</li>
+<li>4节点表示一个红节点和其两个黑子节点</li>
+</ul>
+<p>另外红黑树每个叶子节点都是黑节点（一般是隐藏的，其不会影响红黑树的3，4性质）</p>
+<h4 id="左旋-x2F-右旋"><a href="#左旋-x2F-右旋" class="headerlink" title="左旋&#x2F;右旋"></a>左旋&#x2F;右旋</h4><p>以x节点为中心左旋，其右子节点r会成为x节点的父节点。右子节点r的左节点rl会称为x的右节点。<br>右旋同理，左右旋主要是为了调整树的节点构造，在不影响整体高度的情况下达到我们想要构造。</p>
+<h4 id="节点后继"><a href="#节点后继" class="headerlink" title="节点后继"></a>节点后继</h4><p>搜索树中某节点x有前继pre（比x小的最大节点）和后继post（比x大的最小节点）节点。这两个节点可以完美替换节点x。</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><h4 id="get-4"><a href="#get-4" class="headerlink" title="get()"></a>get()</h4><p>按照常规二叉搜索树寻找即可。<br>底层根据compareTo()的返回值判断进行迭代。</p>
+<h4 id="put-2"><a href="#put-2" class="headerlink" title="put()"></a>put()</h4><p>先查找，若没有，则add。<br>其可能破坏红黑树约束条件，因此需要调整。<br>1.默认插入RED节点。<br>2.1.若其父节点也为BLACK节点，不影响高度（return）。<br>2.2.若其父节点也为RED，需要调整父节点及其叔叔节点为BLACK(+1)，并让爷爷节点为RED(-1)。<br>3.迭代至根节点。</p>
+<h4 id="remove-4"><a href="#remove-4" class="headerlink" title="remove()"></a>remove()</h4><p>先查找，若有，则remove。<br>其可能破坏红黑树约束条件，因此需要调整。</p>
+<p>1.可能移除树中任意位置的节点，可以通过<strong>值替换</strong>的方式转化为移除其前继或<strong>后继</strong>节点，最终只会删除叶子节点或有单侧叶子节点的节点</p>
+<p>2.1.若移除的是RED节点，不影响高度(return)。<br>2.1.1如果该节点是叶子节点，直接(return)<br>2.1.2如果该节点有单侧叶子节点，由叶子节点替代该节点（return）。</p>
+<p>2.2.若移除的是BALCK节点L，需要调整。<br>2.2.1如果该节点是叶子节点，需要先调整，再移除<br>2.2.2如果该节点有单侧子节点，由子节点替代该节点后，再调整。</p>
+<div class="note note-primary">
+            <p>所谓调整，本质上是一个方法 f(Node node)，其能让node节点这一侧补充一个黑色节点高度。核心思想是，由于移除了黑色节点L，该侧高度（-1），需要找一个节点（且为黑色）补充回来。</p><ul><li>如果L有红色子节点，将其提升后染黑即可。</li><li>如果L没有红色子节点，需要将其父节点P的左&#x2F;右旋，将P移到该侧填补黑色节点。然后由其兄弟节点提升多余节点（兄弟节点有红色子节点）代替父节点并进行调整。</li><li>如果兄弟节点R没有多余红色节点，则将兄弟节点一起染红，然后迭代其父节点P作为L。</li></ul>
+          </div>
+
+<p>2.3.1.如果替代上来的节点是红色节点，将其染黑即可(return)<br>2.3.2.如果原节点(2.2.1)或替代上来的节点是黑色节点(2.2.2)，需要进行旋转调整。<br>2.3.3.事实上这不会容易，父节点P左旋时，其右节点R会成为新的父节点，这会导致右侧减去一个节点R，因此，右旋时要保证右侧的高度也不变，需要满足以下几种条件之一：<br>2.4.1.如果兄弟节点为红色，说明其不是真正的兄弟节点（因为234树中3节点和4节点都应该是黑色节点为根），此时应该<strong>调整兄弟节点成黑色节点为根的形态</strong>(通过左&#x2F;右旋并调整颜色实现，达到2.4.2)。<br>2.4.2.如果兄弟节点为黑色，考虑其子节点是否有红色节点可以借用。<br>2.4.2.1.兄弟节点有红色子节点：</p>
+<ul>
+<li>将父节点左旋，并染黑，补充L侧的黑节点个数</li>
+<li>原兄弟节点成为新的父节点，将其调整为原父节点P的颜色</li>
+<li>原兄弟节点的子节点成为新父节点的右节点，将其染黑补充R侧的黑节点个数</li>
+<li>return</li>
+</ul>
+<p>2.4.2.2.兄弟节点没有红色子节点:</p>
+<ul>
+<li>将兄弟节点染红，则导致父节点到叶子的路径总体-1，以父节点为新的L迭代2.2.1步，可以将其视为一个整体。</li>
+</ul>
+<p>2.5最终达到root时，return。</p>
+<h1 id="WeakHashMap"><a href="#WeakHashMap" class="headerlink" title="WeakHashMap"></a>WeakHashMap</h1><p>具体实现类似HashMap，弱引用可以访问对象，但这不是有效引用，即被引用的对象可以被GC回收。<br>WeakHashMap内部通过弱引用管理entry。<br>想要获取HashSet，需要使用：<br><code>Collections.newSetFromMap(Map&lt;E,Boolean&gt; map)</code>，其可以将任意map转化为set。</p>
+<h1 id="Null"><a href="#Null" class="headerlink" title="Null"></a>Null</h1><p>PriorityQueue，TreeSet不允许传入空值，因为其需要比较，其他集合都可以传入Null。</p>
+<h1 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h1><table>
+<thead>
+<tr>
+<th>不安全</th>
+<th>安全实现</th>
+<th>ConCurrent</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ArrayList</td>
+<td>Vector&#x2F;Stack</td>
+<td>暂无</td>
+</tr>
+<tr>
+<td>LinkedList</td>
+<td>Collections.synchronizedList(List)</td>
+<td>暂无</td>
+</tr>
+<tr>
+<td>PriorityQueue</td>
+<td>无</td>
+<td>暂无</td>
+</tr>
+<tr>
+<td>HashMap</td>
+<td>Hashtable</td>
+<td>暂无</td>
+</tr>
+<tr>
+<td>LinkedHashMap</td>
+<td>Collections.synchronizedMap(Map)</td>
+<td>暂无</td>
+</tr>
+<tr>
+<td>TreeMap</td>
+<td>Collections.synchronizedSortedMap(SortedMap);</td>
+<td>暂无</td>
+</tr>
+<tr>
+<td>NavigableMap</td>
+<td>Collections.synchronizedNavigableMap(NavigableMap)</td>
+<td>暂无</td>
+</tr>
+</tbody></table>
+<p>Set的Collections包装方法类似map，待补充todo。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/Java%E5%9F%BA%E7%A1%80/" class="category-chain-item">Java基础</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%85%AB%E8%82%A1/">#八股</a>
+      
+        <a href="/tags/Java/">#Java</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Java第5章（集合）</div>
+      <div>http://example.com/2023/01/09/八股/Java/Java基础/Java第5章（集合）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jireyo</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年1月9日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/23/%E5%85%AB%E8%82%A1/Java/JVM/JVM%E4%B8%8A%E7%AF%87-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" title="JVM上篇:内存与垃圾回收">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JVM上篇:内存与垃圾回收</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/09/%E5%85%AB%E8%82%A1/Java/Java%E5%9F%BA%E7%A1%80/Java%E7%AC%AC4%E7%AB%A0%EF%BC%88%E6%B3%A8%E8%A7%A3%E3%80%81%E5%BC%82%E5%B8%B8%E3%80%81%E5%8F%8D%E5%B0%84%EF%BC%89/" title="Java第4章（注解、异常、反射）">
+                        <span class="hidden-mobile">Java第4章（注解、异常、反射）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

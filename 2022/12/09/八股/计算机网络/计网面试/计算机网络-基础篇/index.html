@@ -1,0 +1,943 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jireyo">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、TCP&#x2F;IP网络模型主要针对TCP&#x2F;IP网络模型。 应用层应用层（Application Layer）只专注于提供应用功能，比如 HTTP、FTP、Telnet、DNS、SMTP等。 应用层是工作在操作系统中的用户态，传输层及以下则工作在内核态。 传输层应用层的数据包会传给传输层，传输层（Transport Layer）是为应用层提供网络支持的。  传输层会有两个传输协议，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络-基础篇">
+<meta property="og:url" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/index.html">
+<meta property="og:site_name" content="Jireyo&#39;s Blog">
+<meta property="og:description" content="一、TCP&#x2F;IP网络模型主要针对TCP&#x2F;IP网络模型。 应用层应用层（Application Layer）只专注于提供应用功能，比如 HTTP、FTP、Telnet、DNS、SMTP等。 应用层是工作在操作系统中的用户态，传输层及以下则工作在内核态。 传输层应用层的数据包会传给传输层，传输层（Transport Layer）是为应用层提供网络支持的。  传输层会有两个传输协议，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E5%BA%94%E7%94%A8%E5%B1%82.png">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/TCP%E6%AE%B5.png">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%BD%91%E7%BB%9C%E5%B1%82.png">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/12.jpg">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E5%B1%82.png">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/tcpip%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B.drawio.png">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E5%B0%81%E8%A3%85.png">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/2.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/3.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/4.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/5.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/6.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/7.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/8.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.drawio.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/11.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/12.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/13.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/14.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/15.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/18.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E6%95%B0%E6%8D%AE%E5%8C%85.drawio.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/23.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/24.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/25.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/OSI%E4%B8%8ETCP.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E5%B0%81%E8%A3%85.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E5%8D%8F%E8%AE%AE%E6%A0%88.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E6%94%B6%E5%8F%91%E6%B5%81%E7%A8%8B.webp">
+<meta property="og:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/sk_buff.webp">
+<meta property="article:published_time" content="2022-12-09T15:04:35.000Z">
+<meta property="article:modified_time" content="2023-02-06T08:12:38.000Z">
+<meta property="article:author" content="Jireyo">
+<meta property="article:tag" content="八股">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E5%BA%94%E7%94%A8%E5%B1%82.png">
+  
+  
+  
+  <title>计算机网络-基础篇 - Jireyo&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jireyo&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="计算机网络-基础篇"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-12-09 23:04" pubdate>
+          2022年12月9日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          56 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">计算机网络-基础篇</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、TCP-x2F-IP网络模型"><a href="#一、TCP-x2F-IP网络模型" class="headerlink" title="一、TCP&#x2F;IP网络模型"></a>一、TCP&#x2F;IP网络模型</h1><p>主要针对TCP&#x2F;IP网络模型。</p>
+<h2 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h2><p><strong>应用层</strong>（<em>Application Layer</em>）只专注于提供应用功能，比如 HTTP、FTP、Telnet、DNS、SMTP等。</p>
+<p>应用层是工作在操作系统中的用户态，传输层及以下则工作在内核态。</p>
+<h2 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h2><p>应用层的数据包会传给传输层，<strong>传输层</strong>（<em>Transport Layer</em>）是为应用层提供网络支持的。</p>
+<p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E5%BA%94%E7%94%A8%E5%B1%82.png" srcset="/img/loading.gif" lazyload alt="传输层"></p>
+<p>传输层会有两个传输协议，分别是 TCP 和 UDP。</p>
+<p><strong>TCP</strong> 的全称叫传输控制协议（<em>Transmission Control Protocol</em>），大部分应用使用的正是 TCP 传输层协议，比如 HTTP 应用层协议。TCP 相比 UDP 多了很多特性，比如流量控制、超时重传、拥塞控制等，这些都是为了保证数据包能可靠地传输给对方。</p>
+<p><strong>UDP</strong> 只负责发送数据包，不保证数据包是否能抵达对方。但它实时性相对更好，传输效率也高。当然，UDP 也可以实现可靠传输，把 TCP 的特性在应用层上实现就可以，不过要实现一个商用的可靠 UDP 传输协议，也不是一件简单的事情。</p>
+<h3 id="应用层与传输层的交互"><a href="#应用层与传输层的交互" class="headerlink" title="应用层与传输层的交互"></a>应用层与传输层的交互</h3><p>应用需要传输的数据可能会非常大，因此当传输层的数据包大小超过 MSS（TCP 最大报文段长度），就要将数据包分块，这样即使中途有一个分块丢失或损坏了，只需要重新发送这一个分块，而不用重新发送整个数据包。在 TCP 协议中，我们把每个分块称为一个 <strong>TCP 段</strong>（<em>TCP Segment</em>）。</p>
+<p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/TCP%E6%AE%B5.png" srcset="/img/loading.gif" lazyload alt="TCP段"></p>
+<p>传输层其实并不负责整个传输过程，它的作用是相对应用层而言的，即它可以帮助应用层实现数据传输。</p>
+<p>到传输层数据到达目标设备时，传输层则要负责把数据包传给应用，但一台设备有多个应用，这时需要使用端口号将应用区分开来。对于浏览器（客户端）中的每个标签栏都是一个独立的进程，操作系统会为这些进程分配临时的端口号。传输层报文中携带端口号，因此可以识别数据要发给哪个应用。</p>
+<h2 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h2><p>如上所述，传输层其实主要做区分应用，把应用数据下发的作用，真正使数据在互联网上传输的功能在<strong>网络层</strong>（<em>Internet Layer</em>）上。</p>
+<p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%BD%91%E7%BB%9C%E5%B1%82.png" srcset="/img/loading.gif" lazyload alt="网络层"></p>
+<p>网络层最常使用的是 IP 协议（<em>Internet Protocol</em>），IP 协议会将传输层的报文作为数据部分，再加上 IP 包头组装成 IP 报文，如果 IP 报文大小超过 MTU（以太网中一般为 1500 字节）就会<strong>再次进行分片</strong>，得到一个即将发送到网络的 IP 报文。</p>
+<p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/12.jpg" srcset="/img/loading.gif" lazyload alt="MAC"></p>
+<h3 id="IP地址"><a href="#IP地址" class="headerlink" title="IP地址"></a>IP地址</h3><p>对于 IPv4 协议， IP 地址共 32 位，分成了四段（比如，192.168.100.1），每段是 8 位。</p>
+<p>将IP 地址分成两种意义：</p>
+<ul>
+<li>一个是<strong>网络号</strong>，负责标识该 IP 地址是属于哪个「子网」的；</li>
+<li>一个是<strong>主机号</strong>，负责标识同一「子网」下的不同主机；</li>
+</ul>
+<p>配合<strong>子网掩码</strong>，可以将一个网络号同时给多个主机使用，子网掩码则用于计算 网络号和主机号。</p>
+<p>如10.100.122.0&#x2F;24后面的<code>/24</code>表示就是 <code>255.255.255.0</code>，将IP地址与子网掩码按位与，得到网络号，与子网掩码的取反按位与，则得到主机号。</p>
+<p>寻找目标地址的过程，就是一个寻找网络-&gt;寻找主机的过程。</p>
+<p><strong>IP 协议的寻址作用是告诉我们去往下一个目的地该朝哪个方向走，路由则是根据「下一个目的地」选择路径。寻址更像在导航，路由更像在操作方向盘</strong>。</p>
+<h2 id="网路接口层"><a href="#网路接口层" class="headerlink" title="网路接口层"></a>网路接口层</h2><p>生成了 IP 头部之后，接下来要交给<strong>网络接口层</strong>（<em>Link Layer</em>）在 IP 头部的前面加上 MAC 头部，并封装成数据帧（Data frame）发送到网络上。</p>
+<p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E5%B1%82.png" srcset="/img/loading.gif" lazyload alt="网络接口层"></p>
+<p>网络层实现了信息在互联网上传输的功能，而要将信息传输到互联网，我们还需要经过网络接口层。</p>
+<p>网络接口层的功能主要体现在以太网技术上，即通过局域网把网络包发送到目的地。</p>
+<p>MAC 头部是以太网使用的头部，它包含了接收方和发送方的 MAC 地址等信息，我们可以通过 ARP 协议获取对方的 MAC 地址。</p>
+<p>所以说，网络接口层主要为网络层提供「链路级别」传输的服务。个人理解是在数据的传输中，数据包会经过很多交换机，交换机会将数据包解包至网络接口层，然后再封装，发送。</p>
+<h3 id="MAC地址"><a href="#MAC地址" class="headerlink" title="MAC地址"></a>MAC地址</h3><p>使用 MAC 地址，我们可以标识网络上的设备，实现在以太网、WiFi 这样的底层网络上发送原始数据包。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>综上所述，TCP&#x2F;IP 网络通常是由上到下分成 4 层，分别是<strong>应用层，传输层，网络层和网络接口层</strong>。</p>
+<p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/tcpip%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B.drawio.png" srcset="/img/loading.gif" lazyload alt="tcpip参考模型"></p>
+<p>封装格式：</p>
+<p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E5%B0%81%E8%A3%85.png" srcset="/img/loading.gif" lazyload alt="封装"></p>
+<div class="note note-info">
+            <p>网络接口层的传输单位是帧（frame），IP 层的传输单位是包（packet），TCP 层的传输单位是段（segment），HTTP 的传输单位则是消息或报文（message）。但这些名词并没有什么本质的区分，可以统称为数据包。</p>
+          </div>
+
+<blockquote>
+<p>应用层负责将应用产生的数据传递给传输层，将从传输层接受到的数据组合，返回给应用。</p>
+<p>传输层负责将从应用层接受到的数据包传递给网络层，这个过程会携带应用端口</p>
+<p>网络层负责将从传输层接受到的数据包发送到网络，这个过程会携带IP地址（网络号+主机号&#x2F;子网掩码）</p>
+<p>网络接口层负责将网络层的数据通过以太网技术的方式发送到数据库</p>
+</blockquote>
+<h1 id="二、浏览器请求过程"><a href="#二、浏览器请求过程" class="headerlink" title="二、浏览器请求过程"></a>二、浏览器请求过程</h1><p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/2.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h2><h3 id="1-解析URL"><a href="#1-解析URL" class="headerlink" title="1.解析URL"></a>1.解析URL</h3><p>浏览器先解析URL地址，然后生成给WEB服务器的信息。<br><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/3.webp" srcset="/img/loading.gif" lazyload><br>如果省略资源路径，则会访问Web服务根目录的<code>index.html</code>或<code>default.html</code></p>
+<h3 id="2-生成HTTP请求信息"><a href="#2-生成HTTP请求信息" class="headerlink" title="2.生成HTTP请求信息"></a>2.生成HTTP请求信息</h3><p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/4.webp" srcset="/img/loading.gif" lazyload></p>
+<div class="note note-primary">
+            <p>HTTP报文三要素：</p><ul><li>请求报文：请求行(req)+请求头(head)+请求体(body)</li><li>响应报文：状态行(status)+消息头(head)+消息体(body)</li></ul>
+          </div>
+
+<h2 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h2><p>消息发送前需要<strong>查询服务器域名对应的 IP 地址</strong><br>因为委托操作系统发送消息时，必须提供通信对象的 IP 地址。</p>
+<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>DNS是一种服务器，其专门保存了 <code>Web</code> 服务器域名与 <code>IP</code> 的对应关系。<br>DNS 中的域名都是用<strong>句点</strong>来分隔的，比如 <code>www.server.com</code>，这里的句点代表了不同层次之间的<strong>界限</strong>。<br>在域名中，<strong>越靠右</strong>的位置表示其层级<strong>越高</strong>，这与中文相反。</p>
+<p>实际上域名最后还有一个点，比如 <code>www.server.com.</code>，这个最后的一个点代表根域名。即<code>.</code> 根域是在最顶层，它的下一层就是 <code>.com</code> 顶级域，再下面是 <code>server.com</code></p>
+<p>所以实际上是 .  –&gt; .com –&gt;server<br><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/5.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><p>根域的 DNS 服务器信息保存在互联网中所有的 DNS 服务器中。这样任何 DNS 服务器就都可以找到并访问根域 DNS 服务器了。因此，客户端只要能够找到任意一台 DNS 服务器，就可以通过它找到根域 DNS 服务器，然后再一路顺藤摸瓜找到位于下层的某台目标 DNS 服务器。</p>
+<p>也就是说，查询域名IP时：</p>
+<ol>
+<li>客户端只会向最近的本地DNS服务器请求ip地址。</li>
+<li>本地DNS服务器若记录了ip地址，则直接返回，若没有记录，则进行以下操作。</li>
+<li>本地DNS向根DNS服务器请求ip地址，根DNS将.com的DNS服务器给本地DNS服务器。</li>
+<li>本地DNS服务器再向.com的DNS（顶级域名服务器）请求ip地址，顶级域名服务器将<a target="_blank" rel="noopener" href="http://www.server.com的权威/">www.server.com的权威</a> DNS 服务器给本地DNS服务器。</li>
+<li>权威 DNS 服务器查询后将对应的 IP 地址 X.X.X.X 告诉本地 DNS。</li>
+<li>本地 DNS 再将 IP 地址返回客户端，然后客户端和目标建立连接。</li>
+</ol>
+<div class="note note-warning">
+            <p>根域名服务器是最高层次的，它不直接用于域名解析，但能指明目标服务器的位置。</p>
+          </div>
+
+<p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/6.webp" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>DNS 域名解析的过程是一个<strong>只指路不带路</strong>的过程。</p>
+</blockquote>
+<div class="note note-primary">
+            <p>当然，浏览器、操作系统、hosts文件都有缓存，在这些地方都找不到时才会向本地DNS服务器发请求。</p>
+          </div>
+
+<h2 id="协议栈"><a href="#协议栈" class="headerlink" title="协议栈"></a>协议栈</h2><p>通过 DNS 获取到 IP 后，就可以把 HTTP 的传输工作交给操作系统中的<strong>协议栈</strong>。</p>
+<div class="note note-primary">
+            <p>注意这里开始进入操作系统层面。</p>
+          </div>
+
+<p>协议栈的内部分为几个部分，分别承担不同的工作。上下关系是有一定的规则的，上面的部分会向下面的部分委托工作，下面的部分收到委托的工作并执行。</p>
+<p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/7.webp" srcset="/img/loading.gif" lazyload></p>
+<p>应用程序（浏览器）通过调用 Socket 库，来委托协议栈工作。</p>
+<p>协议栈的上半部分有两块，分别是负责收发数据的 TCP 和 UDP 协议，这两个传输协议会接受应用层的委托执行收发数据的操作。</p>
+<p>协议栈的下面一半是用 IP 协议控制网络包收发操作，在互联网上传数据时，数据会被切分成一块块的网络包，而将网络包发送给对方的操作就是由 IP 负责的。</p>
+<p>此外 IP 中还包括 <code>ICMP</code> 协议和 <code>ARP</code> 协议。</p>
+<ul>
+<li><code>ICMP</code> 用于告知网络包传送过程中产生的错误以及各种控制信息。</li>
+<li><code>ARP</code> 用于根据 IP 地址查询相应的以太网 MAC 地址。</li>
+</ul>
+<p>IP 下面的网卡驱动程序负责控制网卡硬件，而最下面的网卡则负责完成实际的收发操作，也就是对网线中的信号执行发送和接收操作。</p>
+<p>进入协议栈后，就依靠各层协议一步一步完成数据传输。 </p>
+<h2 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h2><p>HTTP 是<strong>基于 TCP 协议</strong>传输的，TCP报文格式如下：<br><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/8.webp" srcset="/img/loading.gif" lazyload alt="TCP报文"></p>
+<p>理解：</p>
+<ul>
+<li><strong>源端口号</strong>和<strong>目标端口</strong>号：这是与应用层交互的关键识别信息。</li>
+<li>包<strong>序</strong>号，防止乱序</li>
+<li><strong>确认号</strong>，防止丢包</li>
+<li><strong>状态位</strong>。例如 <code>SYN</code> 是发起一个连接，<code>ACK</code> 是回复，<code>RST</code> 是重新连接，<code>FIN</code> 是结束连接等。TCP 是面向连接的，因而双方要维护连接的状态，这些带状态位的包的发送，会引起双方的状态变更。</li>
+<li><strong>窗口大小</strong>：TCP 要做<strong>流量控制</strong>，通信双方各声明一个窗口（缓存大小），标识自己当前能够的处理能力，从而实现<strong>拥塞控制</strong>：即控制发送的速度。</li>
+</ul>
+<h3 id="TCP三次握手"><a href="#TCP三次握手" class="headerlink" title="TCP三次握手"></a>TCP三次握手</h3><p>所谓的握手就是使通讯双方维护一个状态机。<br><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.drawio.webp" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>SYN指<strong>SYN：同步序列编号</strong>（ Synchronize Sequence Numbers ）<br>ACK指<strong>ACK：确认字符</strong>（Acknowledge character）</p>
+</blockquote>
+<div class="note note-success">
+            <p>三次握手目的是<strong>保证双方都有发送和接收的能力</strong>。</p>
+          </div>
+
+<div class="note note-primary">
+            <p>TCP 的连接状态查看，在 Linux 可以通过 <code>netstat -napt</code> 命令查看。</p>
+          </div>
+
+<h3 id="TCP数据分割"><a href="#TCP数据分割" class="headerlink" title="TCP数据分割"></a>TCP数据分割</h3><p>若HTTP请求报文较长，超过了 <code>MSS</code> 的长度则需要拆解。<br><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/11.webp" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li><code>MTU</code>：一个网络包的最大长度，以太网中一般为 <code>1500</code> 字节。</li>
+<li><code>MSS</code>：除去 IP 和 TCP 头部之后，一个网络包所能容纳的 TCP 数据的最大长度。</li>
+</ul>
+<p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/12.webp" srcset="/img/loading.gif" lazyload></p>
+<p>拆分出来的每一块数据都会被放进单独的网络包中，分别加上 TCP 头信息，然后交给 IP 模块来发送数据。</p>
+<h3 id="TCP报文生成"><a href="#TCP报文生成" class="headerlink" title="TCP报文生成"></a>TCP报文生成</h3><p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/13.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="IP"><a href="#IP" class="headerlink" title="IP"></a>IP</h2><p>IP 模块将数据封装成<strong>网络包</strong>发送给通信对象。<br><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/14.webp" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>IP包头的<strong>协议号</strong>，要填写为<code>06</code>（十六进制），表示协议为 TCP。</li>
+</ul>
+<h3 id="网卡选择"><a href="#网卡选择" class="headerlink" title="网卡选择"></a>网卡选择</h3><p>如何填写源地址IP？<br>根据<strong>路由表</strong>规则，判断哪个网卡作为源地址。<br>使用 <code>route -n</code> 命令查看当前系统的路由表。</p>
+<p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/15.webp" srcset="/img/loading.gif" lazyload></p>
+<ol>
+<li>将目标IP地址与掩码逐行做 <strong>与运算</strong>，如果等于目的Destination，则匹配成功。</li>
+<li>如果都无法匹配，则匹配最后一行，将IP发送给路由器（<strong>默认网关</strong>）</li>
+</ol>
+<h2 id="MAC"><a href="#MAC" class="headerlink" title="MAC"></a>MAC</h2><p>生成了 IP 头部之后，接下来网络包还需要在 IP 头部的前面加上 <strong>MAC 头部</strong>。<br><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/18.webp" srcset="/img/loading.gif" lazyload></p>
+<p>一般在 TCP&#x2F;IP 通信里，MAC 包头的<strong>协议类型</strong>只使用：</p>
+<ul>
+<li><code>0800</code> ：IP协议</li>
+<li><code>0806</code> ：ARP协议</li>
+</ul>
+<p><strong>接收方MAC地址如何填写？</strong><br>ARP协议，通过广播的方式获取以太网中路由器的MAC地址。<br>ARP有缓存空间（几分钟），可以先查询缓存，未命中才广播。</p>
+<h2 id="出口-网卡"><a href="#出口-网卡" class="headerlink" title="出口-网卡"></a>出口-网卡</h2><p><strong>数字信息转换为电信号</strong>。<br>通过网卡（硬件）+网卡驱动程序（软件）一起完成数据的发送。</p>
+<p>网卡驱动获取网络包之后，会将其<strong>复制</strong>到网卡内的缓存区中，接着会在其<strong>开头加上报头和起始帧分界符，在末尾加上用于检测错误的帧校验序列</strong>。</p>
+<p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E6%95%B0%E6%8D%AE%E5%8C%85.drawio.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="交换机"><a href="#交换机" class="headerlink" title="交换机"></a>交换机</h2><p>交换机工作在 MAC 层，也称为<strong>二层网络设备</strong>。<br>交换机：</p>
+<ol>
+<li>电信号-&gt;数字信号</li>
+<li>MAC帧FCS矫错</li>
+<li>根据MAC帧地址转发MAC帧</li>
+<li>找不到则广播（除源端口）</li>
+<li>只有相应的接受者才会接受MAC帧</li>
+</ol>
+<p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/23.webp" srcset="/img/loading.gif" lazyload></p>
+<p>PS：这里注意<strong>交换机的端口不具有MAC地址</strong>，其只起转发包作用。</p>
+<ul>
+<li>MAC 地址中的 <code>FF:FF:FF:FF:FF:FF</code></li>
+<li>IP 地址中的 <code>255.255.255.255</code></li>
+</ul>
+<h2 id="路由器"><a href="#路由器" class="headerlink" title="路由器"></a>路由器</h2><p>网络包经过交换机之后，现在到达了<strong>路由器</strong>，并在此被转发到下一个路由器或目标设备。</p>
+<ul>
+<li>因为<strong>路由器</strong>是基于 IP 设计的，俗称<strong>三层</strong>网络设备，路由器的各个端口都具有 MAC 地址和 IP 地址；</li>
+<li>而<strong>交换机</strong>是基于以太网设计的，俗称<strong>二层</strong>网络设备，交换机的端口不具有 MAC 地址。</li>
+</ul>
+<p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/24.webp" srcset="/img/loading.gif" lazyload></p>
+<p>路由器工作：</p>
+<ol>
+<li>接受发送给自己的MAC帧</li>
+<li>FCS矫错</li>
+<li>根据帧中IP查找路由表，确定对应的接口</li>
+<li>若找不到则选择默认路由。</li>
+<li>要根据目标IP行的网关列判断发送到目标IP后是否还需要继续转发<ul>
+<li>网关为IP地址，说明还要继续转发（IP聚合）</li>
+<li>网关为空，则说明达到了目标地址</li>
+</ul>
+</li>
+<li>根据ARP协议，使用IP地址查询MAC地址（路由器也有ARP缓存）</li>
+<li>发送</li>
+</ol>
+<p>在网络包传输的过程中，<strong>源 IP 和目标 IP 始终是不会变的，一直变化的是 MAC 地址</strong>，因为需要 MAC 地址在以太网内进行<strong>两个设备</strong>之间的包传输。</p>
+<h2 id="服务端与客户端"><a href="#服务端与客户端" class="headerlink" title="服务端与客户端"></a>服务端与客户端</h2><p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/25.webp" srcset="/img/loading.gif" lazyload></p>
+<h1 id="三、Linux系统如何收发网络包"><a href="#三、Linux系统如何收发网络包" class="headerlink" title="三、Linux系统如何收发网络包"></a>三、Linux系统如何收发网络包</h1><p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/OSI%E4%B8%8ETCP.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Linux-网络协议栈"><a href="#Linux-网络协议栈" class="headerlink" title="Linux 网络协议栈"></a>Linux 网络协议栈</h2><p>封装：<br><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E5%B0%81%E8%A3%85.webp" srcset="/img/loading.gif" lazyload><br>以太网中，规定了最大传输单元（MTU）是 <code>1500</code> 字节，也就是规定了单次传输的最大 IP 包大小。</p>
+<p>Linux网络栈：<br><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E5%8D%8F%E8%AE%AE%E6%A0%88.webp" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>应用程序需要通过系统调用，来跟 Socket 层进行数据交互；</li>
+<li>Socket 层的下面就是传输层、网络层和网络接口层；</li>
+</ul>
+<h2 id="Linux接受包"><a href="#Linux接受包" class="headerlink" title="Linux接受包"></a>Linux接受包</h2><p>当网卡接收到一个网络包后，会通过 DMA 技术，将网络包写入到指定的内存地址，也就是写入到 Ring Buffer ，这个是一个环形缓冲区，接着就会告诉操作系统这个网络包已经到达。当 CPU 收到硬件中断请求后，根据中断表，调用已经注册的中断处理函数。</p>
+<p>方式：</p>
+<ul>
+<li>触发中断：也就是每当网卡收到一个网络包，就触发一个中断告诉操作系统。（网络包过多时中断也太多，过时）</li>
+<li><strong>NAPI 机制</strong>：<strong>不采用中断的方式读取数据</strong>，而是首先采用中断唤醒数据接收的服务程序，然后 <code>poll</code> 的方法来轮询数据。</li>
+</ul>
+<p>硬件中断处理函数会做如下的事情：</p>
+<ul>
+<li>需要先「暂时屏蔽中断」，表示已经知道内存中有数据了，告诉网卡下次再收到数据包直接写内存就可以了，不要再通知 CPU 了，这样可以提高效率，避免CPU不停的被中断。</li>
+<li>接着，发起「软中断」，然后恢复刚才屏蔽的中断。</li>
+</ul>
+<h3 id="软中断"><a href="#软中断" class="headerlink" title="软中断"></a>软中断</h3><p>内核中的 ksoftirqd 线程专门负责软中断的处理，当 ksoftirqd 内核线程收到软中断后，就会来轮询处理数据。<br>ksoftirqd 线程会从 Ring Buffer 中获取一个数据帧，用 sk_buff 表示，从而可以作为一个网络包交给网络协议栈进行逐层处理。</p>
+<h3 id="网络协议栈"><a href="#网络协议栈" class="headerlink" title="网络协议栈"></a>网络协议栈</h3><p><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/%E6%94%B6%E5%8F%91%E6%B5%81%E7%A8%8B.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Linux-发送网络包的流程"><a href="#Linux-发送网络包的流程" class="headerlink" title="Linux 发送网络包的流程"></a>Linux 发送网络包的流程</h2><ol>
+<li>应用程序会调用 Socket 发送数据包的接口，由于这个是系统调用，所以会从用户态陷入到内核态中的 Socket 层，内核会申请一个内核态的sk_buff内存，<strong>将用户待发送的数据拷贝到 sk_buff 内存，并将其加入到发送缓冲区</strong>。</li>
+<li>网络协议栈从 Socket 发送缓冲区中取出sk_buff，并按照 TCP&#x2F;IP 协议栈从上到下逐层处理。</li>
+<li>TCP 传输协议发送数据，那么<strong>先拷贝一个新的sk_buff 副本</strong>，这是因为sk_buff后续在调用网络层，最后到达网卡发送完成的时候，这个sk_buff会被释放掉。而TCP协议是支持丢失重传的，在收到对方的ACK之前，这个sk_buff不能被删除。所以内核的做法就是每次调用网卡发送的时候，实际上传递出去的是 sk_buff 的一个拷贝，等收到 ACK 再真正删除。</li>
+<li>对 sk_buff 填充 TCP 头。sk_buff 可以表示各个层的数据包，在应用层数据包叫 data，在 TCP 层我们称为 segment，在 IP 层我们叫 packet，在数据链路层称为 frame。</li>
+<li>交给网络层，在网络层里会做这些工作：选取路由（确认下一跳的 IP）、填充 IP 头、netfilter 过滤、对超过 MTU 大小的数据包进行分片。处理完这些工作后会交给网络接口层处理。</li>
+<li>网络接口层会通过 ARP 协议获得下一跳的 MAC 地址，然后对 sk_buff 填充帧头和帧尾，接着将sk_buff放到网卡的发送队列中。</li>
+<li>这一些工作准备好后，会触发「<strong>软中断</strong>」告诉网卡驱动程序，这里有新的网络包需要发送，驱动程序会从发送队列中读取 sk_buff，将这个 sk_buff 挂到 RingBuffer 中，接着将sk_buff数据映射到网卡可访问的内存 DMA 区域，最后触发真实的发送。</li>
+<li>当发送完成的时候，网卡设备会触发一个<strong>硬中断</strong>来释放内存，主要是释放 sk_buff 内存和清理 RingBuffer 内存。</li>
+</ol>
+<p>通过调整 sk_buff 中 <code>data</code> 的指针，比如：<br><img src="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/sk_buff.webp" srcset="/img/loading.gif" lazyload><br>即可实现使用同一个数据结构描述各层的数据。</p>
+<p><strong>发送网络数据的时候，涉及几次内存拷贝操作？</strong></p>
+<ul>
+<li>第一次，调用发送数据的系统调用的时候，内核会申请一个内核态的 sk_buff 内存，将用户待发送的数据拷贝到 sk_buff 内存，并将其加入到发送缓冲区。</li>
+<li>第二次，在使用 TCP 传输协议的情况下，从传输层进入网络层的时候，每一个 sk_buff 都会被克隆一个新的副本出来。副本 sk_buff 会被送往网络层，等它发送完的时候就会释放掉，然后原始的 sk_buff 还保留在传输层，目的是为了实现 TCP 的可靠传输，等收到这个数据包的 ACK 时，才会释放原始的 sk_buff 。</li>
+<li>第三次，当 IP 层发现 sk_buff 大于 MTU 时才需要进行。会再申请额外的 sk_buff，并将原来的 sk_buff 拷贝为多个小的 sk_buff。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E9%9D%A2%E8%AF%95/" class="category-chain-item">面试</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%85%AB%E8%82%A1/">#八股</a>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">#计算机网络</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>计算机网络-基础篇</div>
+      <div>http://example.com/2022/12/09/八股/计算机网络/计网面试/计算机网络-基础篇/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jireyo</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年12月9日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/12/10/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC1%E7%AB%A0%EF%BC%88%E6%A6%82%E8%BF%B0%EF%BC%89/" title="计算机网络第1章（概述）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">计算机网络第1章（概述）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

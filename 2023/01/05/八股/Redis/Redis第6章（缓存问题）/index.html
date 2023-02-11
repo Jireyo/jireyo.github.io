@@ -1,0 +1,810 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jireyo">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="缓存问题 缓存穿透 缓存穿击 缓存雪崩 缓存污染（或者满了） 缓存和数据库一致性  缓存穿透问题缓存穿透是指缓存和数据库中都没有的数据。缓存不命中则会一直请求数据库，数据库查不到，又无法写入缓存。 解决 禁止非法请求，如校验参数合法性 数据库取不到的数据，在redis中置为key-null，防止大量数据库请求 bloomfilter，判断key是否在容器中  缓存击穿问题缓存击穿是指缓存中没有但数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis第6章（缓存问题）">
+<meta property="og:url" content="http://example.com/2023/01/05/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/index.html">
+<meta property="og:site_name" content="Jireyo&#39;s Blog">
+<meta property="og:description" content="缓存问题 缓存穿透 缓存穿击 缓存雪崩 缓存污染（或者满了） 缓存和数据库一致性  缓存穿透问题缓存穿透是指缓存和数据库中都没有的数据。缓存不命中则会一直请求数据库，数据库查不到，又无法写入缓存。 解决 禁止非法请求，如校验参数合法性 数据库取不到的数据，在redis中置为key-null，防止大量数据库请求 bloomfilter，判断key是否在容器中  缓存击穿问题缓存击穿是指缓存中没有但数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/01/05/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105015406.jpg">
+<meta property="og:image" content="http://example.com/2023/01/05/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105020042.png">
+<meta property="og:image" content="http://example.com/2023/01/05/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105023335.png">
+<meta property="og:image" content="http://example.com/2023/01/05/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105024206.png">
+<meta property="og:image" content="http://example.com/2023/01/05/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105181554.png">
+<meta property="article:published_time" content="2023-01-04T17:05:37.000Z">
+<meta property="article:modified_time" content="2023-02-07T03:02:54.000Z">
+<meta property="article:author" content="Jireyo">
+<meta property="article:tag" content="八股">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/01/05/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105015406.jpg">
+  
+  
+  
+  <title>Redis第6章（缓存问题） - Jireyo&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jireyo&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Redis第6章（缓存问题）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-05 01:05" pubdate>
+          2023年1月5日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Redis第6章（缓存问题）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h1><ul>
+<li>缓存穿透</li>
+<li>缓存穿击</li>
+<li>缓存雪崩</li>
+<li>缓存污染（或者满了）</li>
+<li>缓存和数据库一致性</li>
+</ul>
+<h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>缓存穿透是指<strong>缓存和数据库中都没有的数据</strong>。<br>缓存不命中则会一直请求数据库，数据库查不到，又无法写入缓存。</p>
+<h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><ul>
+<li>禁止非法请求，如校验参数合法性</li>
+<li>数据库取不到的数据，在redis中置为key-null，防止大量数据库请求</li>
+<li>bloomfilter，判断key是否在容器中</li>
+</ul>
+<h2 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h2><h3 id="问题-1"><a href="#问题-1" class="headerlink" title="问题"></a>问题</h3><p>缓存击穿是指<strong>缓存中没有但数据库中有的数据</strong>（单一过期）<br>缓存过期导致大量针对该过期数据的请求段时间发生。</p>
+<h3 id="解决-1"><a href="#解决-1" class="headerlink" title="解决"></a>解决</h3><ul>
+<li>设置数据永不过期</li>
+<li>接口限流、熔断</li>
+<li>互斥锁</li>
+</ul>
+<h2 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h2><h3 id="问题-2"><a href="#问题-2" class="headerlink" title="问题"></a>问题</h3><p>缓存雪崩是指缓存中<strong>数据大批量到过期时间，而查询数据量巨大</strong>（大量同时过期）</p>
+<h3 id="解决-2"><a href="#解决-2" class="headerlink" title="解决"></a>解决</h3><ul>
+<li>缓存数据的过期时间设置随机，防止同一时间大量数据过期现象发生。</li>
+<li>如果缓存数据库是分布式部署，将热点数据均匀分布在不同的缓存数据库中。</li>
+<li>设置热点数据永远不过期。</li>
+</ul>
+<h2 id="缓存污染"><a href="#缓存污染" class="headerlink" title="缓存污染"></a>缓存污染</h2><p>部分数据缓存后<strong>使用率低</strong>，占用内存。</p>
+<h3 id="最大缓存设置"><a href="#最大缓存设置" class="headerlink" title="最大缓存设置"></a>最大缓存设置</h3><p><strong>建议把缓存容量设置为总数据量的 15% 到 30%，兼顾访问性能和内存空间开销</strong>。</p>
+<h3 id="新数据进入redis"><a href="#新数据进入redis" class="headerlink" title="新数据进入redis"></a>新数据进入redis</h3><p>当新数据进入redis时，如果内存不足怎么办？</p>
+<ul>
+<li>Redis使用内存存储数据，在执行每一个命令前，会调用freeMemorylfNeeded()检测内存是否充足。如果内存不满足新加入数据的最低存储要求，redis要临时删除一些数据为当前指令清理存储空间。清理数据的策略称为逐出算法。</li>
+<li>注意：逐出数据的过程不是100%能够清理出足够的可使用的内存空间，如果不成功则反复执行。当对所有数据尝试完毕后，如果不能达到内存清理的要求，将出现错误信息。</li>
+</ul>
+<h3 id="淘汰策略"><a href="#淘汰策略" class="headerlink" title="淘汰策略"></a>淘汰策略</h3><p>通过<code>max-memory</code>配置设置淘汰策略<br>Redis共支持八种淘汰策略，分别是noeviction、volatile-random、volatile-ttl、volatile-lru、volatile-lfu、allkeys-lru、allkeys-random 和 allkeys-lfu 策略。</p>
+<p><strong>怎么理解呢</strong>？主要看分三类看：</p>
+<ul>
+<li>不淘汰<ul>
+<li>noeviction （v4.0后默认的）</li>
+</ul>
+</li>
+<li>对设置了过期时间的数据中进行淘汰<ul>
+<li>随机：volatile-random</li>
+<li>ttl：volatile-ttl</li>
+<li>lru：volatile-lru</li>
+<li>lfu：volatile-lfu</li>
+</ul>
+</li>
+<li>全部数据进行淘汰<ul>
+<li>随机：allkeys-random</li>
+<li>lru：allkeys-lru</li>
+<li>lfu：allkeys-lfu</li>
+</ul>
+</li>
+</ul>
+<p>具体而言：</p>
+<ol>
+<li>noeviction<br>写满了就停止服务。</li>
+<li>volatile-random<br>对会过期的键随机删除</li>
+<li>volatile-ttl<br>对即将过期的时间进行排序，删除</li>
+<li>volatile-lru(last-recently-used)<br>对最后使用时间进行排序，删除最后一次使用较早的数据</li>
+<li>volatile-lfu（4.0后新增）<br>对使用次数进行排序，删除最少使用的数据</li>
+<li>allkeys-random</li>
+<li>allkeys-lru</li>
+<li>allkeys-lfu</li>
+</ol>
+<div class="note note-primary">
+            <p>淘汰策略 不是 过期清理策略，其不太关心键是否已经过期，只将是否设置了过期、过期时间作为筛选的范围。<br>volatile的挑选范围是<code>所有可能过期的数据</code>。<br>allkeys的挑选范围是<code>所有数据</code>。</p>
+          </div>
+
+<h4 id="具体实现细节"><a href="#具体实现细节" class="headerlink" title="具体实现细节"></a>具体实现细节</h4><ul>
+<li>redis每个数据都会记录最后访问的时间戳（redisObject的lru字段，24位时间戳）和最近使用次数（只有开启LFU时才记录，字段变成lfu，16位时间戳+8位访问次数）。</li>
+<li>LRU淘汰时：<ul>
+<li>随机选N个数据（可以通过maxmemory-samples设置）</li>
+<li>排序lru字段</li>
+<li>淘汰lru最小的数据</li>
+</ul>
+</li>
+<li>LFU淘汰时：<ul>
+<li>根据访问次数筛选（lru字段后8bit）</li>
+<li>淘汰访问次数最低的数据（次数相同则比较最后使用时间，前16bit）</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>8bit只能记录255次使用，到达后LFU会退化为LRU，因此有策略控制lfu的增长。</p>
+</blockquote>
+<p><code>lfu-log-factor</code>，有新访问时，只有满足一定算法条件时才count++<br><code>lfu-decay-time</code>，有新访问时，会按照算法对count进行衰减。</p>
+<h2 id="数据库和缓存一致性"><a href="#数据库和缓存一致性" class="headerlink" title="数据库和缓存一致性"></a>数据库和缓存一致性</h2><p>一般流程：<br><img src="/2023/01/05/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105015406.jpg" srcset="/img/loading.gif" lazyload><br>缓存与数据库必然存在不一致情况：<br>1.先写数据库，再删除redis，后者的删除可能未执行<br>2.先删除redis，再写数据库，后者还未执行redis可能就又刷新了。</p>
+<h3 id="同步模式"><a href="#同步模式" class="headerlink" title="同步模式"></a>同步模式</h3><h4 id="Cache-Aside-Pattern"><a href="#Cache-Aside-Pattern" class="headerlink" title="Cache Aside Pattern"></a>Cache Aside Pattern</h4><p><strong>写后失效缓存</strong><br>读时：</p>
+<ul>
+<li><strong>失效</strong>：应用程序先从cache取数据，没有得到，则从数据库中取数据，成功后，放到缓存中。</li>
+<li><strong>命中</strong>：应用程序从cache中取数据，取到后返回。<br>写时：</li>
+<li><strong>更新</strong>：先把数据存到数据库中，成功后，再让缓存失效。</li>
+</ul>
+<h4 id="Read-x2F-Write-Through-Pattern"><a href="#Read-x2F-Write-Through-Pattern" class="headerlink" title="Read&#x2F;Write Through Pattern"></a>Read&#x2F;Write Through Pattern</h4><p>应用程序不直接接触数据库，由缓存代理该过程。<br>相比Cache Aside模式：<br>读时：</p>
+<ul>
+<li><strong>失效</strong>：都会查找数据库然后同步到缓存，但Read Pattern会先缓存再返回。<br>写时：</li>
+<li><strong>更新</strong>：Write Pattern会先<strong>更新</strong>缓存再写数据库，最后返回。<br><img src="/2023/01/05/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105020042.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<h4 id="Write-Behind-Caching-Pattern"><a href="#Write-Behind-Caching-Pattern" class="headerlink" title="Write Behind Caching Pattern"></a>Write Behind Caching Pattern</h4><p>更新时只更新缓存，定期异步批量更新数据库。<br><img src="/2023/01/05/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105023335.png" srcset="/img/loading.gif" lazyload><br>性能高，但数据一致性弱，实现较复杂，要判断哪些需要持久化。</p>
+<h3 id="如何解决一致性问题"><a href="#如何解决一致性问题" class="headerlink" title="如何解决一致性问题"></a>如何解决一致性问题</h3><h4 id="无法解决的问题"><a href="#无法解决的问题" class="headerlink" title="无法解决的问题"></a>无法解决的问题</h4><p>以Cache Aside Pattern为例：<br>读操作（失效时）：1.查找数据库 2.更新缓存<br>写操作：1.修改数据库 2.失效缓存</p>
+<p>同步进行读、写时，若读写先后完成了对数据库的查询、修改，此时写操作先失效缓存导致读操作将旧信息更新到了缓存。<br>即 读1-&gt;写1-&gt;写2-&gt;读2</p>
+<p>该事件这个概率较低，其只发生在读时失效且刚好有并发写操作，且写操作较慢且需要锁表，读操作一般肯定已经完成，所以这个概率会很低。当然最好还是为缓存设置过期时间。</p>
+<h4 id="缓存更新失效"><a href="#缓存更新失效" class="headerlink" title="缓存更新失效"></a>缓存更新失效</h4><p>解决写操作第二步：失效缓存因为异常导致没有执行的问题</p>
+<h5 id="方案1：队列-重试"><a href="#方案1：队列-重试" class="headerlink" title="方案1：队列+重试"></a>方案1：队列+重试</h5><p><img src="/2023/01/05/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105024206.png" srcset="/img/loading.gif" lazyload><br>优点：队列解决了缓存更新失败的问题<br>缺点：对代码的侵入量大，影响服务速度</p>
+<p>方案2：队列+重试+非业务代码做异步更新缓存<br><img src="/2023/01/05/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105181554.png" srcset="/img/loading.gif" lazyload><br>由非业务代码读取mysql的操作，然后更新缓存。<br>优点：不侵入业务<br>缺点：同步速度慢<br>例子：canal</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Redis/" class="category-chain-item">Redis</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%85%AB%E8%82%A1/">#八股</a>
+      
+        <a href="/tags/Redis/">#Redis</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Redis第6章（缓存问题）</div>
+      <div>http://example.com/2023/01/05/八股/Redis/Redis第6章（缓存问题）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jireyo</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年1月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/06/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC7%E7%AB%A0%EF%BC%88%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%EF%BC%89/" title="Redis第7章（性能监控）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Redis第7章（性能监控）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/04/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%AB%98%E5%8F%AF%E7%94%A8%EF%BC%89/" title="Redis第5章（高可用）">
+                        <span class="hidden-mobile">Redis第5章（高可用）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
