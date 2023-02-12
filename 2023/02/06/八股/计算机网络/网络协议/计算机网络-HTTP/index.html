@@ -13,57 +13,57 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#727679">
-  <meta name="author" content="Jireyo">
+  <meta name="author" content="Jin">
   <meta name="keywords" content="">
   
     <meta name="description" content="一、基本概念概念超文本传输协议，HyperText Transfer Protocol。  协议：HTTP 是一个用在计算机世界里的协议。它使用计算机能够理解的语言确立了一种计算机之间交流通信的规范（两个以上的参与者），以及相关的各种控制和错误处理方式（行为约定和规范）。 传输：HTTP 协议是一个双向协议。 超文本：超越了普通文本的文本，它是文字、图片、视频等的混合体，最关键有超链接，能从一个超">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机网络-HTTP">
-<meta property="og:url" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/index.html">
-<meta property="og:site_name" content="Jireyo&#39;s Blog">
+<meta property="og:url" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
 <meta property="og:description" content="一、基本概念概念超文本传输协议，HyperText Transfer Protocol。  协议：HTTP 是一个用在计算机世界里的协议。它使用计算机能够理解的语言确立了一种计算机之间交流通信的规范（两个以上的参与者），以及相关的各种控制和错误处理方式（行为约定和规范）。 传输：HTTP 协议是一个双向协议。 超文本：超越了普通文本的文本，它是文字、图片、视频等的混合体，最关键有超链接，能从一个超">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/6-%E4%BA%94%E5%A4%A7%E7%B1%BBHTTP%E7%8A%B6%E6%80%81%E7%A0%81.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E7%BC%93%E5%AD%98etag.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/17-%E7%AE%A1%E9%81%93%E7%BD%91%E7%BB%9C%E4%BC%A0%E8%BE%93.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/22-%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/23-HTTPS%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E7%A6%BB%E6%95%A3%E5%AF%B9%E6%95%B0.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E8%AF%81%E4%B9%A6%E7%9A%84%E6%A0%A1%E9%AA%8C.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E7%94%A8%E6%88%B7%E4%BF%A1%E4%BB%BB.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E8%AF%81%E4%B9%A6%E9%93%BE.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/tls1.2and1.3-1.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E8%AE%B0%E5%BD%95%E5%8D%8F%E8%AE%AE.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/https%E4%B8%AD%E9%97%B4%E4%BA%BA.drawio.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/25-HTTP2.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206224430.png">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%B8%A7.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206224926.png">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/stream.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/http2%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206191054.png">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/push.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/28-HTTP3%E4%BA%A4%E4%BA%92%E6%AC%A1%E6%95%B0.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206210341.png">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206211242.png">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206225705.png">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%87%8D%E5%AE%9A%E5%90%91.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%87%8D%E5%AE%9A%E5%90%91.webp">
-<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%87%8D%E5%AE%9A%E5%90%912.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/6-%E4%BA%94%E5%A4%A7%E7%B1%BBHTTP%E7%8A%B6%E6%80%81%E7%A0%81.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E7%BC%93%E5%AD%98etag.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/17-%E7%AE%A1%E9%81%93%E7%BD%91%E7%BB%9C%E4%BC%A0%E8%BE%93.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/22-%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/23-HTTPS%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E7%A6%BB%E6%95%A3%E5%AF%B9%E6%95%B0.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E8%AF%81%E4%B9%A6%E7%9A%84%E6%A0%A1%E9%AA%8C.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E7%94%A8%E6%88%B7%E4%BF%A1%E4%BB%BB.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E8%AF%81%E4%B9%A6%E9%93%BE.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/tls1.2and1.3-1.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E8%AE%B0%E5%BD%95%E5%8D%8F%E8%AE%AE.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/https%E4%B8%AD%E9%97%B4%E4%BA%BA.drawio.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/25-HTTP2.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206224430.png">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%B8%A7.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206224926.png">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/stream.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/http2%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206191054.png">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/push.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/28-HTTP3%E4%BA%A4%E4%BA%92%E6%AC%A1%E6%95%B0.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206210341.png">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206211242.png">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206225705.png">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%87%8D%E5%AE%9A%E5%90%91.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%87%8D%E5%AE%9A%E5%90%91.webp">
+<meta property="og:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%87%8D%E5%AE%9A%E5%90%912.webp">
 <meta property="og:image" content="http://example.com/Pasted%20image%2020230207112106.png">
 <meta property="og:image" content="http://example.com/Pasted%20image%2020230207113622.png">
 <meta property="article:published_time" content="2023-02-06T08:16:01.000Z">
-<meta property="article:modified_time" content="2023-02-07T14:54:44.120Z">
-<meta property="article:author" content="Jireyo">
+<meta property="article:modified_time" content="2023-02-12T16:53:26.270Z">
+<meta property="article:author" content="Jin">
 <meta property="article:tag" content="八股">
 <meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/6-%E4%BA%94%E5%A4%A7%E7%B1%BBHTTP%E7%8A%B6%E6%80%81%E7%A0%81.webp">
+<meta name="twitter:image" content="http://example.com/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/6-%E4%BA%94%E5%A4%A7%E7%B1%BBHTTP%E7%8A%B6%E6%80%81%E7%A0%81.webp">
   
   
   
-  <title>计算机网络-HTTP - Jireyo&#39;s Blog</title>
+  <title>计算机网络-HTTP - Jin&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -131,7 +131,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong style="color: #fff;">Jireyo&#39;s Blog</strong>
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -324,7 +324,7 @@
 <li>超文本：<strong>超越了普通文本的文本</strong>，它是文字、图片、视频等的混合体，最关键有超链接，能从一个超文本跳转到另外一个超文本。</li>
 </ul>
 <p>总结：<br><strong>HTTP 是一个在计算机世界里专门在「两点」之间「传输」文字、图片、音频、视频等「超文本」数据的「约定和规范」。</strong></p>
-<h2 id="状态码"><a href="#状态码" class="headerlink" title="状态码"></a>状态码</h2><p><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/6-%E4%BA%94%E5%A4%A7%E7%B1%BBHTTP%E7%8A%B6%E6%80%81%E7%A0%81.webp" srcset="/img/loading.gif" lazyload><br><code>1xx</code> 类状态码属于<strong>提示信息</strong>，是协议处理中的一种中间状态，实际用到的比较少。<br><code>2xx</code> 类状态码表示服务器<strong>成功</strong>处理了客户端的请求，也是我们最愿意看到的状态。</p>
+<h2 id="状态码"><a href="#状态码" class="headerlink" title="状态码"></a>状态码</h2><p><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/6-%E4%BA%94%E5%A4%A7%E7%B1%BBHTTP%E7%8A%B6%E6%80%81%E7%A0%81.webp" srcset="/img/loading.gif" lazyload><br><code>1xx</code> 类状态码属于<strong>提示信息</strong>，是协议处理中的一种中间状态，实际用到的比较少。<br><code>2xx</code> 类状态码表示服务器<strong>成功</strong>处理了客户端的请求，也是我们最愿意看到的状态。</p>
 <ul>
 <li>「<strong>200 OK</strong>」是最常见的成功状态码，表示一切正常。如果是非 <code>HEAD</code> 请求，服务器返回的响应头都会有 body 数据。</li>
 <li>「<strong>204 No Content</strong>」也是常见的成功状态码，与 200 OK 基本相同，但响应头没有 body 数据。 </li>
@@ -376,7 +376,7 @@
 <li><code>Expires</code>，是一个绝对时间；</li>
 </ul>
 <p>其中，<strong>Cache-Control 的优先级高于 Expires</strong>了。<br>强制缓存：只要不过期，肯定直接返回。</p>
-<h3 id="协商缓存"><a href="#协商缓存" class="headerlink" title="协商缓存"></a>协商缓存</h3><p><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E7%BC%93%E5%AD%98etag.webp" srcset="/img/loading.gif" lazyload><br>协商缓存：<strong>协商缓存就是与服务端协商之后，通过协商结果来判断是否使用本地缓存</strong>。</p>
+<h3 id="协商缓存"><a href="#协商缓存" class="headerlink" title="协商缓存"></a>协商缓存</h3><p><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E7%BC%93%E5%AD%98etag.webp" srcset="/img/loading.gif" lazyload><br>协商缓存：<strong>协商缓存就是与服务端协商之后，通过协商结果来判断是否使用本地缓存</strong>。</p>
 <p>实现方法：<br>方法一：时间戳</p>
 <ul>
 <li>响应头中的<code>Last-Modified</code>：资源最后的修改时间</li>
@@ -408,7 +408,7 @@
 </ul>
 <h5 id="长连接"><a href="#长连接" class="headerlink" title="长连接"></a>长连接</h5><p>HTTP&#x2F;1.1 提出了<strong>长连接</strong>的通信方式，也叫持久连接。这种方式的好处在于减少了 TCP 连接的重复建立和断开所造成的额外开销，减轻了服务器端的负载。</p>
 <h5 id="管道网络传输"><a href="#管道网络传输" class="headerlink" title="管道网络传输"></a>管道网络传输</h5><p>在同一个 TCP 连接里面，客户端可以发起多个请求，只要第一个请求发出去了，不必等其回来，就可以发第二个请求出去，可以<strong>减少整体的响应时间。</strong></p>
-<p><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/17-%E7%AE%A1%E9%81%93%E7%BD%91%E7%BB%9C%E4%BC%A0%E8%BE%93.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/17-%E7%AE%A1%E9%81%93%E7%BD%91%E7%BB%9C%E4%BC%A0%E8%BE%93.webp" srcset="/img/loading.gif" lazyload></p>
 <p><strong>服务器必须按照接收请求的顺序发送对这些管道化请求的响应</strong>。<br>如果服务端在处理 A 请求时耗时比较长，那么后续的请求的处理都会被阻塞住，这称为「队头堵塞」。<br><strong>HTTP&#x2F;1.1 管道解决了请求的队头阻塞，但是没有解决响应的队头阻塞</strong>。</p>
 <h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><h4 id="传输上"><a href="#传输上" class="headerlink" title="传输上"></a>传输上</h4><ul>
 <li>数据量大</li>
@@ -457,7 +457,7 @@
           </div>
 
 <h5 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h5><p><strong>数字签名算法</strong>，使用<strong>非对称加密算法</strong>加密哈希值（摘要）。</p>
-<p><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D.webp" srcset="/img/loading.gif" lazyload></p>
 <p>由于中间人无法将数据使用私钥加密，其伪造的hash无法被公钥解密，所以可以得知数据被人替换过了。</p>
 <h3 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h3><p>摘要和签名算法已经保证了数据不会被篡改和不被冒充。<br>但实现过程中存在漏洞：公钥的获取，客户端需要根据公钥来识别数字签名。</p>
 <p><strong>数字证书认证机构</strong>CA：</p>
@@ -465,14 +465,14 @@
 <li>服务器可以将自己的公钥注册到CA机构，CA使用私钥将其加密后颁发数字证书。</li>
 <li>客户端根据服务器发送的证书和公钥，将其使用CA公钥解开对比即可得知其是否得到了CA的信任。</li>
 </ul>
-<p>验证流程：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/22-%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.webp" srcset="/img/loading.gif" lazyload></p>
+<p>验证流程：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/22-%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.webp" srcset="/img/loading.gif" lazyload></p>
 <h3 id="TLS握手阶段"><a href="#TLS握手阶段" class="headerlink" title="TLS握手阶段"></a>TLS握手阶段</h3><p>SSL&#x2F;TLS 协议基本流程：</p>
 <ul>
 <li>客户端向服务器索要并验证服务器的公钥。</li>
 <li>双方协商生产「会话秘钥」。</li>
 <li>双方采用「会话秘钥」进行加密通信。</li>
 </ul>
-<p>TLS 的「握手阶段」涉及<strong>四次</strong>通信，使用不同的密钥交换算法，TLS 握手流程也会不一样的，现在常用的密钥交换算法有两种：<a target="_blank" rel="noopener" href="https://xiaolincoding.com/network/2_http/https_rsa.html">RSA 算法</a>和 <a target="_blank" rel="noopener" href="https://xiaolincoding.com/network/2_http/https_ecdhe.html">ECDHE 算法</a>。<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/23-HTTPS%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.webp" srcset="/img/loading.gif" lazyload></p>
+<p>TLS 的「握手阶段」涉及<strong>四次</strong>通信，使用不同的密钥交换算法，TLS 握手流程也会不一样的，现在常用的密钥交换算法有两种：<a target="_blank" rel="noopener" href="https://xiaolincoding.com/network/2_http/https_rsa.html">RSA 算法</a>和 <a target="_blank" rel="noopener" href="https://xiaolincoding.com/network/2_http/https_ecdhe.html">ECDHE 算法</a>。<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/23-HTTPS%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.webp" srcset="/img/loading.gif" lazyload></p>
 <p>TLS 协议建立的详细流程：<br><em>1. ClientHello</em><br>客户端向服务器发送以下信息（明文）：<br>（1）客户端生产的随机数（<code>Client Random</code>），后面用于生成「会话秘钥」条件之一。<br>（2）客户端支持的 TLS 协议版本，如 TLS 1.2 版本。<br>（3）客户端支持的密码套件列表，如 RSA 加密算法。</p>
 <p><em>2. SeverHello</em><br>服务器回应的内容有如下内容（明文）：<br>（1）服务器生产的随机数（<code>Server Random</code>），也是后面用于生产「会话秘钥」条件之一。<br>（2）确认 TLS 协议版本，如果浏览器不支持，则关闭加密通信。<br>（3）确认的密码套件列表，如 RSA 加密算法。<br>（4）服务器的数字证书。</p>
 <p><em>3.客户端回应</em><br>验证CA证书，取出公钥，并使用公钥加密（服务器公钥加密）：<br>（1）一个随机数（<code>pre-master key</code>）。该随机数会被服务器公钥加密。<br>（2）加密通信算法改变通知，表示随后的信息都将用「会话秘钥」加密通信。<br>（3）客户端握手结束通知，表示客户端的握手阶段已经结束。这一项同时把之前所有内容的发生的数据做个摘要，用来供服务端校验。</p>
@@ -487,7 +487,7 @@
 <h3 id="TLS握手算法"><a href="#TLS握手算法" class="headerlink" title="TLS握手算法"></a>TLS握手算法</h3><p>不同的密钥交换算法，TLS 的握手过程可能会有一些区别。</p>
 <h4 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h4><p>传统的 TLS 握手基本都是使用 RSA 算法来实现密钥交换的。<br>过程：与上面的过程相同。<br><strong>使用 RSA 密钥协商算法的最大问题是不支持前向保密</strong>。一旦服务端的私钥泄漏了，过去被第三方截获的所有TLS通讯密文都会被破解。</p>
 <h4 id="ECDHE"><a href="#ECDHE" class="headerlink" title="ECDHE"></a>ECDHE</h4><p>ECDHE 密钥协商算法是 DH 算法演进过来的。</p>
-<h5 id="离散对数"><a href="#离散对数" class="headerlink" title="离散对数"></a>离散对数</h5><p>DH算法是非对称加密算法， 因此它可以用于密钥交换，该算法的核心数学思想是<strong>离散对数</strong>。<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E7%A6%BB%E6%95%A3%E5%AF%B9%E6%95%B0.webp" srcset="/img/loading.gif" lazyload></p>
+<h5 id="离散对数"><a href="#离散对数" class="headerlink" title="离散对数"></a>离散对数</h5><p>DH算法是非对称加密算法， 因此它可以用于密钥交换，该算法的核心数学思想是<strong>离散对数</strong>。<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E7%A6%BB%E6%95%A3%E5%AF%B9%E6%95%B0.webp" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li>底数a和模数p是离散对数的公共参数，也就说是公开的。</li>
 <li>b是真数（私钥），i是对数（公钥）。</li>
@@ -512,10 +512,10 @@
             <ul><li>ECDHE每次动态生成密钥和公钥，支持前向保密。</li><li>客户端可以在三次握手后就开始传输数据</li><li>在 TLS 第2次握手中，会出现服务器端发出的「Server Key Exchange」消息，而 RSA 握手过程没有该消息；</li><li>依然使用了RSA算法，服务端使用了static私钥签名曲线公钥，用于保证发送的公钥不被篡改。</li></ul>
           </div>
 
-<h4 id="证书校核"><a href="#证书校核" class="headerlink" title="证书校核"></a>证书校核</h4><p>颁发和校核流程：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E8%AF%81%E4%B9%A6%E7%9A%84%E6%A0%A1%E9%AA%8C.webp" srcset="/img/loading.gif" lazyload><br>信任链：<br>我们向 CA 申请的证书一般不是根证书签发的，而是由中间证书签发的。<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E7%94%A8%E6%88%B7%E4%BF%A1%E4%BB%BB.webp" srcset="/img/loading.gif" lazyload><br>验证链：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E8%AF%81%E4%B9%A6%E9%93%BE.webp" srcset="/img/loading.gif" lazyload></p>
+<h4 id="证书校核"><a href="#证书校核" class="headerlink" title="证书校核"></a>证书校核</h4><p>颁发和校核流程：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E8%AF%81%E4%B9%A6%E7%9A%84%E6%A0%A1%E9%AA%8C.webp" srcset="/img/loading.gif" lazyload><br>信任链：<br>我们向 CA 申请的证书一般不是根证书签发的，而是由中间证书签发的。<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E7%94%A8%E6%88%B7%E4%BF%A1%E4%BB%BB.webp" srcset="/img/loading.gif" lazyload><br>验证链：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E8%AF%81%E4%B9%A6%E9%93%BE.webp" srcset="/img/loading.gif" lazyload></p>
 <p>为何不直接由Root CA验证：<br><strong>这是为了确保根证书的绝对安全性，将根证书隔离地越严格越好，不然根证书如果失守了，那么整个信任链都会有问题。</strong></p>
 <h3 id="TLS1-3"><a href="#TLS1-3" class="headerlink" title="TLS1.3"></a>TLS1.3</h3><p><em>SSL&#x2F;TLS</em>：SSL 是 “_Secure Sockets Layer_” 的缩写，中文叫做「安全套接层」。其标准化之后的名称改为 TLS（ “_Transport Layer Security_” ），即「传输层安全协议」。</p>
-<p>_TLS1.3_：TLS1.3相对TLS1.2做了优化，其只需要<strong>3次</strong>握手：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/tls1.2and1.3-1.webp" srcset="/img/loading.gif" lazyload></p>
+<p>_TLS1.3_：TLS1.3相对TLS1.2做了优化，其只需要<strong>3次</strong>握手：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/tls1.2and1.3-1.webp" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li><strong>对于密钥交换算法，废除了不支持前向安全性的 RSA 和 DH 算法，只支持 ECDHE 算法</strong>。</li>
 <li>由于省去算法协商，直接互相交换使用相同算法计算过的公钥即完成了交换和计算，从而只需要3次握手（1RTT）。</li>
@@ -526,7 +526,7 @@
 <li>TLS 握手协议就是我们前面说的 TLS 四次握手的过程，负责协商加密算法和生成对称密钥，后续用此密钥来保护应用程序数据（即 HTTP 数据）；</li>
 <li>TLS 记录协议负责保护应用程序数据并验证其完整性和来源，所以对 HTTP 数据加密是使用记录协议；</li>
 </ul>
-<p>TLS 记录协议主要负责消息（HTTP 数据）的压缩，加密及数据的认证，过程如下图：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E8%AE%B0%E5%BD%95%E5%8D%8F%E8%AE%AE.webp" srcset="/img/loading.gif" lazyload></p>
+<p>TLS 记录协议主要负责消息（HTTP 数据）的压缩，加密及数据的认证，过程如下图：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E8%AE%B0%E5%BD%95%E5%8D%8F%E8%AE%AE.webp" srcset="/img/loading.gif" lazyload></p>
 <p>具体过程如下：</p>
 <ul>
 <li>切割消息并压缩。</li>
@@ -535,13 +535,13 @@
 <li>加上由数据类型、版本号、压缩后的长度组成的报头就是最终的报文数据。</li>
 </ul>
 <p>记录协议完成后，最终的报文数据将传递到传输控制协议 (TCP) 层进行传输。</p>
-<h3 id="HTTPS一定可靠吗？"><a href="#HTTPS一定可靠吗？" class="headerlink" title="HTTPS一定可靠吗？"></a>HTTPS一定可靠吗？</h3><p>如前面说的，HTTPS中CA部分是为了防止冒充，但这里中间人自己有证书，从而实现了服务代理。但这种证书其实是非法的，只要用户不主动接受非法证书，否则是不会出现问题的。<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/https%E4%B8%AD%E9%97%B4%E4%BA%BA.drawio.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="HTTPS一定可靠吗？"><a href="#HTTPS一定可靠吗？" class="headerlink" title="HTTPS一定可靠吗？"></a>HTTPS一定可靠吗？</h3><p>如前面说的，HTTPS中CA部分是为了防止冒充，但这里中间人自己有证书，从而实现了服务代理。但这种证书其实是非法的，只要用户不主动接受非法证书，否则是不会出现问题的。<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/https%E4%B8%AD%E9%97%B4%E4%BA%BA.drawio.webp" srcset="/img/loading.gif" lazyload></p>
 <p><strong>HTTPS 协议本身到目前为止还是没有任何漏洞的，即使你成功进行中间人攻击，本质上是利用了客户端的漏洞（用户点击继续访问或者被恶意导入伪造的根证书），并不是 HTTPS 不够安全</strong>。</p>
 <h3 id="如何避免被抓包"><a href="#如何避免被抓包" class="headerlink" title="如何避免被抓包"></a>如何避免被抓包</h3><ol>
 <li>不点击允许非法证书（中间人攻击）</li>
 <li>HTTPS双向认证，即服务端也要验证客户端信息。</li>
 </ol>
-<h2 id="HTTP-x2F-2"><a href="#HTTP-x2F-2" class="headerlink" title="HTTP&#x2F;2"></a>HTTP&#x2F;2</h2><p><strong>HTTP&#x2F;2协议是基于HTTPS的。</strong><br>其兼容了老版本的HTTP&#x2F;1.1，即其仍使用http表示明文，https表示加密，而浏览器和服务器可以在背后实现协议升级。<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/25-HTTP2.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="HTTP-x2F-2"><a href="#HTTP-x2F-2" class="headerlink" title="HTTP&#x2F;2"></a>HTTP&#x2F;2</h2><p><strong>HTTP&#x2F;2协议是基于HTTPS的。</strong><br>其兼容了老版本的HTTP&#x2F;1.1，即其仍使用http表示明文，https表示加密，而浏览器和服务器可以在背后实现协议升级。<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/25-HTTP2.webp" srcset="/img/loading.gif" lazyload></p>
 <h3 id="特性-1"><a href="#特性-1" class="headerlink" title="特性"></a>特性</h3><ul>
 <li>头部压缩</li>
 <li>二进制格式</li>
@@ -562,14 +562,14 @@
 </li>
 <li>Huffman 编码（压缩算法）；</li>
 </ul>
-<p>另外由于使用二进制表达，也不需要冒号空格和末尾的<code>\r\n</code>作为分隔符了，改用表示字符串长度（Value Length）来分割 Index 和 Value，一个Header字段：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206224430.png" srcset="/img/loading.gif" lazyload></p>
-<h3 id="二进制格式"><a href="#二进制格式" class="headerlink" title="二进制格式"></a>二进制格式</h3><p>头信息和数据体都直接为二进制格式，并且统称为帧（frame）：<strong>头信息帧（Headers Frame）和数据帧（Data Frame）</strong>。<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%B8%A7.webp" srcset="/img/loading.gif" lazyload><br>这样解析数据时，可以直接解析二进制文件。</p>
-<h4 id="二进制帧结构"><a href="#二进制帧结构" class="headerlink" title="二进制帧结构"></a>二进制帧结构</h4><p><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206224926.png" srcset="/img/loading.gif" lazyload></p>
+<p>另外由于使用二进制表达，也不需要冒号空格和末尾的<code>\r\n</code>作为分隔符了，改用表示字符串长度（Value Length）来分割 Index 和 Value，一个Header字段：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206224430.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="二进制格式"><a href="#二进制格式" class="headerlink" title="二进制格式"></a>二进制格式</h3><p>头信息和数据体都直接为二进制格式，并且统称为帧（frame）：<strong>头信息帧（Headers Frame）和数据帧（Data Frame）</strong>。<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%B8%A7.webp" srcset="/img/loading.gif" lazyload><br>这样解析数据时，可以直接解析二进制文件。</p>
+<h4 id="二进制帧结构"><a href="#二进制帧结构" class="headerlink" title="二进制帧结构"></a>二进制帧结构</h4><p><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206224926.png" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li>帧长度后面的一个字节是表示<strong>帧的类型</strong>，HTTP&#x2F;2 总共定义了 10 种类型的帧，一般分为<strong>数据帧</strong>和<strong>控制帧</strong>两类。</li>
 <li>帧类型后面的一个字节是<strong>标志位</strong>，可以保存 8 个标志位，用于携带简单的控制信息，比如：</li>
 </ul>
-<h3 id="并发传输"><a href="#并发传输" class="headerlink" title="并发传输"></a>并发传输</h3><p>HTTP&#x2F;1.1使用<strong>请求-响应</strong>模型，因此会产生对头阻塞。<br>HTTP&#x2F;2引入了Stream概念，使多个stream复用一个TCP连接：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/stream.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="并发传输"><a href="#并发传输" class="headerlink" title="并发传输"></a>并发传输</h3><p>HTTP&#x2F;1.1使用<strong>请求-响应</strong>模型，因此会产生对头阻塞。<br>HTTP&#x2F;2引入了Stream概念，使多个stream复用一个TCP连接：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/stream.webp" srcset="/img/loading.gif" lazyload></p>
 <blockquote>
 <p>1 个 TCP 连接包含多个 Stream。<br>1 个 Stream 里可以包含多个 Message。<br>1 个 Message 对应 HTTP&#x2F;1 中的1个请求或响应，可以包含多个Frame</p>
 </blockquote>
@@ -579,13 +579,13 @@
 <li>相同Stream的frame必须有序发送。</li>
 </ul>
 <p>HTTP&#x2F;2 还可以对每个 Stream 设置不同<strong>优先级</strong>，在枕头中的标志位展示。</p>
-<p><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/http2%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/http2%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8.webp" srcset="/img/loading.gif" lazyload></p>
 <h3 id="服务器推送"><a href="#服务器推送" class="headerlink" title="服务器推送"></a>服务器推送</h3><p>客户端和服务器<strong>双方都可以建立Stream</strong>， Stream ID也是有区别的：</p>
 <ul>
 <li>客户端建立的Stream必须是奇数号。</li>
 <li>服务器建立的Stream必须是偶数号。</li>
 </ul>
-<p>如下：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206191054.png" srcset="/img/loading.gif" lazyload><br>应用有：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/push.webp" srcset="/img/loading.gif" lazyload><br>主动推送css文件。</p>
+<p>如下：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206191054.png" srcset="/img/loading.gif" lazyload><br>应用有：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/push.webp" srcset="/img/loading.gif" lazyload><br>主动推送css文件。</p>
 <h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><p>服务器在推送资源时，会通过 <code>PUSH_PROMISE</code> 帧传输 HTTP 头部，并通过帧中的 <code>Promised Stream ID</code> 字段告知客户端，接下来会在哪个偶数号 Stream 中发送包体。</p>
 <h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><ul>
 <li>还是存在队头阻塞问题，问题出在TCP层面。</li>
@@ -602,18 +602,18 @@
 </ul>
 <p><em>1、无队头阻塞</em><br>多路复用，类似HTTP&#x2F;2的stream，但不受限于TCP了。<br><strong>当某个流发生丢包时，只会阻塞这个流，其他流不会受到影响，因此不存在队头阻塞问题</strong>。<br>这与 HTTP&#x2F;2 不同，HTTP&#x2F;2 只要某个流中的数据包丢失了，其他流也会因此受影响（TCP）。</p>
 <p><em>2、更快的连接建立</em><br>HTTP&#x2F;3 在传输数据前需要 QUIC 协议3次握手，需要 1 RTT。握手的目的是为确认双方的「连接 ID」，连接迁移就是基于连接 ID 实现的。</p>
-<p>HTTP&#x2F;3 的 QUIC 协议并不是与 TLS 分层，其内部包含了 TLS，它在自己的帧会携带 TLS 里的“记录”，再加上 QUIC 使用的是 <strong>TLS&#x2F;1.3</strong>，因此仅需 <strong>1 个 RTT</strong> 就可以「同时」完成建立连接与密钥协商，如下图：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/28-HTTP3%E4%BA%A4%E4%BA%92%E6%AC%A1%E6%95%B0.webp" srcset="/img/loading.gif" lazyload><br>对于第二次连接，应用数据包+QUIC(TLS+连接信息)，可以实现0-RTT。</p>
-<p>以下是TCP+TLS1.2，TCL+TLS1.3，QUIC三种情况在首次和再次需要的RTT时间：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206210341.png" srcset="/img/loading.gif" lazyload></p>
+<p>HTTP&#x2F;3 的 QUIC 协议并不是与 TLS 分层，其内部包含了 TLS，它在自己的帧会携带 TLS 里的“记录”，再加上 QUIC 使用的是 <strong>TLS&#x2F;1.3</strong>，因此仅需 <strong>1 个 RTT</strong> 就可以「同时」完成建立连接与密钥协商，如下图：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/28-HTTP3%E4%BA%A4%E4%BA%92%E6%AC%A1%E6%95%B0.webp" srcset="/img/loading.gif" lazyload><br>对于第二次连接，应用数据包+QUIC(TLS+连接信息)，可以实现0-RTT。</p>
+<p>以下是TCP+TLS1.2，TCL+TLS1.3，QUIC三种情况在首次和再次需要的RTT时间：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206210341.png" srcset="/img/loading.gif" lazyload></p>
 <div class="note note-primary">
             <p><strong>RTT是针对客户端建立连接耗时。</strong><br>TCP+TLS1.2：</p><ul><li>首次：TCP三次握手+TLS四次握手（TCP第三次握手合并，最后合并为6个）：3RTT</li><li>再次：TCP三次握手+TLS两次握手（TCP第三次握手合并，TLS使用Session技术，合并为4个）：2RTT<br>TCP+TLS1.3:</li><li>首次：TCP三次握手+TLS三次握手（TCP第三次握手合并，合并为5个）：2RTT</li><li>再次：TCP三次握手+TLS零次握手（TLS使用Ticket技术，合并为3个）：1RTT<br>QUIC+TLC1.3：</li><li>首次：QUIC三次握手+TLS三次握手（全程合并，为3个）：1RTT</li><li>再次：QUIC一次握手+TLS零次握手（QUIC和TLS使用Ticket技术，合并为1个）：0RTT</li></ul><p>RTT记忆：32,21,10。</p>
           </div>
 
-<p><em>3、连接迁移</em><br>四元组确定一个独立的<strong>TCP</strong>连接。<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206211242.png" srcset="/img/loading.gif" lazyload><br><strong>当移动设备的网络从 4G 切换到 WIFI 时，意味着 IP 地址变化了，那么就必须要断开连接，然后重新建立连接</strong>。</p>
+<p><em>3、连接迁移</em><br>四元组确定一个独立的<strong>TCP</strong>连接。<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206211242.png" srcset="/img/loading.gif" lazyload><br><strong>当移动设备的网络从 4G 切换到 WIFI 时，意味着 IP 地址变化了，那么就必须要断开连接，然后重新建立连接</strong>。</p>
 <p>QUIC 协议没通过<strong>连接 ID</strong> 来标记通信的两个端点。只要仍保有上下文信息（比如连接 ID、TLS 密钥等），就可以“无缝”地复用原连接，达到了<strong>连接迁移</strong>的功能。</p>
 <blockquote>
 <p>QUIC比较新，而又是基于 UDP 实现的，如果网络设备无法识别这个是 QUIC 包，那么就会当作 UDP包，然后被丢弃。</p>
 </blockquote>
-<h4 id="帧格式对比"><a href="#帧格式对比" class="headerlink" title="帧格式对比"></a>帧格式对比</h4><p><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206225705.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="帧格式对比"><a href="#帧格式对比" class="headerlink" title="帧格式对比"></a>帧格式对比</h4><p><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206225705.png" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li>类型：大体上分为数据帧和控制帧两大类，Headers 帧（HTTP 头部）和 DATA 帧（HTTP 包体）属于数据帧。</li>
 <li>压缩：头部压缩算法这一方面也做了升级，升级成了 <strong>QPACK</strong>。</li>
@@ -638,7 +638,7 @@
 <li>_合并请求_；</li>
 <li>_延迟发送请求_；</li>
 </ul>
-<h3 id="减少重定向请求次数"><a href="#减少重定向请求次数" class="headerlink" title="减少重定向请求次数"></a>减少重定向请求次数</h3><p><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%87%8D%E5%AE%9A%E5%90%91.webp" srcset="/img/loading.gif" lazyload><br><strong>重定向的工作交由代理服务器完成，就能减少 HTTP 请求次数了</strong><br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%87%8D%E5%AE%9A%E5%90%91.webp" srcset="/img/loading.gif" lazyload><br>代理服务器已知重定向规则后，直接实现代理访问：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%87%8D%E5%AE%9A%E5%90%912.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="减少重定向请求次数"><a href="#减少重定向请求次数" class="headerlink" title="减少重定向请求次数"></a>减少重定向请求次数</h3><p><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%87%8D%E5%AE%9A%E5%90%91.webp" srcset="/img/loading.gif" lazyload><br><strong>重定向的工作交由代理服务器完成，就能减少 HTTP 请求次数了</strong><br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%87%8D%E5%AE%9A%E5%90%91.webp" srcset="/img/loading.gif" lazyload><br>代理服务器已知重定向规则后，直接实现代理访问：<br><img src="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%87%8D%E5%AE%9A%E5%90%912.webp" srcset="/img/loading.gif" lazyload></p>
 <h3 id="合并请求"><a href="#合并请求" class="headerlink" title="合并请求"></a>合并请求</h3><p>多个小请求合并成大请求，body一样但避免了header重复。</p>
 <p>另外，HTTP&#x2F;1.1的管道模式默认不开启，即存在请求队头阻塞问题，浏览器的处理方式是多开几个TCP连接一起访问，所以合并请求也可以减少TCP连接的数量。</p>
 <h3 id="延迟发送请求"><a href="#延迟发送请求" class="headerlink" title="延迟发送请求"></a>延迟发送请求</h3><p>即懒加载。</p>
@@ -764,7 +764,7 @@
   
     <span>></span>
     
-  <a href="/categories/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E9%9D%A2%E8%AF%95/" class="category-chain-item">面试</a>
+  <a href="/categories/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/" class="category-chain-item">网络协议</a>
   
   
 
@@ -798,13 +798,13 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>计算机网络-HTTP</div>
-      <div>http://example.com/2023/02/06/八股/计算机网络/计网面试/计算机网络-HTTP/</div>
+      <div>http://example.com/2023/02/06/八股/计算机网络/网络协议/计算机网络-HTTP/</div>
     </div>
     <div class="license-meta">
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>Jireyo</div>
+          <div>Jin</div>
         </div>
       
       
@@ -842,7 +842,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/" title="计算机网络-TCP">
+                      <a href="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/" title="计算机网络-TCP">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">计算机网络-TCP</span>
                         <span class="visible-mobile">上一篇</span>

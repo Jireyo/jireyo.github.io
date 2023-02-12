@@ -13,20 +13,20 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#727679">
-  <meta name="author" content="Jireyo">
+  <meta name="author" content="Jin">
   <meta name="keywords" content="">
   
     <meta name="description" content="一、数组数组本身性质数组本身的索引的具有信息量，对于很多数组类题目要求时间复杂度O(n)，常量空间复杂度的问题，可以考虑把遍历信息保存在数组内部：  对数组指定索引做标记：加负号； 将数组元素与指定索引元素做交换；  例题41. 缺失的第一个正数442. 数组中重复的数据  标记出现了的数的正负号 将出现了的数交换到对于索引上  数组排序数组中的排序有以下功能：  相同的数字在一起，实现去重 连续">
 <meta property="og:type" content="article">
 <meta property="og:title" content="算法专题（数组）">
 <meta property="og:url" content="http://example.com/2023/02/08/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E6%95%B0%E7%BB%84%E4%B8%8E%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%89/index.html">
-<meta property="og:site_name" content="Jireyo&#39;s Blog">
+<meta property="og:site_name" content="Jin&#39;s Blog">
 <meta property="og:description" content="一、数组数组本身性质数组本身的索引的具有信息量，对于很多数组类题目要求时间复杂度O(n)，常量空间复杂度的问题，可以考虑把遍历信息保存在数组内部：  对数组指定索引做标记：加负号； 将数组元素与指定索引元素做交换；  例题41. 缺失的第一个正数442. 数组中重复的数据  标记出现了的数的正负号 将出现了的数交换到对于索引上  数组排序数组中的排序有以下功能：  相同的数字在一起，实现去重 连续">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/Pasted%20image%2020230209172457.png">
 <meta property="article:published_time" content="2023-02-08T08:53:22.000Z">
-<meta property="article:modified_time" content="2023-02-09T13:07:42.182Z">
-<meta property="article:author" content="Jireyo">
+<meta property="article:modified_time" content="2023-02-12T17:28:29.496Z">
+<meta property="article:author" content="Jin">
 <meta property="article:tag" content="算法">
 <meta property="article:tag" content="数组">
 <meta property="article:tag" content="字符串">
@@ -35,7 +35,7 @@
   
   
   
-  <title>算法专题（数组） - Jireyo&#39;s Blog</title>
+  <title>算法专题（数组） - Jin&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -103,7 +103,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong style="color: #fff;">Jireyo&#39;s Blog</strong>
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -359,6 +359,7 @@
 <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-window-substring/">76. 最小覆盖子串</a><br>自己做时总想记录特殊字符的位置，实现快速搜索，实际上直接遍历过去速度更快。另外，数组总是比hash更方便。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> String <span class="hljs-title function_">minWindow</span><span class="hljs-params">(String s, String t)</span> &#123;<br>    <span class="hljs-comment">//t中出现字符记录</span><br>    <span class="hljs-type">int</span>[] time = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">128</span>];<br>    <span class="hljs-type">boolean</span>[] mark = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[<span class="hljs-number">128</span>];<br>    <span class="hljs-type">int</span> <span class="hljs-variable">need</span> <span class="hljs-operator">=</span> t.length();<br><br>    <span class="hljs-comment">//结果记录</span><br>    <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>,right = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">int</span> <span class="hljs-variable">length</span> <span class="hljs-operator">=</span> s.length()+<span class="hljs-number">1</span>;<br><br>    <span class="hljs-comment">//初始化</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;need;i++)&#123;<br>        mark[t.charAt(i)] = <span class="hljs-literal">true</span>;<br>        time[t.charAt(i)]++;<br>    &#125;<br>    <span class="hljs-type">int</span> <span class="hljs-variable">start</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br><br>    <span class="hljs-comment">//开始遍历</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;s.length();i++)&#123;<br>        time[s.charAt(i)]--;<br>        <span class="hljs-keyword">if</span>(mark[s.charAt(i)]&amp;&amp;time[s.charAt(i)]&gt;=<span class="hljs-number">0</span>)&#123;<br>            need--;<br>        &#125;<br>        <span class="hljs-comment">//若满足条件，收缩左侧到刚好不满足条件，并计算值</span><br>        <span class="hljs-keyword">if</span>(need == <span class="hljs-number">0</span>)&#123;<br>            <span class="hljs-keyword">while</span>(need == <span class="hljs-number">0</span>)&#123;<br>                time[s.charAt(start)]++;<br>                <span class="hljs-keyword">if</span>(mark[s.charAt(start)]&amp;&amp;time[s.charAt(start)]&gt;<span class="hljs-number">0</span>)&#123;<br>                    need++;<br>                &#125;<br>                start++;<br>            &#125;<br>            <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> i-start+<span class="hljs-number">2</span>;<br>            <span class="hljs-keyword">if</span>(l&lt;length)&#123;<br>                left = start-<span class="hljs-number">1</span>;<br>                right = i+<span class="hljs-number">1</span>;<br>                length = l;<br>            &#125;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">if</span>(length == s.length()+<span class="hljs-number">1</span>)&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> s.substring(left,right);<br>&#125;<br></code></pre></td></tr></table></figure>
 
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-sum-circular-subarray/">918. 环形子数组的最大和</a><br>动态规划：由于每个状态只依赖前一个状态，所以也可以使用变量代替。<br>同时计算最小、最大和的情况即可，主要排除计算最小和时选择了所有数字的情况。</p>
 <h3 id="子数组与问题转化"><a href="#子数组与问题转化" class="headerlink" title="子数组与问题转化"></a>子数组与问题转化</h3><p>一般我们有如下定义：<br><strong>子数组</strong>：连续的子数组。<br><strong>子序列</strong>：不连续的子数组。</p>
 <p>求满足要求子数组的问题一般分两类解决方案：</p>
 <ul>
@@ -557,7 +558,7 @@
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>Jireyo</div>
+          <div>Jin</div>
         </div>
       
       
@@ -605,7 +606,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/02/08/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-IP/" title="计算机网络-IP">
+                      <a href="/2023/02/08/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-IP/" title="计算机网络-IP">
                         <span class="hidden-mobile">计算机网络-IP</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>

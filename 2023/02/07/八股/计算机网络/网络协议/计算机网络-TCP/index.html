@@ -13,79 +13,79 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#727679">
-  <meta name="author" content="Jireyo">
+  <meta name="author" content="Jin">
   <meta name="keywords" content="">
   
     <meta name="description" content="一、TCP基本认识TCP 是一个工作在传输层的可靠数据传输的服务，它能确保接收端接收的网络包是无损坏、无间隔、非冗余和按序的。 头格式不常见的：URG：紧急标志位，优先处理紧急数据。PSH：催促标志位，发送方立即发送，接受方立即接受。 特点TCP 是面向连接的、可靠的、基于字节流的传输层通信协议。   面向连接：一定是「一对一」才能连接，不能像 UDP 协议可以一个主机同时向多个主机发送消息，也就">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机网络-TCP">
-<meta property="og:url" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/index.html">
-<meta property="og:site_name" content="Jireyo&#39;s Blog">
+<meta property="og:url" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
 <meta property="og:description" content="一、TCP基本认识TCP 是一个工作在传输层的可靠数据传输的服务，它能确保接收端接收的网络包是无损坏、无间隔、非冗余和按序的。 头格式不常见的：URG：紧急标志位，优先处理紧急数据。PSH：催促标志位，发送方立即发送，接受方立即接受。 特点TCP 是面向连接的、可靠的、基于字节流的传输层通信协议。   面向连接：一定是「一对一」才能连接，不能像 UDP 协议可以一个主机同时向多个主机发送消息，也就">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207114528.png">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207114528.png">
 <meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL3hpYW9saW5jb2Rlci9JbWFnZUhvc3QyLyVFOCVBRSVBMSVFNyVBRSU5NyVFNiU5QyVCQSVFNyVCRCU5MSVFNyVCQiU5Qy9UQ1AtJUU0JUI4JTg5JUU2JUFDJUExJUU2JThGJUExJUU2JTg5JThCJUU1JTkyJThDJUU1JTlCJTlCJUU2JUFDJUExJUU2JThDJUE1JUU2JTg5JThCLzguanBn?x-oss-process=image/format,png">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207115025.png">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207115107.png">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207131104.png">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207115326.png">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207115616.png">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/tcp%E5%92%8Cudp%E6%A8%A1%E5%9D%97.webp">
-<meta property="og:image" content="http://example.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.drawio.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207120323.png">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207120334.png">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207120342.png">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207120725.png">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207121527.png">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/isn%E7%9B%B8%E5%90%8C.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/45.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207141651.png">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230208001214.png">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/%E7%AC%AC%E4%BA%8C%E6%AC%A1%E6%8C%A5%E6%89%8B%E4%B8%A2%E5%A4%B1.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/%E7%AC%AC%E4%B8%89%E6%AC%A1%E6%8C%A5%E6%89%8B%E4%B8%A2%E5%A4%B1.drawio.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207155558.png">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207155715.png">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/socket%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.drawio.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207160043.png">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/9.webp">
-<meta property="og:image" content="http://example.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/11.webp">
-<meta property="og:image" content="http://example.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/12.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/19.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/20.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/22.webp">
-<meta property="og:image" content="http://example.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/23.webp">
-<meta property="og:image" content="http://example.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/24.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/55.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/61.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/27.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/28.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/29.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/%E6%8B%A5%E5%A1%9E%E5%8F%91%E7%94%9F-%E5%BF%AB%E9%80%9F%E9%87%8D%E4%BC%A0.drawio.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230208000041.png">
-<meta property="og:image" content="http://example.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/3.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/28-1.webp">
-<meta property="og:image" content="http://example.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/4.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/38.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/ab3283383013b707d1420b6b4cb8517c.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207231330.jpg">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207232037.png">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207232139.jpg">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/http2%E9%98%BB%E5%A1%9E.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/quic%E6%97%A0%E9%98%BB%E5%A1%9E.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207222312.png">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/tcp%E5%92%8Cudp%E6%A8%A1%E5%9D%97-1.webp">
-<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/%E7%AB%AF%E5%8F%A3%E9%80%89%E6%8B%A9.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207115025.png">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207115107.png">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207131104.png">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207115326.png">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207115616.png">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/tcp%E5%92%8Cudp%E6%A8%A1%E5%9D%97.webp">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.drawio.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207120323.png">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207120334.png">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207120342.png">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207120725.png">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207121527.png">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/isn%E7%9B%B8%E5%90%8C.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/45.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207141651.png">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230208001214.png">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/%E7%AC%AC%E4%BA%8C%E6%AC%A1%E6%8C%A5%E6%89%8B%E4%B8%A2%E5%A4%B1.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/%E7%AC%AC%E4%B8%89%E6%AC%A1%E6%8C%A5%E6%89%8B%E4%B8%A2%E5%A4%B1.drawio.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207155558.png">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207155715.png">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/socket%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.drawio.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207160043.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-IP/9.webp">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/11.webp">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/12.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/19.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/20.webp">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-IP/22.webp">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/23.webp">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/24.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/55.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/61.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/27.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/28.webp">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-IP/29.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/%E6%8B%A5%E5%A1%9E%E5%8F%91%E7%94%9F-%E5%BF%AB%E9%80%9F%E9%87%8D%E4%BC%A0.drawio.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230208000041.png">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/3.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/28-1.webp">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/4.webp">
+<meta property="og:image" content="http://example.com/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-IP/38.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/ab3283383013b707d1420b6b4cb8517c.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207231330.jpg">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207232037.png">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207232139.jpg">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/http2%E9%98%BB%E5%A1%9E.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/quic%E6%97%A0%E9%98%BB%E5%A1%9E.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207222312.png">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/tcp%E5%92%8Cudp%E6%A8%A1%E5%9D%97-1.webp">
+<meta property="og:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/%E7%AB%AF%E5%8F%A3%E9%80%89%E6%8B%A9.webp">
 <meta property="article:published_time" content="2023-02-07T03:43:25.000Z">
-<meta property="article:modified_time" content="2023-02-07T16:30:18.180Z">
-<meta property="article:author" content="Jireyo">
+<meta property="article:modified_time" content="2023-02-12T16:53:36.480Z">
+<meta property="article:author" content="Jin">
 <meta property="article:tag" content="八股">
 <meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207114528.png">
+<meta name="twitter:image" content="http://example.com/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207114528.png">
   
   
   
-  <title>计算机网络-TCP - Jireyo&#39;s Blog</title>
+  <title>计算机网络-TCP - Jin&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -153,7 +153,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong style="color: #fff;">Jireyo&#39;s Blog</strong>
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -340,7 +340,7 @@
               <div class="markdown-body">
                 
                 <h1 id="一、TCP基本认识"><a href="#一、TCP基本认识" class="headerlink" title="一、TCP基本认识"></a>一、TCP基本认识</h1><p>TCP 是一个工作在<strong>传输层</strong>的<strong>可靠</strong>数据传输的服务，它能确保接收端接收的网络包是<strong>无损坏、无间隔、非冗余和按序的。</strong></p>
-<h2 id="头格式"><a href="#头格式" class="headerlink" title="头格式"></a>头格式</h2><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207114528.png" srcset="/img/loading.gif" lazyload><br>不常见的：<br>URG：紧急标志位，优先处理紧急数据。<br>PSH：催促标志位，发送方立即发送，接受方立即接受。</p>
+<h2 id="头格式"><a href="#头格式" class="headerlink" title="头格式"></a>头格式</h2><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207114528.png" srcset="/img/loading.gif" lazyload><br>不常见的：<br>URG：紧急标志位，优先处理紧急数据。<br>PSH：催促标志位，发送方立即发送，接受方立即接受。</p>
 <h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><p>TCP 是<strong>面向连接的、可靠的、基于字节流</strong>的传输层通信协议。</p>
 <p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL3hpYW9saW5jb2Rlci9JbWFnZUhvc3QyLyVFOCVBRSVBMSVFNyVBRSU5NyVFNiU5QyVCQSVFNyVCRCU5MSVFNyVCQiU5Qy9UQ1AtJUU0JUI4JTg5JUU2JUFDJUExJUU2JThGJUExJUU2JTg5JThCJUU1JTkyJThDJUU1JTlCJTlCJUU2JUFDJUExJUU2JThDJUE1JUU2JTg5JThCLzguanBn?x-oss-process=image/format,png" srcset="/img/loading.gif" lazyload></p>
 <ul>
@@ -348,13 +348,13 @@
 <li><strong>可靠的</strong>：无论的网络链路中出现了怎样的链路变化，TCP 都可以保证一个报文一定能够到达接收端；</li>
 <li><strong>字节流</strong>：用户消息通过 TCP 协议传输时，消息可能会被操作系统「分组」成多个的 TCP 报文。</li>
 </ul>
-<h2 id="什么是TCP连接"><a href="#什么是TCP连接" class="headerlink" title="什么是TCP连接"></a>什么是TCP连接</h2><p>简单来说就是，<strong>用于保证可靠性和流量控制维护的某些状态信息，这些信息的组合，包括 Socket、序列号和窗口大小称为连接。</strong><br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207115025.png" srcset="/img/loading.gif" lazyload><br>所以我们可以知道，建立一个 TCP 连接是需要客户端与服务端达成上述三个信息的共识。</p>
+<h2 id="什么是TCP连接"><a href="#什么是TCP连接" class="headerlink" title="什么是TCP连接"></a>什么是TCP连接</h2><p>简单来说就是，<strong>用于保证可靠性和流量控制维护的某些状态信息，这些信息的组合，包括 Socket、序列号和窗口大小称为连接。</strong><br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207115025.png" srcset="/img/loading.gif" lazyload><br>所以我们可以知道，建立一个 TCP 连接是需要客户端与服务端达成上述三个信息的共识。</p>
 <ul>
 <li><strong>Socket</strong>：由 IP 地址和端口号组成</li>
 <li><strong>序列号</strong>：用来解决乱序问题等</li>
 <li><strong>窗口大小</strong>：用来做流量控制</li>
 </ul>
-<h3 id="唯一确定一个-TCP-连接呢？"><a href="#唯一确定一个-TCP-连接呢？" class="headerlink" title="唯一确定一个 TCP 连接呢？"></a>唯一确定一个 TCP 连接呢？</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207115107.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="唯一确定一个-TCP-连接呢？"><a href="#唯一确定一个-TCP-连接呢？" class="headerlink" title="唯一确定一个 TCP 连接呢？"></a>唯一确定一个 TCP 连接呢？</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207115107.png" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li><strong>文件描述符限制</strong>，每个TCP连接都是一个文件，如果文件描述符被占满了，会发生 Too many open files。Linux 对可打开的文件描述符的数量分别作了三个方面的限制：<ul>
 <li><strong>系统级</strong>：当前系统可打开的最大数量，通过 <code>cat /proc/sys/fs/file-max</code> 查看；</li>
@@ -364,7 +364,7 @@
 </li>
 <li><strong>内存限制</strong>，每个 TCP 连接都要占用一定内存，操作系统的内存是有限的，如果内存资源被占满后，会发生 OOM。</li>
 </ul>
-<h3 id="IP层会分片，为什么TCP层还需要MSS？"><a href="#IP层会分片，为什么TCP层还需要MSS？" class="headerlink" title="IP层会分片，为什么TCP层还需要MSS？"></a>IP层会分片，为什么TCP层还需要MSS？</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207131104.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="IP层会分片，为什么TCP层还需要MSS？"><a href="#IP层会分片，为什么TCP层还需要MSS？" class="headerlink" title="IP层会分片，为什么TCP层还需要MSS？"></a>IP层会分片，为什么TCP层还需要MSS？</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207131104.png" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li><code>MTU</code>：一个网络包的最大长度，以太网中一般为 <code>1500</code> 字节；</li>
 <li><code>MSS</code>：除去 IP 和 TCP 头部之后，一个网络包所能容纳的 TCP 数据的最大长度；</li>
@@ -387,7 +387,7 @@
 <li>特殊字符作为边界，如HTTP；</li>
 <li>自定义消息结构；</li>
 </ul>
-<h2 id="UDP-和-TCP-有什么区别呢"><a href="#UDP-和-TCP-有什么区别呢" class="headerlink" title="UDP 和 TCP 有什么区别呢"></a>UDP 和 TCP 有什么区别呢</h2><h3 id="UDP头部"><a href="#UDP头部" class="headerlink" title="UDP头部"></a>UDP头部</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207115326.png" srcset="/img/loading.gif" lazyload><br><strong>TCP 和 UDP 区别：</strong><br><em>1. 连接</em></p>
+<h2 id="UDP-和-TCP-有什么区别呢"><a href="#UDP-和-TCP-有什么区别呢" class="headerlink" title="UDP 和 TCP 有什么区别呢"></a>UDP 和 TCP 有什么区别呢</h2><h3 id="UDP头部"><a href="#UDP头部" class="headerlink" title="UDP头部"></a>UDP头部</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207115326.png" srcset="/img/loading.gif" lazyload><br><strong>TCP 和 UDP 区别：</strong><br><em>1. 连接</em></p>
 <ul>
 <li>TCP 是面向连接的传输层协议，传输数据前先要建立连接。</li>
 <li>UDP 是不需要连接，即刻传输数据。</li>
@@ -433,16 +433,16 @@
 <li>视频、音频等多媒体通信；</li>
 <li>广播通信；</li>
 </ul>
-<p><strong>为什么UDP头部有「包长度」字段，而 TCP 头部则没有「包长度」字段呢？</strong><br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207115616.png" srcset="/img/loading.gif" lazyload><br>UDP的头部理论上也可这样省略，保留的原因可能有：</p>
+<p><strong>为什么UDP头部有「包长度」字段，而 TCP 头部则没有「包长度」字段呢？</strong><br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207115616.png" srcset="/img/loading.gif" lazyload><br>UDP的头部理论上也可这样省略，保留的原因可能有：</p>
 <ul>
 <li>保持4的整数倍。</li>
 <li>当年UDP协议可能不是基于IP发展的。</li>
 </ul>
-<p><strong>TCP和UDP可以使用同一个端口吗？</strong><br>可以，两者是不同的模块。<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/tcp%E5%92%8Cudp%E6%A8%A1%E5%9D%97.webp" srcset="/img/loading.gif" lazyload></p>
-<h1 id="二、TCP连接建立"><a href="#二、TCP连接建立" class="headerlink" title="二、TCP连接建立"></a>二、TCP连接建立</h1><h2 id="TCP-三次握手过程"><a href="#TCP-三次握手过程" class="headerlink" title="TCP 三次握手过程"></a>TCP 三次握手过程</h2><p><img src="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.drawio.webp" srcset="/img/loading.gif" lazyload></p>
-<h3 id="第一次握手"><a href="#第一次握手" class="headerlink" title="第一次握手"></a>第一次握手</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207120323.png" srcset="/img/loading.gif" lazyload></p>
-<h3 id="第二次握手"><a href="#第二次握手" class="headerlink" title="第二次握手"></a>第二次握手</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207120334.png" srcset="/img/loading.gif" lazyload></p>
-<h3 id="第三次握手"><a href="#第三次握手" class="headerlink" title="第三次握手"></a>第三次握手</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207120342.png" srcset="/img/loading.gif" lazyload><br><strong>第三次握手是可以携带数据的，前两次握手是不可以携带数据的。</strong></p>
+<p><strong>TCP和UDP可以使用同一个端口吗？</strong><br>可以，两者是不同的模块。<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/tcp%E5%92%8Cudp%E6%A8%A1%E5%9D%97.webp" srcset="/img/loading.gif" lazyload></p>
+<h1 id="二、TCP连接建立"><a href="#二、TCP连接建立" class="headerlink" title="二、TCP连接建立"></a>二、TCP连接建立</h1><h2 id="TCP-三次握手过程"><a href="#TCP-三次握手过程" class="headerlink" title="TCP 三次握手过程"></a>TCP 三次握手过程</h2><p><img src="/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.drawio.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="第一次握手"><a href="#第一次握手" class="headerlink" title="第一次握手"></a>第一次握手</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207120323.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="第二次握手"><a href="#第二次握手" class="headerlink" title="第二次握手"></a>第二次握手</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207120334.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="第三次握手"><a href="#第三次握手" class="headerlink" title="第三次握手"></a>第三次握手</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207120342.png" srcset="/img/loading.gif" lazyload><br><strong>第三次握手是可以携带数据的，前两次握手是不可以携带数据的。</strong></p>
 <blockquote>
 <p>第三次握手如果丢了可以建立连接吗？<br>可以，因为之后的普通数据报文也有ACK标志符和ack号。</p>
 </blockquote>
@@ -454,7 +454,7 @@
 <li>三次握手才可以同步双方的初始序列号</li>
 <li>三次握手才可以避免资源浪费</li>
 </ul>
-<p><em>原因一：避免历史连接</em><br><strong>在两次握手的情况下，服务端没有中间状态给客户端来阻止历史连接，导致服务端可能建立一个历史连接，造成资源浪费</strong>。<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207120725.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>原因一：避免历史连接</em><br><strong>在两次握手的情况下，服务端没有中间状态给客户端来阻止历史连接，导致服务端可能建立一个历史连接，造成资源浪费</strong>。<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207120725.png" srcset="/img/loading.gif" lazyload></p>
 <blockquote>
 <p>如果新SYN在RST前到达，则回 <a target="_blank" rel="noopener" href="https://xiaolincoding.com/network/3_tcp/challenge_ack.html">Challenge Ack</a>报文给客户端，<strong>这个 ack 报文并不是确认收到「新 SYN 报文」的，而是上一次的 ack 确认号</strong>，也就是91（90+1）。</p>
 <ul>
@@ -462,7 +462,7 @@
 <li>服务端收到新的SYN报文时会要求对方传输正确的SYN，即回复上一次ACK报文。</li>
 </ul>
 </blockquote>
-<p><em>原因二：同步双方初始序列号</em><br><strong>要确保双方的初始序列号能被可靠的同步。</strong> 在两次握手的情况下，只能保证客户端的SYN被接受。<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207121527.png" srcset="/img/loading.gif" lazyload><br>TCP 协议的通信双方，都必须维护一个「序列号」，序列号是可靠传输的一个关键因素，它的作用：</p>
+<p><em>原因二：同步双方初始序列号</em><br><strong>要确保双方的初始序列号能被可靠的同步。</strong> 在两次握手的情况下，只能保证客户端的SYN被接受。<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207121527.png" srcset="/img/loading.gif" lazyload><br>TCP 协议的通信双方，都必须维护一个「序列号」，序列号是可靠传输的一个关键因素，它的作用：</p>
 <ul>
 <li>接收方可以<strong>去除重复</strong>的数据；</li>
 <li>接收方可以根据数据包的序列号<strong>按序</strong>接收；</li>
@@ -482,7 +482,7 @@
 <li>为了防止历史报文被下一个相同四元组的连接接收（主要方面）；</li>
 <li>为了安全性，防止黑客伪造的相同序列号的TCP报文被对方接收；</li>
 </ul>
-<p>如果每次都是相同的初始化序列号，历史的滞留信息可能被下一次相同四元组的连接接受：<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/isn%E7%9B%B8%E5%90%8C.webp" srcset="/img/loading.gif" lazyload></p>
+<p>如果每次都是相同的初始化序列号，历史的滞留信息可能被下一次相同四元组的连接接受：<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/isn%E7%9B%B8%E5%90%8C.webp" srcset="/img/loading.gif" lazyload></p>
 <h3 id="如何随机初始化序列号？"><a href="#如何随机初始化序列号？" class="headerlink" title="如何随机初始化序列号？"></a>如何随机初始化序列号？</h3><p>起始<code>ISN</code>是基于时钟的，每4微秒+1，转一圈要4.55个小时。<br>ISN &#x3D; M + F(localhost, localport, remotehost, remoteport)。</p>
 <ul>
 <li><code>M</code> 是一个计时器，这个计时器每隔 4 微秒加 1。</li>
@@ -511,7 +511,7 @@
 </ul>
 <h3 id="第三次握手丢失"><a href="#第三次握手丢失" class="headerlink" title="第三次握手丢失"></a>第三次握手丢失</h3><p><strong>ACK 报文是不会有重传的，当 ACK 丢失了，就由对方重传对应的报文</strong>。即服务器超时重传。</p>
 <h3 id="客户端二次握手后超时重传"><a href="#客户端二次握手后超时重传" class="headerlink" title="客户端二次握手后超时重传"></a>客户端二次握手后超时重传</h3><p>TCP 建立连接后的<strong>数据包传输</strong>，最大超时重传次数是由 <code>tcp_retries2</code> 指定，默认值是 15 次。</p>
-<h2 id="TCP快速连接"><a href="#TCP快速连接" class="headerlink" title="TCP快速连接"></a>TCP快速连接</h2><p>Linux 3.7内核版本中，提供了<strong>TCP Fast Open</strong>功能。<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/45.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="TCP快速连接"><a href="#TCP快速连接" class="headerlink" title="TCP快速连接"></a>TCP快速连接</h2><p>Linux 3.7内核版本中，提供了<strong>TCP Fast Open</strong>功能。<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/45.webp" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li>第一次连接：第二次握手时服务器给客户端传<code>Cookie</code>（加密）</li>
 <li>第二次连接：第一次握手时客户端直接发送<code>Cookie</code>，省去了一次握手。</li>
@@ -523,7 +523,7 @@
 <li>2 作为服务端使用 Fast Open 功能</li>
 <li>3 无论作为客户端还是服务器，都可以使用 Fast Open 功能</li>
 </ul>
-<h1 id="三、TCP连接断开"><a href="#三、TCP连接断开" class="headerlink" title="三、TCP连接断开"></a>三、TCP连接断开</h1><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207141651.png" srcset="/img/loading.gif" lazyload><br><strong>主动关闭连接的，才有 TIME_WAIT 状态。</strong></p>
+<h1 id="三、TCP连接断开"><a href="#三、TCP连接断开" class="headerlink" title="三、TCP连接断开"></a>三、TCP连接断开</h1><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207141651.png" srcset="/img/loading.gif" lazyload><br><strong>主动关闭连接的，才有 TIME_WAIT 状态。</strong></p>
 <h2 id="为什么是四次挥手？"><a href="#为什么是四次挥手？" class="headerlink" title="为什么是四次挥手？"></a>为什么是四次挥手？</h2><ul>
 <li>关闭连接时，客户端向服务端发送 <code>FIN</code> 时，仅仅表示客户端不再发送数据了但是还能接收数据。</li>
 <li>服务端收到客户端的 <code>FIN</code> 报文时，先回一个 <code>ACK</code> 应答报文，而服务端可能还有数据需要处理和发送，等服务端不再发送数据时，才发送 <code>FIN</code> 报文给客户端来表示同意现在关闭连接。</li>
@@ -539,7 +539,7 @@
           </div>
 
 <ul>
-<li>如果客户端调用<code>close</code>使Socket引用计数为0时，关闭连接，客户端发送FIN后若再接收到服务器的数据消息，会发送RST给服务端，从而不会经历四次握手。<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230208001214.png" srcset="/img/loading.gif" lazyload></li>
+<li>如果客户端调用<code>close</code>使Socket引用计数为0时，关闭连接，客户端发送FIN后若再接收到服务器的数据消息，会发送RST给服务端，从而不会经历四次握手。<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230208001214.png" srcset="/img/loading.gif" lazyload></li>
 <li>如果客户端调用shutdown关闭写方向，正常4次挥手，关闭读方向的化，不会发送FIN，因为FIN的语义是我方不再发送信息。</li>
 </ul>
 <h2 id="TCP四次握手变三次"><a href="#TCP四次握手变三次" class="headerlink" title="TCP四次握手变三次"></a>TCP四次握手变三次</h2><p>服务端「<strong>没有数据要发送」并且「开启了 TCP 延迟确认机制」，那么第二和第三次挥手就会合并传输，这样就出现了三次挥手。</strong></p>
@@ -559,8 +559,8 @@
 <li>客户端重传FIN报文，类似第一次挥手丢失。</li>
 <li>服务端不会主动重传ACK，接收到重传的FIN会再次进行二次挥手。</li>
 </ul>
-<p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/%E7%AC%AC%E4%BA%8C%E6%AC%A1%E6%8C%A5%E6%89%8B%E4%B8%A2%E5%A4%B1.webp" srcset="/img/loading.gif" lazyload></p>
-<h3 id="第三次挥手丢失"><a href="#第三次挥手丢失" class="headerlink" title="第三次挥手丢失"></a>第三次挥手丢失</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/%E7%AC%AC%E4%B8%89%E6%AC%A1%E6%8C%A5%E6%89%8B%E4%B8%A2%E5%A4%B1.drawio.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/%E7%AC%AC%E4%BA%8C%E6%AC%A1%E6%8C%A5%E6%89%8B%E4%B8%A2%E5%A4%B1.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="第三次挥手丢失"><a href="#第三次挥手丢失" class="headerlink" title="第三次挥手丢失"></a>第三次挥手丢失</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/%E7%AC%AC%E4%B8%89%E6%AC%A1%E6%8C%A5%E6%89%8B%E4%B8%A2%E5%A4%B1.drawio.webp" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li>服务端重传，机制类似第一次握手（<code>tcp_orphan_retries</code>）</li>
 <li>客户端超过<code>tcp_fin_timeout</code>（默认60s）后关闭</li>
@@ -645,15 +645,15 @@
 <p>客户端也有保活机制！</p>
 </blockquote>
 <h2 id="服务端进程突然崩溃"><a href="#服务端进程突然崩溃" class="headerlink" title="服务端进程突然崩溃"></a>服务端进程突然崩溃</h2><p>主机操作系统自动完成挥手释放连接。</p>
-<h1 id="四、Socket编程"><a href="#四、Socket编程" class="headerlink" title="四、Socket编程"></a>四、Socket编程</h1><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207155558.png" srcset="/img/loading.gif" lazyload><br>这里需要注意的是，服务端调用 <code>accept</code> 时，连接成功了会返回一个<strong>已完成连接的 socket</strong>，后续用来传输数据。<br>所以，监听的 socket 和真正用来传送数据的 socket，是「两个」 socket，一个叫作<strong>监听 socket</strong>，一个叫作<strong>已完成连接 socket</strong>。</p>
-<p>过程：<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207155715.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="四、Socket编程"><a href="#四、Socket编程" class="headerlink" title="四、Socket编程"></a>四、Socket编程</h1><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207155558.png" srcset="/img/loading.gif" lazyload><br>这里需要注意的是，服务端调用 <code>accept</code> 时，连接成功了会返回一个<strong>已完成连接的 socket</strong>，后续用来传输数据。<br>所以，监听的 socket 和真正用来传送数据的 socket，是「两个」 socket，一个叫作<strong>监听 socket</strong>，一个叫作<strong>已完成连接 socket</strong>。</p>
+<p>过程：<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207155715.png" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li>半连接队列（SYN 队列）：接收到一个 SYN 建立连接请求，处于 SYN_RCVD 状态；</li>
 <li>全连接队列（Accpet 队列）：已完成 TCP 三次握手过程，处于 ESTABLISHED 状态；<br>在 Linux 内核 2.2 之后，backlog 变成 accept 队列，也就是已完成连接建立的队列长度，<strong>所以现在通常认为 backlog 是 accept 队列。</strong></li>
 </ul>
 <p><strong>但是上限值是内核参数 somaxconn 的大小，也就说 accpet 队列长度 &#x3D; min(backlog, somaxconn)，详情见下面的全连接，半连接章节。</strong></p>
-<h3 id="accept-发生在三次握手的哪一步？"><a href="#accept-发生在三次握手的哪一步？" class="headerlink" title="accept 发生在三次握手的哪一步？"></a>accept 发生在三次握手的哪一步？</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/socket%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.drawio.webp" srcset="/img/loading.gif" lazyload><br><strong>客户端 connect 成功返回是在第二次握手，服务端 accept 成功返回是在三次握手成功之后。</strong></p>
-<h3 id="close-断开流程"><a href="#close-断开流程" class="headerlink" title="close 断开流程"></a>close 断开流程</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207160043.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="accept-发生在三次握手的哪一步？"><a href="#accept-发生在三次握手的哪一步？" class="headerlink" title="accept 发生在三次握手的哪一步？"></a>accept 发生在三次握手的哪一步？</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/socket%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.drawio.webp" srcset="/img/loading.gif" lazyload><br><strong>客户端 connect 成功返回是在第二次握手，服务端 accept 成功返回是在三次握手成功之后。</strong></p>
+<h3 id="close-断开流程"><a href="#close-断开流程" class="headerlink" title="close 断开流程"></a>close 断开流程</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207160043.png" srcset="/img/loading.gif" lazyload></p>
 <p>服务端接收到了 FIN 报文，TCP 协议栈会为 FIN 包插入一个文件结束符 <code>EOF</code> 到接收缓冲区中，应用程序可以通过 <code>read</code> 调用来感知这个 FIN 包。这个 <code>EOF</code> 会被<strong>放在已排队等候的其他已接收的数据之后</strong>，这就意味着服务端需要处理这种异常情况，因为 EOF 表示在该连接上再无额外数据到达。此时，服务端进入 CLOSE_WAIT 状态；</p>
 <h3 id="没有-accept，能建立-TCP-连接吗？"><a href="#没有-accept，能建立-TCP-连接吗？" class="headerlink" title="没有 accept，能建立 TCP 连接吗？"></a>没有 accept，能建立 TCP 连接吗？</h3><p><strong>可以</strong>，accept的作用就是从全连接队列中取出连接，然后对其进行读写，但其不参与连接的建立。</p>
 <h3 id="没有-listen，能建立-TCP-连接吗？"><a href="#没有-listen，能建立-TCP-连接吗？" class="headerlink" title="没有 listen，能建立 TCP 连接吗？"></a>没有 listen，能建立 TCP 连接吗？</h3><p><strong>可以</strong>：</p>
@@ -675,14 +675,14 @@
 <li>过大导致传输效率低下</li>
 </ul>
 <p>每次超时重传时将下次超时时间时间设置为先前的2倍。</p>
-<h4 id="RTO计算"><a href="#RTO计算" class="headerlink" title="RTO计算"></a>RTO计算</h4><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/9.webp" srcset="/img/loading.gif" lazyload><br>在 Linux 下，<strong>α &#x3D; 0.125，β &#x3D; 0.25， μ &#x3D; 1，∂ &#x3D; 4</strong>。</p>
+<h4 id="RTO计算"><a href="#RTO计算" class="headerlink" title="RTO计算"></a>RTO计算</h4><p><img src="/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-IP/9.webp" srcset="/img/loading.gif" lazyload><br>在 Linux 下，<strong>α &#x3D; 0.125，β &#x3D; 0.25， μ &#x3D; 1，∂ &#x3D; 4</strong>。</p>
 <h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><p>慢</p>
 <h3 id="快速重传"><a href="#快速重传" class="headerlink" title="快速重传"></a>快速重传</h3><p>客户端回复ACK中携带确认收到的报文，连续3个相同ACK表示通知系统重传。</p>
 <h4 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h4><p>无法确定重传一条还是重传一批</p>
-<h3 id="SACK方法"><a href="#SACK方法" class="headerlink" title="SACK方法"></a>SACK方法</h3><p><strong>选择性确认</strong>。<br>它<strong>可以将已收到的数据的信息发送给「发送方」</strong>，这样发送方就可以知道哪些数据收到了，哪些数据没收到，知道了这些信息，就可以<strong>只重传丢失的数据</strong>。<br><img src="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/11.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="SACK方法"><a href="#SACK方法" class="headerlink" title="SACK方法"></a>SACK方法</h3><p><strong>选择性确认</strong>。<br>它<strong>可以将已收到的数据的信息发送给「发送方」</strong>，这样发送方就可以知道哪些数据收到了，哪些数据没收到，知道了这些信息，就可以<strong>只重传丢失的数据</strong>。<br><img src="/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/11.webp" srcset="/img/loading.gif" lazyload></p>
 <p>要支持<code>SACK</code>需要双方都开启该功能。</p>
 <h3 id="DSACK方法"><a href="#DSACK方法" class="headerlink" title="DSACK方法"></a>DSACK方法</h3><p>Duplicate SACK 又称 <code>D-SACK</code>。<strong>将接受到的重复消息发送给「发送方」</strong>。</p>
-<p>可以配合超时重传或快传，指出哪些数据重复了：<br><img src="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/12.webp" srcset="/img/loading.gif" lazyload></p>
+<p>可以配合超时重传或快传，指出哪些数据重复了：<br><img src="/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/12.webp" srcset="/img/loading.gif" lazyload></p>
 <p><code>D-SACK</code> 有这么几个好处：</p>
 <ol>
 <li>可以让「发送方」知道，是发出去的包丢了，还是接收方回应的 ACK 包丢了;</li>
@@ -692,8 +692,8 @@
 <p>在 Linux 下可以通过 <code>net.ipv4.tcp_dsack</code> 参数开启&#x2F;关闭这个功能（Linux 2.4 后默认打开）。</p>
 <h2 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a>滑动窗口</h2><p>在滑动窗口模式下，不用逐一等待ACK，实现批量发送、<strong>累计确认</strong>或者<strong>累计应答</strong>。</p>
 <h3 id="窗口大小"><a href="#窗口大小" class="headerlink" title="窗口大小"></a>窗口大小</h3><p>TCP 头里有一个字段叫 <code>Window</code>：这个字段是接收端告诉发送端自己还有多少缓冲区可以接收数据。</p>
-<h3 id="发送方滑动窗口"><a href="#发送方滑动窗口" class="headerlink" title="发送方滑动窗口"></a>发送方滑动窗口</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/19.webp" srcset="/img/loading.gif" lazyload><br>通过一个窗口大小，两个绝对指针可以得到可用窗口大小。</p>
-<h3 id="接受方滑动窗口"><a href="#接受方滑动窗口" class="headerlink" title="接受方滑动窗口"></a>接受方滑动窗口</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/20.webp" srcset="/img/loading.gif" lazyload><br>通过一个窗口大小，一个绝对指针表示窗口。每个小窗口内部记录了是否接受到了数据。</p>
+<h3 id="发送方滑动窗口"><a href="#发送方滑动窗口" class="headerlink" title="发送方滑动窗口"></a>发送方滑动窗口</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/19.webp" srcset="/img/loading.gif" lazyload><br>通过一个窗口大小，两个绝对指针可以得到可用窗口大小。</p>
+<h3 id="接受方滑动窗口"><a href="#接受方滑动窗口" class="headerlink" title="接受方滑动窗口"></a>接受方滑动窗口</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/20.webp" srcset="/img/loading.gif" lazyload><br>通过一个窗口大小，一个绝对指针表示窗口。每个小窗口内部记录了是否接受到了数据。</p>
 <div class="note note-primary">
             <p>接收窗口的大小是<strong>约等于</strong>发送窗口的大小的。</p>
           </div>
@@ -702,14 +702,14 @@
 <li>发送方接受到ACK后移动并调整窗口大小</li>
 <li>接受方接受到Seq后移动窗口并调整窗口大小。</li>
 </ul>
-<h3 id="操作系统缓冲区"><a href="#操作系统缓冲区" class="headerlink" title="操作系统缓冲区"></a>操作系统缓冲区</h3><p>发送窗口和接收窗口中所存放的字节数，都放在<strong>操作系统内存缓冲区</strong>中。<br><em>情况一：应用程序读取慢</em><br>当接受方的应用程序没有及时获取已经送达的消息时：<br>接受方滑动窗口的右端不变，左端移动 应用程序取走的比特数量，实现窗口缩小。<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/22.webp" srcset="/img/loading.gif" lazyload></p>
-<p><em>情况二：服务器资源紧张</em><br>操作系统可能会直接减少了接收缓冲区大小：<br>这种情况下，可能另发送方调整后的右端比之前的右端还前面。<br><img src="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/23.webp" srcset="/img/loading.gif" lazyload><br>即发送方发送了接受方不在窗口内的消息，导致数据包丢失。</p>
+<h3 id="操作系统缓冲区"><a href="#操作系统缓冲区" class="headerlink" title="操作系统缓冲区"></a>操作系统缓冲区</h3><p>发送窗口和接收窗口中所存放的字节数，都放在<strong>操作系统内存缓冲区</strong>中。<br><em>情况一：应用程序读取慢</em><br>当接受方的应用程序没有及时获取已经送达的消息时：<br>接受方滑动窗口的右端不变，左端移动 应用程序取走的比特数量，实现窗口缩小。<br><img src="/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-IP/22.webp" srcset="/img/loading.gif" lazyload></p>
+<p><em>情况二：服务器资源紧张</em><br>操作系统可能会直接减少了接收缓冲区大小：<br>这种情况下，可能另发送方调整后的右端比之前的右端还前面。<br><img src="/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/23.webp" srcset="/img/loading.gif" lazyload><br>即发送方发送了接受方不在窗口内的消息，导致数据包丢失。</p>
 <p><strong>为了防止这种情况发生，TCP 规定是不允许同时减少缓存又收缩窗口的，而是采用先收缩窗口，过段时间再减少缓存，这样就可以避免了丢包情况。</strong></p>
 <div class="note note-primary">
             <p>即保证右端不会左移动。</p>
           </div>
 
-<h3 id="窗口关闭"><a href="#窗口关闭" class="headerlink" title="窗口关闭"></a>窗口关闭</h3><p>窗口大小为0时，发送端会停止发送，等到有空间了又会回复通知可以扩大发送窗口，但若报文丢失，双方会无限等待。<br><img src="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/24.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="窗口关闭"><a href="#窗口关闭" class="headerlink" title="窗口关闭"></a>窗口关闭</h3><p>窗口大小为0时，发送端会停止发送，等到有空间了又会回复通知可以扩大发送窗口，但若报文丢失，双方会无限等待。<br><img src="/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/24.webp" srcset="/img/loading.gif" lazyload></p>
 <h4 id="零窗口探测报文"><a href="#零窗口探测报文" class="headerlink" title="零窗口探测报文"></a>零窗口探测报文</h4><p>TCP 为每个连接设有一个持续定时器，<strong>只要 TCP 连接一方收到对方的零窗口通知，就启动持续计时器。</strong><br><strong>窗口探测 (Window probe) 报文</strong>，而对方在确认这个探测报文时，给出自己现在的接收窗口大小。</p>
 <blockquote>
 <p>窗口探测的次数一般为 3 次，每次大约 30-60 秒（不同的实现可能会不一样）。如果 3 次过后接收窗口还是 0 的话，有的 TCP 实现就会发 <code>RST</code> 报文来中断连接。</p>
@@ -735,7 +735,7 @@
 </ul>
 </li>
 </ul>
-<p>Nagle：<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/55.webp" srcset="/img/loading.gif" lazyload></p>
+<p>Nagle：<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/55.webp" srcset="/img/loading.gif" lazyload></p>
 <p><strong>接收方得满足「不通告小窗口给发送方」+ 发送方开启 Nagle 算法，才能避免糊涂窗口综合症</strong>。</p>
 <h4 id="延迟确认-1"><a href="#延迟确认-1" class="headerlink" title="延迟确认"></a>延迟确认</h4><ul>
 <li>当有响应数据要发送时，ACK会随着响应数据一起立刻发送给对方。</li>
@@ -743,7 +743,7 @@
 <li>如果在延迟等待发送ACK期间，对方的第二个数据报文又到达了，这时就会立刻发送ACK。</li>
 </ul>
 <p><strong>与窗口无关但也可以提高效率，避免小报文，同时其可能导致四次挥手变成三次。</strong></p>
-<h4 id="Nagle算法和延迟确认混合使用"><a href="#Nagle算法和延迟确认混合使用" class="headerlink" title="Nagle算法和延迟确认混合使用"></a>Nagle算法和延迟确认混合使用</h4><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/61.webp" srcset="/img/loading.gif" lazyload></p>
+<h4 id="Nagle算法和延迟确认混合使用"><a href="#Nagle算法和延迟确认混合使用" class="headerlink" title="Nagle算法和延迟确认混合使用"></a>Nagle算法和延迟确认混合使用</h4><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/61.webp" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li>接受方因为延迟确认算法不回复。</li>
 <li>发送方因为Nagle算法，不发送后续数据。</li>
@@ -766,8 +766,8 @@
 <li>拥塞发生</li>
 <li>快速恢复</li>
 </ul>
-<h3 id="慢启动"><a href="#慢启动" class="headerlink" title="慢启动"></a>慢启动</h3><p><strong>当发送方每收到一个ACK，拥塞窗口 cwnd 的大小就会加 1。</strong><br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/27.webp" srcset="/img/loading.gif" lazyload></p>
-<h3 id="拥塞避免"><a href="#拥塞避免" class="headerlink" title="拥塞避免"></a>拥塞避免</h3><p>当拥塞窗口 <code>cwnd</code> 「超过」慢启动门限 <code>ssthresh</code> 就会进入拥塞避免算法。<br><strong>每当收到一个 ACK 时，cwnd 增加 1&#x2F;cwnd。</strong><br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/28.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="慢启动"><a href="#慢启动" class="headerlink" title="慢启动"></a>慢启动</h3><p><strong>当发送方每收到一个ACK，拥塞窗口 cwnd 的大小就会加 1。</strong><br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/27.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="拥塞避免"><a href="#拥塞避免" class="headerlink" title="拥塞避免"></a>拥塞避免</h3><p>当拥塞窗口 <code>cwnd</code> 「超过」慢启动门限 <code>ssthresh</code> 就会进入拥塞避免算法。<br><strong>每当收到一个 ACK 时，cwnd 增加 1&#x2F;cwnd。</strong><br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/28.webp" srcset="/img/loading.gif" lazyload></p>
 <h3 id="拥塞发送"><a href="#拥塞发送" class="headerlink" title="拥塞发送"></a>拥塞发送</h3><p>当触发了重传机制，也就进入了「拥塞发生算法」。</p>
 <ul>
 <li>超时重传：<ul>
@@ -776,7 +776,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/29.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-IP/29.webp" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li>快速重传：<ul>
 <li><code>cwnd = cwnd/2</code> ，也就是设置为原来的一半;</li>
@@ -792,7 +792,7 @@
 <li>如果再收到重复的 ACK，那么 cwnd 增加 1，当收到新的ACK后，说明丢失数据包已经完成发送，恢复拥塞避免状态。</li>
 <li><code>cwnd = ssthresh</code></li>
 </ul>
-<p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/%E6%8B%A5%E5%A1%9E%E5%8F%91%E7%94%9F-%E5%BF%AB%E9%80%9F%E9%87%8D%E4%BC%A0.drawio.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/%E6%8B%A5%E5%A1%9E%E5%8F%91%E7%94%9F-%E5%BF%AB%E9%80%9F%E9%87%8D%E4%BC%A0.drawio.webp" srcset="/img/loading.gif" lazyload></p>
 <div class="note note-primary">
             <p>快速恢复的观点是，丢失包是意外情况，想要尽快恢复正常，因此：</p><ol><li>更新门限和窗口（快速重传）。</li><li>紧急加大3个门限希望多发一些数据包。</li><li>当接受到新ACK后说明状态恢复，此时门限再回归拥塞避免状态。</li></ol>
           </div>
@@ -800,9 +800,9 @@
 <h1 id="六、TCP半连接队列和全连接队列"><a href="#六、TCP半连接队列和全连接队列" class="headerlink" title="六、TCP半连接队列和全连接队列"></a>六、TCP半连接队列和全连接队列</h1><p>在 TCP 三次握手的时候，Linux 内核会维护两个队列，分别是：</p>
 <ul>
 <li>半连接队列，也称 SYN 队列，是一个Hash表，便于常数时间取出连接；</li>
-<li>全连接队列，也称 accept 队列，是一个链表，只需取出头节点；<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230208000041.png" srcset="/img/loading.gif" lazyload></li>
+<li>全连接队列，也称 accept 队列，是一个链表，只需取出头节点；<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230208000041.png" srcset="/img/loading.gif" lazyload></li>
 </ul>
-<p><img src="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/3.webp" srcset="/img/loading.gif" lazyload><br>不管是半连接队列还是全连接队列，都有最大长度限制，超过限制时，<strong>内核会直接丢弃，或返回 <code>RST</code> 包</strong>。</p>
+<p><img src="/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/3.webp" srcset="/img/loading.gif" lazyload><br>不管是半连接队列还是全连接队列，都有最大长度限制，超过限制时，<strong>内核会直接丢弃，或返回 <code>RST</code> 包</strong>。</p>
 <h2 id="TCP全连接溢出"><a href="#TCP全连接溢出" class="headerlink" title="TCP全连接溢出"></a>TCP全连接溢出</h2><p><strong>当超过了 TCP 最大全连接队列，服务端则会丢掉后续进来的 TCP 连接。</strong><br>丢掉的 TCP 连接的个数会被统计起来。</p>
 <h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><h4 id="修改策略"><a href="#修改策略" class="headerlink" title="修改策略"></a>修改策略</h4><p>丢弃连接是默认行为，可以通过调整策略修改行为。<br>tcp_abort_on_overflow 共有两个值分别是 0 和 1，其分别表示：</p>
 <ul>
@@ -821,7 +821,7 @@
 </ul>
 <p><strong>其长度为max_syn_backlog和全连接队列长度中较小者的两倍</strong>。</p>
 <p>溢出时，看是否开启了tcp_syncookies设置判断是否丢弃。</p>
-<h3 id="舍弃行为"><a href="#舍弃行为" class="headerlink" title="舍弃行为"></a>舍弃行为</h3><p>对消息的舍弃行为行为如下：<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/28-1.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="舍弃行为"><a href="#舍弃行为" class="headerlink" title="舍弃行为"></a>舍弃行为</h3><p>对消息的舍弃行为行为如下：<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/28-1.webp" srcset="/img/loading.gif" lazyload></p>
 <ol>
 <li>半连接队列满了，没开tcp_syncookies，丢弃</li>
 <li>全连接队列满了，且存在尚未重传第二次握手的连接（说明全连接队列还有有效连接），丢弃</li>
@@ -853,7 +853,7 @@
 </ul>
 <p><em>方式三：开启 net.ipv4.tcp_syncookies</em><br>不再保存半连接，而是给客户端发cookie，收到客户端ACK后再验证cookie。</p>
 <p><em>方式四：减少 SYN+ACK 重传次数</em><br>此时会出现大量的二次握手重传，应该减少重传次数。</p>
-<h1 id="七、TCP优化"><a href="#七、TCP优化" class="headerlink" title="七、TCP优化"></a>七、TCP优化</h1><p><img src="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/4.webp" srcset="/img/loading.gif" lazyload></p>
+<h1 id="七、TCP优化"><a href="#七、TCP优化" class="headerlink" title="七、TCP优化"></a>七、TCP优化</h1><p><img src="/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/4.webp" srcset="/img/loading.gif" lazyload></p>
 <h2 id="握手优化"><a href="#握手优化" class="headerlink" title="握手优化"></a>握手优化</h2><h3 id="客户端优化"><a href="#客户端优化" class="headerlink" title="客户端优化"></a>客户端优化</h3><p>适当调低重传次数<strong>tcp_syn_retries</strong></p>
 <h3 id="服务端优化"><a href="#服务端优化" class="headerlink" title="服务端优化"></a>服务端优化</h3><h4 id="半连接"><a href="#半连接" class="headerlink" title="半连接"></a>半连接</h4><ul>
 <li>扩大半连接队列大小：<strong>tcp_max_syn_backlog</strong>、<strong>somaxconn</strong>、<strong>backlog</strong></li>
@@ -897,7 +897,7 @@
 <blockquote>
 <p>另外，close如果被迅速调用，四次挥手可能变成三次。<br>也可以理解成延时响应。</p>
 </blockquote>
-<p><strong>如果双方同时关闭连接？</strong><br>同时关闭，出现了一个新状态（CLOSING）<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/38.webp" srcset="/img/loading.gif" lazyload></p>
+<p><strong>如果双方同时关闭连接？</strong><br>同时关闭，出现了一个新状态（CLOSING）<br><img src="/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-IP/38.webp" srcset="/img/loading.gif" lazyload></p>
 <h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><ul>
 <li>滑动窗口大小：TCP可选字段中指明窗口扩大因子。</li>
 <li>最大传输速度：发送缓冲区大小最好与带宽时延积靠近。</li>
@@ -935,8 +935,8 @@
 <li>只存在单个Stream对队头阻塞</li>
 <li>无感迁移（靠连接ID识别）</li>
 </ul>
-<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/ab3283383013b707d1420b6b4cb8517c.webp" srcset="/img/loading.gif" lazyload></p>
-<h3 id="Packet-Header"><a href="#Packet-Header" class="headerlink" title="Packet Header"></a>Packet Header</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207231330.jpg" srcset="/img/loading.gif" lazyload><br>Packet Header 细分这两种：</p>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/ab3283383013b707d1420b6b4cb8517c.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="Packet-Header"><a href="#Packet-Header" class="headerlink" title="Packet Header"></a>Packet Header</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207231330.jpg" srcset="/img/loading.gif" lazyload><br>Packet Header 细分这两种：</p>
 <ul>
 <li>Long Packet Header 用于首次建立连接。</li>
 <li>Short Packet Header 用于日常传输数据。</li>
@@ -948,8 +948,8 @@
 </blockquote>
 <p>此外，QUIC 使用的Packet Number单调递增的设计，可以让数据包不再像 TCP 那样必须有序确认，QUIC 支持<strong>乱序确认</strong>，当数据包Packet N 丢失后，只要有新的已接收数据包确认，当前窗口就会继续向右滑动。</p>
 <p><em>重传问题</em><br>重传时编号比原始编号大。与乱序确认一起解决了队头阻塞问题。</p>
-<h3 id="QUIC-Frame-Header"><a href="#QUIC-Frame-Header" class="headerlink" title="QUIC Frame Header"></a>QUIC Frame Header</h3><p>一个 Packet 报文中可以存放多个 QUIC Frame。<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207232037.png" srcset="/img/loading.gif" lazyload></p>
-<h3 id="Fream结构"><a href="#Fream结构" class="headerlink" title="Fream结构"></a>Fream结构</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207232139.jpg" srcset="/img/loading.gif" lazyload></p>
+<h3 id="QUIC-Frame-Header"><a href="#QUIC-Frame-Header" class="headerlink" title="QUIC Frame Header"></a>QUIC Frame Header</h3><p>一个 Packet 报文中可以存放多个 QUIC Frame。<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207232037.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="Fream结构"><a href="#Fream结构" class="headerlink" title="Fream结构"></a>Fream结构</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207232139.jpg" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li>Stream ID：区别真正的消息ID，便于组装</li>
 <li>Offset：指出负载数据在消息体中的偏移，保证顺序和可靠性。</li>
@@ -957,7 +957,7 @@
 <blockquote>
 <p>如何确定两个Packet相同，即是重传的：<br>通过比较两个数据包的 Stream ID 与 Stream Offset ，如果都是一致，就说明这两个数据包的内容一致。</p>
 </blockquote>
-<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><h3 id="如何解决队头阻塞问题？"><a href="#如何解决队头阻塞问题？" class="headerlink" title="如何解决队头阻塞问题？"></a>如何解决队头阻塞问题？</h3><p>HTTP&#x2F;2通过Stream解决了HTTP消息阻塞（不同Stream可以乱序），但无法避免TCP阻塞。<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/http2%E9%98%BB%E5%A1%9E.webp" srcset="/img/loading.gif" lazyload><br><strong>QUIC 给每一个 Stream 都分配了一个独立的滑动窗口，这样使得一个连接上的多个 Stream 之间没有依赖关系，都是相互独立的，各自控制的滑动窗口</strong>。<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/quic%E6%97%A0%E9%98%BB%E5%A1%9E.webp" srcset="/img/loading.gif" lazyload><br>即如果一个Stream丢了UDP包，只影响Stream2的处理。</p>
+<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><h3 id="如何解决队头阻塞问题？"><a href="#如何解决队头阻塞问题？" class="headerlink" title="如何解决队头阻塞问题？"></a>如何解决队头阻塞问题？</h3><p>HTTP&#x2F;2通过Stream解决了HTTP消息阻塞（不同Stream可以乱序），但无法避免TCP阻塞。<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/http2%E9%98%BB%E5%A1%9E.webp" srcset="/img/loading.gif" lazyload><br><strong>QUIC 给每一个 Stream 都分配了一个独立的滑动窗口，这样使得一个连接上的多个 Stream 之间没有依赖关系，都是相互独立的，各自控制的滑动窗口</strong>。<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/quic%E6%97%A0%E9%98%BB%E5%A1%9E.webp" srcset="/img/loading.gif" lazyload><br>即如果一个Stream丢了UDP包，只影响Stream2的处理。</p>
 <h3 id="如何实现流量控制"><a href="#如何实现流量控制" class="headerlink" title="如何实现流量控制"></a>如何实现流量控制</h3><p>QUIC 实现了两种级别的流量控制，分别为 Stream 和 Connection 两种级别：</p>
 <h4 id="Stream-级别的流量控制"><a href="#Stream-级别的流量控制" class="headerlink" title="Stream 级别的流量控制"></a>Stream 级别的流量控制</h4><p>Stream 可以认为就是一条 HTTP 请求，每个 Stream 都有独立的滑动窗口，所以每个 Stream 都可以做流量控制，防止单个 Stream 消耗连接（Connection）的全部接收缓冲。</p>
 <p>**接收窗口的流控：接收窗口 &#x3D; 最大窗口数 - 接收到的最大偏移数。</p>
@@ -975,7 +975,7 @@
 </ul>
 </li>
 </ol>
-<h3 id="收到乱序的FIN包如何处理"><a href="#收到乱序的FIN包如何处理" class="headerlink" title="收到乱序的FIN包如何处理"></a>收到乱序的FIN包如何处理</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207222312.png" srcset="/img/loading.gif" lazyload><br><strong>在 FIN_WAIT_2 状态时，如果收到乱序的 FIN 报文，那么就被会加入到「乱序队列」，并不会进入到 TIME_WAIT 状态。</strong></p>
+<h3 id="收到乱序的FIN包如何处理"><a href="#收到乱序的FIN包如何处理" class="headerlink" title="收到乱序的FIN包如何处理"></a>收到乱序的FIN包如何处理</h3><p><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207222312.png" srcset="/img/loading.gif" lazyload><br><strong>在 FIN_WAIT_2 状态时，如果收到乱序的 FIN 报文，那么就被会加入到「乱序队列」，并不会进入到 TIME_WAIT 状态。</strong></p>
 <p>等收到延迟的数据包后检查乱序队列，若该队列中有可用数据，且数据有FIN标志，则进入TIME_WAIT状态。</p>
 <h3 id="在TIME-WAIT状态的TCP连接，收到-SYN-后会发生什么？"><a href="#在TIME-WAIT状态的TCP连接，收到-SYN-后会发生什么？" class="headerlink" title="在TIME_WAIT状态的TCP连接，收到 SYN 后会发生什么？"></a>在TIME_WAIT状态的TCP连接，收到 SYN 后会发生什么？</h3><p><strong>关键是要看 SYN 的「序列号和时间戳」是否合法</strong></p>
 <ul>
@@ -1029,7 +1029,7 @@
 <p>利用TCP Fast Open第二次连接时只需要发送cookie，可以同时携带TLS1.3的第二次连接时的会话恢复机制，1RTT即可完成握手。</p>
 <h3 id="TCP-Keepalive-和-HTTP-Keep-Alive-是一个东西吗？"><a href="#TCP-Keepalive-和-HTTP-Keep-Alive-是一个东西吗？" class="headerlink" title="TCP Keepalive 和 HTTP Keep-Alive 是一个东西吗？"></a>TCP Keepalive 和 HTTP Keep-Alive 是一个东西吗？</h3><h4 id="HTTP-Keep-Alive"><a href="#HTTP-Keep-Alive" class="headerlink" title="HTTP Keep-Alive"></a>HTTP Keep-Alive</h4><p>应用层不主动释放TCP连接，而是复用该TCP连接。</p>
 <h4 id="TCP-Keep-Alive"><a href="#TCP-Keep-Alive" class="headerlink" title="TCP Keep-Alive"></a>TCP Keep-Alive</h4><p>在没有数据交互的情况下，探测目标是否存活的保活机制。</p>
-<h3 id="TCP-和-UDP-可以使用同一个端口吗？"><a href="#TCP-和-UDP-可以使用同一个端口吗？" class="headerlink" title="TCP 和 UDP 可以使用同一个端口吗？"></a>TCP 和 UDP 可以使用同一个端口吗？</h3><p>可以，两套独立模块<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/tcp%E5%92%8Cudp%E6%A8%A1%E5%9D%97-1.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="TCP-和-UDP-可以使用同一个端口吗？"><a href="#TCP-和-UDP-可以使用同一个端口吗？" class="headerlink" title="TCP 和 UDP 可以使用同一个端口吗？"></a>TCP 和 UDP 可以使用同一个端口吗？</h3><p>可以，两套独立模块<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/tcp%E5%92%8Cudp%E6%A8%A1%E5%9D%97-1.webp" srcset="/img/loading.gif" lazyload></p>
 <h3 id="多个TCP服务进程可以bind同一个端口吗？"><a href="#多个TCP服务进程可以bind同一个端口吗？" class="headerlink" title="多个TCP服务进程可以bind同一个端口吗？"></a>多个TCP服务进程可以bind同一个端口吗？</h3><p>不行，绑定相同IP和Port时不行。</p>
 <h4 id="同一个TCP服务进程如何复用TCP连接"><a href="#同一个TCP服务进程如何复用TCP连接" class="headerlink" title="同一个TCP服务进程如何复用TCP连接"></a>同一个TCP服务进程如何复用TCP连接</h4><blockquote>
 <p>重启 TCP 服务进程时，为什么会有“Address in use”的报错信息？<br>因为有TIME_WAIT状态，服务器进程可以bind前开启<strong>SO_REUSEADDR</strong>，即仅针对自己这个进程的TW复用。</p>
@@ -1055,7 +1055,7 @@
 <blockquote>
 <p>如何解决客户端 TCP 连接 TIME_WAIT 过多，导致无法与同一个服务器建立连接的问题？<br>开启tw_reuse，若TIME_WAIT超过1s，则可以复用。</p>
 </blockquote>
-<p>客户端端口选择：<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/%E7%AB%AF%E5%8F%A3%E9%80%89%E6%8B%A9.webp" srcset="/img/loading.gif" lazyload></p>
+<p>客户端端口选择：<br><img src="/2023/02/07/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/%E7%AB%AF%E5%8F%A3%E9%80%89%E6%8B%A9.webp" srcset="/img/loading.gif" lazyload></p>
 <h3 id="服务端没有listen，可以建立连接吗"><a href="#服务端没有listen，可以建立连接吗" class="headerlink" title="服务端没有listen，可以建立连接吗"></a>服务端没有listen，可以建立连接吗</h3><p><strong>服务端如果只 bind 了 IP 地址和端口，而没有调用 listen 的话，然后客户端对服务端发起了连接建立，服务端会回 RST 报文。</strong></p>
 <div class="note note-primary">
             <p>bind只是表示进程会占用该端口发送消息，只有listen后才会创建全连接队列，半连接队列。</p>
@@ -1104,7 +1104,7 @@
   
     <span>></span>
     
-  <a href="/categories/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E9%9D%A2%E8%AF%95/" class="category-chain-item">面试</a>
+  <a href="/categories/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/" class="category-chain-item">网络协议</a>
   
   
 
@@ -1138,13 +1138,13 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>计算机网络-TCP</div>
-      <div>http://example.com/2023/02/07/八股/计算机网络/计网面试/计算机网络-TCP/</div>
+      <div>http://example.com/2023/02/07/八股/计算机网络/网络协议/计算机网络-TCP/</div>
     </div>
     <div class="license-meta">
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>Jireyo</div>
+          <div>Jin</div>
         </div>
       
       
@@ -1182,7 +1182,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/02/08/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-IP/" title="计算机网络-IP">
+                      <a href="/2023/02/08/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-IP/" title="计算机网络-IP">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">计算机网络-IP</span>
                         <span class="visible-mobile">上一篇</span>
@@ -1192,7 +1192,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E9%9D%A2%E8%AF%95/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/" title="计算机网络-HTTP">
+                      <a href="/2023/02/06/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/" title="计算机网络-HTTP">
                         <span class="hidden-mobile">计算机网络-HTTP</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>

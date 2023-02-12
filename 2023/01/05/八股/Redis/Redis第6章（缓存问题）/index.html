@@ -13,14 +13,14 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#727679">
-  <meta name="author" content="Jireyo">
+  <meta name="author" content="Jin">
   <meta name="keywords" content="">
   
     <meta name="description" content="缓存问题 缓存穿透 缓存穿击 缓存雪崩 缓存污染（或者满了） 缓存和数据库一致性  缓存穿透问题缓存穿透是指缓存和数据库中都没有的数据。缓存不命中则会一直请求数据库，数据库查不到，又无法写入缓存。 解决 禁止非法请求，如校验参数合法性 数据库取不到的数据，在redis中置为key-null，防止大量数据库请求 bloomfilter，判断key是否在容器中  缓存击穿问题缓存击穿是指缓存中没有但数">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis第6章（缓存问题）">
 <meta property="og:url" content="http://example.com/2023/01/05/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/index.html">
-<meta property="og:site_name" content="Jireyo&#39;s Blog">
+<meta property="og:site_name" content="Jin&#39;s Blog">
 <meta property="og:description" content="缓存问题 缓存穿透 缓存穿击 缓存雪崩 缓存污染（或者满了） 缓存和数据库一致性  缓存穿透问题缓存穿透是指缓存和数据库中都没有的数据。缓存不命中则会一直请求数据库，数据库查不到，又无法写入缓存。 解决 禁止非法请求，如校验参数合法性 数据库取不到的数据，在redis中置为key-null，防止大量数据库请求 bloomfilter，判断key是否在容器中  缓存击穿问题缓存击穿是指缓存中没有但数">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2023/01/05/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105015406.jpg">
@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://example.com/2023/01/05/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105181554.png">
 <meta property="article:published_time" content="2023-01-04T17:05:37.000Z">
 <meta property="article:modified_time" content="2023-02-07T03:02:54.000Z">
-<meta property="article:author" content="Jireyo">
+<meta property="article:author" content="Jin">
 <meta property="article:tag" content="Redis">
 <meta property="article:tag" content="八股">
 <meta name="twitter:card" content="summary_large_image">
@@ -38,7 +38,7 @@
   
   
   
-  <title>Redis第6章（缓存问题） - Jireyo&#39;s Blog</title>
+  <title>Redis第6章（缓存问题） - Jin&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -106,7 +106,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong style="color: #fff;">Jireyo&#39;s Blog</strong>
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -465,7 +465,7 @@
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>Jireyo</div>
+          <div>Jin</div>
         </div>
       
       

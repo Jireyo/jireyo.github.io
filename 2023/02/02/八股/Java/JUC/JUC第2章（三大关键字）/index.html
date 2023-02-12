@@ -13,14 +13,14 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#727679">
-  <meta name="author" content="Jireyo">
+  <meta name="author" content="Jin">
   <meta name="keywords" content="">
   
     <meta name="description" content="一、锁分类1）根据线程要不要锁住共享资源，可以分为：  悲观锁：锁住共享资源 乐观锁：不锁住共享资源  2）如果试图锁住共享资源失败，那么线程要不要阻塞？如果不想要阻塞线程，可以通过以下两种锁实现：  自旋锁 适应性自旋锁  3）根据多个线程竞争锁时是否需要排队，可以分为：  公平锁：需要排队 非公平锁：先尝试插队，插队失败再排队  4）根据一个线程是否能够重复获取同一把锁，可以分为：  可重入锁">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JUC第2章（三大关键字）">
 <meta property="og:url" content="http://example.com/2023/02/02/%E5%85%AB%E8%82%A1/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/index.html">
-<meta property="og:site_name" content="Jireyo&#39;s Blog">
+<meta property="og:site_name" content="Jin&#39;s Blog">
 <meta property="og:description" content="一、锁分类1）根据线程要不要锁住共享资源，可以分为：  悲观锁：锁住共享资源 乐观锁：不锁住共享资源  2）如果试图锁住共享资源失败，那么线程要不要阻塞？如果不想要阻塞线程，可以通过以下两种锁实现：  自旋锁 适应性自旋锁  3）根据多个线程竞争锁时是否需要排队，可以分为：  公平锁：需要排队 非公平锁：先尝试插队，插队失败再排队  4）根据一个线程是否能够重复获取同一把锁，可以分为：  可重入锁">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2023/02/02/%E5%85%AB%E8%82%A1/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202192413.png">
@@ -41,7 +41,7 @@
 <meta property="og:image" content="http://example.com/2023/02/02/%E5%85%AB%E8%82%A1/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230203011315.png">
 <meta property="article:published_time" content="2023-02-02T09:26:14.000Z">
 <meta property="article:modified_time" content="2023-02-06T04:33:12.000Z">
-<meta property="article:author" content="Jireyo">
+<meta property="article:author" content="Jin">
 <meta property="article:tag" content="八股">
 <meta property="article:tag" content="JUC">
 <meta name="twitter:card" content="summary_large_image">
@@ -49,7 +49,7 @@
   
   
   
-  <title>JUC第2章（三大关键字） - Jireyo&#39;s Blog</title>
+  <title>JUC第2章（三大关键字） - Jin&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -117,7 +117,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong style="color: #fff;">Jireyo&#39;s Blog</strong>
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -701,7 +701,7 @@
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>Jireyo</div>
+          <div>Jin</div>
         </div>
       
       
