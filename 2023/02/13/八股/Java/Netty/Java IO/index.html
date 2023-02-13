@@ -1,0 +1,816 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、Java IO基础Stream按数据分类字节流 字符流 字节流和字符流的区别 字节流读取单个字节，字符流读取单个字符(一个字符根据编码的不同，对应的字节也不同。) 字节流用来处理二进制文件(图片、MP3、视频文件)，字符流用来处理文本文件(可以看做是特殊的二进制文件，使用了某种编码，人可以阅读)。 字节流名往往是Stream，字符流名往往是Reader&#x2F;Writer。   Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java IO">
+<meta property="og:url" content="http://example.com/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
+<meta property="og:description" content="一、Java IO基础Stream按数据分类字节流 字符流 字节流和字符流的区别 字节流读取单个字节，字符流读取单个字符(一个字符根据编码的不同，对应的字节也不同。) 字节流用来处理二进制文件(图片、MP3、视频文件)，字符流用来处理文本文件(可以看做是特殊的二进制文件，使用了某种编码，人可以阅读)。 字节流名往往是Stream，字符流名往往是Reader&#x2F;Writer。   Java">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213142717.png">
+<meta property="og:image" content="http://example.com/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213142723.png">
+<meta property="og:image" content="http://example.com/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213142850.png">
+<meta property="og:image" content="http://example.com/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213143013.png">
+<meta property="og:image" content="http://example.com/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213143042.png">
+<meta property="og:image" content="http://example.com/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213143753.png">
+<meta property="og:image" content="http://example.com/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213143808.png">
+<meta property="og:image" content="http://example.com/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213143817.png">
+<meta property="og:image" content="http://example.com/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213143825.png">
+<meta property="og:image" content="http://example.com/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213150145.png">
+<meta property="og:image" content="http://example.com/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213150153.png">
+<meta property="og:image" content="http://example.com/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213150246.png">
+<meta property="og:image" content="http://example.com/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213150259.png">
+<meta property="og:image" content="http://example.com/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213150315.png">
+<meta property="og:image" content="http://example.com/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213150321.png">
+<meta property="og:image" content="http://example.com/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213150509.png">
+<meta property="article:published_time" content="2023-02-13T06:26:04.000Z">
+<meta property="article:modified_time" content="2023-02-13T16:45:30.392Z">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Netty">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213142717.png">
+  
+  
+  
+  <title>Java IO - Jin&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Java IO"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-13 14:26" pubdate>
+          2023年2月13日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          26 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Java IO</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、Java-IO基础"><a href="#一、Java-IO基础" class="headerlink" title="一、Java IO基础"></a>一、Java IO基础</h1><h2 id="Stream"><a href="#Stream" class="headerlink" title="Stream"></a>Stream</h2><h3 id="按数据分类"><a href="#按数据分类" class="headerlink" title="按数据分类"></a>按数据分类</h3><h4 id="字节流"><a href="#字节流" class="headerlink" title="字节流"></a>字节流</h4><p><img src="/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213142717.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="字符流"><a href="#字符流" class="headerlink" title="字符流"></a>字符流</h4><p><img src="/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213142723.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="字节流和字符流的区别"><a href="#字节流和字符流的区别" class="headerlink" title="字节流和字符流的区别"></a>字节流和字符流的区别</h4><ul>
+<li>字节流读取单个字节，字符流读取单个字符(一个字符根据编码的不同，对应的字节也不同。)</li>
+<li>字节流用来处理二进制文件(图片、MP3、视频文件)，字符流用来处理文本文件(可以看做是特殊的二进制文件，使用了某种编码，人可以阅读)。</li>
+<li>字节流名往往是Stream，字符流名往往是Reader&#x2F;Writer。</li>
+</ul>
+<blockquote>
+<p>Java 使用双字节编码 UTF-16be，这不是指 Java 只支持这一种编码方式，而是说 char 这种类型使用 UTF-16be 进行编码。<br>char 类型占 16 位，也就是两个字节，Java 使用这种双字节编码是为了让一个中文或者一个英文都能使用一个 char 来存储。</p>
+</blockquote>
+<h4 id="转换流"><a href="#转换流" class="headerlink" title="转换流"></a>转换流</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//InputStream转Reader</span><br><span class="hljs-keyword">public</span> <span class="hljs-title function_">InputStreamReader</span><span class="hljs-params">(InputStream in,String charsetName)</span>;<br><span class="hljs-comment">//OutputStream转Writer</span><br><span class="hljs-keyword">public</span> <span class="hljs-title function_">OutputStreamWriter</span><span class="hljs-params">(OutputStream out,String charsetName)</span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="按操作对象分类"><a href="#按操作对象分类" class="headerlink" title="按操作对象分类"></a>按操作对象分类</h3><p><img src="/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213142850.png" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>根据操作对象分类的流，很多都需要套接在其他stream上，实现功能增强（装饰者模式）</p>
+</blockquote>
+<h3 id="装饰者模式"><a href="#装饰者模式" class="headerlink" title="装饰者模式"></a>装饰者模式</h3><p>流的创建使用了装饰者模式：<br><img src="/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213143013.png" srcset="/img/loading.gif" lazyload><br>装饰者(Decorator)和具体组件(ConcreteComponent)都继承自组件(Component)。<br><em>eg：</em><br><img src="/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213143042.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">FileInputStream</span> <span class="hljs-variable">fileInputStream</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileInputStream</span>(filePath); <span class="hljs-type">BufferedInputStream</span> <span class="hljs-variable">bufferedInputStream</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BufferedInputStream</span>(fileInputStream);<br></code></pre></td></tr></table></figure>
+
+<div class="note note-primary">
+            <p>这些流都需要显示的关闭。</p>
+          </div>
+
+
+<h2 id="Java-IO常见类"><a href="#Java-IO常见类" class="headerlink" title="Java IO常见类"></a>Java IO常见类</h2><h3 id="File"><a href="#File" class="headerlink" title="File"></a>File</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//创建文件</span><br><span class="hljs-keyword">public</span> <span class="hljs-title function_">File</span><span class="hljs-params">(String pathname)</span>;<br><span class="hljs-comment">//以parent为父路径，child为子路径创建File文件</span><br><span class="hljs-keyword">public</span> <span class="hljs-title function_">File</span><span class="hljs-params">(String parent,String child)</span>;<br><span class="hljs-comment">//常量，根据操作系统动态提供文件的分隔符</span><br>File.sepatator<br><span class="hljs-comment">//获取路径</span><br>String <span class="hljs-title function_">getPath</span><span class="hljs-params">()</span>;<br><span class="hljs-comment">//获取名称</span><br>String <span class="hljs-title function_">getName</span><span class="hljs-params">()</span>;<br><span class="hljs-comment">//获取长度</span><br><span class="hljs-type">long</span> <span class="hljs-title function_">length</span><span class="hljs-params">()</span><br><span class="hljs-comment">//创建文件目录，若上层目录不存在则不创建</span><br><span class="hljs-type">boolean</span> <span class="hljs-title function_">mkdir</span><span class="hljs-params">()</span>;<br><span class="hljs-comment">//创建文件目录，若上层目录不存在仍创建</span><br><span class="hljs-type">boolean</span> <span class="hljs-title function_">mkdirs</span><span class="hljs-params">()</span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="RandomAccessFile"><a href="#RandomAccessFile" class="headerlink" title="RandomAccessFile"></a>RandomAccessFile</h3><p>该对象包含记录指针，可标记当前读写位置。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//打开文件</span><br><span class="hljs-keyword">public</span> <span class="hljs-title function_">RandomAccessFile</span><span class="hljs-params">(File file,String mode)</span><br><span class="hljs-comment">//获取文件指针</span><br><span class="hljs-type">long</span> <span class="hljs-title function_">getFilePointer</span><span class="hljs-params">()</span><br><span class="hljs-comment">//设置文件指针</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">seek</span><span class="hljs-params">(<span class="hljs-type">long</span> pos)</span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Path-x2F-Paths-x2F-Files"><a href="#Path-x2F-Paths-x2F-Files" class="headerlink" title="Path&#x2F;Paths&#x2F;Files"></a>Path&#x2F;Paths&#x2F;Files</h3><p>这几个类是在nio类中新增的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//Paths</span><br><span class="hljs-comment">//目标文件不存在也可以获取</span><br><span class="hljs-type">Path</span> <span class="hljs-variable">path</span> <span class="hljs-operator">=</span> Paths.get(String url);<br><span class="hljs-type">Path</span> <span class="hljs-variable">path</span> <span class="hljs-operator">=</span> Paths.get(URL url);<br><br><span class="hljs-comment">//Path</span><br><span class="hljs-comment">//Path转File</span><br>File <span class="hljs-title function_">toFile</span><span class="hljs-params">()</span>;<br><span class="hljs-comment">//...</span><br><br><span class="hljs-comment">//Files:</span><br><span class="hljs-comment">//文件复制</span><br>Path <span class="hljs-title function_">copy</span><span class="hljs-params">(Path src,Path dest,CopyOption ... how)</span>;<br></code></pre></td></tr></table></figure>
+
+
+<h2 id="Java网络常见类"><a href="#Java网络常见类" class="headerlink" title="Java网络常见类"></a>Java网络常见类</h2><ul>
+<li>InetAddress: 用于表示网络上的硬件资源，即 IP 地址；</li>
+<li>URL: 统一资源定位符；</li>
+<li>Sockets: 使用 TCP 协议实现网络通信；</li>
+<li>Datagram: 使用 UDP 协议实现网络通信。</li>
+</ul>
+<blockquote>
+<p>URI：统一资源标识符<br>URL：统一资源定位符<br>URN：统一资源命名<br>URL和URN都是一种URI。</p>
+</blockquote>
+<h1 id="二、Unix-IO-模型"><a href="#二、Unix-IO-模型" class="headerlink" title="二、Unix IO 模型"></a>二、Unix IO 模型</h1><h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>一个输入操作通常包括两个阶段:</p>
+<ol>
+<li>等待数据准备</li>
+<li>等待从内核向进程复制数据</li>
+</ol>
+<p>Unix 下有五种 I&#x2F;O 模型:</p>
+<ul>
+<li>阻塞式 I&#x2F;O（BIO）</li>
+<li>非阻塞式 I&#x2F;O</li>
+<li>I&#x2F;O 复用(select 和 poll)</li>
+<li>信号驱动式 I&#x2F;O(SIGIO)</li>
+<li>异步 I&#x2F;O(AIO)</li>
+</ul>
+<h3 id="阻塞式-I-x2F-O"><a href="#阻塞式-I-x2F-O" class="headerlink" title="阻塞式 I&#x2F;O"></a>阻塞式 I&#x2F;O</h3><p>应用调用<code>recvfrom</code>，被阻塞，直到数据复制到应用进程缓冲区中才返回。</p>
+<blockquote>
+<p>阻塞的过程中，其它程序还可以执行，因此阻塞不意味着整个操作系统都被阻塞。</p>
+</blockquote>
+<p><img src="/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213143753.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213143808.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="非阻塞式-I-x2F-O"><a href="#非阻塞式-I-x2F-O" class="headerlink" title="非阻塞式 I&#x2F;O"></a>非阻塞式 I&#x2F;O</h3><p>应用进程不断的执行<code>recvfrom</code>来获知 I&#x2F;O 是否完成，这种方式称为轮询(<code>polling</code>)。</p>
+<blockquote>
+<p>由于 CPU 要处理更多的系统调用，因此这种模型是比较低效的。<br><img src="/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213143817.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213143825.png" srcset="/img/loading.gif" lazyload></p>
+</blockquote>
+<h3 id="I-x2F-O-复用（事件驱动IO）"><a href="#I-x2F-O-复用（事件驱动IO）" class="headerlink" title="I&#x2F;O 复用（事件驱动IO）"></a>I&#x2F;O 复用（事件驱动IO）</h3><ol>
+<li>使用<code>select</code>或者<code>poll</code>等待数据（阻塞），并且可以<strong>等待多个套接字</strong>中的任何一个变为可读，当某一个套接字可读时返回。</li>
+<li>使用 recvfrom 把数据从内核复制到进程中。</li>
+</ol>
+<blockquote>
+<p>它可以让单个进程具有处理多个 I&#x2F;O 事件的能力。又被称为 Event Driven I&#x2F;O，即事件驱动 I&#x2F;O。<br><img src="/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213150145.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213150153.png" srcset="/img/loading.gif" lazyload></p>
+</blockquote>
+<h3 id="信号驱动-I-x2F-O"><a href="#信号驱动-I-x2F-O" class="headerlink" title="信号驱动 I&#x2F;O"></a>信号驱动 I&#x2F;O</h3><ol>
+<li>应用进程使用 <code>sigaction</code> 系统调用，内核立即返回(非阻塞)。</li>
+<li>内核在数据到达时向应用进程发送 <code>SIGIO</code> 信号，应用进程收到之后在信号处理程序中调用 <code>recvfrom</code> 将数据从内核复制到应用进程中。<br><img src="/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213150246.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213150259.png" srcset="/img/loading.gif" lazyload></li>
+</ol>
+<h3 id="异步-I-x2F-O"><a href="#异步-I-x2F-O" class="headerlink" title="异步 I&#x2F;O"></a>异步 I&#x2F;O</h3><ol>
+<li>应用进行 aio_read 系统调用立即返回。</li>
+<li>内核会在所有操作完成之后向应用进程发送信号。<br><img src="/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213150315.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213150321.png" srcset="/img/loading.gif" lazyload></li>
+</ol>
+<h2 id="I-x2F-O模型比较"><a href="#I-x2F-O模型比较" class="headerlink" title="I&#x2F;O模型比较"></a>I&#x2F;O模型比较</h2><p>除了<code>异步I/O</code>，其他IO都是<code>同步I/O</code>，因为这些IO模型在<code>recvfrom</code>时肯定会阻塞。</p>
+<h3 id="五大-I-x2F-O-模型比较"><a href="#五大-I-x2F-O-模型比较" class="headerlink" title="五大 I&#x2F;O 模型比较"></a>五大 I&#x2F;O 模型比较</h3><p><img src="/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20IO/Pasted-image-20230213150509.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="描述符"><a href="#描述符" class="headerlink" title="描述符"></a>描述符</h2><h3 id="epoll-IO复用的关键"><a href="#epoll-IO复用的关键" class="headerlink" title="epoll(IO复用的关键)"></a>epoll(IO复用的关键)</h3><p>epoll 的描述符事件有两种触发模式: LT(level trigger)和 ET(edge trigger)。<br>1）LT 模式<br>当 epoll_wait() 检测到描述符事件到达时，将此事件通知进程，进程可以不立即处理该事件。<br>下次调用 epoll_wait() 会再次通知进程。<br>是默认的一种模式，并且同时支持 Blocking 和 No-Blocking。</p>
+<p>2）ET 模式<br>当 epoll_wait() 检测到描述符事件到达时，必须通知进程处理事件。<br>下次再调用 epoll_wait() 时不会再得到事件到达的通知。<br>只支持 No-Blocking，以避免由于一个文件句柄的阻塞读&#x2F;阻塞写操作把处理多个文件描述符的任务饿死。</p>
+<blockquote>
+<p>很大程度上减少了 epoll 事件被重复触发的次数，因此效率要比 LT 模式高。</p>
+</blockquote>
+<p>只需要运行在 Linux 平台上，并且有非常大量的描述符需要同时轮询，而且这些连接最好是长连接。</p>
+<h3 id="select"><a href="#select" class="headerlink" title="select"></a>select</h3><p>select 的 timeout 参数精度为 1ns，而 poll 和 epoll 为 1ms，因此 select 更加适用于<strong>实时要求</strong>更高的场景，比如核反应堆的控制。<br>select 可移植性更好，几乎被所有主流平台所支持。</p>
+<h3 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h3><p>poll 没有最大描述符数量的限制.</p>
+<ul>
+<li>如果平台支持并且对实时性要求不高，应该使用 poll 而不是 select。</li>
+<li>如果监控的描述符状态较少，则没必要使用epoll。</li>
+</ul>
+<blockquote>
+<p>需要监控的描述符状态变化多，而且都是非常短暂的，也没有必要使用 epoll。因为 epoll 中的所有描述符都存储在内核中，造成每次需要对描述符的状态改变都需要通过 epoll_ctl() 进行系统调用，频繁系统调用降低效率。并且epoll 的描述符存储在内核，不容易调试。</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Java/Netty/" class="category-chain-item">Netty</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Java/">#Java</a>
+      
+        <a href="/tags/Netty/">#Netty</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Java IO</div>
+      <div>http://example.com/2023/02/13/八股/Java/Netty/Java IO/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年2月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/02/13/%E5%85%AB%E8%82%A1/Java/Netty/Java%20NIO/" title="Java NIO">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Java NIO</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/02/13/%E5%85%AB%E8%82%A1/Java/Spring/Spring%E5%9F%BA%E7%A1%80/" title="Spring基础">
+                        <span class="hidden-mobile">Spring基础</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/fluid-extention.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

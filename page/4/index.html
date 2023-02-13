@@ -235,6 +235,314 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2023/01/06/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC7%E7%AB%A0%EF%BC%88%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%EF%BC%89/" target="_self">
+          Redis第7章（性能监控）
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/06/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC7%E7%AB%A0%EF%BC%88%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%EF%BC%89/" target="_self">
+        <div>
+          状态命令 状态信息 - info通过info命令查看实时吞吐量（ops&#x2F;sec）。 监控执行命令 - monitor监控接受到的命令 监控延迟 - latency测量响应延迟1redis-cli --latency -h 127.0.0.1 内部机制监控123&gt;CONFIG SET latency-monitor-threshold 100 #100是阈值，只有慢于100ms的才记
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-01-06 18:32" pubdate>
+              2023-01-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Redis/" class="category-chain-item">Redis</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Redis/">#Redis</a>
+            
+              <a href="/tags/%E5%85%AB%E8%82%A1/">#八股</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/01/05/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/" target="_self">
+          Redis第6章（缓存问题）
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/05/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/" target="_self">
+        <div>
+          缓存问题 缓存穿透 缓存穿击 缓存雪崩 缓存污染（或者满了） 缓存和数据库一致性  缓存穿透问题缓存穿透是指缓存和数据库中都没有的数据。缓存不命中则会一直请求数据库，数据库查不到，又无法写入缓存。 解决 禁止非法请求，如校验参数合法性 数据库取不到的数据，在redis中置为key-null，防止大量数据库请求 bloomfilter，判断key是否在容器中  缓存击穿问题缓存击穿是指缓存中没有但数
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-01-05 01:05" pubdate>
+              2023-01-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Redis/" class="category-chain-item">Redis</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Redis/">#Redis</a>
+            
+              <a href="/tags/%E5%85%AB%E8%82%A1/">#八股</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/01/04/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%AB%98%E5%8F%AF%E7%94%A8%EF%BC%89/" target="_self">
+          Redis第5章（高可用）
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/04/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%AB%98%E5%8F%AF%E7%94%A8%EF%BC%89/" target="_self">
+        <div>
+          主从复制 主从复制，是指将一台Redis服务器的数据，复制到其他的Redis服务器。前者称为主节点(master)，后者称为从节点(slave)；  主从复制的作用主要包括：性能上：  负载均衡：在主从复制的基础上，配合读写分离，可以由主节点提供写服务，由从节点提供读服务（即写Redis数据时应用连接主节点，读Redis数据时应用连接从节点），分担服务器负载；尤其是在写少读多的场景下，通过多个从节
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-01-04 03:00" pubdate>
+              2023-01-04
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Redis/" class="category-chain-item">Redis</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Redis/">#Redis</a>
+            
+              <a href="/tags/%E5%85%AB%E8%82%A1/">#八股</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/01/03/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC4%E7%AB%A0%EF%BC%88%E4%BA%8B%E4%BB%B6%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/" target="_self">
+          Redis第4章（事件与事物）
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/03/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC4%E7%AB%A0%EF%BC%88%E4%BA%8B%E4%BB%B6%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/" target="_self">
+        <div>
+          事件机制 所谓事件机制，指的是Redis 接受客户端的请求并响应（文件事件） 和 执行定时任务（时间事件） 的机制。  该事件库处理下面两类事件：  文件事件(file event)：用于处理 Redis 服务器和客户端之间的网络IO。 时间事件(time eveat)：Redis 服务器中的一些操作（比如serverCron函数）需要在给定的时间点执行，而时间事件就是处理这类定时操作的。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-01-03 23:08" pubdate>
+              2023-01-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Redis/" class="category-chain-item">Redis</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%85%AB%E8%82%A1/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Redis/">#Redis</a>
+            
+              <a href="/tags/%E5%85%AB%E8%82%A1/">#八股</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2023/01/03/%E5%85%AB%E8%82%A1/Redis/Redis%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%8C%81%E4%B9%85%E5%8C%96%EF%BC%89/" target="_self">
           Redis第3章（持久化）
         </a>
@@ -691,317 +999,11 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/12/11/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/" target="_self">
-          计算机网络第3章（数据链路层）
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/12/11/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/" target="_self">
-        <div>
-          一、概述物理层已经保证了数据在物理层面上的传输功能，但无法避免传输中发生的错误。数据链路层作为网络层、物理层之间的桥梁，主要的职责则是保证数据传输过程的差错控制和可靠传输，即识别、纠正传输中发生的错误。 网络中的主机、路由器、交换机等都必须实现数据链路层。 术语：  链路（Link）表示一段没有交换节点物理线路 数据链路（Data Link）表示具有通讯协议的软硬件实现的链路。
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-12-11 02:48" pubdate>
-              2022-12-11
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
-  
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%85%AB%E8%82%A1/">#八股</a>
-            
-              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">#计算机网络</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/12/10/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC2%E7%AB%A0%EF%BC%88%E7%89%A9%E7%90%86%E5%B1%82%EF%BC%89/" target="_self">
-          计算机网络第2章（物理层）
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/12/10/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC2%E7%AB%A0%EF%BC%88%E7%89%A9%E7%90%86%E5%B1%82%EF%BC%89/" target="_self">
-        <div>
-          一、物理层的基本概念物理层主要考虑如何传输数据比特流。 二、物理层传输媒体传输媒体也称为传输介质或传输媒介，分为两大类，即导引型传输媒体和非导引型传输媒体。 导引型传输媒体 同轴电缆（已被淘汰） 双绞线（主要用于局域网） 光纤（主要用于ISP接入服务） 多模光纤：允许多条不同角度的光纤同时传输 单模光纤：如同一根波导，没有反射   电力线（主要用于家庭网络扩展：猫）  非引导型传输媒体 无线电波（
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-12-10 22:46" pubdate>
-              2022-12-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
-  
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%85%AB%E8%82%A1/">#八股</a>
-            
-              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">#计算机网络</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/12/10/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC1%E7%AB%A0%EF%BC%88%E6%A6%82%E8%BF%B0%EF%BC%89/" target="_self">
-          计算机网络第1章（概述）
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/12/10/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC1%E7%AB%A0%EF%BC%88%E6%A6%82%E8%BF%B0%EF%BC%89/" target="_self">
-        <div>
-          一、概念互连网（internet）：多个网络通过路由器互连起来构成的网络（通用名词，可使用任意协议）因特网（Internet）：是世界上最大的互连网（专有名词，使用TCP&#x2F;IP协议）ISP（Internet Service Provider）：因特网服务提供者，如电信、联通、移动。 端系统之间通信：主机 A 的某个进程和主机 B 上的另一个进程进行通信。              端对端
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-12-10 21:00" pubdate>
-              2022-12-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
-  
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/100-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%85%AB%E8%82%A1/">#100 - 计算机网络 - 八股</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/" target="_self">
-          计算机网络-基础篇
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/12/09/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/" target="_self">
-        <div>
-          一、TCP&#x2F;IP网络模型主要针对TCP&#x2F;IP网络模型。 应用层应用层（Application Layer）只专注于提供应用功能，比如 HTTP、FTP、Telnet、DNS、SMTP等。 应用层是工作在操作系统中的用户态，传输层及以下则工作在内核态。 传输层应用层的数据包会传给传输层，传输层（Transport Layer）是为应用层提供网络支持的。  传输层会有两个传输协议，
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-12-09 23:04" pubdate>
-              2022-12-09
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%85%AB%E8%82%A1/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/" class="category-chain-item">网络协议</a>
-  
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%85%AB%E8%82%A1/">#八股</a>
-            
-              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">#计算机网络</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/3/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="page-number current">4</span>
+      <a class="extend prev" rel="prev" href="/page/3/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/#board">5</a><a class="extend next" rel="next" href="/page/5/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 
