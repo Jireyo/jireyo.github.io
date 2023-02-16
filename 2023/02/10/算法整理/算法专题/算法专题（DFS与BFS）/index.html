@@ -16,23 +16,25 @@
   <meta name="author" content="Jin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="综合应用类对比两个文件&#x2F;数组，文件过大时怎么办？ 为了解决文件过大，使用分治； 最后需要将结果合并； 为了合并结果，可使用hash结构记录每一块的对比结果或对后续的影响；">
+    <meta name="description" content="一、DFS与BFS79. 单词搜索简单的搜索，注意终止条件的写法，由于不需要记录路径，所以不需要使用回溯，成功时直接返回即可。 二、回溯算法17. 电话号码的字母组合先建立数字与字母Map&lt;Integer,List&lt;Character&gt;&gt;，使用一个StringBuilder，每层做循环，添加和删除末尾，当长度达到要求时返回一个记录并保存。22. 括号生成记录左右括号的数量作">
 <meta property="og:type" content="article">
-<meta property="og:title" content="算法专题（应用类）">
-<meta property="og:url" content="http://example.com/2023/02/08/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E5%BA%94%E7%94%A8%E7%B1%BB%EF%BC%89/index.html">
+<meta property="og:title" content="算法专题（DFS与BFS）">
+<meta property="og:url" content="http://example.com/2023/02/10/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88DFS%E4%B8%8EBFS%EF%BC%89/index.html">
 <meta property="og:site_name" content="Jin&#39;s Blog">
-<meta property="og:description" content="综合应用类对比两个文件&#x2F;数组，文件过大时怎么办？ 为了解决文件过大，使用分治； 最后需要将结果合并； 为了合并结果，可使用hash结构记录每一块的对比结果或对后续的影响；">
+<meta property="og:description" content="一、DFS与BFS79. 单词搜索简单的搜索，注意终止条件的写法，由于不需要记录路径，所以不需要使用回溯，成功时直接返回即可。 二、回溯算法17. 电话号码的字母组合先建立数字与字母Map&lt;Integer,List&lt;Character&gt;&gt;，使用一个StringBuilder，每层做循环，添加和删除末尾，当长度达到要求时返回一个记录并保存。22. 括号生成记录左右括号的数量作">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-02-08T15:05:12.000Z">
-<meta property="article:modified_time" content="2023-02-12T16:51:42.687Z">
+<meta property="article:published_time" content="2023-02-10T06:03:01.000Z">
+<meta property="article:modified_time" content="2023-02-16T16:46:28.798Z">
 <meta property="article:author" content="Jin">
+<meta property="article:tag" content="DFS">
+<meta property="article:tag" content="BFS">
+<meta property="article:tag" content="回溯算法">
 <meta property="article:tag" content="算法">
-<meta property="article:tag" content="应用">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>算法专题（应用类） - Jin&#39;s Blog</title>
+  <title>算法专题（DFS与BFS） - Jin&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -209,7 +211,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="算法专题（应用类）"></span>
+            <span id="subtitle" data-typed-text="算法专题（DFS与BFS）"></span>
           
         </div>
 
@@ -220,8 +222,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-02-08 23:05" pubdate>
-          2023年2月8日 晚上
+        <time datetime="2023-02-10 14:03" pubdate>
+          2023年2月10日 下午
         </time>
       </span>
     
@@ -232,7 +234,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          87 字
+          1.5k 字
         
       </span>
     
@@ -243,7 +245,7 @@
         
         
         
-          1 分钟
+          13 分钟
         
       </span>
     
@@ -281,16 +283,20 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">算法专题（应用类）</h1>
+            <h1 style="display: none">算法专题（DFS与BFS）</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="综合应用类"><a href="#综合应用类" class="headerlink" title="综合应用类"></a>综合应用类</h1><h3 id="对比两个文件-x2F-数组，文件过大时怎么办？"><a href="#对比两个文件-x2F-数组，文件过大时怎么办？" class="headerlink" title="对比两个文件&#x2F;数组，文件过大时怎么办？"></a>对比两个文件&#x2F;数组，文件过大时怎么办？</h3><ul>
-<li>为了解决文件过大，使用分治；</li>
-<li>最后需要将结果合并；</li>
-<li>为了合并结果，可使用hash结构记录每一块的对比结果或对后续的影响；</li>
-</ul>
+                <h1 id="一、DFS与BFS"><a href="#一、DFS与BFS" class="headerlink" title="一、DFS与BFS"></a>一、DFS与BFS</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/word-search/">79. 单词搜索</a><br>简单的搜索，注意终止条件的写法，由于不需要记录路径，所以不需要使用回溯，成功时直接返回即可。</p>
+<h1 id="二、回溯算法"><a href="#二、回溯算法" class="headerlink" title="二、回溯算法"></a>二、回溯算法</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/letter-combinations-of-a-phone-number/">17. 电话号码的字母组合</a><br>先建立数字与字母<code>Map&lt;Integer,List&lt;Character&gt;&gt;</code>，使用一个<code>StringBuilder</code>，每层做循环，添加和删除末尾，当长度达到要求时返回一个记录并保存。<br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/generate-parentheses/">22. 括号生成</a><br>记录左右括号的数量作为参数传递，左括号数量-右括号数量&gt;&#x3D;0时才能加右括号。<br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/permutations/">46. 全排列</a></p>
+<blockquote>
+<p>注意复制list的方法：构造函数<code>new ArrayList&lt;T&gt;(Collection&lt;T&gt;)</code></p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/palindrome-partitioning/">131. 分割回文串</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/word-search-ii/">212. 单词搜索 II</a><br>要一次实现对每个单词的匹配，就不要有方向的寻找路径，而是枚举路径，只要判断出有一个单词之后就不会再核对这个路径。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 回溯，不要对每个单词单独遍历，太慢超时</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    Set&lt;String&gt; set = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();<br>    List&lt;String&gt; ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>    <span class="hljs-type">char</span>[][] board;<br>    <span class="hljs-type">int</span>[][] dirs = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[][]&#123;&#123;<span class="hljs-number">1</span>,<span class="hljs-number">0</span>&#125;,&#123;-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>&#125;,&#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>&#125;,&#123;<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>&#125;&#125;;<br>    <span class="hljs-type">int</span> n, m;<br>    <span class="hljs-type">boolean</span>[][] vis = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[<span class="hljs-number">15</span>][<span class="hljs-number">15</span>];<br>    <span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">findWords</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] _board, String[] words)</span> &#123;<br>        board = _board;<br>        m = board.length; n = board[<span class="hljs-number">0</span>].length;<br>        <span class="hljs-keyword">for</span> (String w : words) set.add(w);<br>        <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) &#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) &#123;<br>                vis[i][j] = <span class="hljs-literal">true</span>;<br>                sb.append(board[i][j]);<br>                dfs(i, j, sb);<br>                vis[i][j] = <span class="hljs-literal">false</span>;<br>                sb.deleteCharAt(sb.length() - <span class="hljs-number">1</span>);<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> ans;<br>    &#125;<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j, StringBuilder sb)</span> &#123;<br>        <span class="hljs-keyword">if</span> (sb.length() &gt; <span class="hljs-number">10</span>) <span class="hljs-keyword">return</span> ;<br>        <span class="hljs-keyword">if</span> (set.contains(sb.toString())) &#123;<br>            ans.add(sb.toString());<br>            set.remove(sb.toString());<br>        &#125;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) &#123;<br>            <span class="hljs-type">int</span> <span class="hljs-variable">dx</span> <span class="hljs-operator">=</span> i + d[<span class="hljs-number">0</span>], dy = j + d[<span class="hljs-number">1</span>];<br>            <span class="hljs-keyword">if</span> (dx &lt; <span class="hljs-number">0</span> || dx &gt;= m || dy &lt; <span class="hljs-number">0</span> || dy &gt;= n) <span class="hljs-keyword">continue</span>;<br>            <span class="hljs-keyword">if</span> (vis[dx][dy]) <span class="hljs-keyword">continue</span>;<br>            vis[dx][dy] = <span class="hljs-literal">true</span>;<br>            sb.append(board[dx][dy]);<br>            dfs(dx, dy, sb);<br>            vis[dx][dy] = <span class="hljs-literal">false</span>;<br>            sb.deleteCharAt(sb.length() - <span class="hljs-number">1</span>);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/distinct-subsequences/">115. 不同的子序列</a></p>
 
                 
               </div>
@@ -309,12 +315,12 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E7%AE%97%E6%B3%95/" class="category-chain-item">算法</a>
+  <a href="/categories/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/" class="category-chain-item">算法整理</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/" class="category-chain-item">算法专题</a>
+  <a href="/categories/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/" class="category-chain-item">算法专题</a>
   
   
 
@@ -331,9 +337,13 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
+        <a href="/tags/DFS/">#DFS</a>
       
-        <a href="/tags/%E5%BA%94%E7%94%A8/">#应用</a>
+        <a href="/tags/BFS/">#BFS</a>
+      
+        <a href="/tags/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/">#回溯算法</a>
+      
+        <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
       
     </div>
   
@@ -345,8 +355,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>算法专题（应用类）</div>
-      <div>http://example.com/2023/02/08/算法/算法专题/算法专题（应用类）/</div>
+      <div>算法专题（DFS与BFS）</div>
+      <div>http://example.com/2023/02/10/算法整理/算法专题/算法专题（DFS与BFS）/</div>
     </div>
     <div class="license-meta">
       
@@ -358,7 +368,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年2月8日</div>
+          <div>2023年2月10日</div>
         </div>
       
       
@@ -390,9 +400,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/02/09/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E6%A0%91%EF%BC%89/" title="算法专题（树）">
+                      <a href="/2023/02/10/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E9%93%BE%E8%A1%A8%EF%BC%89/" title="算法专题（链表）">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">算法专题（树）</span>
+                        <span class="hidden-mobile">算法专题（链表）</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -400,8 +410,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/02/08/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%89/" title="算法专题（动态规划）">
-                        <span class="hidden-mobile">算法专题（动态规划）</span>
+                      <a href="/2023/02/09/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E6%A0%91%EF%BC%89/" title="算法专题（树）">
+                        <span class="hidden-mobile">算法专题（树）</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
