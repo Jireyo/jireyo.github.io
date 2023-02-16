@@ -1,0 +1,1050 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、锁分类1）根据线程要不要锁住共享资源，可以分为：  悲观锁：锁住共享资源 乐观锁：不锁住共享资源  2）如果试图锁住共享资源失败，那么线程要不要阻塞？如果不想要阻塞线程，可以通过以下两种锁实现：  自旋锁 适应性自旋锁  3）根据多个线程竞争锁时是否需要排队，可以分为：  公平锁：需要排队 非公平锁：先尝试插队，插队失败再排队  4）根据一个线程是否能够重复获取同一把锁，可以分为：  可重入锁">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JUC第2章（三大关键字）">
+<meta property="og:url" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
+<meta property="og:description" content="一、锁分类1）根据线程要不要锁住共享资源，可以分为：  悲观锁：锁住共享资源 乐观锁：不锁住共享资源  2）如果试图锁住共享资源失败，那么线程要不要阻塞？如果不想要阻塞线程，可以通过以下两种锁实现：  自旋锁 适应性自旋锁  3）根据多个线程竞争锁时是否需要排队，可以分为：  公平锁：需要排队 非公平锁：先尝试插队，插队失败再排队  4）根据一个线程是否能够重复获取同一把锁，可以分为：  可重入锁">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202192413.png">
+<meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202231421.png">
+<meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202232949.png">
+<meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202232952.png">
+<meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202232955.png">
+<meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202233831.png">
+<meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202234727.png">
+<meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202234855.png">
+<meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202235425.png">
+<meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230203000535.png">
+<meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230203000550.png">
+<meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230203000458.png">
+<meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230203010905.png">
+<meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230203011123.png">
+<meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230203011141.png">
+<meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230203011315.png">
+<meta property="article:published_time" content="2023-02-02T09:26:14.000Z">
+<meta property="article:modified_time" content="2023-02-16T16:43:17.979Z">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="概念整理">
+<meta property="article:tag" content="JUC">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202192413.png">
+  
+  
+  
+  <title>JUC第2章（三大关键字） - Jin&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="JUC第2章（三大关键字）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-02 17:26" pubdate>
+          2023年2月2日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          13k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          106 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JUC第2章（三大关键字）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、锁"><a href="#一、锁" class="headerlink" title="一、锁"></a>一、锁</h1><h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>1）根据线程要不要锁住共享资源，可以分为：</p>
+<ul>
+<li>悲观锁：锁住共享资源</li>
+<li>乐观锁：不锁住共享资源</li>
+</ul>
+<p>2）如果试图锁住共享资源失败，那么线程要不要阻塞？如果不想要阻塞线程，可以通过以下两种锁实现：</p>
+<ul>
+<li>自旋锁</li>
+<li>适应性自旋锁</li>
+</ul>
+<p>3）根据多个线程竞争锁时是否需要排队，可以分为：</p>
+<ul>
+<li>公平锁：需要排队</li>
+<li>非公平锁：先尝试插队，插队失败再排队</li>
+</ul>
+<p>4）根据一个线程是否能够重复获取同一把锁，可以分为：</p>
+<ul>
+<li>可重入锁：能被同一个线程重复获取</li>
+<li>不可重入锁：不能被同一个线程重复获取</li>
+</ul>
+<p>5）根据锁只能被单个线程持有还是能被多个线程共同持有，可以分为：</p>
+<ul>
+<li>排他锁：锁只能被单个线程持有</li>
+<li>共享锁：锁能被多个线程共同持有</li>
+</ul>
+<p>6）以下这 4 种锁都是专门针对 synchronized 关键字的，是上面介绍的锁的组合实现：</p>
+<ul>
+<li>无锁</li>
+<li>偏向锁</li>
+<li>轻量级锁</li>
+<li>重量级锁</li>
+</ul>
+<h2 id="悲观锁-乐观锁"><a href="#悲观锁-乐观锁" class="headerlink" title="悲观锁 | 乐观锁"></a>悲观锁 | 乐观锁</h2><blockquote>
+<p><strong>悲观锁是一种悲观思想</strong>，认为自己在使用数据的时候一定有别的线程来修改数据，因此在获取数据的时候会先加锁，确保数据不会被别的线程修改。</p>
+<p><strong>乐观锁是一种乐观思想</strong>，认为自己在使用数据时不会有别的线程修改数据，所以不会添加锁，只是在提交修改的时候去判断一下，在此之前有没有其他的线程也修改了这个数据：</p>
+<ul>
+<li>如果其他的线程还没有提交修改，那么当前线程就将自己修改的数据成功写入；</li>
+<li>如果其他的线程已经提交了修改，则当前线程会根据不同的实现方式执行不同的操作（例如报错或者自动重试）</li>
+</ul>
+</blockquote>
+<p>乐观锁的算法是CAS算法实现的，这种算法一般也被称为无锁编程（Lock-Free），这是一种算法思想。</p>
+<p><strong>两者判断是否能拥有锁的时点不一样（先判断；先操作然后在提交时判断），判断的方式不一样（直接判断是否能获取；CAS算法）。</strong></p>
+<div class="note note-primary">
+            <p>实用区别：</p><ul><li>悲观锁一般性能差，但修改量太大的话性能会好。</li><li>乐观锁一般性能好，但一直失败的话不如悲观，防止空转。<br>实现：</li><li><code>synchronized</code>和<code>Lock接口</code>的实现类都是悲观锁</li><li><code>JUC</code>的原子类是乐观锁。</li></ul>
+          </div>
+
+<h2 id="自旋锁-自旋适应锁"><a href="#自旋锁-自旋适应锁" class="headerlink" title="自旋锁 | 自旋适应锁"></a>自旋锁 | 自旋适应锁</h2><blockquote>
+<p><strong>自旋锁</strong>就是“稍等一下”，其实就是个 do-while 循环。更底层来说自旋操作就是<strong>空转 CPU</strong>，执行一些无意义的指令，目的就是不让出 CPU 等待锁的释放。如果这个线程自旋完成后，前面锁定共享资源的线程已经释放了锁，那么这个线程就可以不必被阻塞而是直接获取共享资源，从而<strong>避免切换操作系统状态的开销</strong>。</p>
+<p><strong>自旋适应锁</strong>：如果锁被占用的时间很长，那么自旋的线程只会白白浪费处理器资源，空转，死等，还不如被阻塞住。自旋等待的时间必须要有一定的限度，如果自旋超过了限定次数没有成功获得锁，就应当挂起线程。默认是 10 次，可以使用参数<code>-XX:PreBlockSpin</code>来更改。而在 JDK 1.6 中，对于自选等待的次数这个问题，做出了一次优化，即引入了<strong>适应性自旋锁</strong>（自适应的自旋锁）。</p>
+<ul>
+<li>如果在同一个锁对象上，自旋等待刚刚成功获得过锁，并且持有锁的线程正在运行中，那么 JVM 就会认为这次自旋也是很有可能再次成功，进而它将允许自旋等待持续相对更长的时间；</li>
+<li>如果对于某个锁，很少有线程通过自旋等待成功获得过，那么当以后有线程尝试获取这个锁时， JVM 可能省略掉自旋过程，直接阻塞住线程，避免空转浪费处理器资源。</li>
+</ul>
+</blockquote>
+<p><strong>两者是判断当获取锁失败时策略，是直接阻塞还是稍作等待（实现是CAS算法）,并规定稍作等待的时长。</strong></p>
+<div class="note note-primary">
+            <p>实用性：</p><ul><li>避免阻塞，阻塞后唤醒需要切换到内核态，对系统性能消耗大。<br>实现：</li><li>JUC的原子类是自旋锁，这也是一种乐观锁，可以说自旋锁的原理就是CAS算法。<br>乐观锁与自旋锁，CAS算法的关系：</li><li>CAS是一种实现自旋的算法</li><li>乐观锁和自旋锁都是期待可以获取同步资源并执行，因此在实现上总是同时出现，一个定义如何获取，一个定义失败行为。</li></ul>
+          </div>
+
+<h2 id="公平锁-非公平锁"><a href="#公平锁-非公平锁" class="headerlink" title="公平锁 | 非公平锁"></a>公平锁 | 非公平锁</h2><blockquote>
+<p><strong>公平锁</strong>：多个线程按照申请锁的顺序来获取锁。在并发环境中，每个线程会先查看此锁维护的等待队列，如果该锁的等待队列为空，则直接占有锁；如果该锁的等待队列不为空，则该线程加入到等待队列的末尾，按照 FIFO 的原则从队列中取出线程，然后占有锁。</p>
+<p><strong>非公平锁</strong>：线程会先尝试获取锁，如果获取不到，则再采用公平锁的方式也就是进入等待队列。也就是说，多个线程获取锁的顺序，不是按照 FIFO 的顺序，有可能后申请锁的线程比先申请的线程优先获取到锁。</p>
+</blockquote>
+<p>从源码上看，唯一区别就是公平锁在获取锁前多一个判断条件：<code>hasQueuedPredecessors</code>判断当前线程是否是等待队列中的第一个。</p>
+<p><strong>两者决定多线程争夺时锁的归属策略</strong></p>
+<div class="note note-primary">
+            <p>实用性：</p><ul><li>根据不同场景需要使用不同策略。</li><li>公平锁效率低，频繁阻塞造成进入内核态的开销。</li><li>非公平锁效率高，但可能饿死线程。</li></ul><p>实现：</p><ul><li>synchronized是非公平的</li><li>Lock接口的实现类ReentrantLock可以指定是否公平（默认非公平）。</li></ul>
+          </div>
+
+<h2 id="可重入锁-不可重入锁"><a href="#可重入锁-不可重入锁" class="headerlink" title="可重入锁 | 不可重入锁"></a>可重入锁 | 不可重入锁</h2><blockquote>
+<p><strong>可重入锁</strong>：也称为递归锁，同一个线程在外层方法获取锁的时候，再进入该线程的内层方法会自动获取锁（前提锁对象得是同一个对象或者 class），不会因为之前已经获取过还没释放而阻塞。</p>
+<p><strong>不可重入锁</strong>：同一个线程不能获得同一个对象的锁两次。</p>
+</blockquote>
+<p>原理：如ReentrantLock，通过判断state字段，若为0则直接占用锁，不为0则判断主人是不是自己，若是，则锁上加一个记号。</p>
+<p><strong>决定其在被一个线程重复获取时是否成功</strong></p>
+<div class="note note-primary">
+            <p>实用：</p><ul><li>防止同一个线程获取同一个锁失败<br>实现：</li><li>synchronized，ReentrantLock都是可重入锁。</li></ul>
+          </div>
+
+<h2 id="共享锁-排他锁"><a href="#共享锁-排他锁" class="headerlink" title="共享锁 | 排他锁"></a>共享锁 | 排他锁</h2><blockquote>
+<p><strong>共享锁</strong>：该锁可被多个线程所持有。如果线程 A 对数据 B 加上共享锁后，则其他线程只能对 B 再加共享锁，不能加排它锁。获得共享锁的线程只能读数据，不能修改数据。</p>
+<p><strong>排他锁</strong>：也称互斥锁、独享锁，该锁一次只能被一个线程所持有。如果线程 A 对数据 B 加上排它锁后，则其他线程不能再对 B 加任何类型的锁。获得排它锁的线程即能读数据又能修改数据。</p>
+</blockquote>
+<p>排他锁是一种悲观锁，共享锁是一种乐观锁。</p>
+<p><strong>决定锁是否私有</strong></p>
+<div class="note note-primary">
+            <p>实用：</p><ul><li>根据场景，保证性能、准确性。<br>实现：</li><li>排他锁：synchronized 和 ReentrantLock、ReentrantReadWriteLock中的写锁。</li><li>共享锁：ReentrantReadWriteLock中的读锁。</li></ul>
+          </div>
+
+<h2 id="无锁-偏向锁-轻量级锁-重量级锁"><a href="#无锁-偏向锁-轻量级锁-重量级锁" class="headerlink" title="无锁 | 偏向锁 | 轻量级锁 | 重量级锁"></a>无锁 | 偏向锁 | 轻量级锁 | 重量级锁</h2><blockquote>
+<p><strong>无锁（Lock-Free）</strong>,具体指的是没有使用悲观锁，如使用CAS算法的JUC原子类。</p>
+<p><strong>偏向锁</strong>，锁会偏向于第一个获得它的<strong>线程</strong>，接下来如果没有其他线程竞争该锁，则该线程不需要进行CAS操作。偏向锁使用了一种<strong>等到竞争出现才释放锁</strong>的机制。</p>
+<p><strong>轻量级锁</strong>，偏向锁时出现两个线程交替竞争则变成轻量级锁。（不会自旋）</p>
+<p><strong>重量级锁</strong>，升级成重量级锁之后，线程如果没有争抢到锁，会进行一段自旋等待锁的释放。那么上文说过，自旋等待是需要有一定限度的，如果自旋等待超过了一定的次数（时间），那么这个线程就要被阻塞住了。因为涉及到操作系统所以重量。</p>
+</blockquote>
+<p>抛开无锁这个状态不谈，Java 中的<code>synchronized</code>有偏向锁、轻量级锁、重量级锁，分别对应了锁只被一个线程持有、不同线程交替持有锁、多线程竞争锁三种情况。当条件不满足时，锁就会按照顺序进行升级。</p>
+<p>一般认为，<strong>锁只能升级不能降级</strong>，但实际上是有降级的，不过条件苛刻，可以忽略。</p>
+<p><strong>定义了synchronized的状态，决定其在被一个或多个线程争夺时的线程的获取锁策略</strong></p>
+<div class="note note-primary">
+            <p>实用：</p><ul><li>无锁，写操作比较少时使用，使用CAS算法实现，效率高。</li><li>偏向锁，只有一个线程获取该锁时的策略，不会频繁的释放锁。</li><li>轻量级锁，两个线程交替拥有锁，但无实际竞争避免阻塞（<strong>信号量</strong>），像一个过渡状态，一旦竞争就变成重量级。</li><li>重量级锁，短暂自旋后会阻塞，安全性能好。<br>实现：</li><li><code>synchronized</code></li></ul>
+          </div>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>悲|乐观锁决定线程获取锁的行为时点和方式（先获取|先操作再校验）</li>
+<li>自旋锁决定获取锁失败后的行为（阻塞|等待）</li>
+<li>公平锁|非公平锁决定多线程竞争时的优先级（顺序|插队）</li>
+<li>可重入锁|不可重入锁决定单线程能否重复获取锁</li>
+<li>共享锁|排他锁决定锁能否被多个线程共有（读锁|写锁）</li>
+</ol>
+<p>无锁|偏向锁|轻量级锁|重量级锁是锁的状态，其是针对synchronized具体实现的分类，其他锁指的是思想。</p>
+<div class="note note-primary">
+            <ul><li>synchronized 关键词是悲观锁、排他锁、可重入锁、(某些状态下可自旋)、非公平锁。</li><li>Lock接口的实现是悲观锁、可重入锁<ul><li>ReentrantLock是排他锁、有公平和非公平两种实现。</li><li>ReentrantReadWriteLock读锁是共享的，写锁是排他的。</li></ul></li><li>JUC原子类是乐观锁，自旋锁（可以认为，自旋操作的实现就是CAS，但乐观锁的实现不只CAS）。</li></ul>
+          </div>
+
+<h1 id="二、synchronized关键字"><a href="#二、synchronized关键字" class="headerlink" title="二、synchronized关键字"></a>二、synchronized关键字</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>1）对于普通同步方法（synchronized 修饰的普通方法），锁是<strong>当前实例对象</strong>。<br>2）对于静态同步方法（synchronized 修饰的静态方法），锁是<strong>当前类的 Class 对象</strong>。<br>3）对于同步方法块（synchronized 修饰的块），锁是<strong>Synchonized括号里配置的对象</strong>。</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>monitorenter 和 monitorexit 来隐式地使用这两个操作。</p>
+<h3 id="锁的释放和获取的内存语义"><a href="#锁的释放和获取的内存语义" class="headerlink" title="锁的释放和获取的内存语义"></a>锁的释放和获取的内存语义</h3><p>所有 Lock 实现都必须强制执行与内置监视器锁 synchronization 提供的相同的内存同步语义。<br>1）锁释放的内存语义：<strong>当线程释放锁时，JMM 会把该线程对应的本地内存中的共享变量刷新到主内存中。</strong><br>2）锁获取的内存语义：<strong>当线程获取锁时，JMM 会把该线程对应的本地内存置为无效。从而使得被锁保护的临界区代码必须从主内存中读取共享变量。</strong></p>
+<blockquote>
+<p>线程 A 释放一个锁，实质上是线程 A 向接下来将要获取这个锁的某个线程发出了消息，比如说告知对方我对某个共享变量做了修改；<br>线程 B 获取一个锁，实质上是线程 B 接收了之前某个线程发出的消息，比如说接收了线程 A 在释放这个锁之前对共享变量所做的修改；</p>
+</blockquote>
+<h2 id="底层原理"><a href="#底层原理" class="headerlink" title="底层原理"></a>底层原理</h2><h3 id="字节码层面"><a href="#字节码层面" class="headerlink" title="字节码层面"></a>字节码层面</h3><ol>
+<li>普通同步方法：加上<code>ACC_SYNCHRONIZED</code>标识</li>
+<li>静态同步方法：加上<code>ACC_SYNCHRONIZED</code>标识</li>
+<li>同步方法块：方法的code属性中，多了<code>monitorenter</code>和<code>monitorexit</code>字节码。</li>
+</ol>
+<h3 id="底层实现"><a href="#底层实现" class="headerlink" title="底层实现"></a>底层实现</h3><h4 id="Monitor介绍"><a href="#Monitor介绍" class="headerlink" title="Monitor介绍"></a>Monitor介绍</h4><p>任何一个对象都与一个监视器（monitor）对象相关联。当一个监视器有拥有者（owner）的时候，这个监视器就会被锁定（locked）。</p>
+<p>每个监视器都维护着一个自己被持有次数（或者说被锁住 locked）的计数器（count），具体如下：</p>
+<ul>
+<li>如果与对象关联的监视器的计数器为零，则线程进入监视器成为该监视器的拥有者，并将计数器设置为 1。</li>
+<li>当同一个线程再次进入该对象的监视器的时候，计数器会再次自增</li>
+<li>当其他线程想获得该对象关联的监视器的时候，就会被阻塞住，直到该监视器的计数器为 0 才会再次尝试获得其所有权。</li>
+<li>因为计数器和owner的存在，被 <code>synchronized</code> 修饰的同步方法块对同一条线程来说是<strong>可重入</strong>的。所谓可重入就是说即使同一个线程反复进入一个同步方法块也不会出现自己把自己锁死的情况。</li>
+</ul>
+<div class="note note-primary">
+            <p>可见synchronized也是通过<strong>计数器信号量</strong>快速判断能否获取和重入次数的。</p>
+          </div>
+
+<h4 id="ACC-SYNCHRONIZED"><a href="#ACC-SYNCHRONIZED" class="headerlink" title="ACC_SYNCHRONIZED"></a>ACC_SYNCHRONIZED</h4><p>方法级别的同步是隐式执行的，调用方法时，线程会进入对应对象的监视器，然后执行方法。<strong>在执行线程拥有监视器期间，没有其他线程可以进入这个方法</strong>。<br>另外，如果在调用同步方法过程中抛出异常并且同步方法没有处理该异常，则在异常重新抛出同步方法之前，该方法的监视器会自动退出。</p>
+<h4 id="monitorenter、monitorexit"><a href="#monitorenter、monitorexit" class="headerlink" title="monitorenter、monitorexit"></a>monitorenter、monitorexit</h4><p>同步代码块是显示执行的。</p>
+<h4 id="Monitor详解"><a href="#Monitor详解" class="headerlink" title="Monitor详解"></a>Monitor详解</h4><p>常见的进程同步与互斥机制是<strong>信号量</strong>和<strong>管程</strong>。</p>
+<p>相比起信号量，管程有一个重要特性：<strong>在一个时刻只能有一个进程使用管程</strong>。也就是说管程天生支持进程互斥。（排他锁）</p>
+<p>Java中<strong>管程</strong>（monitor）的具体实现是<code>ObjectMonitor</code> 类。这是一个C++实现的类。<br><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202192413.png" srcset="/img/loading.gif" lazyload><br>补充：</p>
+<ul>
+<li>monitor还持有计数器count</li>
+<li>WAITING列表中保存着：<strong>获得过锁但使用wait()方法等方式放弃锁的线程</strong>，它们等待被唤醒后进入RUNNABLE状态，此时无法获取锁则BLOCKED。</li>
+</ul>
+<h4 id="Java对象头"><a href="#Java对象头" class="headerlink" title="Java对象头"></a>Java对象头</h4><p>在HotSpot虚拟机里，对象在堆内存中的存储布局可以划分为三个部分：对象头（Header）、实例数据（Instance Data）、对齐填充（Padding）。<br>针对普通对象和数组对象：</p>
+<ul>
+<li>如果对象是数组类型，则虚拟机用3个字宽（Word，在32位系统中，一个word占4字节，32bit）存储对象头（Mard Word、类型指针、数组长度）</li>
+<li>如果对象是非数组类型，则用2字宽存储对象头（Mard Word、类型指针）。</li>
+</ul>
+<p>在32位虚拟机中，1字宽等于4字节，即32bit，如表所示：</p>
+<table>
+<thead>
+<tr>
+<th>长度</th>
+<th>内容</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>32&#x2F;64 bit</td>
+<td>Mark Word</td>
+<td>存储对象的 hashCode 和锁信息等</td>
+</tr>
+<tr>
+<td>32&#x2F;64 bit</td>
+<td>Class Metadata（类型指针）</td>
+<td>对象指向它的类型元数据的指针，Java 虚拟机通过这个指针来确定该对象是哪个类的实例</td>
+</tr>
+<tr>
+<td>32&#x2F;64 bit</td>
+<td>Array Length（数组长度）</td>
+<td>数组的长度</td>
+</tr>
+</tbody></table>
+<p><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202231421.png" srcset="/img/loading.gif" lazyload><br>其中MarkWord部分是对象与monitor关联的重点，其有多种状态：<br><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202232949.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202232952.png" srcset="/img/loading.gif" lazyload></p>
+<p>在64位下，MarkWord是64bit大小的，hashCode变成了31bit，原先的25bit则空了出来，且新增了1bit字段cms_free（CMS回收器GC时使用）<br><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202232955.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="锁优化"><a href="#锁优化" class="headerlink" title="锁优化"></a>锁优化</h2><ul>
+<li>JDK1.6前，<strong>synchronized在1.6之前是一个重量级锁</strong>。</li>
+<li>JDK1.6后，出现了各种锁优化技术，如自旋转，轻量级锁，锁消除和锁粗化等。</li>
+</ul>
+<h3 id="适应性自旋"><a href="#适应性自旋" class="headerlink" title="适应性自旋"></a>适应性自旋</h3><p><strong>自旋锁可以使线程免于阻塞但并不能代替阻塞</strong>，等待的时间必须有一定的限度，默认自旋等待次数是 10 次，用户也可以使用参数 <code>-XX：PreBlockSpin</code> 来自行更改，而在 JDK 1.6 中，对于自旋等待的次数这个问题，做出了一次优化，即引入了<strong>适应性自旋</strong>（也称为自旋适应锁）：</p>
+<ul>
+<li>如果在同一个锁对象上，自旋等待刚刚成功获得过锁，并且持有锁的线程正在运行中，那么 JVM 就会认为这次自旋也是很有可能再次成功，进而它将允许自旋等待持续相对更长的时间；</li>
+<li>如果对于某个锁，很少有线程通过自旋等待成功获得过，那么当以后有线程尝试获取这个锁时， JVM 可能省略掉自旋过程，直接阻塞住线程，避免空转浪费处理器资源。</li>
+</ul>
+<h3 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h3><p><strong>锁可以升级但不能降级，意味着偏向锁升级成轻量级锁后不能再降级回偏向锁（其实可以，要求很严格）</strong>。<br>Mark Word内容：<br><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202233831.png" srcset="/img/loading.gif" lazyload><br>初始状态和偏向锁下锁的标志位是<code>01</code>，轻量锁为<code>00</code>，重量锁为<code>10</code>，GC标记为<code>11</code>。<strong>01 -&gt; 00 -&gt; 10 -&gt; 11</strong></p>
+<h4 id="加锁"><a href="#加锁" class="headerlink" title="加锁"></a>加锁</h4><p>1）<strong>检查Mark Word初始状态</strong>：需要保证对象无锁，即锁标志位为<code>01</code>，偏向锁标志位为<code>0</code>。<br>2）<strong>在当前线程的栈帧上建立锁记录</strong>：java虚拟机会将当前线程的<strong>栈帧</strong>中建立一个名为<strong>锁记录</strong>（Lock Record）的空间，Lock Record 中有一个字段 displaced_header，用于后续存储锁对象的 Mark Word 的拷贝。<br><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202234727.png" srcset="/img/loading.gif" lazyload><br>3）<strong>复制锁对象的 Mark Word 到锁记录中</strong>：把锁对象的 Mark Word 复制到锁记录中，更具体来讲，是将 Mark Word 放到锁记录的 <code>displaced_header</code>属性中。官方给这个复制过来的记录起名 <code>Displaced Mark Word</code>。<br><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202234855.png" srcset="/img/loading.gif" lazyload><br>4）使用 <strong>CAS 操作更新锁对象的 Mark Word</strong>。Java 虚拟机使用 CAS 操作尝试把锁对象的 Mark Word 更新为指向锁记录的指针，并将锁记录里的 owner 指针指向对象的 Mark Word。</p>
+<ul>
+<li>如果这个更新操作成功了，就表明获取轻量级锁成功，也就是说该线程拥有了这个对象的锁！并且该对象 Mark Word 的锁标志位会被改为 00，即表示此对象处于轻量级锁定状态。</li>
+<li>如果这个更新操作失败了，那有两种可能性：<ul>
+<li>当前线程已经拥有了这个对象锁（直接进入同步块继续执行）</li>
+<li>存在其他的线程竞争获取这个对象锁（膨胀成重量级锁，锁标志的状态值变为 10，Mark Word 中存储的就是指向重量级锁（互斥量）的指针）</li>
+</ul>
+</li>
+</ul>
+<h5 id="当前线程已经拥有该锁"><a href="#当前线程已经拥有该锁" class="headerlink" title="当前线程已经拥有该锁"></a>当前线程已经拥有该锁</h5><p>虚拟机首先会检查该对象的 Mark Word 是否指向当前线程的栈帧，如果是就说明当前线程已经拥有了这个对象的锁，那就可以直接进入同步块继续执行（synchronized 是可重入锁）。</p>
+<p>假设锁的状态是轻量级锁，下图反应了对象的 Mark word 和线程栈中锁记录的状态，可以看到左边线程栈中包含3个指向当前锁对象的 Lock Record。其中栈中最高位的锁记录为第一次获取轻量级锁时分配的，其 Displaced Mark word 的值为锁对象 obj 加锁之前的 Mark word，之后的每次锁重入都会在线程栈中分配一个 Displaced Mark word 为 <code>null</code>的锁记录。<br><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230202235425.png" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>为什么 synchronized 重入的时候 Java 虚拟机要在线程栈中添加 Displaced Mark word 为 null 的锁记录呢？</p>
+<ul>
+<li>首先锁重入次数是一定要记录下来的，因为每次解锁都需要对应一次加锁，只有解锁次数等于加锁次数时，该锁才真正的被释放，也就是在解锁时需要用到说锁的重入次数。</li>
+<li>最简单的记录锁重入次数的方案就是将其记录在对象头的 Mark word 中，但 Mark word 大小有限，没有多出来的地方存放该信息了。</li>
+<li>另一个方案就是在锁纪录中记录重入次数，但这样做的话，每次重入获得锁的时候都需要遍历该线程的栈找到对应的锁纪录，然后去修改重入次数的值，显然这样效率不是很高。</li>
+</ul>
+<p>所以最终 Hotspot 选择了每次重入获得锁都添加一个锁记录来表示锁的重入，这样有几个 Displaced Mark word 为 null 的锁记录就表示发生了几次锁重入，非常简单。</p>
+</blockquote>
+<h5 id="存在其他线程竞争该锁"><a href="#存在其他线程竞争该锁" class="headerlink" title="存在其他线程竞争该锁"></a>存在其他线程竞争该锁</h5><p><strong>轻量级锁 CAS 失败并不会自旋而是直接膨胀成重量级锁</strong>。</p>
+<h4 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h4><p>解锁的时候 Java 虚拟机会用 CAS 操作把对象当前的 Mark Word 和线程中复制的 Displaced Mark Word 替换回来：</p>
+<ul>
+<li>如果替换成功，那整个同步过程就顺利完成了</li>
+<li>如果替换失败，则说明有其他线程尝试过获取该锁，轻量级锁会先膨胀成重量级锁然后再解锁（调用重量级锁的 exit 方法）</li>
+</ul>
+<h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><p>synchronized 关键字会尝试加锁：将<strong>锁对象的对象头</strong>中的<strong>mark word</strong>(包括hashCode,age,lock信息)复制到<strong>当前线程的栈帧</strong>当中，叫做<strong>displaced mark word</strong>。然后尝试通过<strong>CAS</strong>算法替换<strong>对象头的markword</strong>为指向栈帧中<strong>displaced mark word</strong>的指针，并将栈帧中的<strong>owner</strong>指向对象。</p>
+<ul>
+<li>若当前对象的mark word没有被替换过，替换成功，获得锁。</li>
+<li>若当前对象的mark word被替换过，考虑：<ul>
+<li>之前是被本线程替换的，经过检查后，会再到本线程的栈帧中插入新的lock record(displaced header和owner的集合)，其中header为空，owner与之前的一样</li>
+<li>若是其他线程的竞争，则膨胀成重量级锁。获取该重量级锁时会进行失败自旋。</li>
+</ul>
+</li>
+</ul>
+<h3 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h3><p><strong>在有竞争的情况下，轻量级锁反而会比传统的重量级锁更慢</strong>。但大多数情况下无竞争，为了避免CAS的开销，引入了偏向锁。</p>
+<h4 id="获取"><a href="#获取" class="headerlink" title="获取"></a>获取</h4><p>1）查看对象头的 Mark Word 中偏向锁的标识以及锁标志位，若<strong>偏向锁</strong>标识为1 且 <strong>锁标志位</strong> 为 01，则该锁为<strong>可偏向状态</strong>；<br>2）若为可偏向状态，则测试 Mark Word 中的线程 ID 是否与当前线程相同，若相同，则不用执行 CAS 操作，直接进入同步块执行，否则进入下一步。<br>3）当前线程通过 CAS 操作竞争锁，若竞争成功，则使用 CAS 操作将 Mark Word 中线程 ID 设置为当前线程 ID（重新偏向），然后执行同步块；若竞争失败，则进入偏向锁撤销的流程。</p>
+<p>轻量级锁重入：<br><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230203000535.png" srcset="/img/loading.gif" lazyload><br>偏向锁重入：<br><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230203000550.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="撤销"><a href="#撤销" class="headerlink" title="撤销"></a>撤销</h4><p>偏向锁的撤销采用了 <strong>一种只有竞争才会释放锁的机制，线程是不会主动去释放偏向锁，需要等待其他线程来竞争</strong>。</p>
+<p>如果当前线程通过 CAS 竞争偏向锁失败，说明存在锁竞争，则进入偏向锁撤销的流程，偏向锁的撤销需要等待 全局安全点 safe point（这个时间点上没有正在执行的代码），其具体步骤如下：<br>1）JVM 会先暂停拥有偏向锁的线程，判断持有偏向锁的线程是否还存活；<br>2）根据判断结果执行</p>
+<ul>
+<li>如果持有偏向锁的线程存活且还在同步块中则将锁升级为轻量级锁，原偏向的线程继续拥有锁，当前线程则走入到轻量级锁竞争的逻辑里。</li>
+<li>如果持有偏向锁的线程已经不存活或者不在同步块中，则将对象头的 Mark Word 改为无锁状态（01），以允许其他线程竞争锁，之后再升级为轻量级锁；<br><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230203000458.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<h4 id="批量重偏向和批量撤销"><a href="#批量重偏向和批量撤销" class="headerlink" title="批量重偏向和批量撤销"></a>批量重偏向和批量撤销</h4><p>批量指的是某个类的大量对象，是<strong>针对类的优化</strong>。<br><strong>批量重偏向</strong>（bulk rebias）：当某个类的对象的偏向锁的<strong>撤销次数</strong>超过重偏向阈值（默认 20 次）后，JVM 会这样觉得，我是不是偏向错了呢，于是在给这些对象加锁时会重新偏向至试图加锁的线程。</p>
+<p><strong>批量撤销</strong>（bulk revoke）：当某个类的对象的偏向锁的<strong>撤销次数</strong>超过批量撤销阈值（默认40 次）后，JVM 会这样觉得，自己确实偏向错了，根本就不该偏向，于是整个类的所有对象 都会变为<strong>不可偏向</strong>的，新建的对象也是不可偏向的。通俗来说，JVM 会认为这个类的所有对象的使用场景都存在多线程竞争，会标记该类为不可偏向，之后，对于该类的对象的锁，都会直接走轻量级锁的逻辑。</p>
+<h4 id="废弃"><a href="#废弃" class="headerlink" title="废弃"></a>废弃</h4><p>JDK 15废弃了偏向锁，其带来的作用已经不大。</p>
+<h4 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h4><p>偏向锁其实就是为了避免一直获取，释放锁带来的消耗（CAS）,采用确认mark word中的线程id来判断是否属于自己，若不属于则升级为轻锁（尝试CAS），再不行就变成重锁（先自旋再堵塞）</p>
+<p>一个对象有<strong>可偏向</strong>和<strong>不可偏向</strong>两种状态（取决于偏向锁标志位是否为1），且初始时是可偏向的。若是对象可偏向尝试加偏向锁，否则直接走轻量级锁逻辑。</p>
+<p><strong>撤销</strong>是等Save Point时，判断持有线程是否仍在同步块中：</p>
+<ul>
+<li>若在，则升级锁为轻量级锁（发生竞争）。</li>
+<li>若不在，则将其变成无锁状态（此时<strong>不可偏向</strong>，此后该线程获取该对象锁时会直接获取轻量级锁）。<br>但是，若大量同类对象偏向锁的被撤销，则给与该类的对象重新偏向其他线程的机会（标记为<strong>可偏向</strong>），但是若再被撤销太多次，则变成<strong>不可偏向</strong>。</li>
+</ul>
+<h3 id="锁消除和锁粗化"><a href="#锁消除和锁粗化" class="headerlink" title="锁消除和锁粗化"></a>锁消除和锁粗化</h3><h4 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a>锁消除</h4><p>Lock Elimination:锁消除的概念比较容易理解，就是<strong>如果编译器认定一个锁只会被单个线程访问，那么这个锁就可以被消除</strong>。</p>
+<p>锁消除需要进行逃逸分析：</p>
+<ul>
+<li>方法逃逸</li>
+<li><strong>线程逃逸</strong></li>
+</ul>
+<p>针对是否逃逸，JVM的优化有：</p>
+<ul>
+<li><strong>同步省略</strong></li>
+<li>标量替换</li>
+<li>栈上分配</li>
+</ul>
+<h4 id="锁粗化"><a href="#锁粗化" class="headerlink" title="锁粗化"></a>锁粗化</h4><p>Lock Coarsening:如果虚拟机检查到有这样一串连续的操作都是对同一个对象进行加锁，就会把加锁同步的范围粗化（扩大）到整个操作序列的外部。<br>简单来说，锁粗化就是把多次加锁请求合并成一次。如<code>sb.append()</code>连续调用。</p>
+<h2 id="wait和synchronized"><a href="#wait和synchronized" class="headerlink" title="wait和synchronized"></a>wait和synchronized</h2><h3 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h3><ul>
+<li>wait方法必须在 synchronized 同步块中调用</li>
+<li>wait方法是Object实现的native方法</li>
+</ul>
+<p>某线程A调用对象a的<code>wait</code>方法，会让线程处于WAITING状态，直到另一个线程调用对象a的<code>notify</code>（随机）或<code>notifyAll</code>（所有）方法。可以看出，对象a基本上是信号的传递者的角色。</p>
+<p><strong>调用 <code>wait</code> 方法的线程必须拥有此对象的监视器</strong>，否则报异常。该方法将当前线程（称为 T）置于此对象的 WaitSet 中，然后放弃该对对象的锁。直到被唤醒或中断、超时。</p>
+<p>总结：调用 wait 方法就是对象通知持有自己锁的线程释放该锁并等待；而 notify 和 notifyAll 方法就是对象通知在等待的线程又可以来竞争我的锁了。</p>
+<h3 id="无效唤醒-Lost-Wakeup"><a href="#无效唤醒-Lost-Wakeup" class="headerlink" title="无效唤醒 Lost Wakeup"></a>无效唤醒 Lost Wakeup</h3><p>为什么必须在同步块中调用wait？<br>wait要在notify前发生，即编程时希望先让某线程wait，再由其他线程唤醒它，但是多线程下不能保证wait发生在notify后，所以需要用锁来保证只有wait成功之后，其他线程才能notify这个对象。</p>
+<h3 id="虚假唤醒-Spurious-Wakeup"><a href="#虚假唤醒-Spurious-Wakeup" class="headerlink" title="虚假唤醒 Spurious Wakeup"></a>虚假唤醒 Spurious Wakeup</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span>(某条件)&#123;<br>	<span class="hljs-comment">//等待</span><br>	<span class="hljs-built_in">this</span>.wait();<br>&#125;<br><span class="hljs-comment">//执行某事件</span><br><span class="hljs-keyword">do</span>();<br><span class="hljs-comment">//通知其他线程</span><br><span class="hljs-built_in">this</span>.notifyAll();<br></code></pre></td></tr></table></figure>
+
+<p>在if条件语句不满足条件时，线程进入wait，被唤醒时其if条件仍不满足，因此需要把if改成while。</p>
+<h1 id="三、Volatile"><a href="#三、Volatile" class="headerlink" title="三、Volatile"></a>三、Volatile</h1><p>当一个变量被定义成 volatile 之后，它将具备两项特性：</p>
+<ol>
+<li>保证此变量对所有线程的<strong>可见性</strong>。所谓 “可见性” 就是指当一条线程修改了这个变量的值，其他线程可以立即得知这个修改。而普通变量并不能做到这一点，普通变量的值在线程间传递时均需要通过主内存来完成。</li>
+<li><strong>禁止指令重排序</strong>。事实上，普通的变量是无法保证变量赋值操作的顺序与程序代码的执行顺序是一致的，在某些情况下，可能会出现意想不到的结果。</li>
+</ol>
+<h2 id="volatile保证可见性"><a href="#volatile保证可见性" class="headerlink" title="volatile保证可见性"></a>volatile保证可见性</h2><ol>
+<li><strong>volatile 写的内存语义</strong>：当写一个 volatile 变量时，JMM 会把该线程对应的本地内存中的共享变量值刷新到主内存。</li>
+<li><strong>volatile 读的内存语义</strong>：当读一个 volatile 变量时，JMM 会把该线程对应的本地内存置为无效。线程接下来将从主内存中读取共享变量。</li>
+</ol>
+<p>事实上，更底层来讲，有 volatile 变量修饰的共享变量进行写操作的时候会多出一条Lock前缀的指令，根据 IA-32 架构软件开发者手册，这条指令会引发两件事情：<br>1）将当前处理器缓存行的数据写回到系统内存<br>2）这个写回内存的操作会使在其他 CPU 里缓存了该内存地址的数据无效<br>即<strong>无效其他线程本地内存的操作实际上是在写时就发生了</strong>。</p>
+<h2 id="volatile禁止指令重排"><a href="#volatile禁止指令重排" class="headerlink" title="volatile禁止指令重排"></a>volatile禁止指令重排</h2><p>绿色表示可以重排序，红色则不能：<br><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230203010905.png" srcset="/img/loading.gif" lazyload><br>简而言之：</p>
+<ul>
+<li>volatile写之前的不许被排序在其后(写之后不被修改)</li>
+<li>volatile读之后的不许排序在其前（读之前不被修改）</li>
+<li>volatile写和读不可以重排序</li>
+</ul>
+<p>更底层的，禁止指令重排的底层原理是插入内存屏障：编译器在生成字节码的时候，会在指令序列中插入内存屏障来禁止特定类型的处理器重排序：</p>
+<p>1）在每个 volatile 写操作的前面插入一个 StoreStore 屏障；在每个 volatile 写操作的后面插入一个 StoreLoad 屏障<br><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230203011123.png" srcset="/img/loading.gif" lazyload></p>
+<p>2）在每个 volatile 读操作的后面插入一个 LoadLoad 屏障和一个 LoadStore 屏障（图中volatile读前有一个Load屏障）<br><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230203011141.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="内存屏障"><a href="#内存屏障" class="headerlink" title="内存屏障"></a>内存屏障</h3><p><strong>内存屏障是一种指令，无论是在JAVA内存模型还是CPU层次，都是有具体的指令对应的，是一种特殊的指令，作用为禁止指令</strong><br>重排序的内存屏障有四种，分别叫做**LoadLoad屏障、StoreStore屏障、LoadStore屏障、StoreLoad屏障。</p>
+<p>例子：LoadLoad屏障<br>序列：load1指令 <strong>LoadLoad屏障</strong> load2指令<br>作用：在load1指令和load2指令之间加上 LoadLoad屏障，<strong>强制先执行load1指令再执行load2指令</strong>；load1指令和load2指令不能进行重排序。</p>
+<p><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230203011315.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="理解"><a href="#理解" class="headerlink" title="理解"></a>理解</h3><ul>
+<li>volatile读需要保证，其后面的写操作不会重排序到其前面影响读结果（loadstore），同时保证其后的读的结果和本次读的结果一致（loadload）。</li>
+<li>volatile写需要保证，其前面的写操作不会重排序到其后面（storestore），同时要保证可见性（storeload）。</li>
+</ul>
+<h2 id="双重校验锁"><a href="#双重校验锁" class="headerlink" title="双重校验锁"></a>双重校验锁</h2><p><strong>双重校验锁（Double Checked Locking，DCL）</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SingleTon</span> &#123;<br>	<span class="hljs-comment">// 私有化构造方法</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-title function_">SingleTon</span><span class="hljs-params">()</span>&#123;&#125;; <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">volatile</span> <span class="hljs-type">SingleTon</span> <span class="hljs-variable">instance</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> SingleTon <span class="hljs-title function_">getInstance</span><span class="hljs-params">()</span> &#123;<br>         <span class="hljs-comment">// 第一次校验</span><br>        <span class="hljs-keyword">if</span> (instance == <span class="hljs-literal">null</span>) &#123;     <br>            <span class="hljs-keyword">synchronized</span> (SingleTon.class) &#123;<br>                <span class="hljs-comment">// 第二次校验</span><br>                <span class="hljs-keyword">if</span> (instance == <span class="hljs-literal">null</span>) &#123;     <br>                    instance = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SingleTon</span>();<br>                &#125;<br>        	&#125;<br>   		&#125;<br>   		<span class="hljs-keyword">return</span> instance;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>为什么 <code>instance</code> 一定要用 <code>volatile</code> 这个关键字来修饰？</p>
+<h3 id="可见性应用"><a href="#可见性应用" class="headerlink" title="可见性应用"></a>可见性应用</h3><ul>
+<li>第一次校验：直接返回已经创建的实例，且不通过同步方法，速度快。</li>
+<li>第二次校验：防止两线程同时getIntance并通过第一次校验，导致创建两个对象。</li>
+</ul>
+<p>即只同步新建对象的过程，不影响直接返回对象的过程，且创建后对另一个线程<strong>可见</strong>。</p>
+<h3 id="禁止指令重排序的应用"><a href="#禁止指令重排序的应用" class="headerlink" title="禁止指令重排序的应用"></a>禁止指令重排序的应用</h3><p>在 Java 语言层面上，创建对象仅仅是一个 new 关键字而已，而在 JVM 中，对象的创建其实并不是一蹴而就的，忽略掉一些 JVM 底层的细节比如设置对象头啥的，对象的创建可以大致分三个步骤：</p>
+<ol>
+<li>在堆中为对象分配内存空间</li>
+<li>调用构造函数，初始化实例</li>
+<li>将栈中的对象引用指向刚分配的内存空间</li>
+</ol>
+<p>为了防止2-&gt;3步发生重排序，使用volatile保证先创建完对象再给出引用。</p>
+<h1 id="四、Final"><a href="#四、Final" class="headerlink" title="四、Final"></a>四、Final</h1><blockquote>
+<p>引言：在旧的 Java 内存模型（JDK 1.5 以前）中，一个最严重的缺陷就是线程可能看到 final 域的值会改变。比如一个线程看到一个 int 类型 final 值为 0，此时该值是未初始化前的零值，一段时间后该值被某线程初始化，再去读这个 final 值会发现值变为 1。</p>
+<p>为了修补这个漏洞，新的 Java 内存模型并增强了 final 的语义，通过为 final 域增加写和读重排序规则，为 Java 程序员提供初始化安全保证：只要对象是正确构造的（被构造对象的引用在构造函数中没有“逸出”），那么不需要使用同步（lock、volatile）就可以保证任意线程都能看到这个 final 域在构造函数中被初始化之后的值。</p>
+</blockquote>
+<p>简单来说：只要一个不可变对象被正确地构建出来（即没有发生 this 引用逃逸的情况，这是一种例外），那其外部的可见状态永远都不会改变，永远都不会看到它在多个线程之中处于不一致的状态。</p>
+<p>甚至我们可以下结论：<strong>不可变对象永远是线程安全的。</strong></p>
+<h2 id="写final域的重排序规则"><a href="#写final域的重排序规则" class="headerlink" title="写final域的重排序规则"></a>写final域的重排序规则</h2><p>构造对象时会初始化final域，此时：</p>
+<ol>
+<li>编译器：JMM 禁止编译器把对 final 域的写指令重排序到构造函数之外。</li>
+<li>处理器：编译器会在对 final 域的写指令之后，构造函数 return 之前，插入一个 StoreStore 屏障（这个屏障的作用就是禁止处理器把对 final 域的写指令重排序到构造函数之外）</li>
+</ol>
+<p>解释：<strong>编译器</strong>不做重排序，并通过storestore防止<strong>处理器</strong>重排序。<br>目的：保证先赋值对象的final属性，后完成初始化给出该对象引用。</p>
+<h2 id="读final域的重排序规则"><a href="#读final域的重排序规则" class="headerlink" title="读final域的重排序规则"></a>读final域的重排序规则</h2><ol>
+<li>编译器：编译器会在读 final 域操作的前面插入一个 LoadLoad 屏障。</li>
+<li>处理器：在一个线程中，初次读对象引用与初次读该对象包含的 final 域，JMM 禁止处理器重排序这两个操作（注意，这个规则仅仅针对处理器）。</li>
+</ol>
+<blockquote>
+<p>对于编译器和大部分处理器来说，肯定是不会对初次读对象引用与初次读该对象包含的 final 域这两个操作进行重排序的，因为这两个操作之间存在间接依赖关系。<br>但有少数处理器是允许对存在间接依赖关系的操作做重排序的，所以这个规则就是专门用来针对这种处理器的。</p>
+</blockquote>
+<p>解释：<strong>编译器</strong>通过loadload保证不会把读final域的操作放在读其所属对象前。<strong>处理器</strong>则对其做了约定。<br>目的：保证先获取到对象本身，然后再读final值。</p>
+<h2 id="this引用逃逸"><a href="#this引用逃逸" class="headerlink" title="this引用逃逸"></a>this引用逃逸</h2><p>final保证了final属性在对象构造完成return前赋值，但若return前将this引用给到外部，此时对象尚未初始化完成，这就是一种线程逃逸。</p>
+<p>避免：为了避免这种逃逸现象，最好不要这样编写代码，保证”只要一个不可变对象被正确地构建出来（即没有发生 this 引用逃逸的情况），那其外部的可见状态永远都不会改变”。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/" class="category-chain-item">JUC</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+      
+        <a href="/tags/JUC/">#JUC</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>JUC第2章（三大关键字）</div>
+      <div>http://example.com/2023/02/02/概念整理/Java/JUC/JUC第2章（三大关键字）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年2月2日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC3%E7%AB%A0%EF%BC%88Lock%E6%8E%A5%E5%8F%A3%EF%BC%89/" title="JUC第3章（Lock接口）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JUC第3章（Lock接口）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC1%E7%AB%A0%EF%BC%88%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%89/" title="JUC第1章（基础知识）">
+                        <span class="hidden-mobile">JUC第1章（基础知识）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/fluid-extention.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

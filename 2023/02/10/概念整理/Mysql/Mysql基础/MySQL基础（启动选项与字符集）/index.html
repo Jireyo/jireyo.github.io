@@ -1,0 +1,835 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、启动选项mysqldeg:--skip-networking 禁止网络--default-storage-engine&#x3D;MyISAM 选择默认存储引擎 注意：  选项有长形式和短形式 长形式前面-- 短形式前面- 一般短形式后面要直接加参数（不能空格）   选项名是区分大小写的               mysqld_safe会间接调用mysqld              配置文件可以在配">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL基础（启动选项与字符集）">
+<meta property="og:url" content="http://example.com/2023/02/10/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%90%AF%E5%8A%A8%E9%80%89%E9%A1%B9%E4%B8%8E%E5%AD%97%E7%AC%A6%E9%9B%86%EF%BC%89/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
+<meta property="og:description" content="一、启动选项mysqldeg:--skip-networking 禁止网络--default-storage-engine&#x3D;MyISAM 选择默认存储引擎 注意：  选项有长形式和短形式 长形式前面-- 短形式前面- 一般短形式后面要直接加参数（不能空格）   选项名是区分大小写的               mysqld_safe会间接调用mysqld              配置文件可以在配">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/02/10/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%90%AF%E5%8A%A8%E9%80%89%E9%A1%B9%E4%B8%8E%E5%AD%97%E7%AC%A6%E9%9B%86%EF%BC%89/f87857b928f84edca6a6cf127b3fda5a_tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="article:published_time" content="2023-02-10T08:42:05.000Z">
+<meta property="article:modified_time" content="2023-02-16T16:43:17.970Z">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="概念整理">
+<meta property="article:tag" content="Mysql">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/02/10/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%90%AF%E5%8A%A8%E9%80%89%E9%A1%B9%E4%B8%8E%E5%AD%97%E7%AC%A6%E9%9B%86%EF%BC%89/f87857b928f84edca6a6cf127b3fda5a_tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.webp">
+  
+  
+  
+  <title>MySQL基础（启动选项与字符集） - Jin&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MySQL基础（启动选项与字符集）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-10 16:42" pubdate>
+          2023年2月10日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">MySQL基础（启动选项与字符集）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、启动选项"><a href="#一、启动选项" class="headerlink" title="一、启动选项"></a>一、启动选项</h1><h2 id="mysqld"><a href="#mysqld" class="headerlink" title="mysqld"></a>mysqld</h2><p><em>eg:</em><br><code>--skip-networking</code> 禁止网络<br><code>--default-storage-engine=MyISAM</code> 选择默认存储引擎</p>
+<p>注意：</p>
+<ul>
+<li>选项有长形式和短形式<ul>
+<li>长形式前面<code>--</code></li>
+<li>短形式前面<code>-</code></li>
+<li>一般短形式后面要直接加参数（不能空格）</li>
+</ul>
+</li>
+<li>选项名是区分大小写的</li>
+</ul>
+<div class="note note-primary">
+            <p><code>mysqld_safe</code>会间接调用<code>mysqld</code></p>
+          </div>
+
+
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><p>可以在配置文件中修改启动参数。</p>
+<h3 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h3><p>我们可以在选项组的名称后加上特定的<code>MySQL</code>版本号，比如对于<code>[mysqld]</code>选项组来说，我们可以定义一个<code>[mysqld-5.7]</code>的选项组，它的含义和<code>[mysqld]</code>一样，只不过只有版本号为<code>5.7</code>的<code>mysqld</code>程序才能使用这个选项组中的选项。</p>
+<h3 id="配置文件的优先级"><a href="#配置文件的优先级" class="headerlink" title="配置文件的优先级"></a>配置文件的优先级</h3><ul>
+<li>不同配置文件和同一个配置文件中的相同选项，按扫描最后出现的为准。</li>
+<li>可以<code>defaults-extra-file</code>指定额外的配置文件，这样会只使用该指定文件。</li>
+</ul>
+<h1 id="二、系统变量"><a href="#二、系统变量" class="headerlink" title="二、系统变量"></a>二、系统变量</h1><h2 id="系统变量基本概念"><a href="#系统变量基本概念" class="headerlink" title="系统变量基本概念"></a>系统变量基本概念</h2><ul>
+<li><code>GLOBAL</code>：全局变量，影响服务器的整体操作。</li>
+<li><code>SESSION</code>：会话变量，影响某个客户端连接的操作。（注：<code>SESSION</code>有个别名叫<code>LOCAL</code>）</li>
+</ul>
+<h2 id="系统变量基本操作"><a href="#系统变量基本操作" class="headerlink" title="系统变量基本操作"></a>系统变量基本操作</h2><h3 id="查看系统变量"><a href="#查看系统变量" class="headerlink" title="查看系统变量"></a>查看系统变量</h3><p><code>SHOW [GLOBAL|SESSION] VARIABLES [LIKE 匹配的模式];</code></p>
+<h3 id="设置系统变量"><a href="#设置系统变量" class="headerlink" title="设置系统变量"></a>设置系统变量</h3><h4 id="启动时"><a href="#启动时" class="headerlink" title="启动时"></a>启动时</h4><ul>
+<li>启动时指定</li>
+<li>配置文件中配置</li>
+</ul>
+<h4 id="运行时"><a href="#运行时" class="headerlink" title="运行时"></a>运行时</h4><p>设置不同作用范围的系统变量：<br><code>SET [GLOBAL|SESSION] 系统变量名 = 值;</code><br>或<br><code>SET [@@(GLOBAL|SESSION).]var_name = XXX;</code></p>
+<blockquote>
+<p>注意：</p>
+<ul>
+<li>并不是所有系统变量都具有<code>GLOBAL</code>和<code>SESSION</code>的作用范围。</li>
+<li>有些系统变量是只读的，并不能设置值。</li>
+</ul>
+</blockquote>
+<h4 id="启动选项和系统变量的区别"><a href="#启动选项和系统变量的区别" class="headerlink" title="启动选项和系统变量的区别"></a>启动选项和系统变量的区别</h4><ul>
+<li>大部分的系统变量都可以被当作启动选项传入。</li>
+<li>有些系统变量是在程序运行过程中自动生成的，是不可以当作启动选项来设置，比如<code>auto_increment_offset</code>、<code>character_set_client</code>啥的。</li>
+<li>有些启动选项也不是系统变量，比如<code>defaults-file</code>。</li>
+</ul>
+<h2 id="状态变量"><a href="#状态变量" class="headerlink" title="状态变量"></a>状态变量</h2><h3 id="查看状态变量"><a href="#查看状态变量" class="headerlink" title="查看状态变量"></a>查看状态变量</h3><p><code>SHOW [GLOBAL|SESSION] STATUS [LIKE 匹配的模式];</code></p>
+<h1 id="三、字符集"><a href="#三、字符集" class="headerlink" title="三、字符集"></a>三、字符集</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="字符集"><a href="#字符集" class="headerlink" title="字符集"></a>字符集</h3><p>主要字符集：</p>
+<ul>
+<li><code>ASCII</code>字符集：128个字符，<strong>1字节</strong>编码</li>
+<li><code>ISO 8859-1</code>字符集：256个字符，<strong>1字节</strong>编码</li>
+<li><code>GB2312</code>字符集：汉字，ASCII中1字节编码，其他<strong>2字节</strong>编码</li>
+<li><code>GBK</code>字符集：对<code>GB2312</code>扩充，<strong>1～2字节</strong>编码。</li>
+<li><code>utf8</code>字符集：兼容<code>ASCII</code>字符集，采用变长编码方式，编码一个字符需要使用<strong>1～4个字节</strong>。</li>
+</ul>
+<h3 id="比较规则"><a href="#比较规则" class="headerlink" title="比较规则"></a>比较规则</h3><p>每个字符集都有对应的若干个比较规则，如针对二进制编码比较，大小写比较等等。</p>
+<h2 id="MySQL中支持的字符集和排序规则"><a href="#MySQL中支持的字符集和排序规则" class="headerlink" title="MySQL中支持的字符集和排序规则"></a>MySQL中支持的字符集和排序规则</h2><h3 id="utf8和utf8mb4"><a href="#utf8和utf8mb4" class="headerlink" title="utf8和utf8mb4"></a>utf8和utf8mb4</h3><ul>
+<li><code>utf8mb3</code>：阉割过的<code>utf8</code>字符集，只使用1～3个字节表示字符。</li>
+<li><code>utf8mb4</code>：正宗的<code>utf8</code>字符集，使用1～4个字节表示字符。</li>
+</ul>
+<p>因为4字节的字符很少，有时可以使用utf8mb3。</p>
+<h3 id="字符集的查看"><a href="#字符集的查看" class="headerlink" title="字符集的查看"></a>字符集的查看</h3><p><code>SHOW (CHARACTER SET|CHARSET) [LIKE 匹配的模式];</code></p>
+<h3 id="比较规则的查看"><a href="#比较规则的查看" class="headerlink" title="比较规则的查看"></a>比较规则的查看</h3><p><code>SHOW COLLATION [LIKE 匹配的模式];</code></p>
+<table>
+<thead>
+<tr>
+<th>后缀</th>
+<th>英文释义</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>_ai</code></td>
+<td>accent insensitive</td>
+<td>不区分重音</td>
+</tr>
+<tr>
+<td><code>_as</code></td>
+<td>accent sensitive</td>
+<td>区分重音</td>
+</tr>
+<tr>
+<td><code>_ci</code></td>
+<td>case insensitive</td>
+<td>不区分大小写</td>
+</tr>
+<tr>
+<td><code>_cs</code></td>
+<td>case sensitive</td>
+<td>区分大小写</td>
+</tr>
+<tr>
+<td><code>_bin</code></td>
+<td>binary</td>
+<td>以二进制方式比较</td>
+</tr>
+</tbody></table>
+<h3 id="字符集与比较规则的应用"><a href="#字符集与比较规则的应用" class="headerlink" title="字符集与比较规则的应用"></a>字符集与比较规则的应用</h3><h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><p><code>MySQL</code>有4个级别的字符集和比较规则，分别是：</p>
+<ul>
+<li>服务器级别：系统变量</li>
+<li>数据库级别：创建库时指定</li>
+<li>表级别：创建表时指定</li>
+<li>列级别：创建表时指定</li>
+</ul>
+<h4 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h4><ul>
+<li>在创建库&#x2F;表&#x2F;列时，若没有指定，默认使用上一级的参数。</li>
+<li>只修改字符集，则比较规则将变为修改后的字符集默认的比较规则。</li>
+<li>只修改比较规则，则字符集将变为修改后的比较规则对应的字符集。</li>
+</ul>
+<h4 id="客户端和服务器通信中的字符集"><a href="#客户端和服务器通信中的字符集" class="headerlink" title="客户端和服务器通信中的字符集"></a>客户端和服务器通信中的字符集</h4><p><img src="/2023/02/10/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%90%AF%E5%8A%A8%E9%80%89%E9%A1%B9%E4%B8%8E%E5%AD%97%E7%AC%A6%E9%9B%86%EF%BC%89/f87857b928f84edca6a6cf127b3fda5a_tplv-k3u1fbpfcp-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<table>
+<thead>
+<tr>
+<th>系统变量</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>character_set_client</td>
+<td>服务器解码请求时使用的字符集</td>
+</tr>
+<tr>
+<td>character_set_connection</td>
+<td>服务器处理请求时会把请求字符串从character_set_client转为character_set_connection</td>
+</tr>
+<tr>
+<td>character_set_results</td>
+<td>服务器向客户端返回数据时使用的字符集</td>
+</tr>
+</tbody></table>
+<p>MYSQL会使用<code>character_set_client</code>字符集来解码客户端传来的二进制数据，然后将其编码成<code>character_set_connection</code>执行，最后将结果编码成<code>character_set_results</code>返回给客户端。</p>
+<h4 id="比较规则的应用"><a href="#比较规则的应用" class="headerlink" title="比较规则的应用"></a>比较规则的应用</h4><p>比较规则的作用通常体现比较字符串大小的表达式以及对某个字符串列进行排序中。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/" class="category-chain-item">Mysql</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/" class="category-chain-item">Mysql基础</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+      
+        <a href="/tags/Mysql/">#Mysql</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MySQL基础（启动选项与字符集）</div>
+      <div>http://example.com/2023/02/10/概念整理/Mysql/Mysql基础/MySQL基础（启动选项与字符集）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年2月10日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/02/10/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/" title="MySQL基础（InnoDB数据存储）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MySQL基础（InnoDB数据存储）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/02/10/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E9%93%BE%E8%A1%A8%EF%BC%89/" title="算法专题（链表）">
+                        <span class="hidden-mobile">算法专题（链表）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/fluid-extention.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
