@@ -54,7 +54,7 @@
 <meta property="og:image" content="http://example.com/Pasted%20image%2020230207112106.png">
 <meta property="og:image" content="http://example.com/Pasted%20image%2020230207113622.png">
 <meta property="article:published_time" content="2023-02-06T08:16:01.000Z">
-<meta property="article:modified_time" content="2023-02-16T16:43:17.966Z">
+<meta property="article:modified_time" content="2023-02-21T13:16:00.681Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="计算机网络">
@@ -375,7 +375,7 @@
 <li><code>Cache-Control</code>，是一个相对时间；</li>
 <li><code>Expires</code>，是一个绝对时间；</li>
 </ul>
-<p>其中，<strong>Cache-Control 的优先级高于 Expires</strong>了。<br>强制缓存：只要不过期，肯定直接返回。</p>
+<p>其中，<strong>Cache-Control 的优先级高于 Expires</strong>。<br>强制缓存：只要不过期，肯定直接返回。</p>
 <h3 id="协商缓存"><a href="#协商缓存" class="headerlink" title="协商缓存"></a>协商缓存</h3><p><img src="/2023/02/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E7%BC%93%E5%AD%98etag.webp" srcset="/img/loading.gif" lazyload><br>协商缓存：<strong>协商缓存就是与服务端协商之后，通过协商结果来判断是否使用本地缓存</strong>。</p>
 <p>实现方法：<br>方法一：时间戳</p>
 <ul>
@@ -388,7 +388,7 @@
 <li>响应头部中 <code>Etag</code>：唯一标识响应资源；</li>
 <li>请求头部中的 <code>If-None-Match</code>：告诉服务器上次接受资源的ID。</li>
 </ul>
-<p>原理相同。<br>由于方法一的时间戳可能背篡改导致不可靠，主要使用方法二，且<strong>Etag 的优先级更高</strong>。</p>
+<p>原理相同。<br>由于方法一的时间戳可能背篡改导致不可靠，主要使用方法二，且<strong>Etag的优先级更高</strong>。</p>
 <p><strong>Etag的优点</strong>：</p>
 <ol>
 <li>在没有修改文件内容情况下文件的最后修改时间可能也会改变，这会导致客户端认为这文件被改动了，从而重新请求；</li>
@@ -500,7 +500,7 @@
 <li>DHE 算法，现在常用的；</li>
 </ul>
 <p>static DH不具有前向安全性，后者表示每次动态生成密钥。</p>
-<h5 id="ECDHE-算法"><a href="#ECDHE-算法" class="headerlink" title="ECDHE 算法"></a>ECDHE 算法</h5><p>为了提升 DHE 算法的性能，所以就出现了现在广泛用于密钥交换算法 —— <strong>ECDHE 算法</strong>。利用了ECC 椭圆曲线特性。</p>
+<h5 id="ECDHE算法"><a href="#ECDHE算法" class="headerlink" title="ECDHE算法"></a>ECDHE算法</h5><p>为了提升 DHE 算法的性能，所以就出现了现在广泛用于密钥交换算法 —— <strong>ECDHE 算法</strong>。利用了ECC 椭圆曲线特性。</p>
 <h5 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h5><p><strong>在TLS第四次握手前，客户端就已经发送了加密的 HTTP 数据，即ECDHE相比RSA握手过程省去了一个消息往返的时间</strong>。</p>
 <ul>
 <li>第一次握手与RSA类似</li>
@@ -553,8 +553,8 @@
           </div>
 
 <h3 id="头部压缩"><a href="#头部压缩" class="headerlink" title="头部压缩"></a>头部压缩</h3><p>HTTP&#x2F;2 会<strong>压缩头</strong>（Header）如果你同时发出多个请求，他们的头是一样的或是相似的，那么，协议会帮你<strong>消除重复的部分</strong>。</p>
-<p>使用<code>HPAKC</code>算法，维护一张头信息表，为每个头信息生成一个id号，以后就可以只传id。</p>
-<h4 id="HPAK算法"><a href="#HPAK算法" class="headerlink" title="HPAK算法"></a>HPAK算法</h4><ul>
+<p>使用<code>HPACK</code>算法，维护一张头信息表，为每个头信息生成一个id号，以后就可以只传id。</p>
+<h4 id="HPACK算法"><a href="#HPACK算法" class="headerlink" title="HPACK算法"></a>HPACK算法</h4><ul>
 <li>静态字典：有61种固定id和对应含义；</li>
 <li>动态字典：自行构建动态表，发送一次后，双方都会更新自己的动态表（一个id保存本次所有Header字段），下次可以只发id；<ul>
 <li>动态表生效前提：<strong>必须同一个连接上，重复传输完全相同的 HTTP 头部</strong>。因此会造成内存占用过大，服务器一般会配置参数限制动态表大小，达到数量后关闭HTTP&#x2F;2连接来释放内存。</li>
@@ -611,7 +611,7 @@
 <p><em>3、连接迁移</em><br>四元组确定一个独立的<strong>TCP</strong>连接。<br><img src="/2023/02/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206211242.png" srcset="/img/loading.gif" lazyload><br><strong>当移动设备的网络从 4G 切换到 WIFI 时，意味着 IP 地址变化了，那么就必须要断开连接，然后重新建立连接</strong>。</p>
 <p>QUIC 协议没通过<strong>连接 ID</strong> 来标记通信的两个端点。只要仍保有上下文信息（比如连接 ID、TLS 密钥等），就可以“无缝”地复用原连接，达到了<strong>连接迁移</strong>的功能。</p>
 <blockquote>
-<p>QUIC比较新，而又是基于 UDP 实现的，如果网络设备无法识别这个是 QUIC 包，那么就会当作 UDP包，然后被丢弃。</p>
+<p>QUIC 比较新，而又是基于 UDP 实现的，如果网络设备无法识别这个是 QUIC 包，那么就会当作 UDP包，然后被丢弃。</p>
 </blockquote>
 <h4 id="帧格式对比"><a href="#帧格式对比" class="headerlink" title="帧格式对比"></a>帧格式对比</h4><p><img src="/2023/02/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/Pasted-image-20230206225705.png" srcset="/img/loading.gif" lazyload></p>
 <ul>
@@ -638,7 +638,7 @@
 <li>_合并请求_；</li>
 <li>_延迟发送请求_；</li>
 </ul>
-<h3 id="减少重定向请求次数"><a href="#减少重定向请求次数" class="headerlink" title="减少重定向请求次数"></a>减少重定向请求次数</h3><p><img src="/2023/02/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%87%8D%E5%AE%9A%E5%90%91.webp" srcset="/img/loading.gif" lazyload><br><strong>重定向的工作交由代理服务器完成，就能减少 HTTP 请求次数了</strong><br><img src="/2023/02/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%87%8D%E5%AE%9A%E5%90%91.webp" srcset="/img/loading.gif" lazyload><br>代理服务器已知重定向规则后，直接实现代理访问：<br><img src="/2023/02/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%87%8D%E5%AE%9A%E5%90%912.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="减少重定向请求次数"><a href="#减少重定向请求次数" class="headerlink" title="减少重定向请求次数"></a>减少重定向请求次数</h3><p><img src="/2023/02/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%87%8D%E5%AE%9A%E5%90%91.webp" srcset="/img/loading.gif" lazyload><br><strong>重定向的工作交由代理服务器完成，就能减少HTTP请求次数了</strong><br><img src="/2023/02/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%87%8D%E5%AE%9A%E5%90%91.webp" srcset="/img/loading.gif" lazyload><br>代理服务器已知重定向规则后，直接实现代理访问：<br><img src="/2023/02/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-HTTP/%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%87%8D%E5%AE%9A%E5%90%912.webp" srcset="/img/loading.gif" lazyload></p>
 <h3 id="合并请求"><a href="#合并请求" class="headerlink" title="合并请求"></a>合并请求</h3><p>多个小请求合并成大请求，body一样但避免了header重复。</p>
 <p>另外，HTTP&#x2F;1.1的管道模式默认不开启，即存在请求队头阻塞问题，浏览器的处理方式是多开几个TCP连接一起访问，所以合并请求也可以减少TCP连接的数量。</p>
 <h3 id="延迟发送请求"><a href="#延迟发送请求" class="headerlink" title="延迟发送请求"></a>延迟发送请求</h3><p>即懒加载。</p>

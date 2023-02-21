@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC1%E7%AB%A0%EF%BC%88%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%89/Pasted-image-20230202170624.png">
 <meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC1%E7%AB%A0%EF%BC%88%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%89/Pasted-image-20230202173309.png">
 <meta property="article:published_time" content="2023-02-02T07:32:30.000Z">
-<meta property="article:modified_time" content="2023-02-16T16:43:17.979Z">
+<meta property="article:modified_time" content="2023-02-19T16:55:48.471Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="JUC">
@@ -335,17 +335,17 @@
 <li>lock（锁定）：作用于主内存的变量，它把一个变量标识为一条线程独占的状态。</li>
 <li>unlock（解锁）：作用于主内存的变量，它把一个处于锁定状态的变量释放出来，释放后的变量才可以被其他线程锁定。</li>
 <li>read（读取）：作用于主内存的变量，它把一个变量的值从主内存传输到线程的工作内存中，以便随后的load动作使用。</li>
+<li>write（写入）：作用于主内存的变量，它把store操作从工作内存中得到的变量的值放入主内存的变量</li>
 <li>load（载入）：作用于工作内存的变量，它把read操作从主内存中得到的变量值放入工作内存的变量副本中。</li>
+<li>store（存储）：作用于工作内存的变量，它把工作内存中一个变量的值传送到主内存中，以便随后的write操作使用。</li>
 <li>use（使用）：作用于工作内存的变量，它把工作内存中一个变量的值传递给执行引擎，每当虚拟机遇到一个需要使用变量的值的字节码指令时将会执行这个操作。</li>
 <li>assign（赋值）：作用于工作内存的变量，它把一个从执行引擎接收的值赋给工作内存的变量，每当虚拟机遇到一个给变量赋值的字节码指令时执行这个操作。</li>
-<li>store（存储）：作用于工作内存的变量，它把工作内存中一个变量的值传送到主内存中，以便随后的write操作使用。</li>
-<li>write（写入）：作用于主内存的变量，它把store操作从工作内存中得到的变量的值放入主内存的变量</li>
 </ul>
 <div class="note note-primary">
             <ul><li>lock，unlock执行锁，操作主内存</li><li>read，write操作主内存</li><li>load，store操作工作内存</li><li>assign，use操作执行引擎<br>java的实现，保证以上8种类型的操作一定是原子操作。</li></ul>
           </div>
 
-<p><strong>如何保证原子性？</strong><br>处理器提供了总线锁和缓存锁，<strong>Java 提供了锁和循环 CAS 的方式</strong></p>
+<p><strong>如何保证原子性？</strong><br>处理器提供了总线锁和缓存锁，<strong>Java提供了锁和循环CAS的方式</strong></p>
 <h2 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h2><p><strong>何为可见性</strong>？就是指当一个线程修改了共享变量的值时，其他线程能够<strong>立即</strong>得知这个修改。<br>所谓可见性就是要把工作内存内容立即写入主内存。</p>
 <h3 id="如何保证可见性？"><a href="#如何保证可见性？" class="headerlink" title="如何保证可见性？"></a>如何保证可见性？</h3><ul>
 <li><strong>volatile</strong>：volatile修饰的变量。</li>

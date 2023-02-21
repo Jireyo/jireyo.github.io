@@ -10,14 +10,7 @@
   left: -30%; 
 }
 
-@media (max-width: 767px) {
-  .col-lg-8.nopadding-x-md > .container.nopadding-x-md > #board {
-      width: 100%;
-      left: 0; 
-  }
-}
-
-@media (max-width: 424px) {
+@media (max-width: 1000px) {
   .col-lg-8.nopadding-x-md > .container.nopadding-x-md > #board {
       width: 100%;
       left: 0; 

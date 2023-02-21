@@ -64,7 +64,7 @@
 <meta property="og:image" content="http://example.com/2023/01/23/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JVM/JVM%E4%B8%8A%E7%AF%87-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/Pasted-image-20230201152820.png">
 <meta property="og:image" content="http://example.com/2023/01/23/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JVM/JVM%E4%B8%8A%E7%AF%87-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/Pasted-image-20230201153244.png">
 <meta property="article:published_time" content="2023-01-23T05:55:59.000Z">
-<meta property="article:modified_time" content="2023-02-17T16:25:48.557Z">
+<meta property="article:modified_time" content="2023-02-21T13:08:47.032Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="JVM">
@@ -284,7 +284,7 @@
         
         
         
-          214 分钟
+          219 分钟
         
       </span>
     
@@ -344,7 +344,7 @@
 <h3 id="虚拟机退出的情况"><a href="#虚拟机退出的情况" class="headerlink" title="虚拟机退出的情况"></a>虚拟机退出的情况</h3><ul>
 <li>程序正常执行结束</li>
 <li>程序在执行过程中遇到了异常或错误而异常终止</li>
-<li>由于操作系统用现错误而导致Java虚拟机进程终止</li>
+<li>由于操作系统出现错误而导致Java虚拟机进程终止</li>
 <li>某线程调用Runtime类或system类的exit方法，或Runtime类的halt方法，并且Java安全管理器也允许这次exit或halt操作。</li>
 <li>除此之外，JNI（Java Native Interface）规范描述了用JNI Invocation API来加载或卸载 Java虚拟机时，Java虚拟机的退出情况。<br>总结：一个正常执行完毕，两个错误终止，两个手动终止。</li>
 </ul>
@@ -374,8 +374,8 @@
 </ul>
 <h3 id="链接阶段"><a href="#链接阶段" class="headerlink" title="链接阶段"></a>链接阶段</h3><ul>
 <li><strong>验证（Verify）</strong>：<ul>
-<li>目的在子确保Class文件的字节流中包含信息符合当前虚拟机要求，保证被加载类的正确性，不会危害虚拟机自身安全。</li>
-<li>主要包括四种验证，<strong>文件格式验证，元数据验证，字节码验证，符号引用验证</strong>。</li>
+<li>目的在于确保Class文件的字节流中包含信息符合当前虚拟机要求，保证被加载类的正确性，不会危害虚拟机自身安全。</li>
+<li>主要包括四种验证，<strong>文件格式验证(文件格式、魔数、长度等)，元数据验证（继承关系是否合法等），字节码验证（方法体是否合法等），符号引用验证（引用类型是否存在等）</strong>。</li>
 </ul>
 </li>
 <li><strong>准备（Prepare）</strong>：<ul>
@@ -422,7 +422,7 @@
 <li>Java语言编写，由sun.misc.Launcher$ExtClassLoader实现。</li>
 <li>派生于ClassLoader类</li>
 <li>父类加载器为<strong>启动类加载器</strong></li>
-<li>从java.ext.dirs系统属性所指定的目录中加载类库，或从JDK的安装目录的<code>jre/1ib/ext</code>子目录（扩展目录）下加载类库。如果用户创建的JAR放在此目录下，也会自动由扩展类加载器加载。</li>
+<li>从java.ext.dirs系统属性所指定的目录中加载类库，或从JDK的安装目录的<code>jre/lib/ext</code>子目录（扩展目录）下加载类库。如果用户创建的JAR放在此目录下，也会自动由扩展类加载器加载。</li>
 </ul>
 <p><strong>应用程序类加载器（系统类加载器，AppClassLoader）</strong></p>
 <ul>
@@ -584,7 +584,7 @@
 
 <p>比如：描述一个方法调用了另外的其他方法时，就是通过常量池中指向方法的符号引用来表示的，<strong>动态链接的作用就是为了将这些符号引用转换位调用方法的直接引用</strong>。</p>
 <div class="note note-primary">
-            <p>个人理解：某个方法A可能会调用其他方法B，在执行引擎遇到调用其他方法的语句如invokeVirtual时，需要找到方法B的入口。<br>而栈帧中保存了一个指针，指向了方法B符号在运行时常量池中的位置，再通过运行时常量池，实现将符号引用转化为直接引用。</p>
+            <p>个人理解：某个方法A可能会调用其他方法B，在执行引擎遇到调用其方法的语句如invokeVirtual时，需要找到方法B的入口。<br>而栈帧中保存了一个指针，指向了方法B符号在运行时常量池中的位置，再通过运行时常量池，实现将符号引用转化为直接引用。</p>
           </div>
 <h4 id="方法返回地址"><a href="#方法返回地址" class="headerlink" title="方法返回地址"></a>方法返回地址</h4><p>存放调用该方法的pc寄存器的值。一个方法的结束，有两种方式：</p>
 <ul>
@@ -691,7 +691,7 @@
 <li>老年代空间不足</li>
 <li>方法区空间不足</li>
 <li>通过Minor GC后进入老年代的平均大小大于老年代的可用内存</li>
-<li>由Eden区、survivor space0（From Space）区向survivor space1（To Space）区复制时，对象大小大于To Space可用内存，则把该对象转存到老年代，且老年代的可用内存小于该对象大小</li>
+<li>由Eden区、survivor space0（From Space）区向survivor space1（To Space）区复制时，对象大小大于To Space可用内存，则把该对象转存到老年代，且老年代的可用内存小于该对象大小。</li>
 </ol>
 <p>要尽量避免FullGC，其耗时太长。</p>
 <h3 id="堆是分配对象的唯一选择吗？"><a href="#堆是分配对象的唯一选择吗？" class="headerlink" title="堆是分配对象的唯一选择吗？"></a>堆是分配对象的唯一选择吗？</h3><h4 id="逃逸分析"><a href="#逃逸分析" class="headerlink" title="逃逸分析"></a>逃逸分析</h4><p>当一个对象在方法中被定义后，它被外部方法所引用，则认为发生逃逸。</p>
@@ -850,7 +850,7 @@
 <li>锁状态标志</li>
 <li>线程持有的锁</li>
 <li>偏向线程ID</li>
-<li>翩向时间戳</li>
+<li>偏向时间戳</li>
 </ul>
 <h4 id="类型指针"><a href="#类型指针" class="headerlink" title="类型指针"></a>类型指针</h4><p>指向类元数据InstanceKlass，确定该对象所属的类型。</p>
 <h3 id="实例数据（Instance-Data）"><a href="#实例数据（Instance-Data）" class="headerlink" title="实例数据（Instance Data）"></a>实例数据（Instance Data）</h3><ul>
@@ -886,13 +886,9 @@
 </ol>
 <p>HotSpotVM中，解释器由Interpreter模块和Code模块构成。</p>
 <ul>
-<li>Interpreter模块：实现了解释器的核心功能</li>
+<li>Interpreter模块：实现了解释器的核心功能，将字节码翻译为机器码</li>
 <li>Code模块：用于管理HotSpot VM在运行时生成的本地机器指令</li>
 </ul>
-<div class="note note-primary">
-            <p>Interpreter模块可以将字节码翻译为机器码，Code则管理字节码对机器码的映射。</p>
-          </div>
-
 <h3 id="现状"><a href="#现状" class="headerlink" title="现状"></a>现状</h3><p>基于解释器执行已经沦落为低效的代名词<br>为了解决该问题，JVM平台支持一种叫作即时编译的技术（JIT），将整个函数体编译成为机器码，每次函数执行时，只执行编译后的机器码即可。</p>
 <h2 id="JIT编译器"><a href="#JIT编译器" class="headerlink" title="JIT编译器"></a>JIT编译器</h2><p>JIT编译器属于后端编译器，将字节码翻译为机器码，是一种即时编译器。<br>HopSpot VM使用了<strong>解释器和即时编译器并存的架构</strong>。</p>
 <p>有了JIT，为什么还要解释器？</p>
@@ -935,12 +931,9 @@
 <h4 id="热点衰退"><a href="#热点衰退" class="headerlink" title="热点衰退"></a>热点衰退</h4><p>方法调用计数器统计的并<strong>不是方法被调用的绝对次数</strong>，而是一个相对的执行频率，即一段时间之内方法被调用的次数。<br>当超过一定的时间限度，如果方法的调用次数仍然不足以让它提交给即时编译器编译，那这个方法的调用计数器就会被减少一半，这个过程称为方法调用计数器热度的<strong>衰减（Counter Decay）</strong>，而这段时间就称为此方法统计的<strong>半衰周期（Counter Half Life Time）</strong><br>热点衰退在GC时顺便进行，可以使用<code>-XX:-UseCounterDecay</code>设置关闭热点衰减，使用<code>-XX:CounterHalfLifeTime</code>参数设置半衰周期的时间，单位是秒。</p>
 <h3 id="HotSpotVM-可以设置程序执行方法"><a href="#HotSpotVM-可以设置程序执行方法" class="headerlink" title="HotSpotVM 可以设置程序执行方法"></a>HotSpotVM 可以设置程序执行方法</h3><p>缺省情况下HotSpot VM是采用解释器与即时编译器并存的架构，当然开发人员可以根据具体的应用场景，通过命令显式地为Java虚拟机指定在运行时到底是完全采用解释器执行，还是完全采用即时编译器执行。如下所示：</p>
 <ul>
-<li><p><code>-Xint</code>：完全采用解释器模式执行程序；</p>
-</li>
-<li><p><code>-Xcomp</code>：完全采用即时编译器模式执行程序。如果即时编译出现问题，解释器会介入执行</p>
-</li>
-<li><p><code>-Xmixed</code>：采用解释器+即时编译器的混合模式共同执行程序。</p>
-</li>
+<li><code>-Xint</code>：完全采用解释器模式执行程序；</li>
+<li><code>-Xcomp</code>：完全采用即时编译器模式执行程序。如果即时编译出现问题，解释器会介入执行</li>
+<li><code>-Xmixed</code>：采用解释器+即时编译器的混合模式共同执行程序。</li>
 </ul>
 <h1 id="六、StringTable"><a href="#六、StringTable" class="headerlink" title="六、StringTable"></a>六、StringTable</h1><h2 id="String的特点"><a href="#String的特点" class="headerlink" title="String的特点"></a>String的特点</h2><ul>
 <li>字符串</li>
@@ -1224,6 +1217,9 @@
 <li>会产生内存碎片，低延迟但吞吐量不行。</li>
 <li>无法处理浮动垃圾（并发标记期间产生的新垃圾）</li>
 </ul>
+<blockquote>
+<p><strong>重新标记</strong>（三色标记法<a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/sid=1719715247743913571&wfr=spider&for=pc%EF%BC%89">https://baijiahao.baidu.com/sid=1719715247743913571&amp;wfr=spider&amp;for=pc）</a><br>由于标记阶段是从GC Roots开始标记可达对象，那么在并发标记阶段可能产生两种变动:<br>1．本来可达的对象，变得不可达了<br>2．本来不可达的内存，变得可达了<br> 第一种变动会产生所谓的浮动垃圾，第二种变动怎么回事呢?重点在于miss。如果并发标记阶段用户线程里new了一个对象，而它在初始标记和并发标记中是不会能够从GC Roots 可达的，也就是were missed。如果没有重新标记阶段来将这个对象标记为可达，那么它会在清理阶段被回收，这是严重的错误，是必须要在重新标记阶段来处理的，所以这就是重新标记阶段实际上的任务。<br> 相比之下，浮动垃圾是可容忍的问题，而不是错误。那么为什么重新标记阶段不处理第一种变动呢?也许是由可达变为不可达这样的变化需要重新从GC Roots 开始遍历，相当于再完成一次初始标记和并发标记的工作，这样不仅前两个阶段变成多余的，浪费了开销浪费，还会大大增加重新标记阶段的开销，所带来的暂停时间是追求低延迟的CMS所不能容忍的。</p>
+</blockquote>
 <p>可以设置触发阈值，JDK9中标记过时，JDK14中已经删除。</p>
 <h4 id="G1（Garbage-First）回收器"><a href="#G1（Garbage-First）回收器" class="headerlink" title="G1（Garbage First）回收器"></a>G1（Garbage First）回收器</h4><p>官方给G1设定的目标是在<strong>延迟可控的情况下获得尽可能高的吞吐量</strong>，所以才担当起“全功能收集器”的重任与期望。只所以叫G1回收器是因为其优先回收垃圾最多的空间。<br><img src="/2023/01/23/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JVM/JVM%E4%B8%8A%E7%AF%87-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/Pasted-image-20230201151459.png" srcset="/img/loading.gif" lazyload></p>
 <h5 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h5><ul>
@@ -1256,21 +1252,17 @@
 <li>全局GC（如果需要，单线程、独占式、高强度的Full GC还是继续存在的。它针对GC的评估失败提供了一种失败保护机制，即强力回收。）</li>
 </ul>
 <h5 id="Remembered-Set"><a href="#Remembered-Set" class="headerlink" title="Remembered Set"></a>Remembered Set</h5><p>一个对象可能被不同区域引用，<strong>Remembered Set是所有分代收集器避免全局扫描的关键</strong>。</p>
-<p>G1的实现细节：<br>每个Region都有一个对应的Remembered Set；每次Reference类型数据写操作时，都会产生一个Write Barrier暂时中断操作；<br>然后检查将要写入的引用指向的对象是否和该Reference类型数据在不同的Region（其他收集器：检查老年代对象是否引用了新生代对象）；<br>如果不同，通过CardTable把相关引用信息记录到引用指向对象的所在Region对应的Remembered Set中；<br><img src="/2023/01/23/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JVM/JVM%E4%B8%8A%E7%AF%87-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/Pasted-image-20230201152820.png" srcset="/img/loading.gif" lazyload></p>
-<p>更具体的：</p>
+<p>G1的实现细节：<br>每个Region都有一个对应的Remembered Set；每次Reference类型数据写操作时，都会产生一个Write Barrier暂时中断操作，然后检查将要写入的引用指向的对象是否和该Reference类型数据在不同的Region（其他收集器：检查老年代对象是否引用了新生代对象），如果不同，通过CardTable把相关引用信息记录到引用指向对象的所在Region对应的Remembered Set中；<br><img src="/2023/01/23/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JVM/JVM%E4%B8%8A%E7%AF%87-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/Pasted-image-20230201152820.png" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
 <ul>
-<li>Card Table<ul>
-<li>表中的每个entry覆盖512Byte的内存空间</li>
-<li>当对应的内存空间发生改变时（如赋值操作的时候，会将该对象所在卡片标记），标记为dirty</li>
+<li>RememberSet是一种思想，其记录了待收集region中的对象被哪些其他非待收集region所引用，那么在回收该region时还需要将其他region加入到root中。</li>
+<li>只向其他区域时有不同的粒度：</li>
+<li>字长</li>
+<li>对象</li>
+<li>卡</li>
+<li>Card Table则是一种rset的具体实现，其实现是基于卡精度，其将内存以512Byte作为一个单元分成很多entry，以entry为单位记录卡的状态，如：region1和region3中的两个entry就被region2的rset标记为脏卡。然后把Card存入Dirty Card Queue，这是因为RSet存在多线程竞争写入问题。</li>
 </ul>
-</li>
-<li>RememberSet（RSet）<ul>
-<li>指向Card Table中对应的entry</li>
-<li>可找到具体内存区域</li>
-</ul>
-</li>
-</ul>
-<p>当更新Region1的某指针时，会将Card标记为dirty，然后把Card存入Dirty Card Queue，这是因为RSet存在多线程竞争写入问题。</p>
+</blockquote>
 <div class="note note-primary">
             <p>即，将对象赋予给一个引用时，检查引用与对象是否在同一个region，若不在，则在对象所在region的remember set上记录对象被引用信息，最后在回收该区域时，将remember set上的对象也加入GCRoots。</p>
           </div>
@@ -1306,7 +1298,7 @@
 <li>评估G1 GC的吞吐量时，暂停时间目标不要太严苛。目标太过严苛表示你愿意承受更多的垃圾回收开销，而这些会直接影响到吞吐量。<br>回收器选择：官方推荐G1，性能高。现在互联网的项目，基本都是使用G1。</li>
 </ul>
 <div class="note note-primary">
-            <p>G1回收器，三种清理模式：</p><ul><li>YoungGC：全程STW，根据GCRoots直接处理Young Region，注意rset的处理，region间复制算法。</li><li>MixedGC：<ul><li>STW扫描全局GCRoots压入扫描栈，并触发YoungGC</li><li>根区域扫描，即根据Survivor区找Old区的对象，也压入扫描栈，需要YGC之前完成。 </li><li>并发标记，根据扫描栈扫描对象。</li><li>STW修正标记，处理没处理的write barrier，即新出现的引用变化，但与CMS不同，这里的扫描范围只扫描SATB（snapshot-at-the-beginning），比CMS快。</li><li>STW计算区域属性</li><li>并发清理完全为空的区域</li><li>分段（默认8段）清理各区域。</li></ul></li><li>FullGC</li></ul>
+            <p>G1回收器，三种清理模式：</p><ul><li>YoungGC：全程STW，根据GCRoots直接处理Young Region，注意rset的处理，region间复制算法。</li><li>MixedGC：<ul><li>STW扫描全局GCRoots，进行根区域扫描，根据Survivor区找Old区的对象，也压入扫描栈。</li><li>YoungGC</li><li>并发标记，STW，可能被YGC打断，根据扫描栈扫描对象。</li><li>STW修正标记，处理没处理的write barrier，即新出现的引用变化，但与CMS不同，这里的扫描范围只扫描SATB（snapshot-at-the-beginning），比CMS快。</li><li>STW计算区域属性</li><li>并发清理完全为空的区域</li><li>分段（默认8段）清理各区域。</li></ul></li><li>FullGC</li></ul>
           </div>
 
                 
