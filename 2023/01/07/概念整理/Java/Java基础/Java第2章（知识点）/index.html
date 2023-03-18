@@ -24,7 +24,7 @@
 <meta property="og:description" content="一、基本类型基本类型基本类型有boolean(1),byte(8),char(16),short(16);int(32),long(64),float(32),double(64); 括号表示类型占的bit数，其中，char,byte,short不会互相转换，其计算时首先转换为int。              java分内码和外码，内码指运行时内存中编码方式。除了内码的都是外码（如class文件">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-01-07T07:05:37.000Z">
-<meta property="article:modified_time" content="2023-02-17T17:04:44.376Z">
+<meta property="article:modified_time" content="2023-03-14T14:56:24.780Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="Java">
@@ -232,7 +232,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          5k 字
+          5.1k 字
         
       </span>
     
@@ -243,7 +243,7 @@
         
         
         
-          42 分钟
+          43 分钟
         
       </span>
     
@@ -295,21 +295,32 @@
 <p>String与Integer互相转化：</p>
 <ul>
 <li>String.valueOf(Integer)</li>
-<li>Integer.valueOf(String)<br>String与int互相转化：</li>
-<li>String.valueOf(int) &#x2F; int + “”</li>
-<li>Integer.parseInt(“int”)<br>Integer与int互相转化：</li>
-<li>Integer.valueOf()</li>
-<li>integer.intValue()<div class="note note-primary">
-            <p>可见，对于具体类（String,Integer）,valueOf是一个将其他类型转化为本类型的通用方法。涉及到其他类型转化为基本类型时，需要使用<code>Integer.parseInt(string)</code>和<code>integer.intValue()</code>这种特殊方法。</p>
-          </div></li>
+<li>Integer.valueOf(String)</li>
 </ul>
+<p>String与int互相转化：</p>
+<ul>
+<li>String.valueOf(int) &#x2F; int + “”</li>
+<li>Integer.parseInt(“int”)</li>
+</ul>
+<p>Integer与int互相转化：</p>
+<ul>
+<li>Integer.valueOf()</li>
+<li>integer.intValue()</li>
+</ul>
+<div class="note note-primary">
+            <p>可见，对于具体类（String,Integer）,valueOf是一个将其他类型转化为本类型的通用方法。涉及到其他类型转化为基本类型时，需要使用<code>Integer.parseInt(string)</code>和<code>integer.intValue()</code>这种特殊方法。</p>
+          </div>
+
 <h3 id="隐式类型"><a href="#隐式类型" class="headerlink" title="隐式类型"></a>隐式类型</h3><h4 id="float与double"><a href="#float与double" class="headerlink" title="float与double"></a>float与double</h4><p>1.1字面量是double类型的。<br><code>float f = 1.1f</code></p>
 <h4 id="short"><a href="#short" class="headerlink" title="short"></a>short</h4><p>1字面量是int类型的<br><code>short s1 = 1</code>不可行，而<code>+=</code>可以实现隐式转换<br><code>s1 += 1</code>;<br>相当于s1 &#x3D; (short)(s1 + 1)</p>
 <h2 id="缓存池"><a href="#缓存池" class="headerlink" title="缓存池"></a>缓存池</h2><p>new Integer(123) 与 Integer.valueOf(123) 的区别在于:</p>
 <ul>
 <li>new Integer(123) 每次都会新建一个对象</li>
 <li>Integer.valueOf(123) 会使用缓存池中的对象，多次调用会取得同一个对象的引用。</li>
-<li>valueOf() 方法的实现比较简单，就是先判断值是否在缓存池中，如果在的话就直接返回缓存池的内容。<br><strong>自动装箱</strong>的过程，默认调用的是<strong>valueOf</strong>,因此会先判断对象是否在缓存池。<blockquote>
+<li>valueOf() 方法的实现比较简单，就是先判断值是否在缓存池中，如果在的话就直接返回缓存池的内容。</li>
+</ul>
+<p><strong>自动装箱</strong>的过程，默认调用的是<strong>valueOf</strong>,因此会先判断对象是否在缓存池。</p>
+<blockquote>
 <p>基本类型对应的缓冲池如下:</p>
 <ul>
 <li>boolean values true and false</li>
@@ -319,15 +330,13 @@
 <li>char in the range \u0000 to \u007F</li>
 </ul>
 </blockquote>
-</li>
-</ul>
 <h2 id="String类型"><a href="#String类型" class="headerlink" title="String类型"></a>String类型</h2><p>String 被声明为 final，因此它不可被继承。其内部使用一个final的char数组存储字符。</p>
 <blockquote>
 <p>JDK9时改为<code>byte[]</code>，因为一个char为2或4字节（UTF16），但大多数情况下char只需要1字节标识，所以使用Latin-1字符集表示即可。当遇到无法表示的字符时，String在转化字符集。</p>
 </blockquote>
 <h3 id="不可变的原因"><a href="#不可变的原因" class="headerlink" title="不可变的原因"></a>不可变的原因</h3><ul>
-<li>String常作为hashKey，不可变时，每个String对象只需要计算一次hash</li>
-<li>StringPool，只有</li>
+<li>String常作为hashKey，不可变时，每个String对象只需要计算一次hash；</li>
+<li>StringPool，不可变才可重复利用；</li>
 <li>安全性，其常作为网络连接参数，不可变保证其正常运行。</li>
 <li>String天生线程安全。</li>
 </ul>
@@ -402,9 +411,13 @@
             <p>取反可以理解成以-0.5为轴旋转！</p>
           </div>
 
-<h4 id="自增"><a href="#自增" class="headerlink" title="自增++"></a>自增++</h4><p>自增++线程不安全</p>
+<h4 id="自增"><a href="#自增" class="headerlink" title="自增++"></a>自增++</h4><p>自增++线程不安全<br>i++：先将变量从局部变量表拷贝到操作数栈顶，再对局部变量表中变量执行自增。<br>++i：先对局部变量表中变量执行自增，再将变量从局部变量表拷贝到操作数栈顶。</p>
 <h2 id="参数传递"><a href="#参数传递" class="headerlink" title="参数传递"></a>参数传递</h2><p>java只有值传递，对于对象，传递的是对象的引用指针。</p>
 <h2 id="流程控制"><a href="#流程控制" class="headerlink" title="流程控制"></a>流程控制</h2><h3 id="switch"><a href="#switch" class="headerlink" title="switch"></a>switch</h3><p>switch条件判断语句中可以使用<br>byte,short,char,int,枚举(jdk5.0)，String对象(jdk7.0)，但不能使用long类。<br><strong>PS</strong>：实际上能string对象也只是一个语法糖，底层通过string对象的hash值处理。</p>
+<div class="note note-primary">
+            <p>本质就是指能处理int相关的类型和枚举，对String提供了额外支持。</p>
+          </div>
+
 <h1 id="三、其他"><a href="#三、其他" class="headerlink" title="三、其他"></a>三、其他</h1><h3 id="Java-中的编译期常量是什么-使用它有什么风险"><a href="#Java-中的编译期常量是什么-使用它有什么风险" class="headerlink" title="Java 中的编译期常量是什么? 使用它有什么风险?"></a>Java 中的编译期常量是什么? 使用它有什么风险?</h3><p>这些变量在编译时会被替换掉，因为编译器知道这些变量的值，并且知道这些变量在运行时不能改变。<br>这种方式存在的一个问题是你使用了一个内部的或第三方库中的公有编译时常量，但是这个值后面被其他人改变了，但是你的客户端仍然在使用老的值，甚至你已经部署了一个新的jar。为了避免这种情况，当你在更新依赖 JAR 文件时，确保重新编译你的程序。</p>
 <h3 id="Java-中，Serializable-与-Externalizable-的区别"><a href="#Java-中，Serializable-与-Externalizable-的区别" class="headerlink" title="Java 中，Serializable 与 Externalizable 的区别?"></a>Java 中，Serializable 与 Externalizable 的区别?</h3><p>Serializable 接口是一个序列化 Java 类的接口，以便于它们可以在网络上传输或者可以将它们的状态保存在磁盘上，是 JVM 内嵌的默认序列化方式，成本高、脆弱而且不安全。<br>Externalizable 接口要求重写 writeExternal 和 readExternal 方法，允许手动控制整个序列化过程，指定特定的二进制格式，增加安全机制。</p>
 <h3 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h3><p>声明为static和transient类型的数据不能被序列化，反序列化需要一个无参构造函数。<br>transient的内存语义就是其只存在于内存而不会被写入磁盘，可以将一些不希望被序列化的字段加上该关键字。</p>
@@ -412,22 +425,34 @@
 <p>当使用Externalizable手动实现序列化时不受该限制。</p>
 </blockquote>
 <h3 id="Object有哪些公用方法"><a href="#Object有哪些公用方法" class="headerlink" title="Object有哪些公用方法?"></a>Object有哪些公用方法?</h3><p>clone equals hashcode wait notify notifyall finalize toString getClass 除了clone和finalize其他均为公共方法。</p>
-<h3 id="接口和抽象类"><a href="#接口和抽象类" class="headerlink" title="接口和抽象类"></a>接口和抽象类</h3><ul>
+<h3 id="接口和抽象类"><a href="#接口和抽象类" class="headerlink" title="接口和抽象类"></a>接口和抽象类</h3><p>继承角度：</p>
+<ul>
 <li>一个子类只能继承一个抽象类, 但能实现多个接口</li>
-<li>抽象类可以有构造方法, 接口没有构造方法</li>
-<li>抽象类可以有普通成员变量, 接口没有普通成员变量</li>
-<li>抽象类和接口都可有静态成员变量, 抽象类中静态成员变量访问类型任意，接口只能public static final(默认)</li>
-<li>抽象类可以没有抽象方法, 抽象类可以有普通方法；接口在JDK8之前都是抽象方法，在JDK8可以有default方法，在JDK9中允许有私有普通方法</li>
-<li>抽象类可以有静态方法；接口在JDK8之前不能有静态方法，在JDK8中可以有静态方法，且只能被接口类直接调用（不能被实现类的对象调用）</li>
-<li>抽象类中的方法可以是public、protected; 接口方法在JDK8之前只有public abstract，在JDK8可以有default方法，在JDK9中允许有private方法<div class="note note-primary">
-            <p>注意，接口不能拥有成员变量，但可以拥有静态变量。<br>抽象类可以有具体方法（代码复用），但具体类不能有抽象方法。<br>抽象类可以有静态方法，接口在JDK8之前没有，JDK8之后有。</p>
-          </div></li>
 </ul>
+<p>构造角度：</p>
+<ul>
+<li>抽象类可以有构造方法, 接口没有构造方法</li>
+</ul>
+<p>成员变量角度：</p>
+<ul>
+<li>抽象类可以有普通成员变量, 接口没有普通成员变量</li>
+<li>抽象类和接口都可有静态成员变量, 抽象类中静态成员变量访问类型任意，接口只能<strong>public static final</strong>(默认)</li>
+</ul>
+<p>成员方法角度：</p>
+<ul>
+<li>抽象类中的方法可以是public、protected; 接口方法在JDK8之前只有public abstract，在JDK8可以有default和static方法，在JDK9中允许有private方法</li>
+<li>抽象类可以有静态方法；接口在JDK8之前不能有静态方法，在JDK8中可以有静态方法，且只能被接口类直接调用（不能被实现类的对象调用）</li>
+</ul>
+<div class="note note-primary">
+            <p>注意，接口不能拥有成员变量，但可以拥有静态变量。<br>抽象类可以有具体方法（代码复用），但具体类不能有抽象方法。<br>抽象类可以有静态方法，接口在JDK8之前没有，JDK8之后有。<br>接口：JDK8前只有public abstract，JDK8允许default和static，JDK9允许private。</p>
+          </div>
+
 <h3 id="关于finally"><a href="#关于finally" class="headerlink" title="关于finally"></a>关于finally</h3><ul>
 <li>finally不管有没有异常都要处理</li>
 <li><strong>当try和catch中有return时，finally仍然会执行，finally比return先执行</strong>，finally是在return后面的表达式运算后执行的(此时并没有返回运算后的值，而是先把要返回的值保存起来，管finally中的代码怎么样，返回的值都不会改变，仍然是之前保存的值)，所以<strong>函数返回值是在finally执行前确定</strong>的</li>
-<li><strong>finally中最好不要包含return</strong>，这样返回值不是try或catch中保存的返回值，而是finally中的return值。<br>finally不执行的几种情况: 程序提前终止如调用了System.exit, 病毒，断电。</li>
+<li><strong>finally中最好不要包含return</strong>，这样返回值不是try或catch中保存的返回值，而是finally中的return值。</li>
 </ul>
+<p>finally不执行的几种情况: 程序提前终止如调用了System.exit, 病毒，断电。</p>
 <h3 id="局部变量为什么要手动初始化赋值"><a href="#局部变量为什么要手动初始化赋值" class="headerlink" title="局部变量为什么要手动初始化赋值"></a>局部变量为什么要手动初始化赋值</h3><p>局部变量是指类方法中的变量，必须初始化。局部变量运行时被分配在栈中，量大，生命周期短，<strong>如果虚拟机给每个局部变量都初始化一下，是一笔很大的开销</strong>，但变量不初始化为默认值就使用是不安全的。出于速度和安全性两个方面的综合考虑，<strong>解决方案就是虚拟机不初始化，但要求编写者一定要在使用前给变量赋值</strong>。</p>
 
                 

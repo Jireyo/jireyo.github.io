@@ -1,0 +1,804 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、区间贪心优选问题一般体现为：  相同成本，不同收益（871.加油次数） 相同收益，不同成本（630.课程表3） 相同成本和收益，但某种选择对后续的选择更有利。 有选择限制：如必须在某时间前才能选择&#x2F;必须到达某处才能选择  贪心的思路也因此分几种：  先尽可能地不选择，等遇到选择限制时，再选择最优选择。 先尽可能地选择，等遇到选择限制时，再替换现有地选择。  871. 最低加油次数 1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法专题（链表）">
+<meta property="og:url" content="http://example.com/2023/02/10/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E8%B4%AA%E5%BF%83%EF%BC%89/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
+<meta property="og:description" content="一、区间贪心优选问题一般体现为：  相同成本，不同收益（871.加油次数） 相同收益，不同成本（630.课程表3） 相同成本和收益，但某种选择对后续的选择更有利。 有选择限制：如必须在某时间前才能选择&#x2F;必须到达某处才能选择  贪心的思路也因此分几种：  先尽可能地不选择，等遇到选择限制时，再选择最优选择。 先尽可能地选择，等遇到选择限制时，再替换现有地选择。  871. 最低加油次数 1">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/02/10/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E8%B4%AA%E5%BF%83%EF%BC%89/Pasted-image-20230302134806.png">
+<meta property="article:published_time" content="2023-02-10T07:13:27.000Z">
+<meta property="article:modified_time" content="2023-03-04T17:13:22.668Z">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="数组">
+<meta property="article:tag" content="贪心">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/02/10/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E8%B4%AA%E5%BF%83%EF%BC%89/Pasted-image-20230302134806.png">
+  
+  
+  
+  <title>算法专题（链表） - Jin&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="算法专题（链表）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-10 15:13" pubdate>
+          2023年2月10日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          59 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">算法专题（链表）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、区间贪心"><a href="#一、区间贪心" class="headerlink" title="一、区间贪心"></a>一、区间贪心</h1><p>优选问题一般体现为：</p>
+<ul>
+<li>相同成本，不同收益（871.加油次数）</li>
+<li>相同收益，不同成本（630.课程表3）</li>
+<li>相同成本和收益，但某种选择对后续的选择更有利。</li>
+<li>有选择限制：如必须在某时间前才能选择&#x2F;必须到达某处才能选择</li>
+</ul>
+<p>贪心的思路也因此分几种：</p>
+<ul>
+<li>先尽可能地不选择，等遇到选择限制时，再选择最优选择。</li>
+<li>先尽可能地选择，等遇到选择限制时，再替换现有地选择。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-number-of-refueling-stops/">871. 最低加油次数</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minRefuelStops</span><span class="hljs-params">(<span class="hljs-type">int</span> target, <span class="hljs-type">int</span> startFuel, <span class="hljs-type">int</span>[][] stations)</span> &#123;<br>        <span class="hljs-comment">//加油站排序</span><br>        Arrays.sort(stations,(a,b) -&gt; a[<span class="hljs-number">0</span>]-b[<span class="hljs-number">0</span>]);<br>        <span class="hljs-comment">//当前可以添加的燃料集合（最大堆）</span><br>        PriorityQueue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a,b) -&gt; b-a);<br>        <span class="hljs-type">int</span> <span class="hljs-variable">sIndex</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">sBound</span> <span class="hljs-operator">=</span> stations.length;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-comment">//当前无法到达目的</span><br>        <span class="hljs-keyword">while</span>(startFuel&lt;target)&#123;<br>            <span class="hljs-comment">//将当前可以加到的燃料添加到堆中</span><br>            <span class="hljs-keyword">while</span>(sIndex&lt;sBound &amp;&amp; stations[sIndex][<span class="hljs-number">0</span>]&lt;=startFuel)&#123;<br>                queue.add(stations[sIndex++][<span class="hljs-number">1</span>]);<br>            &#125;<br>            <span class="hljs-comment">//优先加最大的燃料，没燃料可加时返回-1</span><br>            <span class="hljs-keyword">if</span>(queue.isEmpty())&#123;<br>                <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;<br>            &#125;<span class="hljs-keyword">else</span>&#123;<br>                <span class="hljs-comment">//加燃料</span><br>                startFuel += queue.poll();<br>                ans++;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> ans;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/course-schedule-iii/">630. 课程表 III</a><br>贪心思路引导：</p>
+<ul>
+<li>如果每节课需要的时间为0，则从开始不停地<strong>一直学</strong>肯定能在各截止时间前完成。</li>
+<li>时间相同时先后顺序：假如现实中每节课需要的时间相同且不为0，则优先策略肯定是先学截止时间早的。</li>
+<li>先后交叠时时间不同：如果学第x节课时，发现时间不够。如果发现前面的某节课耗时比本节课长，说明放弃前面的那节课必然可以学第x节课，可以放弃前面课程来学学x课程，此时则必然对后面的课程选择更有利。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">scheduleCourse</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] courses)</span> &#123;<br>	    <span class="hljs-comment">//对截止时间进行顺序排序</span><br>        Arrays.sort(courses, (a, b) -&gt; a[<span class="hljs-number">1</span>] - b[<span class="hljs-number">1</span>]);<br>		<span class="hljs-comment">//大顶堆优先队列，表示已经学习的所有课程</span><br>        PriorityQueue&lt;Integer&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;Integer&gt;((a, b) -&gt; b - a);<br>        <span class="hljs-comment">// 优先队列中所有课程的总时间，表示目前学习的课程的总时长</span><br>        <span class="hljs-type">int</span> <span class="hljs-variable">total</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] course : courses) &#123;<br>	        <span class="hljs-comment">//本节课的耗时和截止时间</span><br>            <span class="hljs-type">int</span> <span class="hljs-variable">ti</span> <span class="hljs-operator">=</span> course[<span class="hljs-number">0</span>], di = course[<span class="hljs-number">1</span>];<br>            <span class="hljs-comment">//如果本节课可以学</span><br>            <span class="hljs-keyword">if</span> (total + ti &lt;= di) &#123;<br>                total += ti;<br>                q.offer(ti);<br>                <span class="hljs-comment">//如果不能学，则查看上一节课与本节课的耗时，调整课程</span><br>            &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!q.isEmpty() &amp;&amp; q.peek() &gt; ti) &#123;<br>                total -= q.poll() - ti;<br>                q.offer(ti);<br>            &#125;<br>        &#125;<br>        <span class="hljs-comment">//最后</span><br>        <span class="hljs-keyword">return</span> q.size();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/non-overlapping-intervals/">435. 无重叠区间</a><br>按照截止时间排序，覆盖时优先保留前面的。</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-number-of-arrows-to-burst-balloons/">452. 用最少数量的箭引爆气球</a><br>对气球的末尾排序，每次射箭优先射击尾部边缘，对于刁钻的边界条件需要先将第一个气球打破。</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/jump-game-ii/">45. 跳跃游戏 II</a><br>每次跳跃时，衡量目的跳跃点可以提供的 “最远距离”来选择目的跳跃点，当可以直接跳到末尾时返回。</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-number-of-food-buckets-to-feed-the-hamsters/">2086. 从房屋收集雨水需要的最少水桶数</a><br>为一个房屋添加水桶时，显然应该添加在其右侧，这样才能尽可能照顾到后面的房子。但如果其右侧没有空位时，则妥协地添加到其左侧。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimumBuckets</span><span class="hljs-params">(String hamsters)</span> &#123;<br>        <span class="hljs-type">char</span>[] hamster = hamsters.toCharArray();<br>        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> hamster.length;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">filled</span> <span class="hljs-operator">=</span> -<span class="hljs-number">2</span>;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;n;i++)&#123;<br>            <span class="hljs-comment">//如果当前位置是房子</span><br>            <span class="hljs-keyword">if</span>(hamster[i] == <span class="hljs-string">&#x27;H&#x27;</span>)&#123;<br>                <span class="hljs-comment">//如果房子前面有水桶</span><br>                <span class="hljs-keyword">if</span>(filled == i-<span class="hljs-number">1</span>)&#123;<br>                    <span class="hljs-keyword">continue</span>;<br>                &#125;<span class="hljs-keyword">else</span>&#123;<br>                    <span class="hljs-comment">//如果房子后面有空位</span><br>                    <span class="hljs-keyword">if</span>(i&lt;n-<span class="hljs-number">1</span> &amp;&amp; hamster[i+<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;.&#x27;</span>)&#123;<br>                        filled = i+<span class="hljs-number">1</span>;<br>                        ans++;<br>                    &#125;<span class="hljs-keyword">else</span>&#123;<br>                        <span class="hljs-comment">//如果房子前面有空位</span><br>                        <span class="hljs-keyword">if</span>(i&gt;<span class="hljs-number">0</span> &amp;&amp; hamster[i-<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;.&#x27;</span>)&#123;<br>                            filled = i-<span class="hljs-number">1</span>;<br>                            ans++;<br>                            <span class="hljs-comment">//都没有则返回失败</span><br>                        &#125;<span class="hljs-keyword">else</span>&#123;<br>                            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;<br>                        &#125;<br>                    &#125;<br>                &#125;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> ans;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="二、过程贪心"><a href="#二、过程贪心" class="headerlink" title="二、过程贪心"></a>二、过程贪心</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-valid-matrix-given-row-and-column-sums/">1605. 给定行和列的和求可行矩阵</a><br>优先将行列中还可以填入的数字填入，具体地：遍历矩阵，每次取当前行，列中较小值，然后将对应行，列的和减去该值。</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/candy/">135. 分发糖果</a></p>
+<ol>
+<li>一次遍历，从左往右发糖果时贪心的思路：<ul>
+<li>遇到递增的分数，每次给孩子比上一个人多一个糖果即可，如果孩子比上一个人分数低，则直接分一个。</li>
+<li>但是如果后面的孩子分数更低，却无法分0个，导致无解。我们可以通过记录递减孩子队列的长度，最后将所有递减队列中的孩子的糖果提高到0以上，此时并不会破坏递增序列中的摆放。</li>
+</ul>
+</li>
+<li>两次遍历，题目的要求本质上是两个条件：<ul>
+<li>如果右边的孩子比左边的孩子分数高，则糖果更多，递增序列。</li>
+<li>如果左边的孩子比右边的孩子分数高，则糖果更多，递减序列。</li>
+<li>分别使用条件处理后，将两侧的分数合并取最高值即可。</li>
+</ul>
+</li>
+</ol>
+<h1 id="三、数值贪心"><a href="#三、数值贪心" class="headerlink" title="三、数值贪心"></a>三、数值贪心</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-k-digits/">402. 移掉 K 位数字</a></p>
+<ol>
+<li>对于相邻两个数字，其对结果的长度影响相同，肯定优先保留数字小的。</li>
+<li>对于不相邻的两个数字，如移除1468中的4，8，会得到168和146的结果，所以比较不相邻的两个数字是没有意义的，移除结果仍取决于6这个数字。</li>
+<li>确定贪心思路，为了让前面的数尽可能小，每个数与前面的数对比，如果其更大说明其更应该被移除，后面的数再与前面的数对比，维护一个单调递增的队列，直到后面的数比前面的数小，则说明前面这个数必须移除了。（因为移除后面的数效果肯定不如移除这个数）。</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-swap/">670. 最大交换</a><br>对于每一个数：</p>
+<ul>
+<li>如果其右边有比该数大的数，则可以与其交换得到更大的数。</li>
+<li>如果其右边有若干个比该数大的数，则选择其中最大的数与其交换。</li>
+<li>如果其右边有若干个相同的最大数，选择其中最左侧的数。</li>
+</ul>
+<p>对于整体序列：</p>
+<ul>
+<li>如果上面这种交换发生在越左侧的数上则越有利。</li>
+</ul>
+<p>为了维护上面这些规则：</p>
+<ul>
+<li>从右往左遍历，维护最大值，每次就可以判断当前值是否可以与后面的值交换。注意处理，遇到等于最大值的数，我们不更新max索引（取最右侧的最大值）。每次遇到可交换的，则将这次交换作为最终交换（越左侧数与后面的数交换得到的数越大）。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-addition-to-make-integer-beautiful/">2457. 美丽整数的最小增量</a><br>注意处理技巧</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">makeIntegerBeautiful</span><span class="hljs-params">(<span class="hljs-type">long</span> n, <span class="hljs-type">int</span> target)</span> &#123;<br>        <span class="hljs-comment">//当前数字</span><br>        <span class="hljs-type">long</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> n;<br>        <span class="hljs-comment">//当前可能考虑的进位</span><br>        <span class="hljs-type">long</span> <span class="hljs-variable">unit</span> <span class="hljs-operator">=</span> <span class="hljs-number">10</span>;<br>        <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;<br>            <span class="hljs-comment">//获取当前sum</span><br>            <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> getSum(cur);<br>            <span class="hljs-comment">//若不满足，获取下一个可行的数</span><br>            <span class="hljs-keyword">if</span>(sum &gt; target)&#123;<br>                cur = cur + unit-(cur%unit);<br>                unit *= <span class="hljs-number">10</span>;<br>                <span class="hljs-comment">//若满足，则直接返回</span><br>            &#125;<span class="hljs-keyword">else</span>&#123;<br>                <span class="hljs-keyword">return</span> cur-n;<br>            &#125;<br>        &#125;<br>    &#125;<br>    <span class="hljs-comment">//计算各位的和</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getSum</span><span class="hljs-params">(<span class="hljs-type">long</span> n)</span>&#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">while</span>(n != <span class="hljs-number">0</span>)&#123;<br>            sum += n%<span class="hljs-number">10</span>;<br>            n /= <span class="hljs-number">10</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> sum;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/ms70jA/">剑指 Offer II 067. 最大的异或</a><br>每个数都是一个32位长的比特串，两个数做异或时，越左边的位出现比特值不同则结果会更大。考虑使用前缀树用于比特位比较。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findMaximumXOR</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> &#123;<br>        <span class="hljs-type">Trie</span> <span class="hljs-variable">root</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Trie</span>();<br>        <span class="hljs-type">int</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> num:nums)&#123;<br>            root.add(num);<br>            ans = Math.max(ans,root.max(num));<br>        &#125;<br>        <span class="hljs-keyword">return</span> ans;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Trie</span>&#123;<br>    Trie[] next;<br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Trie</span><span class="hljs-params">()</span>&#123;<br>        next = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Trie</span>[<span class="hljs-number">2</span>];<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">add</span><span class="hljs-params">(<span class="hljs-type">int</span> num)</span>&#123;<br>        <span class="hljs-type">Trie</span> <span class="hljs-variable">root</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">30</span>;i&gt;=<span class="hljs-number">0</span>;i--)&#123;<br>            <span class="hljs-type">int</span> <span class="hljs-variable">temp</span> <span class="hljs-operator">=</span> (num&gt;&gt;i)&amp;<span class="hljs-number">1</span>;<br>            <span class="hljs-keyword">if</span>(root.next[temp] == <span class="hljs-literal">null</span>)&#123;<br>                root.next[temp] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Trie</span>();<br>            &#125;<br>            root = root.next[temp];<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">max</span><span class="hljs-params">(<span class="hljs-type">int</span> num)</span>&#123;<br>        <span class="hljs-type">Trie</span> <span class="hljs-variable">root</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">30</span>;i&gt;=<span class="hljs-number">0</span>;i--)&#123;<br>            <span class="hljs-type">int</span> <span class="hljs-variable">temp</span> <span class="hljs-operator">=</span> (num&gt;&gt;i)&amp;<span class="hljs-number">1</span>;<br>            <span class="hljs-keyword">if</span>(root.next[<span class="hljs-number">1</span>-temp] != <span class="hljs-literal">null</span>)&#123;<br>                ans |= <span class="hljs-number">1</span>&lt;&lt;i;<br>                root = root.next[<span class="hljs-number">1</span>-temp];<br>            &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(root.next[temp] != <span class="hljs-literal">null</span>)&#123;<br>                root = root.next[temp];<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> ans;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-product-after-k-increments/">2233. K 次增加后的最大乘积</a></p>
+<ol>
+<li>使用最小堆，每次增加最小的数</li>
+<li>排序，顺序增加(也可批量增加)</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maximumProduct</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> &#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">MOD</span> <span class="hljs-operator">=</span> (<span class="hljs-type">int</span>)<span class="hljs-number">1e9</span>+<span class="hljs-number">7</span>;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;<br>        Arrays.sort(nums);<br>        <span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> n;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">last</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;k;i++)&#123;<br>            <span class="hljs-keyword">if</span>(index == n || nums[index] != last)&#123;<br>                index = <span class="hljs-number">0</span>;<br>                last = nums[<span class="hljs-number">0</span>];<br>            &#125;<br>            <span class="hljs-keyword">if</span>(nums[index] == last)&#123;<br>                nums[index++]++;<br>            &#125;<br>        &#125;<br>        <span class="hljs-type">long</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;n;i++)&#123;<br>            ans = (ans * nums[i])%MOD;<br>        &#125;<br>        <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>)ans;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/stone-game-vi/">1686. 石子游戏 VI</a><br><img src="/2023/02/10/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E8%B4%AA%E5%BF%83%EF%BC%89/Pasted-image-20230302134806.png" srcset="/img/loading.gif" lazyload><br>为石头处理价值，排序，两者依次选择价值最大的石头即可。<br>但要注意，最后能否获胜</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">stoneGameVI</span><span class="hljs-params">(<span class="hljs-type">int</span>[] aliceValues, <span class="hljs-type">int</span>[] bobValues)</span> &#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> aliceValues.length;<br>        Integer[] temp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>[n];<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;n;i++)&#123;<br>            temp[i] = aliceValues[i]+bobValues[i];<br>        &#125;<br>        Arrays.sort(temp,(a,b) -&gt; b - a);<br>        <span class="hljs-comment">//alice与bob的价值差为alice[i]+bob[i]-sumbob;</span><br>        <span class="hljs-type">int</span> <span class="hljs-variable">diff</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;n;i++)&#123;<br>            <span class="hljs-keyword">if</span>(i % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>)&#123;<br>                diff += temp[i];<br>            &#125;<br>        &#125;<br>        diff -= Arrays.stream(bobValues).sum();<br>        <span class="hljs-keyword">if</span>(diff &gt; <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">if</span>(diff == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="四、其他"><a href="#四、其他" class="headerlink" title="四、其他"></a>四、其他</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/construct-k-palindrome-strings/">1400. 构造 K 个回文字符串</a><br>每有一个奇数个数的字符，必然有一个对应的回文串，其决定了回文串数量的下线，而字符串总长决定了回文串数量的上线。<br>只需要保证<code>s.length()&lt;k</code>以及<code>奇数字符个数&lt;=k</code></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/queue-reconstruction-by-height/">406. 根据身高重建队列</a></p>
+<ol>
+<li>按身高从小到大摆放：前排的矮子不会影响到高子前面的空位。比当前人矮的人都已经排好了，当前人也知道自己前面还有多少高个子没排好，因此当前人可以方便找到自己的最终位置。<ul>
+<li>一个人的坐标x &#x3D; 其前面比它大的数a（已知） + 其前面比它小的数b，所以只需要从小到达摆放，就可以确定其前面比它小的数的数量b。</li>
+<li>具体的：<ul>
+<li>将人按身高大小hi从矮到高排列。</li>
+<li>相同身高则按ki从大到小排列，ki小的最终在前面，从而影响b的判断，因此先摆放ki大的。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] reconstructQueue(<span class="hljs-type">int</span>[][] people) &#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> people.length;<br>        Arrays.sort(people,(a,b) -&gt; &#123;<br>            <span class="hljs-keyword">if</span>(a[<span class="hljs-number">0</span>] != b[<span class="hljs-number">0</span>])&#123;<br>                <span class="hljs-keyword">return</span> a[<span class="hljs-number">0</span>]-b[<span class="hljs-number">0</span>];<br>            &#125;<span class="hljs-keyword">else</span>&#123;<br>                <span class="hljs-keyword">return</span> b[<span class="hljs-number">1</span>]-a[<span class="hljs-number">1</span>];<br>            &#125;<br>        &#125;);<br>        <span class="hljs-type">int</span>[][] ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n][];<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span>[] person:people)&#123;<br>            <span class="hljs-comment">//前面比当前人高的人,也就是前面需要留出的空位</span><br>            <span class="hljs-type">int</span> <span class="hljs-variable">space</span> <span class="hljs-operator">=</span> person[<span class="hljs-number">1</span>];<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; ++i) &#123;<br>                <span class="hljs-comment">//这里主要要判断为空在执行操作，因为就算需要留出的空位数达到了，也要等到下一个空位插入该值</span><br>                <span class="hljs-keyword">if</span>(ans[i] == <span class="hljs-literal">null</span>)&#123;<br>                    space--;<br>                    <span class="hljs-keyword">if</span>(space == -<span class="hljs-number">1</span>)&#123;<br>                        ans[i] = person;<br>                    &#125;<br>                &#125;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> ans;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>按身高从大到小摆放：后排的矮子不会影响前排的高个子，比当前人高的（或相等）都已经排好了，直接插入到他们中间即可。<ul>
+<li>将人的身高按从大到小，相同身高则先取会摆放在前排的。</li>
+<li>使用list维护一个动态队列，从高到矮放入，每次放入时，根据其ki决定位置</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] reconstructQueue(<span class="hljs-type">int</span>[][] people) &#123;<br>        Arrays.sort(people,<span class="hljs-keyword">new</span> <span class="hljs-title class_">Comparator</span>&lt;<span class="hljs-type">int</span>[]&gt;()&#123;<br>            <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">compare</span><span class="hljs-params">(<span class="hljs-type">int</span>[] a,<span class="hljs-type">int</span>[] b)</span>&#123;<br>                <span class="hljs-keyword">if</span>(a[<span class="hljs-number">0</span>] != b[<span class="hljs-number">0</span>])&#123;<br>                    <span class="hljs-keyword">return</span> b[<span class="hljs-number">0</span>]-a[<span class="hljs-number">0</span>];<br>                &#125;<span class="hljs-keyword">else</span>&#123;<br>                    <span class="hljs-keyword">return</span> a[<span class="hljs-number">1</span>]-b[<span class="hljs-number">1</span>];<br>                &#125;<br>            &#125;<br>        &#125;);<br>        List&lt;<span class="hljs-type">int</span>[]&gt; array = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;people.length;i++)&#123;<br>            array.add(people[i][<span class="hljs-number">1</span>],people[i]);<br>        &#125;<br>        <span class="hljs-keyword">return</span> array.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[array.size()][]);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/" class="category-chain-item">算法整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/" class="category-chain-item">算法专题</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
+      
+        <a href="/tags/%E6%95%B0%E7%BB%84/">#数组</a>
+      
+        <a href="/tags/%E8%B4%AA%E5%BF%83/">#贪心</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>算法专题（链表）</div>
+      <div>http://example.com/2023/02/10/算法整理/算法专题/算法专题（贪心）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年2月10日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/02/10/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%90%AF%E5%8A%A8%E9%80%89%E9%A1%B9%E4%B8%8E%E5%AD%97%E7%AC%A6%E9%9B%86%EF%BC%89/" title="MySQL基础（启动选项与字符集）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MySQL基础（启动选项与字符集）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/02/10/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E9%93%BE%E8%A1%A8%EF%BC%89/" title="算法专题（链表）">
+                        <span class="hidden-mobile">算法专题（链表）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/fluid-extention.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

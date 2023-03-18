@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC1%E7%AB%A0%EF%BC%88%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%89/Pasted-image-20230202170624.png">
 <meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC1%E7%AB%A0%EF%BC%88%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%89/Pasted-image-20230202173309.png">
 <meta property="article:published_time" content="2023-02-02T07:32:30.000Z">
-<meta property="article:modified_time" content="2023-02-19T16:55:48.471Z">
+<meta property="article:modified_time" content="2023-03-14T16:42:01.468Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="JUC">
@@ -304,7 +304,10 @@
 <h2 id="操作系统线程"><a href="#操作系统线程" class="headerlink" title="操作系统线程"></a>操作系统线程</h2><h3 id="用户空间实现线程"><a href="#用户空间实现线程" class="headerlink" title="用户空间实现线程"></a>用户空间实现线程</h3><p><strong>早期</strong>的操作系统<br><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC1%E7%AB%A0%EF%BC%88%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%89/Pasted-image-20230202153716.png" srcset="/img/loading.gif" lazyload><br>优点：</p>
 <ul>
 <li>第一点，就是即使操作系统原生不支持线程，我们也可以通过库函数来支持线程；</li>
-<li>第二点，线程的调度只发生在用户态，<strong>避免</strong>了操作系统从内核态到用户态的<strong>转换开销</strong>。<br>缺点：</li>
+<li>第二点，线程的调度只发生在用户态，<strong>避免</strong>了操作系统从内核态到用户态的<strong>转换开销</strong>。</li>
+</ul>
+<p>缺点：</p>
+<ul>
 <li>CPU 的时间片切换是以进程为维度的，所以如果进程中某个线程进行了耗时比较长的操作，那么由于<strong>用户空间中没有时钟中断机制</strong>，就会导致此进程中的其它线程因为得不到 CPU 资源而长时间的持续等待；</li>
 <li>另外，如果某个线程进行系统调用时比如缺页中断而导致了线程阻塞，此时操作系统也会阻塞住整个进程，即使这个进程中其它线程还在工作。</li>
 </ul>
@@ -398,6 +401,10 @@
 <p>6）线程中断规则（Thread Interruption Rule）：对线程 interrupt() 方法的调用先行发生于被中断线程的代码检测到中断事件的发生，可以通过 Thread 对象的 interrupted() 方法检测到是否有中断发生。</p>
 <p>7）对象终结规则（Finalizer Rule）：一个对象的初始化完成（构造函数执行结束）先行发生于它的 finalize() 方法的开始。</p>
 <p>8）传递性（Transitivity）：如果操作 A 先行发生于操作 B，操作 B 先行发生于操作 C，那就可以得出操作 A 先行发生于操作 C 的结论。</p>
+<div class="note note-primary">
+            <p>程管V启中终对传</p>
+          </div>
+
 <h3 id="“时间上先后发生”和“先行发生”"><a href="#“时间上先后发生”和“先行发生”" class="headerlink" title="“时间上先后发生”和“先行发生”"></a>“时间上先后发生”和“先行发生”</h3><p><strong>两者并无必然关系</strong><br>时间上先后发生：指事件A在事件B之前执行<br>先行发生：指事件A的执行结果对事件B可见</p>
 <ul>
 <li>符合先行发生关系如果对结果没影响也可能被重排序，导致两者矛盾。</li>

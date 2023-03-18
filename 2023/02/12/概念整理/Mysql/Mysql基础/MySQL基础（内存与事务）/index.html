@@ -85,7 +85,7 @@
 <meta property="og:image" content="http://example.com/2023/02/12/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%86%85%E5%AD%98%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/16a864f3298df751_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
 <meta property="og:image" content="http://example.com/2023/02/12/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%86%85%E5%AD%98%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/16a69c2f7b413698_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
 <meta property="article:published_time" content="2023-02-12T06:17:35.000Z">
-<meta property="article:modified_time" content="2023-02-16T16:43:17.971Z">
+<meta property="article:modified_time" content="2023-03-15T10:18:57.569Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="Mysql">
@@ -381,7 +381,7 @@
 <p>通过分区和访问策略，分别解决了预读和全表扫描的问题。<br><em>访问策略</em></p>
 <ul>
 <li>页面初次加载时，对应控制块放在old区头部。</li>
-<li>在控制块上记录<strong>第一次访问时间</strong>，如果在较短时间（<code>innodb_old_blocks_time</code> &#x3D; 1s）内再次访问，则不会将其移动到yound区头部。</li>
+<li>在控制块上记录<strong>第一次访问时间</strong>，如果在较短时间（<code>innodb_old_blocks_time</code> &#x3D; 1s）内再次访问，则不会将其移动到young区头部。</li>
 </ul>
 <h4 id="优化LRU链表"><a href="#优化LRU链表" class="headerlink" title="优化LRU链表"></a>优化LRU链表</h4><p>频繁操作头节点开销较大，要降低调整LRU链表的频率。选择只有被访问的缓存页位于<code>young</code>区域的<code>1/4</code>的后边，才会被移动到<code>LRU链表</code>头部。</p>
 <h3 id="其他的一些链表"><a href="#其他的一些链表" class="headerlink" title="其他的一些链表"></a>其他的一些链表</h3><p>比如<code>unzip LRU链表</code>用于管理解压页，<code>zip clean链表</code>用于管理没有被解压的压缩页，<code>zip free数组</code>中每一个元素都代表一个链表，它们组成所谓的<code>伙伴系统</code>来为压缩页提供内存空间等等。</p>
@@ -437,8 +437,8 @@
 <h2 id="Buffer-Pool中存储的其它信息"><a href="#Buffer-Pool中存储的其它信息" class="headerlink" title="Buffer Pool中存储的其它信息"></a>Buffer Pool中存储的其它信息</h2><p>链表和各种内存访问操作的统计数据。</p>
 <h1 id="二、事务"><a href="#二、事务" class="headerlink" title="二、事务"></a>二、事务</h1><h2 id="事务基本性质"><a href="#事务基本性质" class="headerlink" title="事务基本性质"></a>事务基本性质</h2><ul>
 <li>原子性（<code>Atomicity</code>）：事务是不可分割的操作</li>
-<li>隔离性（<code>Isolation</code>）：两个并发事务之间不能互相影响。</li>
 <li>一致性（<code>Consistency</code>）：保证数据库符合现实世界约束。</li>
+<li>隔离性（<code>Isolation</code>）：两个并发事务之间不能互相影响。</li>
 <li>持久性（<code>Durability</code>）：<code>持久性</code>意味着该转换对应的数据库操作所修改的数据都应该在磁盘上保留下来。</li>
 </ul>
 <blockquote>
@@ -460,7 +460,8 @@
 <h3 id="提交事务"><a href="#提交事务" class="headerlink" title="提交事务"></a>提交事务</h3><h4 id="手动提交"><a href="#手动提交" class="headerlink" title="手动提交"></a>手动提交</h4><ul>
 <li><code>COMMIT [WORK]</code></li>
 </ul>
-<h4 id="自动提交"><a href="#自动提交" class="headerlink" title="自动提交"></a>自动提交</h4><p><code>MySQL</code>中有一个系统变量<code>autocommit</code>，默认开启，表示每一条SQL语句是一个独立事务。<br><em>关闭自动提交</em></p>
+<h4 id="自动提交"><a href="#自动提交" class="headerlink" title="自动提交"></a>自动提交</h4><p><code>MySQL</code>中有一个系统变量<code>autocommit</code>，默认开启，表示每一条SQL语句是一个独立事务。</p>
+<p><em>关闭自动提交</em></p>
 <ul>
 <li>显示开启事务。</li>
 <li>修改系统变量<code>autocommit</code>为<code>true</code>。</li>
@@ -525,7 +526,7 @@
 <p><img src="/2023/02/12/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%86%85%E5%AD%98%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/169489301685dcb4_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <h3 id="Mini-Transaction"><a href="#Mini-Transaction" class="headerlink" title="Mini-Transaction"></a>Mini-Transaction</h3><p>对底层页面中的一次原子访问的过程称之为一个<code>Mini-Transaction</code>。<br><img src="/2023/02/12/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%86%85%E5%AD%98%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/169489303b9e5c9f_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <h2 id="redo日志的写入"><a href="#redo日志的写入" class="headerlink" title="redo日志的写入"></a>redo日志的写入</h2><h3 id="redo-log-block"><a href="#redo-log-block" class="headerlink" title="redo log block"></a>redo log block</h3><p>通过<code>mtr</code>生成的<code>redo</code>日志都放在了大小为<code>512字节</code>的<code>页</code>中。这里的页与前面16KB的页不同，可以将其称为<code>block</code>加以区分。<br><img src="/2023/02/12/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%86%85%E5%AD%98%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/169489303bff8e20_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload><br><img src="/2023/02/12/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%86%85%E5%AD%98%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/169489303c1fb389_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload><br><em>LOG_BLOCK_HDR_NO是如何计算的</em><br>32位，前2位为0，所以该值最大为1G，意味着block块的个数不能超过1G。</p>
-<h3 id="redo-log-buffer"><a href="#redo-log-buffer" class="headerlink" title="redo log buffer"></a>redo log buffer</h3><p><code>redo</code>日志时也不能直接直接写到磁盘上，服务器启动时就向操作系统申请了一大片称之为<code>redo log buffer</code>的<strong>连续内存空间</strong>。<br><img src="/2023/02/12/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%86%85%E5%AD%98%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/169489303ceeb982_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="redo-log-buffer"><a href="#redo-log-buffer" class="headerlink" title="redo log buffer"></a>redo log buffer</h3><p><code>redo</code>日志也不能直接直接写到磁盘上，服务器启动时就向操作系统申请了一大片称之为<code>redo log buffer</code>的<strong>连续内存空间</strong>。<br><img src="/2023/02/12/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%86%85%E5%AD%98%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/169489303ceeb982_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <p>通过启动参数<code>innodb_log_buffer_size</code>来指定<code>log buffer</code>的大小（默认16MB）。</p>
 <h3 id="redo日志写入log-buffer"><a href="#redo日志写入log-buffer" class="headerlink" title="redo日志写入log buffer"></a>redo日志写入log buffer</h3><p>redo日志的写入是顺序的，InnoDB通过一个全局变量<code>buf_free</code>指明后续应该写入到哪个地方。<br><img src="/2023/02/12/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%86%85%E5%AD%98%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/1694893043dc7344_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload><br>一个事务对应多个mtr，一个mtr对应一组redo日志，即一个事务有多个redo日志组。<br>由于事务是并发进行的，所以两个事务的redo日志组可能交替存储：<br><img src="/2023/02/12/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%86%85%E5%AD%98%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/169489304969c9d7_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <h2 id="redo日志写入磁盘"><a href="#redo日志写入磁盘" class="headerlink" title="redo日志写入磁盘"></a>redo日志写入磁盘</h2><p>在一些情况下redo日志会从log buffer中刷新到磁盘里，比如：</p>
@@ -620,7 +621,7 @@
 <h2 id="redo日志的id"><a href="#redo日志的id" class="headerlink" title="redo日志的id"></a>redo日志的id</h2><h3 id="log-sequence-number（LSN）"><a href="#log-sequence-number（LSN）" class="headerlink" title="log sequence number（LSN）"></a>log sequence number（LSN）</h3><p><code>log sequence number</code>是一个全局变量，初始值为8704。其帮助标识了<strong>每个mtr的redo日志组</strong>在log buffer中的起始和结束位置。<br><img src="/2023/02/12/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%86%85%E5%AD%98%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/169b899037f19b86_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <h3 id="flushed-to-disk-lsn"><a href="#flushed-to-disk-lsn" class="headerlink" title="flushed_to_disk_lsn"></a>flushed_to_disk_lsn</h3><p><code>redo</code>日志是首先写到<code>log buffer</code>中，之后才会被刷新到磁盘上的<code>redo</code>日志文件。</p>
 <ul>
-<li><code>log sequence number</code>：全局变量，初始值为8704，标识<strong>每个mtr的redo日志组</strong>在log buffer中的位置。</li>
+<li><code>log sequence number</code>：全局变量，初始值为8704，标识<strong>mtr的redo日志组</strong>在log buffer中的位置。</li>
 <li><code>flushed_to_disk_lsn</code>：全局变量，表示刷新到磁盘中的<code>redo</code>日志量的全局变量。</li>
 <li><code>buf_free</code>：全局变量（指针），标志下一个mtr写入指针。</li>
 <li><code>buf_next_to_write</code>：全局变量（指针），标记当前<code>log buffer</code>中已经有哪些日志被刷新到磁盘中了。</li>
@@ -652,8 +653,9 @@
 <p>脏页刷盘、释放redo日志的过程本质是增加<code>checkpoint_lsn</code>的操作：</p>
 <ul>
 <li>计算一下当前系统中可以被覆盖的<code>redo</code>日志对应的<code>lsn</code>值最大是多少。</li>
-<li>将<code>checkpoint_lsn</code>和对应的<code>redo</code>日志文件组偏移量以及此次<code>checkpint</code>的编号写到日志文件的管理信息（就是<code>checkpoint1</code>或者<code>checkpoint2</code>）中。<br><img src="/2023/02/12/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%86%85%E5%AD%98%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/169b8990aeb41002_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></li>
+<li>将<code>checkpoint_lsn</code>和对应的<code>redo</code>日志文件组偏移量以及此次<code>checkpint</code>的编号写到日志文件的管理信息（就是<code>checkpoint1</code>或者<code>checkpoint2</code>）中。</li>
 </ul>
+<p><img src="/2023/02/12/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%86%85%E5%AD%98%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/169b8990aeb41002_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <p>checkpoint_lsn：脏页已持久化<br>flushed_to_dick_lsn：redo日志已持久化<br>lsn：当前redo日志序列</p>
 <h3 id="批量从flush链表中刷出脏页"><a href="#批量从flush链表中刷出脏页" class="headerlink" title="批量从flush链表中刷出脏页"></a>批量从flush链表中刷出脏页</h3><p>当lsn增长过快时，系统无法及时做<code>checkpoint</code>，可能就需要用户线程同步的从<code>flush链表</code>中把那些最早修改的脏页（<code>oldest_modification</code>最小的脏页）刷新到磁盘。</p>
 <h3 id="innodb-flush-log-at-trx-commit的用法"><a href="#innodb-flush-log-at-trx-commit的用法" class="headerlink" title="innodb_flush_log_at_trx_commit的用法"></a>innodb_flush_log_at_trx_commit的用法</h3><p>如果对持久性要求不太高，可以修改<code>innodb_flush_log_at_trx_commit</code>系统变量</p>
@@ -686,7 +688,7 @@
 <ul>
 <li>一个事务操作对应多个mtr，一个mtr对应多个<code>undo日志</code>。</li>
 <li><code>undo no</code>在<strong>一个事务</strong>中是从<code>0</code>开始递增的，也就是说只要事务没提交，每生成一条<code>undo日志</code>，那么该条日志的<code>undo no</code>就增1。<ul>
-<li>redo是以组为单位记录，复写的；</li>
+<li>redo是以组mtr为单位记录，复写的；</li>
 <li>undo日志是以事务为单位记录、还原的。</li>
 </ul>
 </li>
@@ -771,7 +773,7 @@
 <ul>
 <li>该链表中只包含一个<code>Undo页面</code>。</li>
 <li>该<code>Undo页面</code>已经使用的空间小于整个页面空间的3&#x2F;4：<ul>
-<li><code>delete undo</code>链表可立刻删除。</li>
+<li><code>insert undo</code>链表可立刻删除。</li>
 <li><code>update undo</code>链表不能立刻删除。</li>
 </ul>
 </li>
@@ -801,10 +803,10 @@
 <li>通过<code>innodb_undo_tablespaces</code>定义<code>undo表空间</code>的数量</li>
 </ul>
 <h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>一个事务对于多个mtr，一个mtr对于多个undo日志</li>
+<li>一个事务对应多个mtr，一个mtr对应多个undo日志</li>
 <li>undo日志存在undo页中，undo页分update和insert类。</li>
 <li>一个undo页不够记录一个事务的所有操作，所以要形成链表。每个事务持有2部分链表（普通&#x2F;临时），1部分链表包括2条链表（update&#x2F;insert）链表。（insert类型的undo页面在事务提交后就可以释放，update则不可以，这是处于版本链管理的需要）</li>
-<li>一个链表就是一个undo页面段，其也有一个INODE结构来管理这个段中各个页面。</li>
+<li>一个链表就是一个undo页面段，其也有一个INODE结构来管理这个段中各个页面?</li>
 <li>回滚段页面有各个链表头，实现对链表的管理。</li>
 </ul>
 <h1 id="五、事务隔离级别和MVCC"><a href="#五、事务隔离级别和MVCC" class="headerlink" title="五、事务隔离级别和MVCC"></a>五、事务隔离级别和MVCC</h1><h2 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h2><table>
@@ -927,7 +929,7 @@
 <li>意向独占锁，英文名：<code>Intention Exclusive Lock</code>，简称<code>IX锁</code>。当事务准备在某条记录上加<code>X锁</code>时，需要先在表级别加一个<code>IX锁</code>。</li>
 </ul>
 <p>意向锁：想加<strong>表锁</strong>的事务可以通过查看本表有没有意向锁判断是否有其他事务已经加了<strong>行锁</strong>。</p>
-<p>IX锁和IX锁是兼容的：表示有事务在对表进行读、写（不是同一行）。</p>
+<p>IS锁和IX锁是兼容的：表示有事务在对表进行读、写（不是同一行）。</p>
 <table>
 <thead>
 <tr>
@@ -976,7 +978,7 @@
 </ul>
 <h4 id="InnoDB中的行级锁"><a href="#InnoDB中的行级锁" class="headerlink" title="InnoDB中的行级锁"></a>InnoDB中的行级锁</h4><ul>
 <li><code>Record Locks</code>：分S、X</li>
-<li><code>Gap Locks</code>：解决了幻读问题，加锁后其他事务无法在锁记录前面插入新记录，通过将锁防止在页面的最大记录上，其他事务就不能插入新记录了。</li>
+<li><code>Gap Locks</code>：解决了幻读问题，加锁后其他事务无法在锁记录前面插入新记录，通过将锁放置在页面的最大记录上，其他事务就不能插入新记录了。</li>
 </ul>
 <p><img src="/2023/02/12/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%86%85%E5%AD%98%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/16a5ddeea09f4b64_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload><br><img src="/2023/02/12/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%86%85%E5%AD%98%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/16a6dd4244481b96_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <ul>
@@ -988,7 +990,7 @@
 </ul>
 <p><img src="/2023/02/12/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%86%85%E5%AD%98%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/16a6dd424353495e_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload><br><img src="/2023/02/12/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%86%85%E5%AD%98%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/16a72bf8133eb1dc_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
 <ul>
-<li>隐式锁：如果某事务插入记录时，另一个事务要读取这个锁，会产生冲突（因为此时初始化未完成）。<ul>
+<li>隐式锁：如果某事务插入记录时，另一个事务要读取这个记录，会产生冲突（因为此时初始化未完成）。<ul>
 <li>对于聚簇索引，另一个事务发现trx_id处于活跃状态时，会为插入事务创建一个X锁，并为自己创建一个X锁，形成等待。</li>
 <li>对于二级索引，通过Page Header中的<code>PAGE_MAX_TRX_ID</code>属性判断该页面的记录是否都是已提交状态（与当前活跃事务的最小id对比）。</li>
 </ul>
@@ -1140,9 +1142,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/02/13/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="设计模式">
+                      <a href="/2023/02/13/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Spring/Spring%E5%9F%BA%E7%A1%80/" title="Spring基础">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">设计模式</span>
+                        <span class="hidden-mobile">Spring基础</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

@@ -16,14 +16,14 @@
   <meta name="author" content="Jin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="一、概述物理层已经保证了数据在物理层面上的传输功能，但无法避免传输中发生的错误。数据链路层作为网络层、物理层之间的桥梁，主要的职责则是保证数据传输过程的差错控制和可靠传输，即识别、纠正传输中发生的错误。 网络中的主机、路由器、交换机等都必须实现数据链路层。 术语：  链路（Link）表示一段没有交换节点物理线路 数据链路（Data Link）表示具有通讯协议的软硬件实现的链路。">
+    <meta name="description" content="一、概述物理层已经保证了数据在物理层面上的传输功能，但无法避免传输中发生的错误。数据链路层作为网络层、物理层之间的桥梁，主要的职责则是保证数据传输过程的差错控制和可靠传输，即识别、纠正传输中发生的错误。 网络中的主机、路由器、交换机等都必须实现数据链路层。 术语：  链路（Link）表示一段没有交换节点物理线路 数据链路（Data Link）表示具有通讯协议的软硬件实现的链路">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机网络第3章（数据链路层）">
 <meta property="og:url" content="http://example.com/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/index.html">
 <meta property="og:site_name" content="Jin&#39;s Blog">
-<meta property="og:description" content="一、概述物理层已经保证了数据在物理层面上的传输功能，但无法避免传输中发生的错误。数据链路层作为网络层、物理层之间的桥梁，主要的职责则是保证数据传输过程的差错控制和可靠传输，即识别、纠正传输中发生的错误。 网络中的主机、路由器、交换机等都必须实现数据链路层。 术语：  链路（Link）表示一段没有交换节点物理线路 数据链路（Data Link）表示具有通讯协议的软硬件实现的链路。">
+<meta property="og:description" content="一、概述物理层已经保证了数据在物理层面上的传输功能，但无法避免传输中发生的错误。数据链路层作为网络层、物理层之间的桥梁，主要的职责则是保证数据传输过程的差错控制和可靠传输，即识别、纠正传输中发生的错误。 网络中的主机、路由器、交换机等都必须实现数据链路层。 术语：  链路（Link）表示一段没有交换节点物理线路 数据链路（Data Link）表示具有通讯协议的软硬件实现的链路">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-bf6fe42eeea3f376.webp">
+<meta property="og:image" content="http://example.com/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-bf6fe42eeea3f376.webp">
 <meta property="og:image" content="http://example.com/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-f1441c531b4d740e.webp">
 <meta property="og:image" content="http://example.com/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-9d3f61fdd96b7dee.webp">
 <meta property="og:image" content="http://example.com/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/Pic0.png">
@@ -32,7 +32,7 @@
 <meta property="og:image" content="http://example.com/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-cc9d42f63bd259cc.webp">
 <meta property="og:image" content="http://example.com/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-2a7141766ab1aa80.webp">
 <meta property="og:image" content="http://example.com/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-215e8704b22ef7f2.webp">
-<meta property="og:image" content="http://example.com/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-b384615e861000f3.webp">
+<meta property="og:image" content="http://example.com/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-b384615e861000f3.webp">
 <meta property="og:image" content="http://example.com/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-d40da4575c590f5c.webp">
 <meta property="og:image" content="http://example.com/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-6290c73d8957ee8d.webp">
 <meta property="og:image" content="http://example.com/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-501e6b9dd2afcee3.webp">
@@ -66,12 +66,12 @@
 <meta property="og:image" content="http://example.com/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-44a2e259c33ecfd3.webp">
 <meta property="og:image" content="http://example.com/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-a93996aae716c6aa.webp">
 <meta property="article:published_time" content="2022-12-10T18:48:09.000Z">
-<meta property="article:modified_time" content="2023-02-16T16:43:17.961Z">
+<meta property="article:modified_time" content="2023-03-16T11:19:35.594Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-bf6fe42eeea3f376.webp">
+<meta name="twitter:image" content="http://example.com/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-bf6fe42eeea3f376.webp">
   
   
   
@@ -334,7 +334,7 @@
 <p>术语：</p>
 <ul>
 <li><strong>链路</strong>（<em>Link</em>）表示一段没有交换节点<strong>物理</strong>线路</li>
-<li><strong>数据链路</strong>（<em>Data Link</em>）表示具有通讯协议的软硬件实现的<strong>链路</strong>。</li>
+<li><strong>数据链路</strong>（<em>Data Link</em>）表示具有通讯协议的软硬件实现的<strong>链路</strong></li>
 </ul>
 <div class="note note-primary">
             <p>数据链路层的协议是多样的，两个主机之间的数据传输，可能会经过多个不同协议数据链路，他们只需要保证实现数据链路层的功能和对网络层的服务相同即可。</p>
@@ -355,7 +355,7 @@
 <blockquote>
 <p>目前，在有线（局域网）领域使用<strong>点对点链路</strong>和<strong>链路层交换机</strong>的<strong>交换式局域网</strong>已经取代了<del>共享式局域网</del><br>而在无线局域网中仍然使用的是共享信道技术</p>
 </blockquote>
-<h1 id="二、主要职责"><a href="#二、主要职责" class="headerlink" title="二、主要职责"></a>二、主要职责</h1><h2 id="封装成帧"><a href="#封装成帧" class="headerlink" title="封装成帧"></a>封装成帧</h2><p><img src="/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-bf6fe42eeea3f376.webp" srcset="/img/loading.gif" lazyload><br>封装成帧的目的是识别帧分界，不同数据链路层协议对此的实现是不同的：</p>
+<h1 id="二、主要职责"><a href="#二、主要职责" class="headerlink" title="二、主要职责"></a>二、主要职责</h1><h2 id="封装成帧"><a href="#封装成帧" class="headerlink" title="封装成帧"></a>封装成帧</h2><p><img src="/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-bf6fe42eeea3f376.webp" srcset="/img/loading.gif" lazyload><br>封装成帧的目的是识别帧分界，不同数据链路层协议对此的实现是不同的：</p>
 <ul>
 <li>PPP，帧头和帧尾有1字节的标识符</li>
 <li>EtherNet的V2的MAC帧，使用一个前导码，例如：<br><img src="/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-f1441c531b4d740e.webp" srcset="/img/loading.gif" lazyload></li>
@@ -442,8 +442,9 @@
 <div class="note note-primary">
             <p>端对端是P2P(Peer-to-Peer)。</p>
           </div>
+
 <h2 id="职责实现"><a href="#职责实现" class="headerlink" title="职责实现"></a>职责实现</h2><p>上文介绍了数据链路层的主要职责和方法，具体协议则需要对各功能做具体实现。</p>
-<h3 id="封装成帧-1"><a href="#封装成帧-1" class="headerlink" title="封装成帧"></a>封装成帧</h3><p>使用了帧头帧尾和对应的转义字符。<br><img src="/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-b384615e861000f3.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="封装成帧-1"><a href="#封装成帧-1" class="headerlink" title="封装成帧"></a>封装成帧</h3><p>使用了帧头帧尾和对应的转义字符。<br><img src="/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-b384615e861000f3.webp" srcset="/img/loading.gif" lazyload></p>
 <h4 id="透明传输-1"><a href="#透明传输-1" class="headerlink" title="透明传输"></a>透明传输</h4><ul>
 <li>面向字节的异步链路：字节填充法（插入“转义字符”）<br><img src="/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-d40da4575c590f5c.webp" srcset="/img/loading.gif" lazyload></li>
 <li>面向比特的同步链路：比特填充法（插入“比特0”）<br><img src="/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/24878825-6290c73d8957ee8d.webp" srcset="/img/loading.gif" lazyload></li>

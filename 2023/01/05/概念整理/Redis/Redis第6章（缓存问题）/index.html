@@ -16,12 +16,12 @@
   <meta name="author" content="Jin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="缓存问题 缓存穿透 缓存穿击 缓存雪崩 缓存污染（或者满了） 缓存和数据库一致性  缓存穿透问题缓存穿透是指缓存和数据库中都没有的数据。缓存不命中则会一直请求数据库，数据库查不到，又无法写入缓存。 解决 禁止非法请求，如校验参数合法性 数据库取不到的数据，在redis中置为key-null，防止大量数据库请求 bloomfilter，判断key是否在容器中  缓存击穿问题缓存击穿是指缓存中没有但数">
+    <meta name="description" content="缓存问题 缓存穿透 缓存击穿 缓存雪崩 缓存污染（或者满了） 缓存和数据库一致性  缓存穿透问题缓存穿透是指缓存和数据库中都没有的数据。缓存不命中则会一直请求数据库，数据库查不到，又无法写入缓存。 解决 禁止非法请求，如校验参数合法性 数据库取不到的数据，在redis中置为key-null，防止大量数据库请求 bloomfilter，判断key是否在容器中  缓存击穿问题缓存击穿是指缓存中没有但数">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis第6章（缓存问题）">
 <meta property="og:url" content="http://example.com/2023/01/05/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/index.html">
 <meta property="og:site_name" content="Jin&#39;s Blog">
-<meta property="og:description" content="缓存问题 缓存穿透 缓存穿击 缓存雪崩 缓存污染（或者满了） 缓存和数据库一致性  缓存穿透问题缓存穿透是指缓存和数据库中都没有的数据。缓存不命中则会一直请求数据库，数据库查不到，又无法写入缓存。 解决 禁止非法请求，如校验参数合法性 数据库取不到的数据，在redis中置为key-null，防止大量数据库请求 bloomfilter，判断key是否在容器中  缓存击穿问题缓存击穿是指缓存中没有但数">
+<meta property="og:description" content="缓存问题 缓存穿透 缓存击穿 缓存雪崩 缓存污染（或者满了） 缓存和数据库一致性  缓存穿透问题缓存穿透是指缓存和数据库中都没有的数据。缓存不命中则会一直请求数据库，数据库查不到，又无法写入缓存。 解决 禁止非法请求，如校验参数合法性 数据库取不到的数据，在redis中置为key-null，防止大量数据库请求 bloomfilter，判断key是否在容器中  缓存击穿问题缓存击穿是指缓存中没有但数">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2023/01/05/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105015406.jpg">
 <meta property="og:image" content="http://example.com/2023/01/05/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105020042.png">
@@ -29,7 +29,7 @@
 <meta property="og:image" content="http://example.com/2023/01/05/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105024206.png">
 <meta property="og:image" content="http://example.com/2023/01/05/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105181554.png">
 <meta property="article:published_time" content="2023-01-04T17:05:37.000Z">
-<meta property="article:modified_time" content="2023-02-18T16:54:14.269Z">
+<meta property="article:modified_time" content="2023-02-23T02:10:58.983Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="Redis">
 <meta property="article:tag" content="概念整理">
@@ -294,7 +294,7 @@
                 
                 <h1 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h1><ul>
 <li>缓存穿透</li>
-<li>缓存穿击</li>
+<li>缓存击穿</li>
 <li>缓存雪崩</li>
 <li>缓存污染（或者满了）</li>
 <li>缓存和数据库一致性</li>
@@ -378,7 +378,8 @@
 <p>8bit只能记录255次使用，到达后LFU会退化为LRU，因此有策略控制lfu的增长。</p>
 </blockquote>
 <p><code>lfu-log-factor</code>，有新访问时，只有满足一定算法条件时才count++<br><code>lfu-decay-time</code>，有新访问时，会按照算法对count进行衰减。</p>
-<h2 id="数据库和缓存一致性"><a href="#数据库和缓存一致性" class="headerlink" title="数据库和缓存一致性"></a>数据库和缓存一致性</h2><p>一般流程：<br><img src="/2023/01/05/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105015406.jpg" srcset="/img/loading.gif" lazyload><br>缓存与数据库必然存在不一致情况：<br>1.先写数据库，再删除redis，后者的删除可能未执行<br>2.先删除redis，再写数据库，后者还未执行redis可能就又刷新了。</p>
+<h2 id="数据库和缓存一致性"><a href="#数据库和缓存一致性" class="headerlink" title="数据库和缓存一致性"></a>数据库和缓存一致性</h2><p>一般流程：<br><img src="/2023/01/05/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105015406.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>修改数据库数据时，缓存与数据库必然存在不一致情况：<br>1.先写数据库，再删除redis，后者的删除可能未执行<br>2.先删除redis，再写数据库，后者还未执行redis可能就又刷新了。</p>
 <h3 id="同步模式"><a href="#同步模式" class="headerlink" title="同步模式"></a>同步模式</h3><h4 id="Cache-Aside-Pattern"><a href="#Cache-Aside-Pattern" class="headerlink" title="Cache Aside Pattern"></a>Cache Aside Pattern</h4><p><strong>写后失效缓存</strong><br>读时：</p>
 <ul>
 <li><strong>失效</strong>：应用程序先从cache取数据，没有得到，则从数据库中取数据，成功后，放到缓存中。</li>
@@ -396,7 +397,7 @@
 <p>该事件这个概率较低，其只发生在读时失效且刚好有并发写操作，且写操作较慢且需要锁表，读操作一般肯定已经完成，所以这个概率会很低。当然最好还是为缓存设置过期时间。</p>
 <h4 id="缓存更新失效"><a href="#缓存更新失效" class="headerlink" title="缓存更新失效"></a>缓存更新失效</h4><p>解决写操作第二步：失效缓存因为异常导致没有执行的问题</p>
 <h5 id="方案1：队列-重试"><a href="#方案1：队列-重试" class="headerlink" title="方案1：队列+重试"></a>方案1：队列+重试</h5><p><img src="/2023/01/05/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105024206.png" srcset="/img/loading.gif" lazyload><br>优点：队列解决了缓存更新失败的问题<br>缺点：对代码的侵入量大，影响服务速度</p>
-<p>方案2：队列+重试+非业务代码做异步更新缓存<br><img src="/2023/01/05/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105181554.png" srcset="/img/loading.gif" lazyload><br>由非业务代码读取mysql的操作，然后更新缓存。<br>优点：不侵入业务<br>缺点：同步速度慢<br>例子：canal</p>
+<h5 id="方案2：队列-重试-非业务代码做异步更新缓存"><a href="#方案2：队列-重试-非业务代码做异步更新缓存" class="headerlink" title="方案2：队列+重试+非业务代码做异步更新缓存"></a>方案2：队列+重试+非业务代码做异步更新缓存</h5><p><img src="/2023/01/05/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/Pasted-image-20230105181554.png" srcset="/img/loading.gif" lazyload><br>由非业务代码读取mysql的操作，然后更新缓存。<br>优点：不侵入业务<br>缺点：同步速度慢<br>例子：canal</p>
 
                 
               </div>

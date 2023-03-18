@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="Jin&#39;s Blog">
 <meta property="og:description" content="一、概述 网络层的主要任务是实现网络互连，进而实现数据包在各网络之间的传输 为了实现这个任务，有以下问题： 网络层提供可靠传输还是不可靠传输 网络层怎么寻址(IP地址做导航) 网络层路由选择(路由器根据路由表转发，为了记录路由需要人工配置或实现各种路由选择协议)     网络层（网际层）,除了IP协议外，还有之前介绍过的地址解析协议ARP，还有网际控制报文协议ICMP，网际组管理协议IGMP">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2022/12/14/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-617a75508f564e07.webp">
+<meta property="og:image" content="http://example.com/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-617a75508f564e07.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-5006c8be601f1a11.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-5e9d1b71bd598e62.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/routeUnion.png">
@@ -51,7 +51,7 @@
 <meta property="og:image" content="http://example.com/2022/12/14/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-b472dd1a51f30666.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-67b837e6c27d5e9c.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-40cf22cbd65e9ed8.webp">
-<meta property="og:image" content="http://example.com/2022/12/14/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-73800cce52c3a91e.webp">
+<meta property="og:image" content="http://example.com/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-73800cce52c3a91e.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-a014cde6b0ff9691.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-5d538557f988dc41.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-94a3b7c0b1f01488.webp">
@@ -71,12 +71,12 @@
 <meta property="og:image" content="http://example.com/2022/12/14/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-d2fd109d060e4853.webp">
 <meta property="og:image" content="http://example.com/2022/12/14/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-ff43ea52e61da271.webp">
 <meta property="article:published_time" content="2022-12-14T12:48:03.000Z">
-<meta property="article:modified_time" content="2023-02-16T16:43:17.960Z">
+<meta property="article:modified_time" content="2023-03-16T11:19:35.607Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2022/12/14/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-617a75508f564e07.webp">
+<meta name="twitter:image" content="http://example.com/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-617a75508f564e07.webp">
   
   
   
@@ -378,7 +378,7 @@
           </div>
 
 <p>IPv4的编址方法经历了3个阶段：<br><strong>分类编址 -&gt; 划分子网 -&gt; 无分类编址</strong></p>
-<h2 id="分类编址"><a href="#分类编址" class="headerlink" title="分类编址"></a>分类编址</h2><p><img src="/2022/12/14/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-617a75508f564e07.webp" srcset="/img/loading.gif" lazyload><br>其中有2个网络号无法分配，即A类地址：</p>
+<h2 id="分类编址"><a href="#分类编址" class="headerlink" title="分类编址"></a>分类编址</h2><p><img src="/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-617a75508f564e07.webp" srcset="/img/loading.gif" lazyload><br>其中有2个网络号无法分配，即A类地址：</p>
 <ul>
 <li><strong>最小网络号为0，保留不做指派</strong></li>
 <li><strong>最大网络号为127，是本地回环测试地址，保留不做指派</strong></li>
@@ -513,13 +513,13 @@
 <p><strong>路由选择部分</strong><br>路由选择处理器根据所使用的路由选择协议周期性的与其他路由器进行路由信息交互来更新路由表。<br>如果路由器接受到的分组是路由器之间交换路由信息的<strong>路由报文</strong>，则会把这种分组送交给<strong>路由选择处理器</strong>进行处理。</p>
 <p>路由选择处理器的行为：</p>
 <ul>
-<li>路由表一般只包含从目的网络到下一条的映射</li>
+<li>路由表一般只包含从目的网络到下一跳的映射</li>
 <li>路由表需要对网络拓扑变化的计算最优化</li>
 <li>转发表是由路由表生成的</li>
 <li>转发表的结构应当使查找过程最优化</li>
 </ul>
 <div class="note note-primary">
-            <p>路由表（RIB）和转发表（FIB）的联系和区别：</p><ul><li><p>联系<br>转发表是路由器使用一个特定的进程通过路由表中的信息和自身的网卡等信息综合得到的。转发表类似于交换机的地址信息表。</p></li><li><p>区别<br>首先，”转发”和”路由选择”是有区别的，”转发”时，路由器只需要把接受到的信息从合适的端口发送出去即可，只涉及到一个路由器。”路由选择”则是许多路由器协同工作的结果。<br>其次，路由表只存储三元素：目标，掩码，下一跳；而转发表存储更详细的信息：比如输出端口信息，某些MAC地址，比如标记信息等。</p></li></ul><p>这里的描述都屏蔽了MAC地址的问题，这里在汇总对比一下：</p><ul><li>MAC表：记录MAC地址和端口之间的映射关系</li><li>ARP表：记录IP地址和MAC地址之间的映射关系</li><li>路由表：记录IP地址与IP地址之间的关系和路径代价。<br>举例：<br>局域网：使用MAC表和ARP表即可实现局域网内主机通讯（使用交换机，虽然现在不会这么使用）<br>主机流程：目的IP地址 -&gt; 目的MAC地址 -&gt;端口<br>路由器流程同上。</li></ul><p>因特网：但不同网段之间的通讯，要涉及到网络路线选择问题。<br>主机流程：目的IP地址(非本网段) -&gt; 目的MAC地址（默认网关）-&gt;端口<br>路由器流程：目的IP地址 -&gt; 下一跳IP地址（路由选择） -&gt;MAC地址 -&gt; 端口</p>
+            <p>路由表（RIB）和转发表（FIB）的联系和区别：</p><ul><li><p>联系<br>转发表是路由器使用一个特定的进程通过路由表中的信息和自身的网卡等信息综合得到的。转发表类似于交换机的地址信息表。</p></li><li><p>区别<br>首先，”转发”和”路由选择”是有区别的，”转发”时，路由器只需要把接受到的信息从合适的端口发送出去即可，只涉及到一个路由器。”路由选择”则是许多路由器协同工作的结果。<br>其次，路由表只存储三元素：目标，掩码，下一跳；而转发表存储更详细的信息：比如输出端口信息，某些MAC地址，比如标记信息等。</p></li></ul><p>这里的描述都屏蔽了MAC地址的问题，这里在汇总对比一下：</p><ul><li>MAC表：记录MAC地址和端口之间的映射关系</li><li>ARP表：记录IP地址和MAC地址之间的映射关系</li><li>路由表：记录IP地址与IP地址之间的关系和路径代价。</li></ul><p>举例：<br>局域网：使用MAC表和ARP表即可实现局域网内主机通讯（使用交换机，虽然现在不会这么使用）<br>主机流程：目的IP地址 -&gt; 目的MAC地址 -&gt;端口<br>路由器流程同上。</p><p>因特网：但不同网段之间的通讯，要涉及到网络路线选择问题。<br>主机流程：目的IP地址(非本网段) -&gt; 目的MAC地址（默认网关）-&gt;端口<br>路由器流程：目的IP地址 -&gt; 下一跳IP地址（路由选择） -&gt;MAC地址 -&gt; 端口</p>
           </div>
 
 <h3 id="路由信息协议RIP"><a href="#路由信息协议RIP" class="headerlink" title="路由信息协议RIP"></a>路由信息协议RIP</h3><p>路由信息协议RIP(<em>Routing Information Protocol</em>)<br><img src="/2022/12/14/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-850c29aaf1e744d6.webp" srcset="/img/loading.gif" lazyload></p>
@@ -596,7 +596,7 @@
 <li><strong>首部的前一部分是固定长度，共 20 字节，是所有 IP 数据报必须具有的。</strong></li>
 </ul>
 </blockquote>
-<p><img src="/2022/12/14/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-73800cce52c3a91e.webp" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-73800cce52c3a91e.webp" srcset="/img/loading.gif" lazyload></p>
 <h3 id="固定部分"><a href="#固定部分" class="headerlink" title="固定部分"></a>固定部分</h3><p><strong>基本信息</strong><br>主要记录一些版本，服务约定，和后续数据长度。</p>
 <ul>
 <li>版本：占4比特，目前最广泛的是4（IPv4）</li>
@@ -610,7 +610,7 @@
 </ul>
 <p><strong>分片信息</strong><br>主要用于IP数据报分片<br><img src="/2022/12/14/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC4%E7%AB%A0%EF%BC%88%E7%BD%91%E9%99%85%E5%B1%82%EF%BC%89/24878825-a014cde6b0ff9691.webp" srcset="/img/loading.gif" lazyload></p>
 <ul>
-<li>标识：占16比特，同一个IP数据包的分片应该有同一个标识，类似IP</li>
+<li>标识：占16比特，同一个IP数据包的分片应该有同一个标识，类似ID</li>
 <li>标志：占3比特：<ul>
 <li>DF位：1个比特，1表示不允许分片；0表示允许分片。</li>
 <li>MF位：1个比特，1表示不是最后一个分片，0表示是最后一个分片。</li>

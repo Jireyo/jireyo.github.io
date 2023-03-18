@@ -43,7 +43,7 @@
 <meta property="og:image" content="http://example.com/2023/01/03/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC2%E7%AB%A0%EF%BC%88%E5%AF%B9%E8%B1%A1%E6%9C%BA%E5%88%B6%EF%BC%89/Pasted-image-20230103205150.png">
 <meta property="og:image" content="http://example.com/2023/01/03/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC2%E7%AB%A0%EF%BC%88%E5%AF%B9%E8%B1%A1%E6%9C%BA%E5%88%B6%EF%BC%89/Pasted-image-20230103205236.png">
 <meta property="article:published_time" content="2023-01-03T10:57:00.000Z">
-<meta property="article:modified_time" content="2023-02-18T16:54:09.408Z">
+<meta property="article:modified_time" content="2023-03-15T10:37:20.157Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="Redis">
 <meta property="article:tag" content="概念整理">
@@ -319,7 +319,7 @@
 <ul>
 <li>type标识了数据所属的基本类型</li>
 <li>encoding标识了数据类型对于的编码</li>
-<li>LRU记录了数据的最后访问时间和访问次数</li>
+<li>LRU记录了数据的最后访问时间（LFU还记录访问次数）</li>
 <li>refcount记录了对象被引计数</li>
 <li>ptr指向真实的底层数据结构</li>
 </ul>
@@ -331,14 +331,15 @@
 <div class="note note-success">
             <p>type判断命令是否正确，encoding判断如何执行命令</p>
           </div>
+
 <h2 id="对象共享"><a href="#对象共享" class="headerlink" title="对象共享"></a>对象共享</h2><p>redis一般会把一些常见值放入共享对象中：</p>
 <ul>
 <li>各种命令的返回值，比如成功时返回的OK，错误时返回的ERROR，命令入队事务时返回的QUEUE，等等</li>
-<li>包括0在内，小于REDIS_SHARED_INTEGERS的所有整数（REDIS_SHARED_INTEGERS的默认值是10000）<br><img src="/2023/01/03/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC2%E7%AB%A0%EF%BC%88%E5%AF%B9%E8%B1%A1%E6%9C%BA%E5%88%B6%EF%BC%89/Pasted-image-20230103192218.png" srcset="/img/loading.gif" lazyload><blockquote>
+<li>包括0在内，小于REDIS_SHARED_INTEGERS的所有整数（REDIS_SHARED_INTEGERS的默认值是10000）<br><img src="/2023/01/03/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC2%E7%AB%A0%EF%BC%88%E5%AF%B9%E8%B1%A1%E6%9C%BA%E5%88%B6%EF%BC%89/Pasted-image-20230103192218.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<blockquote>
 <p>注意：共享对象只能被字典和双向链表这类能带有指针的数据结构使用。<br>像整数集合和压缩列表这些将数据保存在数据结构内的则无法使用。</p>
 </blockquote>
-</li>
-</ul>
 <blockquote>
 <p>为什么不共享其他数据结构：<br>复杂度较高，消耗CPU，用其换取内存不划算。</p>
 </blockquote>
@@ -394,7 +395,7 @@
 <h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>不预留空间，每次写操作都需要重新分配内存。<br>节点扩容可能导致后续所有prevlen字段扩容。</p>
 <h2 id="QuickList"><a href="#QuickList" class="headerlink" title="QuickList"></a>QuickList</h2><p>是一个以ziplist为节点的双端链表结构。</p>
 <h3 id="相关结构体"><a href="#相关结构体" class="headerlink" title="相关结构体"></a>相关结构体</h3><ul>
-<li><code>quicklistNode</code>, 宏观上, quicklist是一个链表, 这个结构描述的就是链表中的结点. 它通过zl字段持有底层的ziplist. 简单来讲, 它描述了一个ziplist实例</li>
+<li><code>quicklistNode</code>, 宏观上, quicklist是一个链表, 这个结构描述的就是链表中的结点. 它通过zl字段持有底层的ziplist. 简单来讲, 它描述了一个ziplist实例。</li>
 <li><code>quicklistLZF</code>, ziplist是一段连续的内存, 用LZ4算法压缩后, 就可以包装成一个quicklistLZF结构. 是否压缩quicklist中的每个ziplist实例是一个可配置项. 若这个配置项是开启的, 那么quicklistNode.zl字段指向的就不是一个ziplist实例, 而是一个压缩后的quicklistLZF实例</li>
 <li><code>quicklistBookmark</code>, 在quicklist尾部增加的一个书签，它只有在大量节点的多余内存使用量可以忽略不计的情况且确实需要分批迭代它们，才会被使用。当不使用它们时，它们不会增加任何内存开销。</li>
 <li><code>quicklist</code>. 这就是一个双链表的定义. head, tail分别指向头尾指针. len代表链表中的结点. count指的是整个quicklist中的所有ziplist中的entry的数目. fill字段影响着每个链表结点中ziplist的最大占用空间, compress影响着是否要对每个ziplist以LZ4算法进行进一步压缩以更节省内存空间.</li>
@@ -478,18 +479,18 @@
 <h3 id="结构-4"><a href="#结构-4" class="headerlink" title="结构"></a>结构</h3><p><img src="/2023/01/03/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC2%E7%AB%A0%EF%BC%88%E5%AF%B9%E8%B1%A1%E6%9C%BA%E5%88%B6%EF%BC%89/Pasted-image-20230103203355.png" srcset="/img/loading.gif" lazyload><br>embstr少一次分配空间，但其为只读,修改时要重新分配一次raw空间。</p>
 <p>ps:<strong>Redis中对于浮点数类型也是作为字符串保存的，在需要的时候再将其转换成浮点数类型</strong>。</p>
 <ul>
-<li><strong>编码的转换</strong><blockquote>
+<li><strong>编码的转换</strong></li>
+</ul>
+<blockquote>
 <p>当 int 编码保存的值不再是整数，或大小超过了long的范围时，自动转化为raw。<br>对于embstr编码，由于 Redis 没有对其编写任何的修改程序（embstr 是只读的），在对embstr对象进行修改时，都会先转化为raw再进行修改，因此，只要是修改embstr对象，修改后的对象一定是raw的，无论是否达到了44个字节。</p>
 </blockquote>
-</li>
-</ul>
 <h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>按<strong>数值进行操作的数据</strong>，如果原始数据不能转成数值，或超越了redis数值上限范围，将报错。 9223372036854775807（java中long型数据最大值，Long.MAX_VALUE）</p>
 <h2 id="List"><a href="#List" class="headerlink" title="List"></a>List</h2><h3 id="编码-1"><a href="#编码-1" class="headerlink" title="编码"></a>编码</h3><p>quicklist</p>
 <h3 id="结构-5"><a href="#结构-5" class="headerlink" title="结构"></a>结构</h3><p><img src="/2023/01/03/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC2%E7%AB%A0%EF%BC%88%E5%AF%B9%E8%B1%A1%E6%9C%BA%E5%88%B6%EF%BC%89/Pasted-image-20230103203823.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="注意-1"><a href="#注意-1" class="headerlink" title="注意"></a>注意</h3><ul>
 <li>list中保存的数据都是string类型的，数据总容量是有限的，最多2^32 - 1 个元素 (4294967295)。</li>
 </ul>
-<h2 id="Hash"><a href="#Hash" class="headerlink" title="Hash"></a>Hash</h2><h3 id="编码-2"><a href="#编码-2" class="headerlink" title="编码"></a>编码</h3><p>ziplist和hashtable</p>
+<h2 id="Hash"><a href="#Hash" class="headerlink" title="Hash"></a>Hash</h2><h3 id="编码-2"><a href="#编码-2" class="headerlink" title="编码"></a>编码</h3><p>ziplist 或 hashtable</p>
 <h3 id="结构-6"><a href="#结构-6" class="headerlink" title="结构"></a>结构</h3><ul>
 <li>ziplist</li>
 <li>dict<br><img src="/2023/01/03/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC2%E7%AB%A0%EF%BC%88%E5%AF%B9%E8%B1%A1%E6%9C%BA%E5%88%B6%EF%BC%89/Pasted-image-20230103204020.png" srcset="/img/loading.gif" lazyload></li>
