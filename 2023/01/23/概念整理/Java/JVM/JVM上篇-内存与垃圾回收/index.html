@@ -64,7 +64,7 @@
 <meta property="og:image" content="http://example.com/2023/01/23/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JVM/JVM%E4%B8%8A%E7%AF%87-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/Pasted-image-20230201152820.png">
 <meta property="og:image" content="http://example.com/2023/01/23/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JVM/JVM%E4%B8%8A%E7%AF%87-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/Pasted-image-20230201153244.png">
 <meta property="article:published_time" content="2023-01-23T05:55:59.000Z">
-<meta property="article:modified_time" content="2023-02-21T13:08:47.032Z">
+<meta property="article:modified_time" content="2023-03-19T18:26:18.479Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="JVM">
@@ -284,7 +284,7 @@
         
         
         
-          219 分钟
+          220 分钟
         
       </span>
     
@@ -469,16 +469,21 @@
 <p><strong>对类加载器的引用</strong></p>
 <ul>
 <li>JVM必须知道一个类型是由启动加载器加载的还是由用户类加载器加载的。</li>
-<li>如果一个类型是由用户类加载器加载的，那么<strong>JVM会将这个类加载器的一个引用作为类型信息的一部分保存在方法区中</strong>。当解析一个类型到另一个类型的引用的时候，JVM需要保证这两个类型的类加载器是相同的。<div class="note note-primary">
-            <p>不同类加载器加载的对象解析需要其在同一个域。</p>
-          </div></li>
+<li>如果一个类型是由用户类加载器加载的，那么<strong>JVM会将这个类加载器的一个引用作为类型信息的一部分保存在方法区中</strong>。当解析一个类型到另一个类型的引用的时候，JVM需要保证这两个类型的类加载器是相同的。</li>
 </ul>
+<div class="note note-primary">
+            <p>不同类加载器加载的对象解析需要其在同一个域。</p>
+          </div>
+
 <p><strong>主动使用与被动使用</strong><br>对类的成员的调用：</p>
 <ul>
 <li>创建类的实例</li>
 <li>访问某个类或接口的静态变量，或者对该静态变量赋值</li>
 <li>调用类的静态方法</li>
-<li>初始化一个类的子类<br>规范：</li>
+<li>初始化一个类的子类</li>
+</ul>
+<p>规范：</p>
+<ul>
 <li>反射（比如：Class.forName（”com.atguigu.Test”））</li>
 <li>Java虚拟机启动时被标明为<strong>启动类</strong>的类</li>
 <li>JDK 7 开始提供的动态语言支持：<br>  java.lang.invoke.MethodHandle实例的解析结果<br>  REF_getStatic、REF_putStatic、REF_invokeStatic句柄对应的类没有初始化，则初始化</li>
@@ -586,6 +591,7 @@
 <div class="note note-primary">
             <p>个人理解：某个方法A可能会调用其他方法B，在执行引擎遇到调用其方法的语句如invokeVirtual时，需要找到方法B的入口。<br>而栈帧中保存了一个指针，指向了方法B符号在运行时常量池中的位置，再通过运行时常量池，实现将符号引用转化为直接引用。</p>
           </div>
+
 <h4 id="方法返回地址"><a href="#方法返回地址" class="headerlink" title="方法返回地址"></a>方法返回地址</h4><p>存放调用该方法的pc寄存器的值。一个方法的结束，有两种方式：</p>
 <ul>
 <li>正常执行完成</li>
@@ -656,16 +662,18 @@
 <li>若小于，FullGC</li>
 </ul>
 </li>
-<li>否则，FullGC<div class="note note-primary">
+<li>否则，FullGC</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="note note-primary">
             <p>为什么需要空间担保：<br>minorGC时可能直接将大量Survivor区对象直接放入Old区，此时需要Old区保证能接受这些对象，若老年代剩余空间&gt;新生代所有对象大小，则肯定可以接受。若空间&lt;对象大小，则可以根据之前的回收情况预估实际进入老年代的对象大小，判断是否需要据此进行冒险的MinorGC，以避免盲目的FullGC。<br><strong>JDK7及以后已经弃用。此后，默认会进行冒险行为，否则FullGC。</strong></p>
-          </div></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+          </div>
+
 <h4 id="TLAB"><a href="#TLAB" class="headerlink" title="TLAB"></a>TLAB</h4><p>Thread Local Allocation Buffer，堆是所有线程共享的，因此也是线程不安全的。TLAB表示JVM为每个线程提供一个私有缓存空间供其为对象分配内存，大小默认为1%的Eden区大小。<br>可以通过<code>-XX:UseTLAB</code>决定是否开启TLAB，通过<code>-XX:TLABWasteTargetPercent</code>决定TLAB占用Eden空间的大小。</p>
 <h3 id="Minor-GC，MajorGC、Full-GC"><a href="#Minor-GC，MajorGC、Full-GC" class="headerlink" title="Minor GC，MajorGC、Full GC"></a>Minor GC，MajorGC、Full GC</h3><p>GC按照回收区域又分为两大种类型：一种是部分收集（Partial GC），一种是整堆收集（FullGC）。</p>
 <ul>
@@ -695,10 +703,10 @@
 </ol>
 <p>要尽量避免FullGC，其耗时太长。</p>
 <h3 id="堆是分配对象的唯一选择吗？"><a href="#堆是分配对象的唯一选择吗？" class="headerlink" title="堆是分配对象的唯一选择吗？"></a>堆是分配对象的唯一选择吗？</h3><h4 id="逃逸分析"><a href="#逃逸分析" class="headerlink" title="逃逸分析"></a>逃逸分析</h4><p>当一个对象在方法中被定义后，它被外部方法所引用，则认为发生逃逸。</p>
-<p>JDK6u23后默认开启逃逸分析，此前需要</p>
+<p>JDK6u23后默认开启逃逸分析，此前需要：</p>
 <ul>
-<li>选项“<code>-XX:+DoEscapeAnalysis</code>“显式开启逃逸分析</li>
-<li>通过选项“<code>-XX:+PrintEscapeAnalysis</code>“查看逃逸分析的筛选结果</li>
+<li>选项”<code>-XX:+DoEscapeAnalysis</code>“显式开启逃逸分析</li>
+<li>通过选项”<code>-XX:+PrintEscapeAnalysis</code>“查看逃逸分析的筛选结果</li>
 </ul>
 <h4 id="代码优化"><a href="#代码优化" class="headerlink" title="代码优化"></a>代码优化</h4><ul>
 <li>栈上分配：对象不发生方法逃逸。</li>
@@ -806,10 +814,11 @@
 <li>类型：<ul>
 <li>所有对象已经回收</li>
 <li>所有对该类的引用已经被回收</li>
-<li>对于的类加载器已经被回收<br>满足类型的回收条件也只是允许回收，并不是必然的。</li>
+<li>对于的类加载器已经被回收</li>
 </ul>
 </li>
 </ul>
+<p>满足类型的回收条件也只是允许回收，并不是必然的。</p>
 <h3 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h3><p>元空间使用直接内存，NIO（Native IO）时也可以使用直接内存</p>
 <h4 id="非直接内存"><a href="#非直接内存" class="headerlink" title="非直接内存"></a>非直接内存</h4><p>使用IO读写文件，需要与磁盘交互，需要由用户态切换到内核态。在内核态时，需要两份内存存储重复数据，效率低。</p>
 <h4 id="直接内存-1"><a href="#直接内存-1" class="headerlink" title="直接内存"></a>直接内存</h4><p>使用NIO时，操作系统划出的直接缓存区可以被java代码直接访问，只有一份。NIO适合对大文件的读写操作。<br>直接内存可以通过<code>MaxDirectMemorySize</code>设置，不指定时与-Xmx参数一致。</p>
@@ -824,6 +833,7 @@
 <div class="note note-primary">
             <ul><li>new，类，构造器的构造方法是一般的生成新对象方法。</li><li>clone和序列化是复制对象的方法。</li><li>第三方库</li></ul>
           </div>
+
 <h2 id="创建对象的步骤"><a href="#创建对象的步骤" class="headerlink" title="创建对象的步骤"></a>创建对象的步骤</h2><ol>
 <li>判断对象对应的类是否加载、链接、初始化<ul>
 <li>元空间查找</li>
@@ -962,12 +972,12 @@
 <li><code>String str = new String(&quot;123&quot;)</code>创建了2个对象，一个”123”在字符串常量池，一个new String在堆中，返回堆中对象。</li>
 </ul>
 <h3 id="拼接"><a href="#拼接" class="headerlink" title="拼接"></a>拼接</h3><ul>
-<li>**常量(final)与常量(final)**的拼接结果在常量池，原理是编译期优化</li>
+<li><strong>常量(final)与常量(final)</strong> 的拼接结果在常量池，原理是编译期优化</li>
 <li><strong>只要其中有一个是变量</strong>，结果就在堆中。变量拼接的原理是StringBuilder</li>
-<li>如果拼接的结果调用intern()方法，则主动将常量池中还没有的字符串对象放入池中，并返回此对象地址</li>
+<li>如果拼接的结果调用intern()方法，则主动将常量池中还没有的字符串对象放入池中，并返回此对象地址。</li>
 </ul>
 <h4 id="优化拼接"><a href="#优化拼接" class="headerlink" title="优化拼接"></a>优化拼接</h4><ul>
-<li>尽量使用StringBuilder.append()</li>
+<li>尽量使用<strong>StringBuilder.append()</strong></li>
 <li>可以在初始化时，指定StringBuilder的capacity，减少扩容次数。</li>
 </ul>
 <h3 id="intern"><a href="#intern" class="headerlink" title="intern()"></a>intern()</h3><p>语义是：返回常量池中的相同字符串。</p>
@@ -1218,7 +1228,7 @@
 <li>无法处理浮动垃圾（并发标记期间产生的新垃圾）</li>
 </ul>
 <blockquote>
-<p><strong>重新标记</strong>（三色标记法<a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/sid=1719715247743913571&wfr=spider&for=pc%EF%BC%89">https://baijiahao.baidu.com/sid=1719715247743913571&amp;wfr=spider&amp;for=pc）</a><br>由于标记阶段是从GC Roots开始标记可达对象，那么在并发标记阶段可能产生两种变动:<br>1．本来可达的对象，变得不可达了<br>2．本来不可达的内存，变得可达了<br> 第一种变动会产生所谓的浮动垃圾，第二种变动怎么回事呢?重点在于miss。如果并发标记阶段用户线程里new了一个对象，而它在初始标记和并发标记中是不会能够从GC Roots 可达的，也就是were missed。如果没有重新标记阶段来将这个对象标记为可达，那么它会在清理阶段被回收，这是严重的错误，是必须要在重新标记阶段来处理的，所以这就是重新标记阶段实际上的任务。<br> 相比之下，浮动垃圾是可容忍的问题，而不是错误。那么为什么重新标记阶段不处理第一种变动呢?也许是由可达变为不可达这样的变化需要重新从GC Roots 开始遍历，相当于再完成一次初始标记和并发标记的工作，这样不仅前两个阶段变成多余的，浪费了开销浪费，还会大大增加重新标记阶段的开销，所带来的暂停时间是追求低延迟的CMS所不能容忍的。</p>
+<p><strong>重新标记</strong>（三色标记法<a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/sid=1719715247743913571&wfr=spider&for=pc%EF%BC%89">https://baijiahao.baidu.com/sid=1719715247743913571&amp;wfr=spider&amp;for=pc）</a><br>由于标记阶段是从GC Roots开始标记可达对象，那么在并发标记阶段可能产生两种变动:<br>1．本来可达的对象，变得不可达了<br>2．本来不可达的内存，变得可达了<br> 第一种变动会产生所谓的浮动垃圾，第二种变动怎么回事呢?重点在于miss。如果并发标记阶段用户线程里new了一个对象，而它在初始标记和并发标记中是不会能够从GC Roots 可达的，也就是were missed。如果没有重新标记阶段来将这个对象标记为可达，那么它会在清理阶段被回收，这是严重的错误，是必须要在重新标记阶段来处理的，所以这就是重新标记阶段实际上的任务。<br> 相比之下，浮动垃圾是可容忍的问题，而不是错误。那么为什么重新标记阶段不处理第一种变动呢?也许是由可达变为不可达这样的变化需要重新从GC Roots 开始遍历，相当于再完成一次初始标记和并发标记的工作，这样不仅前两个阶段变成多余的，浪费了开销浪费，还会大大增加重新标记阶段的开销，所带来的暂停时间是追求低延迟的CMS所不能容忍的。<br> CMS通过增量更新：扫描已经完成的对象A指向新对象B，将A标灰。<br> G1通过原始快照STAB：某个新对象B被取消引用时，将其标记为灰。</p>
 </blockquote>
 <p>可以设置触发阈值，JDK9中标记过时，JDK14中已经删除。</p>
 <h4 id="G1（Garbage-First）回收器"><a href="#G1（Garbage-First）回收器" class="headerlink" title="G1（Garbage First）回收器"></a>G1（Garbage First）回收器</h4><p>官方给G1设定的目标是在<strong>延迟可控的情况下获得尽可能高的吞吐量</strong>，所以才担当起“全功能收集器”的重任与期望。只所以叫G1回收器是因为其优先回收垃圾最多的空间。<br><img src="/2023/01/23/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JVM/JVM%E4%B8%8A%E7%AF%87-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/Pasted-image-20230201151459.png" srcset="/img/loading.gif" lazyload></p>
@@ -1300,7 +1310,6 @@
 <div class="note note-primary">
             <p>G1回收器，三种清理模式：</p><ul><li>YoungGC：全程STW，根据GCRoots直接处理Young Region，注意rset的处理，region间复制算法。</li><li>MixedGC：<ul><li>STW扫描全局GCRoots，进行根区域扫描，根据Survivor区找Old区的对象，也压入扫描栈。</li><li>YoungGC</li><li>并发标记，STW，可能被YGC打断，根据扫描栈扫描对象。</li><li>STW修正标记，处理没处理的write barrier，即新出现的引用变化，但与CMS不同，这里的扫描范围只扫描SATB（snapshot-at-the-beginning），比CMS快。</li><li>STW计算区域属性</li><li>并发清理完全为空的区域</li><li>分段（默认8段）清理各区域。</li></ul></li><li>FullGC</li></ul>
           </div>
-
                 
               </div>
             

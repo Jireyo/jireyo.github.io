@@ -55,6 +55,7 @@
 <meta property="og:image" content="http://example.com/2023/02/07/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/22.webp">
 <meta property="og:image" content="http://example.com/2023/02/07/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/23.webp">
 <meta property="og:image" content="http://example.com/2023/02/07/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/24.webp">
+<meta property="og:image" content="http://example.com/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/24.webp">
 <meta property="og:image" content="http://example.com/2023/02/07/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/55.webp">
 <meta property="og:image" content="http://example.com/2023/02/07/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/61.webp">
 <meta property="og:image" content="http://example.com/2023/02/07/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/27.webp">
@@ -76,7 +77,7 @@
 <meta property="og:image" content="http://example.com/2023/02/07/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/tcp%E5%92%8Cudp%E6%A8%A1%E5%9D%97-1.webp">
 <meta property="og:image" content="http://example.com/2023/02/07/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/%E7%AB%AF%E5%8F%A3%E9%80%89%E6%8B%A9.webp">
 <meta property="article:published_time" content="2023-02-07T03:43:25.000Z">
-<meta property="article:modified_time" content="2023-03-18T09:05:20.163Z">
+<meta property="article:modified_time" content="2023-03-19T18:26:18.494Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="计算机网络">
@@ -296,7 +297,7 @@
         
         
         
-          152 分钟
+          153 分钟
         
       </span>
     
@@ -532,7 +533,7 @@
 <h2 id="粗暴关闭-vs-优雅关闭"><a href="#粗暴关闭-vs-优雅关闭" class="headerlink" title="粗暴关闭 vs 优雅关闭"></a>粗暴关闭 vs 优雅关闭</h2><p>关闭的连接的函数有两种函数：</p>
 <ul>
 <li><code>close</code> 函数，同时 socket 关闭发送方向和读取方向。如果有多进程&#x2F;多线程共享同一个 socket，如果有一个进程调用了 close 关闭只是让socket 引用计数 -1，并不会导致 socket 不可用，同时也<strong>不会发出 FIN 报文</strong>，其他进程还是可以正常读写该 socket，直到引用计数变为 0，才会发出 FIN 报文。</li>
-<li><code>shutdown</code> 函数，可以指定 socket 只关闭发送方向而不关闭读取方向，也就是 socket 不再有发送数据的能力，但是还是具有接收数据的能力。（如果有多进程&#x2F;多线程共享同一个 socket，<strong>shutdown 则不管引用计数，直接使得该 socket 不可用，然后发出 FIN 报文</strong>，如果有别的进程企图使用该 socket，将会受到影响。）</li>
+<li><code>shutdown</code> 函数，可以指定 socket 只关闭发送方向而不关闭读取方向，也就是 socket 不再有发送数据的能力，但是还是具有接收数据的能力。（如果有多进程&#x2F;多线程共享同一个 socket，<strong>shutdown则不管引用计数，直接使得该socket不可用，然后发出 FIN 报文</strong>，如果有别的进程企图使用该 socket，将会受到影响。）</li>
 </ul>
 <div class="note note-primary">
             <p>CLOSE只关闭SOCKET对本身的引用，不发FIN；<br>SHUTDOWN关闭写方向时，直接关闭SOCKET，发FIN；</p>
@@ -540,7 +541,7 @@
 
 <ul>
 <li>如果客户端调用<code>close</code>使Socket引用计数为0时，关闭连接，客户端发送FIN后若再接收到服务器的数据消息，会发送RST给服务端，从而不会经历四次握手。<br><img src="/2023/02/07/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230208001214.png" srcset="/img/loading.gif" lazyload></li>
-<li>如果客户端调用shutdown关闭写方向，正常4次挥手，关闭读方向的化，不会发送FIN，因为FIN的语义是我方不再发送信息。</li>
+<li>如果客户端调用shutdown关闭写方向，正常4次挥手，关闭读方向的话，不会发送FIN，因为FIN的语义是我方不再发送信息。</li>
 </ul>
 <h2 id="TCP四次握手变三次"><a href="#TCP四次握手变三次" class="headerlink" title="TCP四次握手变三次"></a>TCP四次握手变三次</h2><p>服务端 <strong>「没有数据要发送」并且「开启了 TCP 延迟确认机制」，那么第二和第三次挥手就会合并传输，这样就出现了三次挥手。</strong></p>
 <h4 id="延迟确认"><a href="#延迟确认" class="headerlink" title="延迟确认"></a>延迟确认</h4><ul>
@@ -645,12 +646,13 @@
 <p>客户端也有保活机制！</p>
 </blockquote>
 <h2 id="服务端进程突然崩溃"><a href="#服务端进程突然崩溃" class="headerlink" title="服务端进程突然崩溃"></a>服务端进程突然崩溃</h2><p>主机操作系统自动完成挥手释放连接。</p>
-<h1 id="四、Socket编程"><a href="#四、Socket编程" class="headerlink" title="四、Socket编程"></a>四、Socket编程</h1><p><img src="/2023/02/07/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207155558.png" srcset="/img/loading.gif" lazyload><br>这里需要注意的是，服务端调用 <code>accept</code> 时，连接成功了会返回一个<strong>已完成连接的 socket</strong>，后续用来传输数据。<br>所以，监听的 socket 和真正用来传送数据的 socket，是「两个」 socket，一个叫作<strong>监听 socket</strong>，一个叫作<strong>已完成连接 socket</strong>。</p>
+<h1 id="四、Socket编程"><a href="#四、Socket编程" class="headerlink" title="四、Socket编程"></a>四、Socket编程</h1><p><img src="/2023/02/07/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207155558.png" srcset="/img/loading.gif" lazyload><br>这里需要注意的是，服务端调用 <code>accept</code> 时，连接成功了会返回一个<strong>已完成连接的 socket</strong>，后续用来传输数据。<br>所以，监听的socket 和真正用来传送数据的 socket，是「两个」 socket，一个叫作<strong>监听socket</strong>，一个叫作<strong>已完成连接socket</strong>。</p>
 <p>过程：<br><img src="/2023/02/07/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207155715.png" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li>半连接队列（SYN 队列）：接收到一个 SYN 建立连接请求，处于 SYN_RCVD 状态；</li>
-<li>全连接队列（Accpet 队列）：已完成 TCP 三次握手过程，处于 ESTABLISHED 状态；<br>在 Linux 内核 2.2 之后，backlog 变成 accept 队列，也就是已完成连接建立的队列长度，<strong>所以现在通常认为 backlog 是 accept 队列。</strong></li>
+<li>全连接队列（Accpet 队列）：已完成 TCP 三次握手过程，处于 ESTABLISHED 状态；</li>
 </ul>
+<p>在 Linux 内核 2.2 之后，backlog 变成 accept 队列，也就是已完成连接建立的队列长度，<strong>所以现在通常认为 backlog 是 accept 队列。</strong></p>
 <p><strong>但是上限值是内核参数 somaxconn 的大小，也就说 accpet 队列长度 &#x3D; min(backlog, somaxconn)，详情见下面的全连接，半连接章节。</strong></p>
 <h3 id="accept-发生在三次握手的哪一步？"><a href="#accept-发生在三次握手的哪一步？" class="headerlink" title="accept 发生在三次握手的哪一步？"></a>accept 发生在三次握手的哪一步？</h3><p><img src="/2023/02/07/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/socket%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.drawio.webp" srcset="/img/loading.gif" lazyload><br><strong>客户端 connect 成功返回是在第二次握手，服务端 accept 成功返回是在三次握手成功之后。</strong></p>
 <h3 id="close-断开流程"><a href="#close-断开流程" class="headerlink" title="close 断开流程"></a>close 断开流程</h3><p><img src="/2023/02/07/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230207160043.png" srcset="/img/loading.gif" lazyload></p>
@@ -709,7 +711,22 @@
             <p>即保证右端不会左移动。</p>
           </div>
 
-<h3 id="窗口关闭"><a href="#窗口关闭" class="headerlink" title="窗口关闭"></a>窗口关闭</h3><p>窗口大小为0时，发送端会停止发送，等到有空间了又会回复通知可以扩大发送窗口，但若报文丢失，双方会无限等待。<br><img src="/2023/02/07/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/24.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="窗口关闭"><a href="#窗口关闭" class="headerlink" title="窗口关闭"></a>窗口关闭</h3><h1 id="窗口大小为0时，发送端会停止发送，等到有空间了又会回复通知可以扩大发送窗口，但若报文丢失，双方会无限等待。-lt-lt-lt-lt-lt-lt-lt-HEAD"><a href="#窗口大小为0时，发送端会停止发送，等到有空间了又会回复通知可以扩大发送窗口，但若报文丢失，双方会无限等待。-lt-lt-lt-lt-lt-lt-lt-HEAD" class="headerlink" title="窗口大小为0时，发送端会停止发送，等到有空间了又会回复通知可以扩大发送窗口，但若报文丢失，双方会无限等待。&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD"></a>窗口大小为0时，发送端会停止发送，等到有空间了又会回复通知可以扩大发送窗口，但若报文丢失，双方会无限等待。<br>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD<br><img src="/2023/02/07/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/24.webp" srcset="/img/loading.gif" lazyload></h1><p><img src="/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/24.webp" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>b4ec10f785adda690225747930324e4cddd2ece6</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <h4 id="零窗口探测报文"><a href="#零窗口探测报文" class="headerlink" title="零窗口探测报文"></a>零窗口探测报文</h4><p>TCP 为每个连接设有一个持续定时器，<strong>只要 TCP 连接一方收到对方的零窗口通知，就启动持续计时器。</strong><br><strong>窗口探测 (Window probe) 报文</strong>，而对方在确认这个探测报文时，给出自己现在的接收窗口大小。</p>
 <blockquote>
 <p>窗口探测的次数一般为 3 次，每次大约 30-60 秒（不同的实现可能会不一样）。如果 3 次过后接收窗口还是 0 的话，有的 TCP 实现就会发 <code>RST</code> 报文来中断连接。</p>
@@ -800,8 +817,9 @@
 <h1 id="六、TCP半连接队列和全连接队列"><a href="#六、TCP半连接队列和全连接队列" class="headerlink" title="六、TCP半连接队列和全连接队列"></a>六、TCP半连接队列和全连接队列</h1><p>在 TCP 三次握手的时候，Linux 内核会维护两个队列，分别是：</p>
 <ul>
 <li>半连接队列，也称 SYN 队列，是一个Hash表，便于常数时间取出连接；</li>
-<li>全连接队列，也称 accept 队列，是一个链表，只需取出头节点；<br><img src="/2023/02/07/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230208000041.png" srcset="/img/loading.gif" lazyload></li>
+<li>全连接队列，也称 accept 队列，是一个链表，只需取出头节点；</li>
 </ul>
+<p><img src="/2023/02/07/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/Pasted-image-20230208000041.png" srcset="/img/loading.gif" lazyload></p>
 <p><img src="/2023/02/07/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-TCP/3.webp" srcset="/img/loading.gif" lazyload><br>不管是半连接队列还是全连接队列，都有最大长度限制，超过限制时，<strong>内核会直接丢弃，或返回 <code>RST</code> 包</strong>。</p>
 <h2 id="TCP全连接溢出"><a href="#TCP全连接溢出" class="headerlink" title="TCP全连接溢出"></a>TCP全连接溢出</h2><p><strong>当超过了 TCP 最大全连接队列，服务端则会丢掉后续进来的 TCP 连接。</strong><br>丢掉的 TCP 连接的个数会被统计起来。</p>
 <h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><h4 id="修改策略"><a href="#修改策略" class="headerlink" title="修改策略"></a>修改策略</h4><p>丢弃连接是默认行为，可以通过调整策略修改行为。<br>tcp_abort_on_overflow 共有两个值分别是 0 和 1，其分别表示：</p>

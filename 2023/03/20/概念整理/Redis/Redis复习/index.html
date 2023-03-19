@@ -1,0 +1,740 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、数据类型与结构基本数据结构：String、List、Set、Zset、Hash高级数据结构：Bitmap、Geo、HyberLogLog、Stream redisObjecttype和encoding共同实现了redis对象的多态处理。 123456789101112typedef struct redisObject &amp;#123;    &#x2F;&#x2F; 类型    unsigned type:4;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jin&#39;s Blog">
+<meta property="og:url" content="http://example.com/2023/03/20/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%A4%8D%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
+<meta property="og:description" content="一、数据类型与结构基本数据结构：String、List、Set、Zset、Hash高级数据结构：Bitmap、Geo、HyberLogLog、Stream redisObjecttype和encoding共同实现了redis对象的多态处理。 123456789101112typedef struct redisObject &amp;#123;    &#x2F;&#x2F; 类型    unsigned type:4;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/03/20/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20230103190013.png">
+<meta property="og:image" content="http://example.com/2023/03/20/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%A4%8D%E4%B9%A0/a3b1f6235cf0587115b21312fe60289c.webp">
+<meta property="og:image" content="http://example.com/2023/03/20/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%A4%8D%E4%B9%A0/f46cbe347f65ded522f1cc3fd8dba549.webp">
+<meta property="og:image" content="http://example.com/2023/03/20/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%A4%8D%E4%B9%A0/dc495ffeaa3c3d8cb2e12129b3423118.webp">
+<meta property="article:published_time" content="2023-03-19T16:38:17.214Z">
+<meta property="article:modified_time" content="2023-03-19T17:47:38.630Z">
+<meta property="article:author" content="Jin">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/03/20/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20230103190013.png">
+  
+  
+  
+  <title>Jin&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-20 00:38" pubdate>
+          2023年3月20日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、数据类型与结构"><a href="#一、数据类型与结构" class="headerlink" title="一、数据类型与结构"></a>一、数据类型与结构</h1><p>基本数据结构：String、List、Set、Zset、Hash<br>高级数据结构：Bitmap、Geo、HyberLogLog、Stream</p>
+<h2 id="redisObject"><a href="#redisObject" class="headerlink" title="redisObject"></a>redisObject</h2><p>type和encoding共同实现了redis对象的多态处理。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">redisObject</span> &#123;</span><br>    <span class="hljs-comment">// 类型</span><br>    <span class="hljs-type">unsigned</span> type:<span class="hljs-number">4</span>;<br>    <span class="hljs-comment">// 编码方式</span><br>    <span class="hljs-type">unsigned</span> encoding:<span class="hljs-number">4</span>;<br>    <span class="hljs-comment">// LRU - 24位, 记录最末一次访问时间（相对于lru_clock）; 或者 LFU（最少使用的数据：8位频率，16位访问时间）</span><br>    <span class="hljs-type">unsigned</span> lru:LRU_BITS; <span class="hljs-comment">// LRU_BITS: 24</span><br>    <span class="hljs-comment">// 引用计数</span><br>    <span class="hljs-type">int</span> refcount;<br>    <span class="hljs-comment">// 指向底层数据结构实例</span><br>    <span class="hljs-type">void</span> *ptr;<br>&#125; robj;<br></code></pre></td></tr></table></figure>
+<p><img src="/2023/03/20/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20230103190013.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>对象共享</em><br>redis也有常量池，存了命令返回值（”OK”）和10000以内整数。</p>
+<p><em>引用计数</em><br>refCount引用计数归零后可被回收</p>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><p><em>编码</em><br>有三种编码类型：int、embstr、raw，其中字符串内容的字节超过一定阈值时使用raw。<br>int：long对象，与RedisObject一起分配内存。<br>embstr：SDS对象，与RedisObject一起分配内存，不可变。<br>raw：SDS对象，与RedisObject分开分配内存，可变。</p>
+<p><em>应用</em><br>缓存对象，计数，<strong>分布式锁</strong>（SETNX实现「key不存在才插入」，同时设置过期时间）</p>
+<h4 id="SDS"><a href="#SDS" class="headerlink" title="SDS"></a>SDS</h4><p>简单动态字符串</p>
+<p><em>组成</em><br><code>len</code>(字符串长度)+<code>alloc</code>(字节数)+<code>flags</code>(类型标志)+<code>buf[]</code>(数据)</p>
+<p><em>优点</em></p>
+<ul>
+<li><strong>常数复杂度获取字符串长度</strong>：只需要读取len属性即可了解SDS字符串长度，时间复杂度为O(1)。</li>
+<li><strong>杜绝缓冲区溢出</strong>：修改字符串时，首先看len是否满足需求，不满足则进行可见扩展</li>
+<li><strong>减少修改字符串的内存重新分配次数</strong>：对于修改字符串SDS实现了<strong>空间预分配</strong>和<strong>惰性空间释放</strong>两种策略：<ul>
+<li><code>空间预分配</code>：对字符串进行空间扩展的时候，扩展的内存比实际需要的多，这样可以减少连续执行字符串增长操作所需的内存重分配次数。</li>
+<li><code>惰性空间释放</code>：缩短后多余的字节，而是使用 <code>alloc</code> 属性将这些字节的数量记录下来，等待后续使用。</li>
+</ul>
+</li>
+<li><strong>二进制安全</strong>：SDS不以空字符串判断结束，而是以len属性判断。</li>
+</ul>
+<h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><p>按插入顺序排序。</p>
+<p><em>编码</em><br>List 类型的底层数据结构是由<strong>双向链表或压缩列表</strong>实现的，在 Redis 3.2 版本之后，List 数据类型底层数据结构就只由 <strong>quicklist</strong> 实现了。</p>
+<p><em>应用</em><br>消息队列</p>
+<h4 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h4><p><em>优点</em><br>在于访问&#x2F;添加头节点尾节点快<br><em>缺点</em><br>在内存碎片多且浪费大</p>
+<h4 id="压缩列表"><a href="#压缩列表" class="headerlink" title="压缩列表"></a>压缩列表</h4><p><img src="/2023/03/20/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%A4%8D%E4%B9%A0/a3b1f6235cf0587115b21312fe60289c.webp" srcset="/img/loading.gif" lazyload><br><em>特点</em></p>
+<ul>
+<li>每个entry保存了本entry长度和前一个entry的长度，便于逆向搜索</li>
+<li>每个entry的类型根据实际长度灵活变化</li>
+</ul>
+<p><em>优点</em><br>省空间</p>
+<p><em>缺点</em><br>entry内容变化时，需要连锁更新</p>
+<h4 id="QuickList"><a href="#QuickList" class="headerlink" title="QuickList"></a>QuickList</h4><p><img src="/2023/03/20/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%A4%8D%E4%B9%A0/f46cbe347f65ded522f1cc3fd8dba549.webp" srcset="/img/loading.gif" lazyload><br>双向链表 + 压缩列表（控制每个链表节点中的压缩列表的大小或者元素个数，来规避连锁更新的问题。）</p>
+<h3 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h3><p>无序集合，成员唯一。</p>
+<p><em>编码</em><br>Hash表或整数集合</p>
+<p><em>应用</em><br>点赞、共同关注</p>
+<h3 id="Zset"><a href="#Zset" class="headerlink" title="Zset"></a>Zset</h3><p>权重排序</p>
+<p><em>编码</em><br>压缩列表（小于128个元素，且元素小于64B）或跳表</p>
+<p><em>应用</em><br>排行榜</p>
+<h3 id="Hash"><a href="#Hash" class="headerlink" title="Hash"></a>Hash</h3><p><em>编码</em><br>压缩列表或哈希表</p>
+<p><em>应用</em><br>缓存对象</p>
+<h4 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h4><p><img src="/2023/03/20/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%A4%8D%E4%B9%A0/dc495ffeaa3c3d8cb2e12129b3423118.webp" srcset="/img/loading.gif" lazyload></p>
+<p><em>rehash</em><br>条件：负载因子大于1且没有bgsave或bgrewriteaof任务，或负载因子大于5<br>创建一个2倍现在hash表大小的hash对象，同步迁移，完成后释放原对象。</p>
+<p><em>渐进式rehash</em></p>
+<ul>
+<li>创建新hash对象；</li>
+<li>在 rehash 进行期间，每次哈希表元素进行新增、删除、查找或者更新操作时，Redis除了会执行对应的操作（查找时先找old再找new，新增时直接添加在new上）之外，还会顺序将「哈希表 1」中索引位置上的所有 key-value 迁移到「哈希表 2」上；</li>
+<li>随着处理客户端发起的哈希表操作请求数量越多，最终在某个时间点会把「哈希表 1 」的所有 key-value 迁移到「哈希表 2」，从而完成 rehash 操作。</li>
+</ul>
+<h3 id="BitMap"><a href="#BitMap" class="headerlink" title="BitMap"></a>BitMap</h3><p>统计01</p>
+<p><em>应用</em><br>签到统计</p>
+<h3 id="HyperLogLog"><a href="#HyperLogLog" class="headerlink" title="HyperLogLog"></a>HyperLogLog</h3><p>不精确的去重计数，每个 HyperLogLog 键只需要花费 12 KB 内存，就可以计算接近 <code>2^64</code> 个不同元素的基数。</p>
+<p><em>应用</em><br>日活</p>
+<h3 id="GEO"><a href="#GEO" class="headerlink" title="GEO"></a>GEO</h3><p>保存经纬度</p>
+<p><em>编码</em><br>Zset</p>
+<p><em>应用</em><br>打车</p>
+<h3 id="Stream"><a href="#Stream" class="headerlink" title="Stream"></a>Stream</h3><p>消息队列</p>
+<p><em>特点</em></p>
+<ul>
+<li>可自动生成不重复、<strong>递增</strong>的id。</li>
+<li>有消费组，组内消费者为竞争关系。</li>
+<li>每个消费组维护一个pending_ids，保证可靠性。只有消费者回复ACK后才将其标记为完成，消费者宕机重启后可查看未处理完的消息。</li>
+<li>其他消费组也可以将目标消费者<strong>超时未处理</strong>的消息转移到自己的pending列表</li>
+<li>死信，转发一定次数后都无法被消费者处理的消息，可输出XDEL。</li>
+</ul>
+<p><em>与专业消息队列的差别</em></p>
+<ul>
+<li>redis基于内存，宕机时磁盘中不是最新数据，主从切换时同理。专业消息队列基于集群，有多个副本。</li>
+<li>redis基于内存，可能OOM，而Kafka和rabbitMQ基于磁盘</li>
+</ul>
+<p><em>发布订阅方式为什么不能做消息队列</em></p>
+<ul>
+<li>不具有数据持久化</li>
+<li>不保存历史信息</li>
+<li>消息挤压时，消费者可能被强制断开</li>
+</ul>
+<blockquote>
+<p>可结合MQTT、OPCUA的模式讲讲，发布订阅的目的是实时通讯，消息队列是为了可靠消费。</p>
+</blockquote>
+<h3 id="发布订阅"><a href="#发布订阅" class="headerlink" title="发布订阅"></a>发布订阅</h3><p><em>两种发布&#x2F;订阅模式</em></p>
+<ul>
+<li>基于频道(Channel)的发布&#x2F;订阅：频道以列表结构保存，发布的消息只发布给对于频道的消费者。</li>
+<li>基于模式(pattern)的发布&#x2F;订阅：模式以链表结构保存，发布消息时，对每个模式进行表达式对比，然后选择发送。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2023/03/20/概念整理/Redis/Redis复习/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年3月20日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/16/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/" title="计网复习">
+                        <span class="hidden-mobile">计网复习</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/fluid-extention.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
