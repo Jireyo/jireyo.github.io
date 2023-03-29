@@ -35,7 +35,7 @@
 <meta property="og:image" content="http://example.com/2023/01/03/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC4%E7%AB%A0%EF%BC%88%E4%BA%8B%E4%BB%B6%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/Pasted-image-20230105004950.png">
 <meta property="og:image" content="http://example.com/2023/01/03/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC4%E7%AB%A0%EF%BC%88%E4%BA%8B%E4%BB%B6%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/Pasted-image-20230105010244.png">
 <meta property="article:published_time" content="2023-01-03T15:08:31.000Z">
-<meta property="article:modified_time" content="2023-03-15T10:42:27.842Z">
+<meta property="article:modified_time" content="2023-03-22T02:45:15.164Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="Redis">
 <meta property="article:tag" content="概念整理">
@@ -372,7 +372,7 @@
 <h2 id="深入理解"><a href="#深入理解" class="headerlink" title="深入理解"></a>深入理解</h2><h3 id="Redis不支持回滚？"><a href="#Redis不支持回滚？" class="headerlink" title="Redis不支持回滚？"></a>Redis不支持回滚？</h3><p>redis只会因命令编写错误（主要指类型错误这种无法提前检测的命令）而失败，这个错误是在编程时应该避免的。</p>
 <h3 id="ACID？"><a href="#ACID？" class="headerlink" title="ACID？"></a>ACID？</h3><ul>
 <li>原子性<em>atomicity</em><br>有观点认为Redis没有原子性，因为其不支持运行期回滚，但Redis官方的理解如下：<br><strong>Redis的事务是原子性的：所有的命令，要么全部执行，要么全部不执行。</strong>这个过程并不保证执行成功。</li>
-<li>一致性<em>consistency</em><br>Redis能保证命令失败的情况下回滚（普通语法错误、WATCH锁），能保证一致性。</li>
+<li>一致性<em>consistency</em><br>Redis能保证命令失败的情况下不执行（普通语法错误、WATCH锁），能保证一致性。**<code>WATCH</code>监视并不是在事务中某一条使用了被监视键的命令执行前检查，而是在整个事务开始前就检查所有被监视的键是否被修改**。</li>
 <li>隔离性<em>Isolation</em><br><strong>单线程</strong>的本质保证了隔离性（不会被其他客户端打断）</li>
 <li>持久性<em>Durability</em><br><strong>redis事务是不保证持久性的</strong>，这是因为redis持久化策略中不管是RDB还是AOF都是异步执行的，不保证持久性是出于对性能的考虑。</li>
 </ul>

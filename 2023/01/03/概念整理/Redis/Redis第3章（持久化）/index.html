@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://example.com/2023/01/03/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%8C%81%E4%B9%85%E5%8C%96%EF%BC%89/Pasted-image-20230103222843.jpg">
 <meta property="og:image" content="http://example.com/2023/01/03/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%8C%81%E4%B9%85%E5%8C%96%EF%BC%89/Pasted-image-20230103222858.png">
 <meta property="article:published_time" content="2023-01-03T13:04:40.000Z">
-<meta property="article:modified_time" content="2023-02-22T08:28:35.270Z">
+<meta property="article:modified_time" content="2023-03-22T02:07:14.154Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="Redis">
 <meta property="article:tag" content="概念整理">
@@ -364,14 +364,18 @@
 
 <p><strong>相关配置</strong><br><code>appendfsync</code>：主要用于设置“真正执行”操作命令向AOF文件中同步的策略，支持always、everysec、no，默认为everysec。<br><code>no-appendfsync-on-rewrite</code>：<strong>重写</strong>时不再记录新命令<br><code>auto-aof-rewrite-percentage</code>：当前AOF文件超过上次重写AOF文件大小的百分之多少后开始重写。<br><code>auto-aof-rewrite-min-size</code>：当前AOF文件超过设置大小时开始重写</p>
 <h4 id="深入AOF重写"><a href="#深入AOF重写" class="headerlink" title="深入AOF重写"></a>深入AOF重写</h4><ul>
-<li><strong>AOF重写会阻塞吗</strong>？<br>重写时会fork主线程，由后台进程bgrewriteaof完成，fork时会阻塞主线程。</li>
-<li><strong>何时重写</strong>？<br>auto-aof-rewrite-percentage和auto-aof-rewrite-min-size</li>
-<li><strong>并发问题</strong>？<br><img src="/2023/01/03/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%8C%81%E4%B9%85%E5%8C%96%EF%BC%89/Pasted-image-20230103221653.jpg" srcset="/img/loading.gif" lazyload><br>重写时:<ul>
-<li>redis原始数据会通过copy on write机制拷贝</li>
-<li>服务器写入新数据时，会将新数据同时写入两个aof_buf缓存区（当持久化策略为always时，则是写入磁盘和一个aof_buf缓冲），<strong>子线程</strong>完成重写后通知主线程，<strong>主线程</strong>会把aof重写缓冲区的命令追加到aof文件中。最后文件改名，保证原子性。</li>
+<li><strong>AOF重写会阻塞吗</strong>？</li>
 </ul>
-</li>
+<p>重写时会fork主线程，由后台进程bgrewriteaof完成，fork时会阻塞主线程。</p>
+<ul>
+<li><strong>何时重写</strong>？</li>
 </ul>
+<p>auto-aof-rewrite-percentage和auto-aof-rewrite-min-size</p>
+<ul>
+<li><strong>并发问题</strong>？</li>
+</ul>
+<p><img src="/2023/01/03/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%8C%81%E4%B9%85%E5%8C%96%EF%BC%89/Pasted-image-20230103221653.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>重写时:<br>    - redis原始数据会通过copy on write机制拷贝<br>    - 服务器写入新数据时，会将新数据同时写入两个aof_buf缓存区（当持久化策略为always时，则是写入磁盘和一个aof_buf缓冲），<strong>子线程</strong>完成重写后通知主线程，<strong>主线程</strong>会把aof重写缓冲区的命令追加到aof文件中。最后文件改名，保证原子性。</p>
 <blockquote>
 <p>fork采用操作系统提供的写时复制（copy on write）机制，就是为了避免一次性拷贝大量内存数据给子进程造成阻塞。fork子进程时，子进程时会<strong>拷贝父进程的页表</strong>，即<strong>虚实映射关系</strong>（虚拟内存和物理内存的映射索引表），而<strong>不会拷贝物理内存</strong>。这个拷贝会消耗大量cpu资源，并且<strong>拷贝完成前会阻塞主线程</strong>，阻塞时间取决于内存中的数据量，数据量越大，则内存页表越大。拷贝完成后，父子进程使用相同的内存地址空间。</p>
 </blockquote>

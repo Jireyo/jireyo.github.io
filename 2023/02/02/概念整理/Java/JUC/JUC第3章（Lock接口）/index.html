@@ -50,7 +50,7 @@
 <meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC3%E7%AB%A0%EF%BC%88Lock%E6%8E%A5%E5%8F%A3%EF%BC%89/Pasted-image-20230203172822.png">
 <meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC3%E7%AB%A0%EF%BC%88Lock%E6%8E%A5%E5%8F%A3%EF%BC%89/Pasted-image-20230203173352.png">
 <meta property="article:published_time" content="2023-02-02T09:31:55.000Z">
-<meta property="article:modified_time" content="2023-03-19T18:26:18.467Z">
+<meta property="article:modified_time" content="2023-03-22T05:12:55.399Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="JUC">
@@ -520,7 +520,7 @@
 <li>lock是根据具体实现决定执行方式</li>
 <li>tryLock永远通过非公平方式，所以其实现放在了Sync中</li>
 </ul>
-<h4 id="底层区别"><a href="#底层区别" class="headerlink" title="底层区别"></a>底层区别</h4><p>公平锁的 <code>tryAcquire</code> 方法：<br><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC3%E7%AB%A0%EF%BC%88Lock%E6%8E%A5%E5%8F%A3%EF%BC%89/Pasted-image-20230203165544.png" srcset="/img/loading.gif" lazyload><br>公平锁多了hasQueuedPredecessors，快速判断当前节点是否有前驱节点。</p>
+<h4 id="底层区别"><a href="#底层区别" class="headerlink" title="底层区别"></a>底层区别</h4><p>公平锁的 <code>tryAcquire</code> 方法：<br><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC3%E7%AB%A0%EF%BC%88Lock%E6%8E%A5%E5%8F%A3%EF%BC%89/Pasted-image-20230203165544.png" srcset="/img/loading.gif" lazyload><br>公平锁多了<code>hasQueuedPredecessors</code>，快速判断当前节点是否有前驱节点。</p>
 <ul>
 <li>公平锁：先判断队列，再尝试CAS操作state</li>
 <li>非公平锁：先CAS，失败再看队列，对于非公平锁，可能存在一个线程刚被唤醒与另一个外部线程同时尝试CAS。</li>

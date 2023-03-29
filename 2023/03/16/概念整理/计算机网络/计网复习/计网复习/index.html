@@ -57,7 +57,7 @@
 <meta property="og:image" content="http://example.com/2023/03/16/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/Pasted-image-20230207155715.png">
 <meta property="og:image" content="http://example.com/2023/03/16/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E7%AB%AF%E5%8F%A3%E9%80%89%E6%8B%A9.webp">
 <meta property="article:published_time" content="2023-03-16T14:46:30.000Z">
-<meta property="article:modified_time" content="2023-03-19T16:37:26.412Z">
+<meta property="article:modified_time" content="2023-03-27T07:17:47.282Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="计算机网络">
@@ -375,7 +375,7 @@
 </ul>
 <p><em>信道极限容量</em></p>
 <ul>
-<li>奈氏准则：最高码元速率 &#x3D; W 信道带宽（Hz） * 每秒码元数（Baud）</li>
+<li>奈氏准则：最高码元速率 &#x3D; 2 * W 信道带宽（Hz） * 每秒码元数（Baud）</li>
 <li>香农公式：极限传输速率 &#x3D; W * log(1+S&#x2F;N)，主要体现信噪比对极限的影响</li>
 </ul>
 <p><em>信道利用率</em><br>发送时延&#x2F;(发送时延+往返时间+接受时延)</p>
@@ -386,7 +386,7 @@
 <h2 id="封装成帧"><a href="#封装成帧" class="headerlink" title="封装成帧"></a>封装成帧</h2><h3 id="MAC帧与PPP帧"><a href="#MAC帧与PPP帧" class="headerlink" title="MAC帧与PPP帧"></a>MAC帧与PPP帧</h3><p><img src="/2023/03/16/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/24878825-bf6fe42eeea3f376.webp" srcset="/img/loading.gif" lazyload></p>
 <p>MAC帧(6624)：MAC，MAC，类型，FCS<br>PPP帧(111221)：标志F、地址A、控制C、协议P、FCS、标志</p>
 <p><em>前导码</em><br>MAC帧有前导码，其包括前同步码与帧定界符，同时维持帧间间隔（96比特时间）作为分界点。<br>PPP帧有前后标志符。</p>
-<p><em>透明传输</em><br>为了实现透明传输，使用了转移字符防止混淆定界符。</p>
+<p><em>透明传输</em><br>为了实现透明传输，使用了转义字符防止混淆定界符。</p>
 <p><em>MTU(Max Transfer Unit)</em><br>1500，MAC帧携带的数据载荷不能超过MTU。</p>
 <h2 id="差错控制"><a href="#差错控制" class="headerlink" title="差错控制"></a>差错控制</h2><p>CRC（<em>Cyclic Redundancy Check</em>）循环冗余校验。<br>错误时是丢弃还是重传取决于向上提供可靠的传输服务还是不可靠的传输服务。</p>
 <h2 id="可靠传输"><a href="#可靠传输" class="headerlink" title="可靠传输"></a>可靠传输</h2><p>对于比特差错：根据要求实现重传或交由上层处理。<br>对于分组差错（丢失、失序、重复）：数据链路一般是单条链路的，分组差错一般发生在上层（网络层）。</p>
@@ -410,7 +410,7 @@
 </ul>
 <h2 id="ARP"><a href="#ARP" class="headerlink" title="ARP"></a>ARP</h2><p>根据IP地址获取MAC地址，工作于数据链路层。</p>
 <p><em>ARP高速缓存表</em><br>根据IP地址在<strong>ARP高速缓存表</strong>（自动获取的会过期，也可手动设置）中搜索MAC地址。</p>
-<p><em>ARP请求报文</em><br>广播，目的IP地址的主机接受到请求后返回其对应的MAC地址。</p>
+<p><em>ARP请求报文</em><br>MAC帧广播（数据链路层协议），目的IP地址的主机接受到请求后返回其对应的MAC地址。</p>
 <blockquote>
 <p>数据的转发过程中，源IP和目的IP地址不会变动，而源MAC地址和目的MAC地址会变动。</p>
 </blockquote>
@@ -451,7 +451,8 @@
 <h4 id="划分子网"><a href="#划分子网" class="headerlink" title="划分子网"></a>划分子网</h4><p>子网掩码（划分子网纯属一个单位内部的事情，对外部网络透明）。</p>
 <h4 id="无分类编址"><a href="#无分类编址" class="headerlink" title="无分类编址"></a>无分类编址</h4><p>不再有分类和子网概念。</p>
 <p><em>路由聚合</em><br>为了解决路由表的内容冗余问题，使用路由聚合能够缩小路由表的规模，减少路由表的内存。（配合最长路径匹配原则，解决路径寻优和静态路由配置产生的错误聚合问题。）</p>
-<h2 id="IPv6"><a href="#IPv6" class="headerlink" title="IPv6"></a>IPv6</h2><p>IPv6 的地址是 <code>128</code> 位的，每 16 位作为一组，每组用冒号 「:」 隔开。（与IPv4不兼容）<br><img src="/2023/03/16/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/29.webp" srcset="/img/loading.gif" lazyload><br><em>与IPv4分类上的区别</em></p>
+<h2 id="IPv6"><a href="#IPv6" class="headerlink" title="IPv6"></a>IPv6</h2><p>IPv6 的地址是 <code>128</code> 位的，每 16 位作为一组，每组用冒号 「:」 隔开。（与IPv4不兼容）<br><img src="/2023/03/16/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/29.webp" srcset="/img/loading.gif" lazyload></p>
+<p><em>与IPv4分类上的区别</em></p>
 <ul>
 <li><strong>链路本地单播地址</strong>表示不经过路由器的同链路通信</li>
 <li><strong>唯一本地地址</strong>相当于私有IP</li>
@@ -510,7 +511,7 @@
 </ol>
 <p><em>中继代理</em><br>不同网段共用同一个DHCP服务器，通过路由器做中继代理。</p>
 <h2 id="ICMP"><a href="#ICMP" class="headerlink" title="ICMP"></a>ICMP</h2><p><em>Internet Control Message Protocol</em><br>网际控制报文协议，ICMP报文是基于IP数据报的。</p>
-<h3 id="差错报文类型"><a href="#差错报文类型" class="headerlink" title="差错报文类型"></a>差错报文类型</h3><p><em>五种差错报文</em></p>
+<h3 id="差错报文"><a href="#差错报文" class="headerlink" title="差错报文"></a>差错报文</h3><p><em>五种差错报文</em></p>
 <ul>
 <li>终点不可达：网络&#x2F;主机&#x2F;协议&#x2F;端口等找不到或由于路由器不支持分片导致不可达。</li>
 <li>源点抑制：线路拥堵</li>
@@ -518,18 +519,18 @@
 <li>参数问题</li>
 <li>重定向：发现不是最优路径</li>
 </ul>
-<h3 id="查询报文类型"><a href="#查询报文类型" class="headerlink" title="查询报文类型"></a>查询报文类型</h3><p><em>两种询问报文</em></p>
+<h3 id="查询报文"><a href="#查询报文" class="headerlink" title="查询报文"></a>查询报文</h3><p><em>两种询问报文</em></p>
 <ul>
 <li>回送请求和响应</li>
 <li>时间戳请求和响应</li>
 </ul>
-<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p><em>Ping</em><br>Packet InterNet Groper，分组网间探测，基于ICMP，封装在IP数据包中，基于UDP。<br>用于测试可达性和RTT，每条消息序号不同保证RTT的正确性。</p>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p><em>Ping</em><br>Packet InterNet Groper，分组网间探测，基于ICMP，基于UDP，封装在IP数据包中。<br>用于测试可达性和RTT，每条消息序号不同保证RTT的正确性。</p>
 <p><em>traceroute</em><br>跟踪路由。原理是从1开始递增TTL发送报文，封装在IP数据包中，基于UDP。<br>故意不设置分片，可以确定路径的MTU。</p>
-<h2 id="IGMP"><a href="#IGMP" class="headerlink" title="IGMP"></a>IGMP</h2><p><strong>IGMP 是因特网组管理协议，工作在主机（组播成员）和最后一跳路由之间</strong>，如上图中的蓝色部分。</p>
+<h2 id="IGMP"><a href="#IGMP" class="headerlink" title="IGMP"></a>IGMP</h2><p><strong>IGMP是因特网组管理协议，工作在主机（组播成员）和最后一跳路由之间</strong>，如上图中的蓝色部分。</p>
 <p><em>工作机制</em></p>
 <ol>
 <li>路由器<strong>周期性</strong>发起<strong>IGMP 常规查询报文</strong>。</li>
-<li>主机收到并随机延时后，回复<strong>IGMP 成员关系报告报文</strong>，如果延时时收到其他主机的关系报文，则不再发送，减少网络中IGMP报文数量。</li>
+<li>主机收到并随机延时后，回复<strong>IGMP成员关系报告报文</strong>，如果延时时收到其他主机的关系报文，则不再发送，减少网络中IGMP报文数量。</li>
 <li>路由器接受到被注册的多播地址，则会进行转发。</li>
 </ol>
 <p><em>离开机制</em></p>
@@ -703,14 +704,14 @@
 <li>客户端重传第一次挥手。重发次数取决于<code>tcp_orphan_retries</code>，默认为8次。</li>
 <li>如果一直丢失，则重传次数用完后，等待2倍上次重传间隔时间后关闭连接。</li>
 </ul>
-<p><em>第二次握手丢失</em></p>
+<p><em>第二次挥手丢失</em></p>
 <ul>
 <li>客户端重传第一次挥手，细节同上。</li>
-<li>如果一直丢失，则重传次数用完后，等待2倍上次重传间隔时间后关闭连接。服务端可能会持续为CLOSE_WAIT状态。</li>
+<li>如果一直丢失，则重传次数用完后，等待2倍上次重传间隔时间后关闭连接。服务端在没有消息需要发送时，会发送第三次握手。</li>
 </ul>
-<p><em>第三次握手丢失</em></p>
+<p><em>第三次挥手丢失</em></p>
 <ul>
-<li>客户端重传第三次挥手，细节同上。</li>
+<li>服务端重传第三次挥手，细节同上。</li>
 <li>如果一直丢失，服务端在重传次数用完后，等待2倍上次重传间隔时间后关闭连接。客户端的<strong>FIN_WAIT2状态超时</strong>后自动关闭（默认60s）。</li>
 </ul>
 <p><em>第四次挥手丢失</em></p>
@@ -764,7 +765,7 @@
 <li>SACK，选择性确认（接受方回复已经收到的数据区间）</li>
 <li><strong>D-SACK</strong>，重复确认（接受方回复接受到的重复数据区间），默认开启</li>
 </ul>
-<h4 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a>滑动窗口</h4><p>通过滑动窗口实现批量发送，累计确认、累计应答。<br>底层实现是数组，属性有数组长度以及相关指针。<br>发送窗口swnd &#x3D; min(拥塞窗口cwnd，接受窗口rwnd)，即窗口大小同时受接受方接受能力和网络负荷的影响。</p>
+<h4 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a>滑动窗口</h4><p>通过滑动窗口实现<strong>批量发送，累计确认、累计应答</strong>。<br>底层实现是数组，属性有数组长度以及相关指针。<br>发送窗口swnd &#x3D; min(拥塞窗口cwnd，接受窗口rwnd)，即窗口大小同时受接受方接受能力和网络负荷的影响。</p>
 <h4 id="流量控制"><a href="#流量控制" class="headerlink" title="流量控制"></a>流量控制</h4><p>发送方接受到ACK后移动窗口并调整发送窗口。<br>接受方接受到SEQ后移动窗口并调整接受窗口。</p>
 <p>移动窗口和调整窗口本质上是指针的移动，考虑如下场景：<br>1）接受方应用程序读取较慢：</p>
 <ol>
@@ -933,11 +934,7 @@
 <blockquote>
 <p>实际上开发者也可以不遵守这个规定。</p>
 </blockquote>
-<h3 id="HTTP缓存技术"><a href="#HTTP缓存技术" class="headerlink" title="HTTP缓存技术"></a>HTTP缓存技术</h3><ul>
-<li><code>Cache-Control</code>，是一个相对时间；</li>
-<li><code>Expires</code>，是一个绝对时间；</li>
-</ul>
-<p><em>强制缓存和协商缓存</em><br>强制缓存默认使用缓存，协商缓存可以每次询问服务器是否有更新，必须配合</p>
+<h3 id="HTTP缓存技术"><a href="#HTTP缓存技术" class="headerlink" title="HTTP缓存技术"></a>HTTP缓存技术</h3><p><em>强制缓存和协商缓存</em><br>强制缓存默认使用缓存，协商缓存可以每次询问服务器是否有更新，必须配合</p>
 <p><em>两种强制缓存方式</em><br>HTTP响应头可以表示资源的缓存时间：</p>
 <ul>
 <li><code>Cache-Control</code>，是一个相对时间；</li>
@@ -1108,7 +1105,7 @@
 <p><em>场景</em><br>全双工、频繁交互、实时响应。</p>
 <h2 id="FTP"><a href="#FTP" class="headerlink" title="FTP"></a>FTP</h2><p>C&#x2F;S模式，监听21端口</p>
 <h1 id="六、Linux网络"><a href="#六、Linux网络" class="headerlink" title="六、Linux网络"></a>六、Linux网络</h1><p><img src="/2023/03/16/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/OSI%E4%B8%8ETCP.webp" srcset="/img/loading.gif" lazyload></p>
-<h2 id="各层交互"><a href="#各层交互" class="headerlink" title="各层交互"></a>各层交互</h2><p>网络接口层的传输单位是MAC帧（frame）<br>IP 层的传输单位是包（packet）<br>TCP 层的传输单位是段（segment）<br>HTTP 的传输单位则是消息或报文（message）<br>但这些名词并没有什么本质的区分，可以统称为数据包。</p>
+<h2 id="各层交互"><a href="#各层交互" class="headerlink" title="各层交互"></a>各层交互</h2><p>网络接口层的传输单位是MAC帧（frame）<br>IP 层的传输单位是包（packet）<br>TCP 层的传输单位是段（segment）<br>HTTP 的传输单位则是消息.或报文（message）<br>但这些名词并没有什么本质的区分，可以统称为数据包。</p>
 <h2 id="浏览器访问"><a href="#浏览器访问" class="headerlink" title="浏览器访问"></a>浏览器访问</h2><p><img src="/2023/03/16/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/107.webp" srcset="/img/loading.gif" lazyload></p>
 <ol>
 <li>解析URL</li>
@@ -1120,20 +1117,20 @@
 <h2 id="协议栈"><a href="#协议栈" class="headerlink" title="协议栈"></a>协议栈</h2><p><img src="/2023/03/16/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E5%8D%8F%E8%AE%AE%E6%A0%88.webp" srcset="/img/loading.gif" lazyload></p>
 <h2 id="Linux接受包"><a href="#Linux接受包" class="headerlink" title="Linux接受包"></a>Linux接受包</h2><ol>
 <li>DMA技术将网络包写到Ring Buffer中</li>
-<li>触发硬件中断：<ul>
+<li>触发<strong>硬件中断</strong>：<ul>
 <li>触发中断：收到一个包就中断操作系统一次</li>
-<li>NAPI机制：先屏蔽中断，并发起软中断，通知操作系统内核线程ksoftirqd来轮询获取数据，然后恢复被屏蔽的中断。</li>
+<li>NAPI机制：先屏蔽中断，并发起<strong>软中断</strong>，通知操作系统内核线程ksoftirqd来轮询获取数据，然后恢复被屏蔽的中断。</li>
 </ul>
 </li>
 </ol>
 <h2 id="Linux发送包"><a href="#Linux发送包" class="headerlink" title="Linux发送包"></a>Linux发送包</h2><p><img src="/2023/03/16/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/sk_buff.webp" srcset="/img/loading.gif" lazyload></p>
 <ol>
 <li>应用程序调用socket发送数据，切换至内核态，将数据拷贝到<strong>Socket发送缓冲区</strong>（第一次sk_buff拷贝）。</li>
-<li>如果是TCP协议处理，则对sk_buff进行拷贝（第二次sk_buff拷贝），填充TCP头交给网络层。</li>
+<li>如果是TCP协议处理，则对sk_buff进行切片、拷贝（第二次sk_buff拷贝），填充TCP头交给网络层。</li>
 <li>网络层进行路由选择，填充IP头，切片（可能的第三次sk_buff）后交付网络接口层。</li>
-<li>网络接口层跳过ARP协议获取下一跳MAC地址，对sk_buff填充MAC帧头和帧尾，将其放入发送队列。</li>
-<li>触发软中断通知网卡驱动程序发送，将sk_buff挂在在Ring Buffer中，并映射到网卡可访问的DMA区域，触发真实发送。</li>
-<li>触发硬中断释放sk_buff内存和RingBuffer内存。</li>
+<li>网络接口层通过ARP协议获取下一跳MAC地址，对sk_buff填充MAC帧头和帧尾，将其放入发送队列。</li>
+<li>触发<strong>软中断</strong>通知网卡驱动程序发送，将sk_buff挂载在Ring Buffer中，并映射到网卡可访问的DMA区域，触发真实发送。</li>
+<li>触发<strong>硬中断</strong>释放sk_buff内存和RingBuffer内存。</li>
 </ol>
 <h2 id="IP"><a href="#IP" class="headerlink" title="IP"></a>IP</h2><h3 id="ping回环"><a href="#ping回环" class="headerlink" title="ping回环"></a>ping回环</h3><p><img src="/2023/03/16/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/Pasted-image-20230208114527.png" srcset="/img/loading.gif" lazyload></p>
 <h2 id="TCP-1"><a href="#TCP-1" class="headerlink" title="TCP"></a>TCP</h2><p><em>服务端大量CLOSE_WAIT</em><br>顾名思义，没有及时调用close函数，一般是代码问题。</p>
@@ -1268,12 +1265,6 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
-                    
-                      <a href="/2023/03/20/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%A4%8D%E4%B9%A0/" title="">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
                     
                   </article>
                   <article class="post-next col-6">

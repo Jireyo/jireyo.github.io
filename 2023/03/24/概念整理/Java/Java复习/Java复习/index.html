@@ -1,0 +1,1556 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、设计模式七大原则开单依接里迪合  开放封闭原则：对扩展开放，对修改关闭。 单一职责原则：一个类、接口或方法只负责一个职责。 依赖倒置原则：针对接口编程，依赖于抽象类或接口而不依赖于具体实现类。 接口隔离原则：将不同功能定义在不同接口中实现接口隔离。 里氏替换原则：任何基类可以出现的地方，子类一定可以出现。 迪米特原则：每个模块对其他模块都要尽可能少地了解和依赖，降低代码耦合度。 合成复用原则：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java复习">
+<meta property="og:url" content="http://example.com/2023/03/24/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%A4%8D%E4%B9%A0/Java%E5%A4%8D%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
+<meta property="og:description" content="一、设计模式七大原则开单依接里迪合  开放封闭原则：对扩展开放，对修改关闭。 单一职责原则：一个类、接口或方法只负责一个职责。 依赖倒置原则：针对接口编程，依赖于抽象类或接口而不依赖于具体实现类。 接口隔离原则：将不同功能定义在不同接口中实现接口隔离。 里氏替换原则：任何基类可以出现的地方，子类一定可以出现。 迪米特原则：每个模块对其他模块都要尽可能少地了解和依赖，降低代码耦合度。 合成复用原则：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/03/24/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%A4%8D%E4%B9%A0/Java%E5%A4%8D%E4%B9%A0/Pasted-image-20230324213918.png">
+<meta property="og:image" content="http://example.com/2023/03/24/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%A4%8D%E4%B9%A0/Java%E5%A4%8D%E4%B9%A0/Pasted-image-20230324214405.png">
+<meta property="og:image" content="http://example.com/2023/03/24/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%A4%8D%E4%B9%A0/Java%E5%A4%8D%E4%B9%A0/Pasted-image-20230324214713.png">
+<meta property="og:image" content="http://example.com/2023/03/24/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%A4%8D%E4%B9%A0/Java%E5%A4%8D%E4%B9%A0/Pasted-image-20230324215427.png">
+<meta property="og:image" content="http://example.com/2023/03/24/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%A4%8D%E4%B9%A0/Java%E5%A4%8D%E4%B9%A0/Pasted-image-20230324215507.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230325220625.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230325220630.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230325224306.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230325224258.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230325224333.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230325224349.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230325225005.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326135302.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326142111.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326142306.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326142621.png">
+<meta property="og:image" content="http://localhost:4000/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC3%E7%AB%A0%EF%BC%88Lock%E6%8E%A5%E5%8F%A3%EF%BC%89/Pasted-image-20230203170539.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326142914.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326143937.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326145701.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326145908.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326150521.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326155236.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326154737.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326192426.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326192822.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230327001401.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230327001408.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230327001421.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230327001429.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326193259.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326230516.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326233958.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326234445.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326234923.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326235238.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230326235543.png">
+<meta property="article:published_time" content="2023-03-24T11:00:55.000Z">
+<meta property="article:modified_time" content="2023-03-27T12:51:56.119Z">
+<meta property="article:author" content="Jin">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/03/24/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%A4%8D%E4%B9%A0/Java%E5%A4%8D%E4%B9%A0/Pasted-image-20230324213918.png">
+  
+  
+  
+  <title>Java复习 - Jin&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Java复习"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-24 19:00" pubdate>
+          2023年3月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          18k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          152 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Java复习</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、设计模式"><a href="#一、设计模式" class="headerlink" title="一、设计模式"></a>一、设计模式</h1><h2 id="七大原则"><a href="#七大原则" class="headerlink" title="七大原则"></a>七大原则</h2><p>开单依接里迪合</p>
+<ul>
+<li>开放封闭原则：对扩展开放，对修改关闭。</li>
+<li>单一职责原则：一个类、接口或方法只负责一个职责。</li>
+<li>依赖倒置原则：针对接口编程，依赖于抽象类或接口而不依赖于具体实现类。</li>
+<li>接口隔离原则：将不同功能定义在不同接口中实现接口隔离。</li>
+<li>里氏替换原则：任何基类可以出现的地方，子类一定可以出现。</li>
+<li>迪米特原则：每个模块对其他模块都要尽可能少地了解和依赖，降低代码耦合度。</li>
+<li>合成复用原则：聚合 &gt; 继承，降低耦合度。</li>
+</ul>
+<h2 id="设计模式分类"><a href="#设计模式分类" class="headerlink" title="设计模式分类"></a>设计模式分类</h2><ul>
+<li>创建型模式：单抽工建原</li>
+<li>结构型模式：适装代外桥组享</li>
+<li>行为型模式：策模观迭责命，状备访中解</li>
+</ul>
+<p><em>单例模式</em><br>双重校验锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Singleton</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">volatile</span> <span class="hljs-keyword">static</span> Singleton uniqueInstance;<br>    <span class="hljs-keyword">private</span> <span class="hljs-title function_">Singleton</span><span class="hljs-params">()</span> &#123;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Singleton <span class="hljs-title function_">getUniqueInstance</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">if</span> (uniqueInstance == <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">synchronized</span> (Singleton.class) &#123;<br>                <span class="hljs-keyword">if</span> (uniqueInstance == <span class="hljs-literal">null</span>) &#123;<br>                    uniqueInstance = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Singleton</span>();<br>                &#125;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> uniqueInstance;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><em>工厂</em><br>简单工厂模式：根据方法参数返回不同子类<br>工厂方法模式：对接口进行不同子类实现<br>抽象工厂模式：创建对象家族</p>
+<p><em>外观模式</em><br>提供了一个统一的接口，用来访问子系统中的一群接口，从而让子系统更容易使用。</p>
+<p><em>桥接模式</em><br>将抽象与实现分离开来，使它们可以独立变化。</p>
+<p><em>享元模式</em><br>利用共享的方式来支持大量细粒度的对象，这些对象一部分内部状态是相同的。</p>
+<p><em>观察者模式</em><br>定义对象之间的一对多依赖，当一个对象状态改变时，它的所有依赖都会收到通知并且自动更新状态。</p>
+<p><em>访问者模式</em><br>为数据结构中的每个元素提供多种访问方式。它将<strong>对数据的操作与数据结构进行分离</strong>。</p>
+<h1 id="二、Java基础复习"><a href="#二、Java基础复习" class="headerlink" title="二、Java基础复习"></a>二、Java基础复习</h1><p>本部分不完整，主要用于查漏补缺。</p>
+<h2 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h2><p><em>类型转换</em><br>字面浮点数是double类型的。<br>字面整数是int类型的。<br><code>+=</code>可以隐式转换</p>
+<p><em>缓存池</em><br>boolean、bytes、short、int、char有-128~127的缓存池，<code>valueOf()</code>可以获取。</p>
+<p><em>String</em></p>
+<ul>
+<li>不可变，便于hash使用和网络传输，线程安全</li>
+<li>StringBuffer线程安全，StringBuilder线程不安全</li>
+<li>JDK8前是<code>char[]</code>(UTF-16)，JDK9时是<code>byte[]</code>（Latin-1），动态调整字符集。</li>
+</ul>
+<p><em>字符串常量池</em><br>规范上在方法区，1.6在永久代，1.7在堆，1.8在堆中。</p>
+<p><em>运算</em><br>%向0取整，mod向下取整</p>
+<p><em>位运算</em><br><code>&gt;&gt;&gt;</code>无符号右移<br><code>~</code>以-0.5为轴反转</p>
+<p><em>switch</em><br>byte,short,char,int,枚举(jdk5.0)，String对象(jdk7.0)，但不能使用long类。<strong>对String的支持是语法糖</strong>。</p>
+<h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><p>封装、继承、多态（编译时多态：<strong>重载</strong>、运行时多态：<strong>重写</strong>）。</p>
+<p><em>权限修饰符</em><br>private、default（包可见）、protected（包、子类可见）、public<br>类修饰符只有default和public。</p>
+<p><em>static</em><br>静态类不依赖于外部类实例。<br>静态变量可以不赋予初值，在链接阶段的准备过程会赋予默认值。</p>
+<p><em>对象构造</em><br>一个类至少一个构造器，显示定义构造器后，默认的无参构造器失效。</p>
+<p><em>初始化顺序</em></p>
+<ul>
+<li>类初始化（static从上至下）</li>
+<li>默认初始化（0，false）</li>
+<li>构造初始化（普通赋值和普通代码块从上至下）</li>
+<li>构造函数</li>
+</ul>
+<p><em>super</em><br>super()父类构造函数</p>
+<p><em>toString</em><br>默认返回对象类型 + @ + 16进制的hashCode()</p>
+<p><em>Clone</em><br>native的clone()是<strong>浅拷贝</strong>。</p>
+<ul>
+<li>继承Cloneable接口</li>
+<li>重写clone()</li>
+<li>抛出CloneNotSupportedException</li>
+</ul>
+<p><em>Enum</em><br>使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">Color</span>  <br>&#123;  <br>RED, GREEN, BLUE;  <br>&#125;<br><br><span class="hljs-keyword">enum</span> <span class="hljs-title class_">Color</span> &#123;  <br>	RED(<span class="hljs-string">&quot;红色&quot;</span>, <span class="hljs-number">1</span>), GREEN(<span class="hljs-string">&quot;绿色&quot;</span>, <span class="hljs-number">2</span>), BLANK(<span class="hljs-string">&quot;白色&quot;</span>, <span class="hljs-number">3</span>), YELLO(<span class="hljs-string">&quot;黄色&quot;</span>, <span class="hljs-number">4</span>);  <br>	<span class="hljs-comment">// 成员变量  </span><br>	<span class="hljs-keyword">private</span> String name;  <br>	<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> index;  <br>	<span class="hljs-comment">// 构造方法  </span><br>	<span class="hljs-keyword">private</span> <span class="hljs-title function_">Color</span><span class="hljs-params">(String name, <span class="hljs-type">int</span> index)</span> &#123;  <br>	<span class="hljs-built_in">this</span>.name = name;  <br>	<span class="hljs-built_in">this</span>.index = index;  <br>	&#125;  <br>	<span class="hljs-comment">// 普通方法  </span><br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title function_">getName</span><span class="hljs-params">(<span class="hljs-type">int</span> index)</span> &#123;  <br>	<span class="hljs-keyword">for</span> (Color c : Color.values()) &#123;  <br>	<span class="hljs-keyword">if</span> (c.getIndex() == index) &#123;  <br>	<span class="hljs-keyword">return</span> c.name;  <br>	&#125;  <br>	&#125;  <br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;  <br>	&#125;  <br>	get,set...  <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><em>Externalizable</em><br>继承<code>externalizable</code>，重写<code>writeExternal</code>和<code>readExternal</code>。</p>
+<p><em>序列化</em><br>声明为static和transient类型的数据不能被序列化，只存在内存，Externalizable不受影响。</p>
+<p><em>finally</em><br>finally必然执行，其会插入在return语句前，但不影响return结果。</p>
+<p><em>局部变量手动赋值</em><br>都进行一次初始化消耗太大。</p>
+<h3 id="内部类"><a href="#内部类" class="headerlink" title="内部类"></a>内部类</h3><ul>
+<li>成员内部类<ul>
+<li>静态内部类</li>
+<li>非静态内部类</li>
+</ul>
+</li>
+<li>非成员内部类<ul>
+<li>局部内部类、匿名内部类</li>
+</ul>
+</li>
+</ul>
+<h3 id="接口和抽象类"><a href="#接口和抽象类" class="headerlink" title="接口和抽象类"></a>接口和抽象类</h3><p>继承角度：</p>
+<ul>
+<li>一个子类只能继承一个抽象类, 但能实现多个接口（is a和like a）</li>
+</ul>
+<p>构造角度：</p>
+<ul>
+<li>抽象类可以有构造方法, 接口没有构造方法</li>
+</ul>
+<p>成员变量角度：</p>
+<ul>
+<li>抽象类可以有普通成员变量, 接口没有普通成员变量</li>
+<li>抽象类和接口都可有静态成员变量, 抽象类中静态成员变量访问类型任意，接口只能<strong>public static final</strong>(默认)</li>
+</ul>
+<p>成员方法角度：</p>
+<ul>
+<li>抽象类方法可以是public、protected；</li>
+<li>接口方法在JDK8之前只有public abstract；接口方法在JDK8可以有default方法，在JDK9中允许有private方法。</li>
+<li>抽象类可以有静态方法；接口在JDK8中可以有静态方法，且只能被接口类直接调用（不能被实现类的对象调用）；</li>
+</ul>
+<p>实用角度：</p>
+<ul>
+<li>接口：多重继承，主要用于表示实现类拥有具体方法。  </li>
+<li>抽象类：主要用于在相关类中共享代码。</li>
+</ul>
+<h3 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h3><p><em>作用</em></p>
+<ul>
+<li>屏蔽真实角色</li>
+<li>增强功能，如添加权限，访问控制和申计</li>
+<li>延迟加载</li>
+</ul>
+<p><em>条件</em><br>被代理类A实现接口C，使用类B实现代理</p>
+<ul>
+<li>静态代理：类B实现接口C，聚合A类对象；</li>
+<li>动态代理：<ul>
+<li>类B实现<code>InvocationHandler</code>接口，聚合A类对象，并重写<code>invoke</code>方法；</li>
+<li>通过<code>Proxy.newProxyInstance(ClassLoader loader,Class&lt;?&gt;[] interfaces,InvocationHandler h)</code>创建代理对象。</li>
+</ul>
+</li>
+<li>Cglib代理：<ul>
+<li>类B实现<code>MethodInterceptor</code>接口，重写<code>intercept</code>方法;</li>
+<li>使用<code>Enhancer</code> 类设置类加载器，被代理类A，代理类B，并使用<code>create()</code>创建代理类；</li>
+</ul>
+</li>
+</ul>
+<p><em>对比</em></p>
+<ul>
+<li><strong>静态代理与动态代理</strong><ul>
+<li><strong>灵活性</strong>：动态代理更灵活</li>
+<li><strong>JVM 层面</strong> ：静态代理在编译时就将接口、实现类、代理类这些都变成了一个个实际的 class 文件。而动态代理是在运行时动态生成类字节码，并加载到 JVM 中的。</li>
+</ul>
+</li>
+<li><strong>JDK 动态代理和 CGLIB 动态代理对比</strong><ul>
+<li>JDK动态代理只能代理实现了接口的类或者直接代理接口，而CGLIB可以代理未实现任何接口的类。（另外， CGLIB 动态代理是通过生成一个被代理类的子类来拦截被代理类的方法调用，因此不能代理声明为 final 类型的类和方法。）</li>
+<li>大部分情况都是 JDK 动态代理更优秀。</li>
+</ul>
+</li>
+</ul>
+<h2 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h2><p><em>目的</em><br>代码复用，使用一个代码流程适配多个类型，提供类型检查<br><em>用法</em><br>泛型类、泛型接口、泛型方法、使用泛型类参数的普通方法<br><em>上下限</em><br>extends（生产T）、super（消费T）提供上下限检查<br><em>泛型数组</em></p>
+<ul>
+<li>不能<code>new ArrayList&lt;String&gt;[n]</code></li>
+<li>可以<code>new ArrayList&lt;?&gt;[n]</code></li>
+</ul>
+<p><em>泛型擦除</em><br>编译前做检查，编译后类型擦除<br><code>extends T</code>会替换成T<br><code>super T</code>会提换成Object</p>
+<p><em>泛型方法</em></p>
+<ul>
+<li>不指定泛型，为同一父类的最小级</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> Test.add(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">//这两个参数都是Integer，所以T为Integer类型  </span><br><span class="hljs-type">Number</span> <span class="hljs-variable">f</span> <span class="hljs-operator">=</span> Test.add(<span class="hljs-number">1</span>, <span class="hljs-number">1.2</span>); <span class="hljs-comment">//这两个参数一个是Integer，一个是Float，所以取同一父类的最小级，为Number  </span><br><span class="hljs-type">Object</span> <span class="hljs-variable">o</span> <span class="hljs-operator">=</span> Test.add(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;asd&quot;</span>); <span class="hljs-comment">//这两个参数一个是Integer，一个是String，所以取同一父类的最小级，为Object</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>指定泛型，则必须为该泛型</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> Test.&lt;Integer&gt;add(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">//指定了Integer，所以只能为Integer类型或者其子类  </span><br><span class="hljs-type">int</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> Test.&lt;Integer&gt;add(<span class="hljs-number">1</span>, <span class="hljs-number">2.2</span>); <span class="hljs-comment">//编译错误，指定了Integer，不能为Float  </span><br><span class="hljs-type">Number</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> Test.&lt;Number&gt;add(<span class="hljs-number">1</span>, <span class="hljs-number">2.2</span>); <span class="hljs-comment">//指定为Number，所以可以为Integer和Float</span><br></code></pre></td></tr></table></figure>
+
+<p><em>泛型多态</em><br>类A继承了泛型类并重写方法，编译器会为该类A生成桥方法，桥方法实现了父类方法的重写，并在其中调用用户写的方法。</p>
+<p><em>获取泛型参数</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">GenericType&lt;String&gt; genericType = <span class="hljs-keyword">new</span> <span class="hljs-title class_">GenericType</span>&lt;String&gt;() &#123;&#125;;  <br><span class="hljs-type">Type</span> <span class="hljs-variable">superclass</span> <span class="hljs-operator">=</span> genericType.getClass().getGenericSuperclass();<br></code></pre></td></tr></table></figure>
+<p><strong>Type</strong>是Java所有类型实现的<strong>公共接口</strong>。</p>
+<p><em>注意</em></p>
+<ul>
+<li>基本类型不能作为泛型类型</li>
+<li>泛型数组不能初始化</li>
+<li>泛型数组如何正确初始化，使用集合</li>
+<li>异常中使用泛型，可以抛出，不能捕获（会导致错误捕获）</li>
+</ul>
+<h2 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h2><p><em>注解的作用</em></p>
+<ul>
+<li><strong>生成文档</strong></li>
+<li><strong>编译检查</strong></li>
+<li><strong>编译时动态处理</strong></li>
+<li><strong>运行时动态处理</strong></li>
+</ul>
+<p><em>元注解</em></p>
+<ul>
+<li>@Target</li>
+<li>@Retention，保留时间</li>
+<li>@Document</li>
+<li>@Inherited，子类是否继承</li>
+<li>@Reaptable</li>
+<li>@Native</li>
+</ul>
+<p><em>内置注解</em></p>
+<ul>
+<li>@Override，内置注解</li>
+<li>@Deprecated，已过时</li>
+<li>@WarningSupress，警告抑制</li>
+<li>@Repeatable</li>
+</ul>
+<p><em>注解与反射接口</em><br><code>Annotation[] getAnnotations()</code></p>
+<p><em>注解原理</em></p>
+<ul>
+<li>注解之间无法继承</li>
+<li>注解是一个继承自Annotation的接口，里面每一个属性其实是一个接口的抽象方法。</li>
+</ul>
+<p><em>应用</em></p>
+<ul>
+<li>框架注解化</li>
+<li>AOP</li>
+</ul>
+<h2 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h2><p><img src="/2023/03/24/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%A4%8D%E4%B9%A0/Java%E5%A4%8D%E4%B9%A0/Pasted-image-20230324213918.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>throw</strong> – 用于<strong>抛出</strong>异常。<br><strong>throws</strong> – 用在方法签名中，用于声明该方法<strong>可能抛出</strong>的异常。</p>
+<p><em>异常表</em><br>按catch顺序记录：from、to、type、target。</p>
+<p><em>finally</em><br>可能硬编码到try、catch中。</p>
+<h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><p><em>获取class对象</em></p>
+<ul>
+<li>Class.class</li>
+<li>object.getClass()</li>
+<li>Class.forName()</li>
+<li>loadClass()</li>
+</ul>
+<p><em>构造器</em><br>可以通过class对象获取该类的构造器。</p>
+<ul>
+<li>getConstructors() 获取所有public构造器</li>
+<li>getDeclaredConstructors() 获取所有声明的构造器<br>  以上两个方法不构成覆盖关系，getDeclaredConstructors能获取私有构造器，却无法获取继承到的public构造器。</li>
+</ul>
+<p><em>method</em><br>invoke</p>
+<p><em>深入反射</em><br><img src="/2023/03/24/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%A4%8D%E4%B9%A0/Java%E5%A4%8D%E4%B9%A0/Pasted-image-20230324214405.png" srcset="/img/loading.gif" lazyload></p>
+<p>ReflectionData存在Class对象中，<strong>软引用</strong>，使用<code>reflection()</code>方法获取缓存。</p>
+<p><em>线程安全</em></p>
+<ul>
+<li>反射保证线程安全，对于method会先copy一份（数据隔离）再invoke，最终都是由JVM执行<code>invoke0()</code>方法。</li>
+</ul>
+<h2 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h2><p><img src="/2023/03/24/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%A4%8D%E4%B9%A0/Java%E5%A4%8D%E4%B9%A0/Pasted-image-20230324214713.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>ArrayList</em></p>
+<ul>
+<li><code>Object[]</code>、size；</li>
+<li>扩容<code>ensureCapacity()</code>1.5倍；</li>
+<li>modCount可以Fail-Fast机制。</li>
+</ul>
+<p><em>LinkedList</em></p>
+<ul>
+<li>fisrt Node、last Node、size；</li>
+<li>clear()会迭代清空，help GC</li>
+</ul>
+<p><em>ArrayDeque</em><br>循环数组</p>
+<ul>
+<li><code>Object[]</code>、size、head、tail</li>
+<li>addFisrt：<code>elements[head = (head - 1) &amp; (elements.length - 1)] = e</code></li>
+<li>扩容<code>doubleCapacity()</code>2倍，先复制head右侧的部分</li>
+</ul>
+<p><em>PriorityQueue</em></p>
+<ul>
+<li><code>Object[]</code>、size</li>
+<li><code>leftNode = parentNode*2+1</code></li>
+<li>扩容<code>grow()</code>，复制原数组到新数组</li>
+</ul>
+<p><em>HashMap&amp;HashSet JDK7</em></p>
+<p><img src="/2023/03/24/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%A4%8D%E4%B9%A0/Java%E5%A4%8D%E4%B9%A0/Pasted-image-20230324215427.png" srcset="/img/loading.gif" lazyload alt="JDK7"></p>
+<ul>
+<li>组成：<ul>
+<li><code>Entry[]</code></li>
+<li>初始容量(<em>inital capacity</em>)：16</li>
+<li>负载系数(<em>load factor</em>)：0.75</li>
+</ul>
+</li>
+<li>添加：<ul>
+<li>头插法</li>
+<li>先判断是否扩容再插入</li>
+</ul>
+</li>
+<li>扩容：<ul>
+<li>rehash 2倍</li>
+</ul>
+</li>
+</ul>
+<p><em>HashMap&amp;HashSet JDK8</em><br><img src="/2023/03/24/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%A4%8D%E4%B9%A0/Java%E5%A4%8D%E4%B9%A0/Pasted-image-20230324215507.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>组成：<ul>
+<li><code>Node[]</code></li>
+<li>初始容量(<em>inital capacity</em>)：16</li>
+<li>负载系数(<em>load factor</em>)：0.75</li>
+</ul>
+</li>
+<li>添加：<ul>
+<li>判断头节点类型，看使用链表头插还是红黑树（超过8个转红黑树）</li>
+<li>先插入再判断是否扩容</li>
+</ul>
+</li>
+<li>扩容：<ul>
+<li>rehash 2倍</li>
+</ul>
+</li>
+</ul>
+<p><em>LinkedHashMap</em><br>HashMap的子类，使用双向链表将所有entry相连接，遍历更快。</p>
+<p><em>WeakHashMap</em><br>弱引用管理，可用作缓存。</p>
+<p><em>TreeMap</em><br>基于红黑树，性质有：</p>
+<ol>
+<li>每个节点要么是红色，要么是黑色。</li>
+<li><strong>根节点必须是黑色</strong></li>
+<li><strong>红色节点不能连续</strong>。</li>
+<li><strong>对于每个节点，从该点至<code>null</code>(树尾端)的任何路径，都含有相同个数的黑色节点。</strong></li>
+</ol>
+<p>调整要点：</p>
+<ul>
+<li>尽量调整颜色完成调整</li>
+<li>尽量调整叶子节点，如删除时可考虑前继&#x2F;后继节点</li>
+<li>左右旋转能借到节点最好，否则使用父节点迭代。</li>
+</ul>
+<p><em>ConcurrentHashMap JDK1.7</em><br>分段锁：</p>
+<ul>
+<li>组成：<ul>
+<li><code>Segment[]</code>，每个Segment有一个<code>Entry[]</code></li>
+<li>初始容量(<em>inital capacity</em>)：16个Segment，每个Segment16个Entry</li>
+<li>负载系数(<em>load factor</em>)：Segement数组初始化后不可修改，Entry负载系数0.75，可扩容</li>
+</ul>
+</li>
+<li>添加：<ul>
+<li>先使用二次hash定位segment</li>
+<li>加锁，使用一次hash定位entry所在位置，并添加，失败则自旋，自旋失败次数过大则阻塞。</li>
+<li>先插入再判断是否扩容(每个Segment内部判断、扩容)</li>
+</ul>
+</li>
+<li>扩容：<ul>
+<li>rehash 2倍</li>
+</ul>
+</li>
+</ul>
+<p><em>ConcurrentHashMap JDK1.8</em></p>
+<ul>
+<li>组成：<ul>
+<li><code>Node[]</code></li>
+<li>初始容量(<em>inital capacity</em>)：16</li>
+<li>负载系数(<em>load factor</em>)：0.75</li>
+<li>创建时指定大小(<code>sizeCtl</code>)，但不实例化</li>
+</ul>
+</li>
+<li>添加：<ul>
+<li>初始化整个对象（<strong>初始化被延迟到第一次put</strong>，且该操作通过CAS修改sizeCtl保证只执行一次）</li>
+<li>对于空桶，CAS尝试写入，失败则自旋。</li>
+<li>若hashCode &#x3D;&#x3D; -1，则需要<strong>扩容</strong>。</li>
+<li>对桶头部加锁，判断类型并执行添加。</li>
+</ul>
+</li>
+<li>扩容：<a target="_blank" rel="noopener" href="https://blog.csdn.net/ZOKEKAI/article/details/90051567">图文参考</a><ul>
+<li>触发条件：达到载荷&#x2F;putAll空间不足&#x2F;某链表长度达到8，但数组长度小于64。</li>
+<li>红黑树转化条件：链表长度达到8，且数组长度大于64。（即优先扩容数组，后转红黑树）</li>
+<li>根据CPU个数、判断每个线程负责的桶个数，从右至左，使用<code>transferIndex</code>标识迁移工作的发配工作进度，每个线程扩容时，移动该指针即可。</li>
+<li>链表迁移：先将原链表复制出来分成两个链表，再分别放入桶中。（涉及一个lastrun节点概念）</li>
+<li>红黑树迁移：先将原红黑树复制出来分成两个链表，根据大小判断直接放入桶中还是构建红黑树。</li>
+<li>扩容时读：每个桶有一个标记，标识其迁移中还是迁移完成。原桶迁移完成中仍存在，直接读原桶即可；迁移完成后，直接读新桶即可。</li>
+<li>扩容时写：阻塞</li>
+<li>多线程迁移：使用sizeCtl判断完成，完成后最后一个线程检查整个table。</li>
+</ul>
+</li>
+</ul>
+<p><em>CopyOnWriteArrayList JDK1.8</em></p>
+<ul>
+<li><code>Object[]</code>、Lock</li>
+<li>写时加锁，创建一个大小比当前数组大1的数组，并复制原数组到新数组</li>
+<li>然后将新数组设置成原数组</li>
+</ul>
+<h1 id="三、JUC"><a href="#三、JUC" class="headerlink" title="三、JUC"></a>三、JUC</h1><h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p><em>用户空间与内核空间</em><br>这是基于<strong>内存</strong>的划分，运行在用户空间的进程叫处于用户态，运行在内核空间的进程叫处于内核态。</p>
+<p><em>线程实现</em></p>
+<ul>
+<li>用户空间实现：不需要切换进程到内核态，但会发生阻塞影响整个进程。</li>
+<li>内核空间实现：CPU时间片，分一对一、一对多、多对多（线程池）。</li>
+</ul>
+<p><em>Java线程</em><br>采用宿主机的线程库实现。</p>
+<p><em>虚拟机栈</em><br>Java线程上下文需要保存虚拟机栈，切换的原因一般有：</p>
+<ul>
+<li>GC线程</li>
+<li>CPU用完</li>
+<li>获取锁失败阻塞</li>
+<li>主动等待</li>
+</ul>
+<p><em>JAVA并发的问题</em></p>
+<ul>
+<li>原子性：原子操作（lock、unlock、read、write、load、store、use、assign），锁，CAS</li>
+<li>可见性：final、volatile、synchronized</li>
+<li>有序性：<ul>
+<li>单线程：as-if-serial</li>
+<li>多线程：happens-before（程管V启中终对传）</li>
+</ul>
+</li>
+</ul>
+<p><em>操作系统线程五态模型</em><br><img src="/Pasted%20image%2020230325220625.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>Java线程六态模型</em><br><img src="/Pasted%20image%2020230325220630.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>创建线程</em></p>
+<ul>
+<li>创建一个类并继承Thread</li>
+<li>创建一个类并实现Runnable，将该类对象作为参数传入Thread的构造器</li>
+<li>创建一个类并实现Callable，使用FutureTask包装该Callable对象成Runnable，传入Thread的构造器</li>
+</ul>
+<h2 id="三大关键字"><a href="#三大关键字" class="headerlink" title="三大关键字"></a>三大关键字</h2><h3 id="锁类型"><a href="#锁类型" class="headerlink" title="锁类型"></a>锁类型</h3><ul>
+<li>synchronized 关键词是悲观锁、排他锁、可重入锁、(某些状态下可自旋)、非公平锁。</li>
+<li>Lock接口的实现是悲观锁、可重入锁<ul>
+<li>ReentrantLock是排他锁、有公平和非公平两种实现。</li>
+<li>ReentrantReadWriteLock读锁是共享的，写锁是排他的。</li>
+</ul>
+</li>
+<li>JUC原子类是乐观锁，自旋锁（可以认为，自旋操作的实现就是CAS，但乐观锁的实现不只CAS）。</li>
+</ul>
+<h3 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h3><p><em>锁住的对象</em></p>
+<ul>
+<li>普通方法：调用实例对象，底层加ACC_SYNCHRONIZED</li>
+<li>静态方法：Class对象，底层加ACC_SYNCHRONIZED</li>
+<li>同步块：synchonized括号中的对象，底层使用monitorenter和monitorexit字节码。</li>
+</ul>
+<p><em>内存语义</em></p>
+<ul>
+<li>释放对象时写主内存</li>
+<li>获取对象是读主内存（实际上是在写内存时就无效了）</li>
+</ul>
+<p><em>ObjectMonitor对象</em><br><img src="/Pasted%20image%2020230325224306.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li><code>count</code>计数器</li>
+<li><code>_WaitSet</code></li>
+<li><code>_EntryList</code></li>
+<li><code>_owner</code></li>
+</ul>
+<p><em>wait</em><br>只有在synchronized中才可以调用wait</p>
+<p><em>Java对象头</em><br><img src="/Pasted%20image%2020230325224258.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>大小：2或3个字宽（一个字宽为32或64bit）</li>
+</ul>
+<p><em>MarkWord</em><br>32位：<br><img src="/Pasted%20image%2020230325224333.png" srcset="/img/loading.gif" lazyload><br>64位：<br><img src="/Pasted%20image%2020230325224349.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="锁优化"><a href="#锁优化" class="headerlink" title="锁优化"></a>锁优化</h4><p><em>等级</em><br>无锁-&gt;偏向锁-&gt;轻量级锁-&gt;重量级锁</p>
+<p><em>无锁（自旋）</em><br>自旋-&gt;适应性自选（自旋成功率高才自旋，默认10次获取不到锁就阻塞）</p>
+<p><em>轻量级锁</em><br>栈帧上使用LockRecord（displace hdr、owner）记录获得到的锁对象头，步骤：<br><img src="/Pasted%20image%2020230325225005.png" srcset="/img/loading.gif" lazyload></p>
+<ol>
+<li>确定对象的无锁状态</li>
+<li>创建<code>Lock Record</code></li>
+<li>复制对象头到<code>Lock Record</code>中的<code>displace hdr</code></li>
+<li><strong>CAS</strong>替换对象头成本记录的指针</li>
+</ol>
+<ul>
+<li>判断重入时：重入时复制创建空LockRecord</li>
+<li>CAS失败时：膨胀成重量级锁</li>
+</ul>
+<p><em>偏向锁（JDK15已废除）</em><br>轻量级的CAS还是太麻烦了，使用偏向锁，获取该锁时不需要替换Lock Record，只需要检查对象头中的Thread ID，且线程不会主动释放锁。工作流程：<br>（1）判断是否可偏向（<strong>偏向锁</strong>标识为1 且 <strong>锁标志位</strong> 为 01）。<br>（2）判断其Thread ID是否指向自己，指向自己则直接执行，否则尝试<strong>CAS</strong>替换这个Therad ID：<br>    - CAS成功：获取偏向锁<br>    - CAS失败：判断Thread ID线程是否退出同步块：<br>        - 若退出了，则先将该锁变成无锁状态，然后可以通过CAS<strong>重偏向</strong>。<br>        - 若没退出，则让Thread ID线程将其升级为<strong>轻量级锁</strong>（<strong>撤销</strong>）。</p>
+<p><em>批量重偏向和批量撤销</em><br>批量重偏向：<strong>某个类</strong>的所有对象的锁，锁<strong>撤销（偏向锁-&gt;轻量级）次数</strong>大于20时，认为是有可能最初偏向错了，再对该对象加锁时则<strong>重偏向（偏向锁-&gt;偏向锁）</strong>。<br>批量撤销：<strong>某个类</strong>的所有对象的锁，锁<strong>撤销（偏向锁-&gt;轻量级）次数</strong>大于40时，认为这个类的对象的锁确实要撤销，把该类的所有偏向锁<strong>撤销</strong>，再创建<strong>新对象也默认不可偏向</strong>。</p>
+<div class="note note-primary">
+            <p>重偏向和升级轻量级是两个对立的行为，通过判断锁的情况来决定如何选择该行为。</p>
+          </div>
+
+
+<p><em>锁消除</em><br>如果编译器认定一个锁只会被单个线程访问（即无<strong>线程逃逸</strong>），那么这个锁就可以被消除，即<strong>同步省略</strong>。</p>
+<p><em>PS：逃逸分析类型</em></p>
+<ul>
+<li>方法逃逸</li>
+<li><strong>线程逃逸</strong></li>
+</ul>
+<p><em>PS：逃逸优化</em></p>
+<ul>
+<li><strong>同步省略</strong></li>
+<li>栈上分配</li>
+<li>标量替换</li>
+</ul>
+<p><em>锁粗化</em><br>连续的加锁操作合并成一个</p>
+<h3 id="Volatile"><a href="#Volatile" class="headerlink" title="Volatile"></a>Volatile</h3><p>保证可见性和有序性，不能保证原子性。</p>
+<p><em>可见性</em><br>通过写内存的内存语义，写时会直接将工作内存同步到主内存并无效其他线程。</p>
+<p><em>有序性</em><br>volatile写：前插入storestore内存屏障，后插入storeload内存屏障。<br>volatile读：后插入loadload,loadstore内存屏障。</p>
+<p><em>双重校验锁</em><br>单例模式的健全版</p>
+<h3 id="Final"><a href="#Final" class="headerlink" title="Final"></a>Final</h3><p>保证<strong>可见性</strong>。<br><strong>不可变对象永远是线程安全的。</strong>（只要发生方法逃逸）</p>
+<p><em>重排序规则</em></p>
+<ul>
+<li><strong>禁止编译器</strong>将final的写指令重排序到构造函数外，在写指令<strong>后</strong>插入一个storestore屏障<strong>禁止处理器</strong>重排序。</li>
+<li><strong>禁止编译器</strong>将final的读指令重排序到对对象的读之前，在读指令<strong>前</strong>插入一个loadload屏障<strong>禁止处理器</strong>重排序。</li>
+</ul>
+<h2 id="Lock"><a href="#Lock" class="headerlink" title="Lock"></a>Lock</h2><h3 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h3><p><em>概念</em><br>Compare And Swap，可用于无锁编程，底层处理器有相关指令实现。</p>
+<p><em>问题</em></p>
+<ul>
+<li>ABA问题：使用版本号解决<code>AtomicStampedReference</code></li>
+<li>作用对象问题：使用锁或将变量合并，操作后再拆解（<code>AtomicReference</code>）</li>
+<li>循环开销：JVM支持<code>pause</code>指令，允许竞争失败后短暂睡眠，防止空转。</li>
+</ul>
+<p><em>Unsafe类</em><br>底层类，不建议直接使用，有native的CAS方法，支持类、数组、引用、字段的原子更新。</p>
+<h3 id="Lock接口"><a href="#Lock接口" class="headerlink" title="Lock接口"></a>Lock接口</h3><p><em>lock与synchronized的使用区别</em></p>
+<ul>
+<li>lock更灵活。</li>
+<li>lock可以实现共享锁。</li>
+<li>lock可以被中断，synchronized不能被中断，可能阻塞。</li>
+<li>lock效率相对较低。</li>
+</ul>
+<p><em>lock接口方法</em></p>
+<ul>
+<li><code>lock()</code></li>
+<li><code>lockInterruptibly()</code></li>
+<li><code>tryLock()</code></li>
+<li><code>tryLock(long time,TimeUnit unit)</code></li>
+<li><code>unlock()</code></li>
+<li><code>newCondition()</code></li>
+</ul>
+<p><em>lock接口具体实现</em><br><code>Lock</code>接口的具体实现类，如<code>ReentrantLock</code>都聚合了一个<strong>AQS的子类</strong>，来实现同步。</p>
+<ul>
+<li>AQS(<code>AbstractQueuedSynchronizer</code>)：抽象类，内部实现了状态量和同步队列，提供了共享模式的方法和独占模式的方法。</li>
+<li><code>ReentrantLock</code>中实现了内部抽象类<code>Sync</code>，继承了<code>AQS</code>，对部分方法进行了重写</li>
+</ul>
+<p><em>AQS字段</em></p>
+<ul>
+<li><code>volatile int state</code>表示同步状态</li>
+<li><code>CLH</code>队列实现同步</li>
+<li>内部类Node:<ul>
+<li>记录线程</li>
+<li>Node：prev、next、nextWaiter</li>
+<li>身份（共享、排他）</li>
+<li>模式（CANCELLED取消、SINGAL<strong>后继节点</strong>正在挂起）</li>
+</ul>
+</li>
+</ul>
+<p><em>AQS模板方法</em></p>
+<ul>
+<li><code>acquire(int arg)</code>，被final修饰，<strong>不可被重写</strong>，其中调用的<code>tryAcqure(arg)</code>，<strong>可被子类重写</strong>。</li>
+</ul>
+<p><em>AQS共享模式</em></p>
+<ul>
+<li><code>tryAcquireShared(int)</code>，返回值为int。负数表示失败；0表示成功，但没有剩余可用资源；正数表示成功，且有剩余资源。</li>
+<li><code>tryReleaseShared(int)</code>：共享方式。尝试释放资源，如果释放后允许唤醒后续等待结点返回true，否则返回false。</li>
+</ul>
+<p><em>ReentrantLock获取锁</em><br>lock()方法工作流程：</p>
+<ul>
+<li>cas state为1<ul>
+<li>成功则获取锁</li>
+<li>失败则调用<code>acquire</code><ul>
+<li><code>acquire</code>调用重写后的<code>tryAquire(arg)</code></li>
+<li>tryAquire失败则入队：<ul>
+<li><code>addWaiter()</code>方法，其中使用了<code>compareAndSetTail</code>做CAS操作，CAS失败则进入<code>enq()</code>方法做死循环保证节点添加）</li>
+<li><code>acquireQueued()</code>会获取到<code>addWaiter</code>添加队列成功的节点，然后做<strong>死循环</strong>（目的是防止虚假wake up）访问前驱节点，如果前驱节点是头节点，本节点则会尝试获取<code>tryAquire</code>：<ul>
+<li>成功则修改头指针并退出循环</li>
+<li>失败则进入等待</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//ReentrantLock Method</span><br><span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">lock</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">if</span> (compareAndSetState(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>))   <br>        <span class="hljs-comment">// CAS 成功，即没有线程持有锁，此时当前线程可直接获取锁，不需要再CAS入队</span><br>        setExclusiveOwnerThread(Thread.currentThread()); <br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-comment">// CAS 失败，acquire会调用被重写的tryAquire(arg)再次尝试获取，失败则入队</span><br>        acquire(<span class="hljs-number">1</span>);<br>&#125;<br><br><span class="hljs-comment">//AQS Method</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">acquire</span><span class="hljs-params">(<span class="hljs-type">int</span> arg)</span> &#123;<br>    <span class="hljs-keyword">if</span> (!tryAcquire(arg) &amp;&amp; <span class="hljs-comment">// 此方法会尝试去获取锁</span><br>        <span class="hljs-comment">// 将当前线程加入 CLH 队列中</span><br>        acquireQueued(addWaiter(Node.EXCLUSIVE), arg)) <br>        selfInterrupt();<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><img src="/Pasted%20image%2020230326135302.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>ReentrantLock释放锁</em><br>unlock工作流程：</p>
+<ul>
+<li>调用被重写的<code>tryRelease</code>，成功则唤醒后续节点<code>unparkSuccessor</code>：<ul>
+<li>改变头节点waitStatus</li>
+<li>校验后继节点waitStatus</li>
+<li>唤醒后继节点，由后继节点来执行移出头节点等事件</li>
+</ul>
+</li>
+</ul>
+<p><em>ReentrantLock重入实现</em><br>tryAcquire() -&gt; nonfairTryAcquire() -&gt; state++;</p>
+<p><em>公平锁与非公平锁</em><br><img src="/Pasted%20image%2020230326142111.png" srcset="/img/loading.gif" lazyload><br>ReentrantLock默认非公平实现，也可传true实现公平<br><img src="/Pasted%20image%2020230326142306.png" srcset="/img/loading.gif" lazyload><br>底层区别在于tryAcuire中CAS state之前判断当前是否有排队。</p>
+<p><em>调用链</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">ReentrantLock.lock -&gt; NonfairSync/FairSync.lock -&gt; AQS.acquire -&gt; NonfairSync/FairSync.tryAcquire() -&gt; AQS.acquireQueued(addWaiter());<br></code></pre></td></tr></table></figure>
+
+<p><em>总结</em><br>AQS实现了队列的主要功能：</p>
+<ul>
+<li>只开放了tryAcquire和tryRelease这样的方法：以供子类来做是否公平的实现，改写内容一般是对state的CAS处理</li>
+<li>不论被重写成什么样，失败后都走的AQS的排队方法，获取者会死循环直到添加成功；释放者也会死循环直到释放成功。</li>
+</ul>
+<p><em>ReentrantReadWriteLock</em><br><img src="/Pasted%20image%2020230326142621.png" srcset="/img/loading.gif" lazyload><br>使用一个state同时维护读、写状态，将 32 位的整型变量 state 切分成两个部分，高 16 位表示读，低 16 位表示写：<br>[<img src="http://localhost:4000/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC3%E7%AB%A0%EF%BC%88Lock%E6%8E%A5%E5%8F%A3%EF%BC%89/Pasted-image-20230203170539.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>锁降级</em><br>读写锁中的锁降级指的是，<strong>写锁降级成为读锁</strong>。</p>
+<p><em>Condition</em><br><img src="/Pasted%20image%2020230326142914.png" srcset="/img/loading.gif" lazyload><br>步骤：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Codition</span> <span class="hljs-variable">condition</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Codition</span>()<br>condition.await()<br>condition.signal()<br>condition.signalAll()<br></code></pre></td></tr></table></figure>
+
+
+<h2 id="并发工具类"><a href="#并发工具类" class="headerlink" title="并发工具类"></a>并发工具类</h2><p><em>CountDownLatch</em><br>倒计时器，替代join()，更灵活，信号量通知：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">static</span> <span class="hljs-type">CountDownLatch</span> <span class="hljs-variable">countDownLatch</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CountDownLatch</span>(<span class="hljs-number">2</span>);  <br>countDownLatch.countDown();<br>countDownLatch.await(); <span class="hljs-comment">// 阻塞线程，等待countdown为0</span><br></code></pre></td></tr></table></figure>
+
+<p><em>CyclicBarrier</em><br>同步屏障，可添加释放前方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">static</span> <span class="hljs-type">CyclicBarrier</span> <span class="hljs-variable">cyclicBarrier</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CyclicBarrier</span>(<span class="hljs-number">2</span>,function());<br>cyclicBarrier.await(); <span class="hljs-comment">// 子线程已达到屏障</span><br>cyclicBarrier.await(); <span class="hljs-comment">// 主线程已到达屏障</span><br></code></pre></td></tr></table></figure>
+
+<p><em>Semaphore</em><br>信号量，用于流量控制</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Semaphore</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Semaphore</span>(<span class="hljs-number">20</span>);<br>s.acquire()<br>s.release()<br></code></pre></td></tr></table></figure>
+
+<p><em>Exchanger</em><br>线程之间交换对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">strA</span> <span class="hljs-operator">=</span> exchanger.exchange(<span class="hljs-string">&quot;大佬 A 的钥匙&quot;</span>);<br><span class="hljs-type">String</span> <span class="hljs-variable">strB</span> <span class="hljs-operator">=</span> exchanger.exchange(<span class="hljs-string">&quot;大佬 B 的钥匙&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<p><em>ThreadLocal</em><br>ThreadLocalMap由线程独有，其Entry以ThreadLocal为键，value为值。<br><img src="/Pasted%20image%2020230326143937.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Entry</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">WeakReference</span>&lt;ThreadLocal&lt;?&gt;&gt; &#123;  <br>    <span class="hljs-comment">/** The value associated with this ThreadLocal. */</span>  <br>    Object value;<br>    <span class="hljs-comment">//private ThreadLocal referent; 继承字段</span><br>  <br>    Entry(ThreadLocal&lt;?&gt; k, Object v) &#123;  <br>        <span class="hljs-built_in">super</span>(k);  <span class="hljs-comment">// referent = k</span><br>        value = v;  <br>    &#125;  <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<div class="note note-primary">
+            <p>注意ThreadLocal中：</p><ul><li>key是<strong>弱引用</strong>，因为ThreadLocal过多时会出现内存泄漏，而在强引用下其是不可回收的。</li><li>value是强引用，因为value可能还存在其他引用，不可盲目回收，且要避免key还在而value为null的情况。</li></ul><p>因此，需要手动的remove(key)实现资源释放。</p>
+          </div>
+
+<h2 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h2><p><img src="/Pasted%20image%2020230326145701.png" srcset="/img/loading.gif" lazyload><br><em>工作流程</em><br><img src="/Pasted%20image%2020230326145908.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>Executors</em><br>封装了6种方法，对应6种线程池：</p>
+<ul>
+<li>FixedThreadPool：核心线程n，最大线程n</li>
+<li>CachedThreadPool：核心线程0，最大线程无穷，动态回收创建</li>
+<li>SingleThreadExecutor：核心线程1，最大线程1</li>
+<li>WorkStealingPool：任务抢占式执行的线程池</li>
+<li>ScheduledThreadPool：定时线程池</li>
+<li>SingleThreadScheduledExecutor：单核定时线程池</li>
+</ul>
+<div class="note note-primary">
+            <p>不建议使用Executors，应该使用ThreadPoolExecutor暴露细节。</p>
+          </div>
+
+<p><em>ThreadPoolExecutor</em><br><img src="/Pasted%20image%2020230326150521.png" srcset="/img/loading.gif" lazyload><br><strong>核心线程数</strong>、<strong>最大线程数</strong>、<strong>阻塞队列</strong>是限制大小的。<br><strong>存活时间</strong>和<strong>单位</strong>是管理非核心线程的回收的。<br><strong>工厂</strong>管理生成线程策略。<br><strong>处理器</strong>决定饱和策略。</p>
+<p>拒绝策略：</p>
+<ul>
+<li>AbortPolicy (默认策略)：拒绝执行并抛出异常</li>
+<li>CallerRunsPolicy：使用当前调用的线程来执行此任务</li>
+<li>DiscardOldestPolicy：抛弃阻塞队列头部（最旧）的一个任务，并执行当前任务</li>
+<li>DiscardPolicy：忽略并抛弃当前任务</li>
+</ul>
+<p><em>Executor</em><br>是一个线程池框架<br><img src="/Pasted%20image%2020230326155236.png" srcset="/img/loading.gif" lazyload><br><img src="/Pasted%20image%2020230326154737.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>Executors、Executor、ExecutorService</em></p>
+<ul>
+<li>ExecutorService接口继承了Executor接口，加强对线程任务的控制支持，如提供了submit()方法，允许shutdown()等。</li>
+<li>Executors只是一个工具类，用过来生成ExecutorService接口的实现类，不推荐使用。</li>
+</ul>
+<p><em>配置线程池经验</em></p>
+<ul>
+<li>重点关注<code>corePoolSize</code>、<code>maximumPoolSize</code>、<code>workQueue</code>。</li>
+<li>根据线上线下：<ul>
+<li>线上要求高响应速度，调高 <code>corePoolSize</code> 和 <code>maxPoolSize</code></li>
+<li>线下要求高处理速度，调高调整合适的<code>corePoolSize</code>(一般为处理器数量+1)去设置处理任务的核心线程数。</li>
+</ul>
+</li>
+<li>根据任务类型：<ul>
+<li>CPU密集型，设置<code>corePoolSize</code>为CPU数量+1。</li>
+<li>IO密集型，尽可能多的配置核心线程，IO等待时让其他线程占用CPU。</li>
+</ul>
+</li>
+</ul>
+<h1 id="四、JVM"><a href="#四、JVM" class="headerlink" title="四、JVM"></a>四、JVM</h1><h2 id="JVM架构"><a href="#JVM架构" class="headerlink" title="JVM架构"></a>JVM架构</h2><ul>
+<li>基于栈的指令集架构（另一种是基于寄存器的，移植性差）</li>
+<li>生命周期：<ul>
+<li>启动：引导类加载器创建初始类完成。</li>
+<li>退出：Error，exit，操作系统错误。</li>
+</ul>
+</li>
+</ul>
+<h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2><p><em>加载类的过程</em></p>
+<ul>
+<li>加载：二进制字节流 &#x3D;&gt; 方法去运行时数据结构</li>
+<li>链接<ul>
+<li>验证：<ul>
+<li>文件格式验证(文件格式、魔数、长度等)</li>
+<li>元数据验证（继承关系是否合法等）</li>
+<li>字节码验证（方法体是否合法等）</li>
+<li>符号引用验证（引用类型是否存在等）</li>
+</ul>
+</li>
+<li>准备：分配内存，赋默认值</li>
+<li>解析：符号引用转化为直接引用</li>
+</ul>
+</li>
+<li>初始化：<code>&lt;clinit&gt;</code>，该过程会加锁</li>
+</ul>
+<p><em>加载类的来源</em><br>本地、网络、数据库、动态生成等</p>
+<p><em>类加载器分类</em><br>父子关系：<br><img src="/Pasted%20image%2020230326192426.png" srcset="/img/loading.gif" lazyload><br>实现关系：<br><img src="/Pasted%20image%2020230326192822.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>引导类加载器由C、C++编写</li>
+<li>系统类加载器也叫应用程序类加载器AppClassLoader</li>
+<li>底层loadClass()模板方法实现了双亲委派，一般重写findClass()即可。</li>
+</ul>
+<p><em>为什么需要自定义加载器</em><br>隔离加载类、扩展加载源、自定义加载方式（还可防止源码泄漏）</p>
+<p><em>如何自定义加载器</em><br>一般继承URLClassLoader，再重写findClass即可。</p>
+<p><em>双亲委派</em><br>加载类时向上委托，父加载器加载不了时才主动加载，保证了可见性和单一性。</p>
+<p><em>双亲委派机制的破坏</em></p>
+<ul>
+<li>早期的loadClass()方法被重写</li>
+<li>线程上下文加载器：为了实现系统类调用用户类</li>
+<li>热替换&#x2F;热部署。</li>
+</ul>
+<p><em>两个相同的class对象</em><br>同加载器（在同一个命名空间里）、同完整类名。</p>
+<p><em>类主动使用</em><br>使用静态字段、静态方法、生成实例、forName()</p>
+<p><em>数组类加载</em><br>由数组对应的类的类加载器加载。</p>
+<p><em>static与static final</em><br>两者都在堆中，跟随class对象：</p>
+<ul>
+<li>对于基本类型&#x2F;字符串字面量，前者初始化时赋值，后者链接环节赋初值。</li>
+<li>对于引用对象类型，初始化时赋值。</li>
+</ul>
+<p><em>类的卸载前提</em></p>
+<ul>
+<li>类对象全回收</li>
+<li>类的引用全回收</li>
+<li>类的加载器被回收</li>
+</ul>
+<p><em>沙箱安全机制</em><br>JDK1.0<br><img src="/Pasted%20image%2020230327001401.png" srcset="/img/loading.gif" lazyload><br>JDK1.1<br><img src="/Pasted%20image%2020230327001408.png" srcset="/img/loading.gif" lazyload><br>JDK1.2<br><img src="/Pasted%20image%2020230327001421.png" srcset="/img/loading.gif" lazyload><br>JDK1.6<br><img src="/Pasted%20image%2020230327001429.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>Java9特性</em></p>
+<ul>
+<li>URLClassLoader &#x3D;&gt; BuiltinClassLoader</li>
+<li>ExtClassLoader &#x3D;&gt; PlatformClassLoader</li>
+<li>SystemClassLoader由java实现</li>
+<li>双亲委派机制现在可以跨级直接委托</li>
+</ul>
+<h2 id="运行时数据区"><a href="#运行时数据区" class="headerlink" title="运行时数据区"></a>运行时数据区</h2><p><img src="/Pasted%20image%2020230326193259.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>JVM系统线程</em><br>虚拟机线程（管理、调度线程）、GC线程、编译线程、周期任务线程、信号调度线程。</p>
+<h3 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h3><p><em>PC寄存器</em><br>线程私有，执行native方法时为Undefined。</p>
+<p><em>虚拟机栈</em><br>由栈帧构成，栈帧由：</p>
+<ul>
+<li>局部变量表（slot数组，一个slot占32位，一个64位的变量占2个slot，可复用）。</li>
+<li>操作数栈（栈顶缓存技术:<strong>将栈顶元素全部缓存在物理CPU的寄存器中</strong>，降低内存读写消耗）</li>
+<li>方法返回地址（返回调用该方法的指令的下一条指令；异常退出时返回到异常表的target，且不返回值）</li>
+<li>动态链接（指向方法区中本类的Vtable）</li>
+</ul>
+<p><em>Vtable</em></p>
+<ul>
+<li>非虚方法：静态链接对应早期绑定，编译期确定方法</li>
+<li>虚方法：动态链接对应晚期绑定，运行期确定方法</li>
+<li>绑定：符号引用变成直接引用的过程</li>
+</ul>
+<p><em>本地方法栈</em><br>native修饰的方法，每个线程只有一个。HotSpot中，虚拟机栈与本地方法栈是一体的。</p>
+<h3 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h3><p><em>堆结构</em><br>JDK7.0：新生区（Eden区和Survivor区8:1:1）、养老区、永久区<br>JDK8.0：新生区、养老区、元空间</p>
+<p><em>对象分配原则</em></p>
+<ul>
+<li>小对象分配：Eden出生，MinorGC后Survivor，15次后进Old。</li>
+<li>大对象分配：Old。</li>
+<li>动态对象年龄分配：如果Survivor区中相同年龄的所有对象大小的总和大于Survivor空间的一半，年龄大于或等于该年龄的对象可以直接进入老年代，无须等到<code>MaxTenuringThreshold</code>中要求的年龄。</li>
+<li>空间分配担保（-XX:HandlerPromotionFailure，已经废除）：开启后MinorGC前检查老年代是否还有可用的<strong>连续空间</strong>：若有，则GC；若没有，则根据历次GC后移动到老年代的平均对象大小评估是否可以冒险GC，评估失败或冒险失败后FullGC。</li>
+</ul>
+<p><em>TLAB</em><br>JVM为每个线程提供一个私有缓存空间供其为对象分配内存，大小默认为1%的Eden区大小。</p>
+<p><em>GC分类</em></p>
+<ul>
+<li>Minor&#x2F;Young</li>
+<li>Major&#x2F;Old，绝大多数(CMS除外)会同时触发YoungGC</li>
+<li>Full，注意FullGC是可以回收方法区的。</li>
+<li>Mixed，G1回收期特有的混合回收。</li>
+</ul>
+<p><em>堆外对象？</em><br>栈上分配、标量替换都未实现，所以对象都在堆上。</p>
+<h3 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h3><p><em>存储内容</em></p>
+<ol>
+<li>类信息，包括类本身、字段、方法的所有信息。</li>
+<li>运行时常量池，静态常量池（class文件中）加载后就变成了运行时常量池（方法区中），符号引用被转化为真实地址。</li>
+<li>字符串常量池，逻辑上在方法去，<strong>实际上在堆中</strong>。</li>
+</ol>
+<blockquote>
+<p>JDK1.7时，字符串常量池和静态变量就从永久代移动到了堆中，后续又取消了永久代，变成元空间。</p>
+</blockquote>
+<p><em>元空间</em><br>元空间可以使用直接内存。</p>
+<h2 id="对象实例化"><a href="#对象实例化" class="headerlink" title="对象实例化"></a>对象实例化</h2><ol>
+<li>执行类、父类、接口的加载、初始化</li>
+<li>内存分配</li>
+<li>对象准备（赋默认值）</li>
+<li>设置对象头</li>
+<li>init初始化（赋显示初值、构造器最后执行）</li>
+</ol>
+<p><img src="/Pasted%20image%2020230326230516.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="执行引擎"><a href="#执行引擎" class="headerlink" title="执行引擎"></a>执行引擎</h2><p><em>解释器</em><br>字节码 &#x3D;&gt; 机器码<br>HotSpotVM中，解释器由Interpreter模块和Code模块构成：</p>
+<ul>
+<li>Interpreter模块：实现了解释器的核心功能，将字节码翻译为机器码</li>
+<li>Code模块：用于管理HotSpot VM在运行时生成的本地机器指令</li>
+</ul>
+<p><em>编译器</em><br>前端编译器AOT：java代码 &#x3D;&gt; 字节码<br>后端编译器JIT：字节码 &#x3D;&gt; 机器码</p>
+<p><em>JIT编译器分类</em><br>C1：方法内联（把引用的函数编译到引用处）、去虚拟化（对唯一的实现类进行内联）、冗余消除（折叠不执行的代码）。<br>C2：标量替换、栈上分配、同步消除。</p>
+<p><em>JIT热点代码</em><br>计数器：方法调用计数器+回边计数器<br>热点衰退：GC时进行，半衰</p>
+<h2 id="StringPool"><a href="#StringPool" class="headerlink" title="StringPool"></a>StringPool</h2><p>底层是HashTable（默认大小：JDK6&#x3D;1009；JDK7&#x3D;60013），JDK6及以前在永久代，JDK7后在堆中。</p>
+<p><em>intern()</em><br>JDK6中调用intern，将其复制一份在pool中并返回；<br>JDK7中调用intern，pool中创建堆该string的引用。</p>
+<p>G1中String回收<strong>去重</strong><br>将候选string放入hashtable，发现重复时则将引用改成hashtable中的string并释放本string。</p>
+<h2 id="GC"><a href="#GC" class="headerlink" title="GC"></a>GC</h2><p><em>finalize()</em><br>Object原生方法，一个对象只会执行一次。</p>
+<p><em>垃圾回收算法</em></p>
+<ul>
+<li>标记：引用计数算法和可达性算法（root包括栈和方法区引用，同步锁对象，脏表上的对象等）。<ul>
+<li>判断对象是否可直接回收，finalize()方法可能复活，需要交付给F-Queue队列执行finalize方法，执行后GC再扫描该队列看是否可触及。</li>
+</ul>
+</li>
+<li>回收：标记-清除算法、复制算法、标记-压缩算法、增量收集（G1）</li>
+<li>分配内存方法：指针碰撞法、空闲列表法</li>
+</ul>
+<p><em>应用</em><br>复制算法一般在YoungGC中，迁移到Survivor。<br>标记压缩算法一般在OldGC中。<br>标记清除算法一般在CMS或G1的GC中，因为其需要并发标记清除。<br>增量收集只在G1中，</p>
+<p><em>System.gc()</em><br>不一定立刻生效</p>
+<p><em>STW</em><br>枚举GCRoots和修正标记结果时必须STW。</p>
+<p><em>安全点&#x2F;安全区域</em><br>引用关系不会发送变化的时点或区域。<br>中断方式：抢占式（让线程在安全点时中断）、主动式（线程在安全的主动询问）</p>
+<p><em>引用</em><br>强&#x2F;软&#x2F;弱&#x2F;虚。软引用空间不足时回收，弱引用GC则回收，虚引用关联一个引用队列，可以获取其回收通知。<br>终结器引用，GC时，终结器引用进入F-QUEUE，Finalizer线程执行队列中对象的finalize()方法。</p>
+<p><em>并行与并发</em><br>并行（Parallel）：<strong>多条GC线程</strong>同时执行GC。<br>串行（Serial）：<strong>单GC线程</strong>执行GC。<br>并发（Concurrent）：<strong>用户线程与GC线程</strong>交替执行。</p>
+<h3 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h3><p><em>分类</em><br>按线程数分，可以分为<strong>串行垃圾回收器</strong>和<strong>并行垃圾回收器</strong>。<br>按照工作模式分，可以分为<strong>并发式垃圾回收器</strong>和<strong>独占式垃圾回收器</strong>。<br>按碎片处理方式分，可分为<strong>压缩式垃圾回收器</strong>和<strong>非压缩式垃圾回收器</strong>。<br>按工作的内存区间分，又可分为<strong>年轻代垃圾回收器</strong>和<strong>老年代垃圾回收器</strong>。</p>
+<p><em>性能指标</em><br>主要关注<strong>吞吐量</strong>和<strong>响应速度</strong></p>
+<p><em>经典垃圾回收器</em><br><img src="/Pasted%20image%2020230326233958.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>Serial GC&#x2F;Serial Old GC</em><br>单线程、STW、复制&#x2F;标记压缩算法（JDK8下的默认Client）</p>
+<p><em>ParNew</em><br>多线程版Serial GC</p>
+<p><em>Parallel Scavenge&#x2F;Parallel Old</em><br>多线程、STW、复制&#x2F;标记压缩算法，追求吞吐量（JDK8下的默认Server）</p>
+<p><em>CMS（JDK9中已过时）</em><br>追求低延迟。<br><img src="/Pasted%20image%2020230326234445.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>单&#x2F;多线程，重新标记时使用多线程，低延迟。</li>
+<li>因为并发清理，所以使用了标记清除算法，存在内存碎片</li>
+<li>三色标记法，修正时把不考虑浮动垃圾，若A新增了执行B的指针，则把A标记为灰色。</li>
+</ul>
+<p><em>G1</em><br>延迟可控的情况下吞吐量，一般设置延迟和最大堆内存即可。<br><strong>现在互联网的项目，基本都是使用G1。</strong></p>
+<p><em>G1分区</em><br>H区装大对象，Region之间使用空闲链表，Region内部使用指针压缩。<br><img src="/Pasted%20image%2020230326234923.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>Rset</em><br>记忆集，避免全表扫描的关键，也用于其他分代GC。脏表是其具体实现，一个表512B，基于卡精度。<br>在发生引用关系变化时插入内存屏障（与volatile内存屏障是不同的概念），实现AOP的作用。<br><img src="/Pasted%20image%2020230326235238.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>G1回收模式</em><br>Young GC：<br><img src="/Pasted%20image%2020230326235543.png" srcset="/img/loading.gif" lazyload><br><strong>年轻代空间不足触发</strong>，回收Eden和Survivor区，STW，复制算法。</p>
+<p>Mixed GC：</p>
+<ul>
+<li>并发标记<ul>
+<li>STW，Root扫描使可达的年轻代晋级，然后触发一次YGC</li>
+<li>并发标记，扫描区域回收价值</li>
+<li>再次标记，三色标记法，B被取消引用时，将B标记为灰色</li>
+<li>排序回收区域</li>
+<li>并发清理（清除全为垃圾的Region）</li>
+</ul>
+</li>
+<li>混合回收<ul>
+<li>分8次回收，每次回收的流程与YoungGC类似（整理垃圾碎片）</li>
+</ul>
+</li>
+</ul>
+<p>Full GC：<br>复制算法时没有空的内存分段，回退到FullGC</p>
+<h2 id="JVM调优"><a href="#JVM调优" class="headerlink" title="JVM调优"></a>JVM调优</h2><p><em>优化步骤</em><br>监控 &#x3D;&gt; 分析 &#x3D;&gt; 优化</p>
+<p><em>指标</em><br>吞吐量、并发数、内存占用</p>
+<p><em>监控依据</em></p>
+<ul>
+<li>日志</li>
+<li>Exception堆栈</li>
+<li>线程快照</li>
+</ul>
+<p><em>常用命令</em></p>
+<ul>
+<li>jps，查看java进程</li>
+<li>jstat，查看统计信息</li>
+<li>jinfo，JVM参数</li>
+<li>jmap，内存dump文件</li>
+<li>jstack，线程快照</li>
+</ul>
+<p><em>GUI</em></p>
+<ul>
+<li>Arthas：在线远程排查，需要在服务端开启arthas，客户端对其进行连接；<ul>
+<li>启动：<code>java -jar arthas-boot.jar</code>，选择进程后开启监控面板；</li>
+<li><code>thread 1</code>打印线程id为1的栈；</li>
+</ul>
+</li>
+<li>JProfiler：有样本采集（每隔一段时间快照）和重构模式（侵入式统计）两种模式。</li>
+</ul>
+<p><em>火焰图</em><br>对栈的采样，横轴不代表时间，仅仅将顶部方法按字母排列，但宽度更宽的表示采样中出现的频率越多，可能是性能瓶颈。</p>
+<p><em>运行参数</em></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs shell">//大小设置<br>-Xms&lt;size&gt; 设置初始 Java 堆大小  <br>-Xmx&lt;size&gt; 设置最大 Java 堆大小  <br>-Xss&lt;size&gt; 设置 Java 线程堆栈大小<br>-XX:MetaspaceSize / -XX:PermSize=256m 设置元空间/永久代初始值为256M<br>-XX:SurvivorRatio=8 设置Eden区与Survivor区的比值，默认为8  <br>-XX:NewRatio=2 设置老年代与年轻代的比例，默认为2<br><br>//快照<br>-XX:+HeapDumpOnOutMemoryError 内存出现OOM时生成Heap转储文件<br>-XX:+HeapDumpBeforeFullGC 出现FullGC时生成Heap转储文件<br><br>//GC选择<br>-XX:+UseG1GC 手动指定使用G1收集器执行内存回收任务<br>//GC信息<br>-XX:+PrintGC &lt;==&gt; -verbose:gc 打印简要日志信息<br>-XX:+TraceClassLoading 监控类的加载<br></code></pre></td></tr></table></figure>
+
+<p><em>GC日志</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">[GC (Allocation Failure) [PSYoungGen: 31744K-&gt;2192K (36864K) ] 31744K-&gt;2200K (121856K), <span class="hljs-number">0.0139308</span> secs] [Times: user=<span class="hljs-number">0.05</span> sys=<span class="hljs-number">0.01</span>, real=<span class="hljs-number">0.01</span> secs]<br><br>[GC(原因)][GC回收器：年轻代回收前内存占用-&gt;年轻代回收后内存占用（区域总内存）]总内存变化，时间][时间：用户时间，核心时间，实际时间]<br></code></pre></td></tr></table></figure>
+
+<p><em>JVM调优实际案例</em></p>
+<ul>
+<li>合理配置JVM参数，如栈(-xss)、堆内存(-xms,-xmx)，选择合适的GC回收器。（IO密集型的可以稍微把「年轻代」空间加大些，因为大多数对象都是在年轻代就会灭亡。内存计算密集型的可以稍微把「老年代」空间加大些，对象存活时间会更长些）</li>
+<li>本应用中，就适当调大了young区，因为接收到的大多数产线数据处理后即回收。</li>
+<li>-XX:MetaspaceSize，初始元空间大小，建议设置大一点，以免项目启动时为了调整元空间大小频繁Full GC。</li>
+</ul>
+<p><em>其他概念</em></p>
+<ul>
+<li>浅堆：对象本身的内存</li>
+<li>保留集：对象及其可访问的对象</li>
+<li>深堆：保留集中对象的内存</li>
+<li>对象实际大小：深堆</li>
+<li>支配树：如果所有指向B的支配路径都经过A，则A支配B，如果A离B最近，则A是B的直接支配者。</li>
+<li>内存泄漏：有不用或不常用的垃圾无法回收</li>
+<li>内存溢出：内存泄漏常常导致内存溢出</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%A4%8D%E4%B9%A0/" class="category-chain-item">Java复习</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Java复习</div>
+      <div>http://example.com/2023/03/24/概念整理/Java/Java复习/Java复习/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年3月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/03/25/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%A4%8D%E4%B9%A0/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/fluid-extention.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
