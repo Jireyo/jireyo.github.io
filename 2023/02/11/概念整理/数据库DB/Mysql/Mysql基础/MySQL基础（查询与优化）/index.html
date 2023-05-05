@@ -1,0 +1,1108 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、单表访问访问方法（access method）Mysql中查询的执行方式大致分两种：  使用全表扫描进行查询 使用索引进行查询（使用xx索引的xx查询）  访问方法分类：  all：全表 const：主键 &#x3D; 常数 ref：二级索引 &#x3D; 常数 ref_or_null：二级索引 &#x3D; 常数 或 二级索引 &#x3D; null range：利用索引进行范围查询 ind">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL基础（查询与优化）">
+<meta property="og:url" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
+<meta property="og:description" content="一、单表访问访问方法（access method）Mysql中查询的执行方式大致分两种：  使用全表扫描进行查询 使用索引进行查询（使用xx索引的xx查询）  访问方法分类：  all：全表 const：主键 &#x3D; 常数 ref：二级索引 &#x3D; 常数 ref_or_null：二级索引 &#x3D; 常数 或 二级索引 &#x3D; null range：利用索引进行范围查询 ind">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/167e43ab3feccc29_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/167e43ab3a02660b_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/167e43ab3fa0f107_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/167e43ab3e5fa2f6_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+<meta property="article:published_time" content="2023-02-11T12:43:46.000Z">
+<meta property="article:modified_time" content="2023-02-23T09:05:39.854Z">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="概念整理">
+<meta property="article:tag" content="Mysql">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/167e43ab3feccc29_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
+  
+  
+  
+  <title>MySQL基础（查询与优化） - Jin&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MySQL基础（查询与优化）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-11 20:43" pubdate>
+          2023年2月11日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          48 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">MySQL基础（查询与优化）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、单表访问"><a href="#一、单表访问" class="headerlink" title="一、单表访问"></a>一、单表访问</h1><h2 id="访问方法（access-method）"><a href="#访问方法（access-method）" class="headerlink" title="访问方法（access method）"></a>访问方法（access method）</h2><p>Mysql中查询的执行方式大致分两种：</p>
+<ul>
+<li>使用全表扫描进行查询</li>
+<li>使用索引进行查询（使用xx索引的xx查询）</li>
+</ul>
+<p>访问方法分类：</p>
+<ul>
+<li>all：全表</li>
+<li>const：主键 &#x3D; 常数</li>
+<li>ref：二级索引 &#x3D; 常数</li>
+<li>ref_or_null：二级索引 &#x3D; 常数 或 二级索引 &#x3D; null</li>
+<li>range：利用索引进行范围查询</li>
+<li>index：不用回表的二级索引搜索</li>
+<li>index merge：使用到多个索引来完成一次查询</li>
+</ul>
+<h3 id="range优化"><a href="#range优化" class="headerlink" title="range优化"></a>range优化</h3><ul>
+<li>多range合并</li>
+<li>对于<code>range and 其他条件</code>，先根据range确定范围（将其他搜索条件替换为true，之后在筛选)。</li>
+</ul>
+<h3 id="index-merge"><a href="#index-merge" class="headerlink" title="index merge"></a>index merge</h3><ul>
+<li>Intersection合并，分别使用索引确定备选，然后取交集，出现以下情况才<strong>可能</strong>这样执行：<ul>
+<li>情况一：二级索引列是等值匹配的情况。</li>
+<li>情况二：主键列可以是范围匹配</li>
+</ul>
+</li>
+<li>Union合并，分别使用索引确定备选，然后取并集，出现以下情况才<strong>可能</strong>这样执行：<ul>
+<li>情况一：二级索引列是等值匹配的情况</li>
+<li>情况二：主键列可以是范围匹配</li>
+<li>情况三：与<code>Intersection的筛选结果</code>取并集</li>
+</ul>
+</li>
+<li>Sort-Union合并，两个二级索引搜索结果先按照主键值进行排序，之后按照<code>Union</code>索引合并方式执行的方式称之为<code>Sort-Union</code>索引合并。</li>
+</ul>
+<blockquote>
+<p>注意：往往应该使用联合索引替代Intersection索引合并，即一个索引完成了两个列的范围搜索。</p>
+</blockquote>
+<h1 id="二、连接的原理"><a href="#二、连接的原理" class="headerlink" title="二、连接的原理"></a>二、连接的原理</h1><h2 id="连接本质"><a href="#连接本质" class="headerlink" title="连接本质"></a>连接本质</h2><p><code>连接</code>的本质就是把各个连接表中的记录都取出来依次匹配的组合加入结果集并返回给用户，如下，这样的结果集称为<code>笛卡尔积</code>。<br><img src="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/167e43ab3feccc29_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="连接过程"><a href="#连接过程" class="headerlink" title="连接过程"></a>连接过程</h2><p><em>驱动表</em><br>第一个需要查询的表，这个表称之为<code>驱动表</code>。<br><em>被驱动表</em><br>使用<code>驱动表</code>中的搜索结果，每条记录都对<code>被驱动表</code>进行一次搜索，过滤得到满足连接的结果。</p>
+<p><em>eg:</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> t1, t2 <span class="hljs-keyword">WHERE</span> t1.m1 <span class="hljs-operator">&gt;</span> <span class="hljs-number">1</span> <span class="hljs-keyword">AND</span> t1.m1 <span class="hljs-operator">=</span> t2.m2 <span class="hljs-keyword">AND</span> t2.n2 <span class="hljs-operator">&lt;</span> <span class="hljs-string">&#x27;d&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<p><img src="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/167e43ab3a02660b_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>两表连接查询中，驱动表只需要访问一次，被驱动表可能被访问多次。</p>
+</blockquote>
+<h2 id="内连接和外连接"><a href="#内连接和外连接" class="headerlink" title="内连接和外连接"></a>内连接和外连接</h2><ul>
+<li>对于<code>内连接</code>的两个表，驱动表中的记录在被驱动表中找不到匹配的记录，该记录<strong>不会</strong>加入到最后的结果集。</li>
+<li>对于<code>外连接</code>的两个表，驱动表中的记录即使在被驱动表中没有匹配的记录，也<strong>仍然会</strong>加入到结果集。在<code>MySQL</code>中，根据选取驱动表的不同，外连接仍然可以细分为2种：<ul>
+<li>左外连接：选取左侧的表为驱动表。</li>
+<li>右外连接：选取右侧的表为驱动表。</li>
+</ul>
+</li>
+</ul>
+<h2 id="连接原理"><a href="#连接原理" class="headerlink" title="连接原理"></a>连接原理</h2><p>通用的两表连接过程如下图所示：<br><img src="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/167e43ab3fa0f107_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload><br>如果有3个表进行连接的话，那么<code>步骤2</code>中得到的结果集就像是新的驱动表，然后第三个表就成为了被驱动表，重复上面过程。</p>
+<blockquote>
+<p>这是最简单和笨拙的连接查询算法。</p>
+</blockquote>
+<h3 id="使用索引加快连接速度"><a href="#使用索引加快连接速度" class="headerlink" title="使用索引加快连接速度"></a>使用索引加快连接速度</h3><p>加速连接查询主要是要加速被驱动表的查询。</p>
+<ul>
+<li>参考单表查询中索引的使用，建立合适的所以避免对被驱动表全表扫描。</li>
+<li>为了避免被驱动表反复被加载到内存中，使用join buffer：<ul>
+<li>执行连接查询前申请一块固定大小的内存，先把若干条<strong>驱动表结果集</strong>中的记录装在这个<code>join buffer</code>中</li>
+<li>然后开始扫描被驱动表，每一条被驱动表的记录一次性和<code>join buffer</code>中的多条驱动表记录做匹配</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/167e43ab3e5fa2f6_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload><br>加入了<code>join buffer</code>的嵌套循环连接算法称之为<code>基于块的嵌套连接</code>（Block Nested-Loop Join）算法。</p>
+<blockquote>
+<p>驱动表的记录并不是所有列都会被放到<code>join buffer</code>中，只有查询列表中的列和过滤条件中的列才会被放到<code>join buffer</code>。</p>
+</blockquote>
+<h1 id="三、查询成本优化"><a href="#三、查询成本优化" class="headerlink" title="三、查询成本优化"></a>三、查询成本优化</h1><h2 id="成本"><a href="#成本" class="headerlink" title="成本"></a>成本</h2><p><code>MySQL</code>中一条查询语句的执行成本是由下边这两个方面组成的：</p>
+<ul>
+<li><code>I/O</code>成本</li>
+<li><code>CPU</code>成本</li>
+</ul>
+<p><em>成本常数</em></p>
+<ul>
+<li>读取一个页面花费的成本默认是<code>1.0</code>。</li>
+<li>读取以及检测一条记录是否符合搜索条件的成本默认是<code>0.2</code>。</li>
+</ul>
+<h2 id="单表查询的成本"><a href="#单表查询的成本" class="headerlink" title="单表查询的成本"></a>单表查询的成本</h2><p>过程总结一下就是这样：</p>
+<ol>
+<li>根据搜索条件，找出所有可能使用的索引</li>
+<li>计算全表扫描的代价</li>
+<li>计算使用不同索引（包括是否能使用联合索引）执行查询的代价</li>
+<li>对比各种执行方案的代价，找出成本最低的那一个</li>
+</ol>
+<h3 id="全表扫描成本计算"><a href="#全表扫描成本计算" class="headerlink" title="全表扫描成本计算"></a>全表扫描成本计算</h3><p>由于查询成本&#x3D;<code>I/O</code>成本+<code>CPU</code>成本，所以计算全表扫描的代价需要两个信息：</p>
+<ul>
+<li>聚簇索引占用的页面数</li>
+<li>该表中的记录数</li>
+</ul>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span>I/O成本<br>聚簇索引页数 * <span class="hljs-number">1.0</span> + <span class="hljs-number">1.1</span><br><span class="hljs-regexp">//</span>CPU成本<br>rows * <span class="hljs-number">0.2</span> + <span class="hljs-number">1.0</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="索引查询成本的代价"><a href="#索引查询成本的代价" class="headerlink" title="索引查询成本的代价"></a>索引查询成本的代价</h3><blockquote>
+<p>范围搜索：</p>
+<ul>
+<li>查询优化器粗暴的认为读取索引的<strong>一个范围区间</strong>的<code>I/O</code>成本和读取一个页面是相同的。</li>
+<li>对于范围搜索如<code>IN</code>，会预估rows：</li>
+<li>先获取<code>B+</code>树的<code>区间最左记录</code>和<code>区间最右记录</code>，在统计两者之间的记录数量（<code>index dive</code>）</li>
+<li>IN中参数过多（多于200）时，会使用基数估算索引。</li>
+</ul>
+</blockquote>
+<p><em>使用索引处理对于range类型的查询条件</em></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span>I/O成本<br><span class="hljs-regexp">//</span>根据索引搜索一个范围<br><span class="hljs-number">1.0</span><br><span class="hljs-regexp">//</span>回表<br>rows * <span class="hljs-number">1.0</span><br><br><span class="hljs-regexp">//</span>CPU成本<br><span class="hljs-regexp">//</span>读取二级索引<br>rows * <span class="hljs-number">0.2</span> + <span class="hljs-number">0.01</span><br><span class="hljs-regexp">//</span>读取聚簇索引<br>rows * <span class="hljs-number">0.2</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="连接查询的成本"><a href="#连接查询的成本" class="headerlink" title="连接查询的成本"></a>连接查询的成本</h2><p>查询成本由下边两个部分构成：</p>
+<ul>
+<li>单次查询驱动表的成本</li>
+<li>多次查询被驱动表的成本</li>
+</ul>
+<p>我们把对驱动表进行查询后得到的记录条数称之为驱动表的<code>扇出</code><br>两种情况下计算驱动表扇出值时需要靠<code>猜</code>：</p>
+<ul>
+<li>全表扫描时，猜满足搜索条件的记录到底有多少条。</li>
+<li>索引扫描，猜满足除索引搜索条件外的其他搜索条件的记录有多少条。</li>
+</ul>
+<h3 id="两表连接的成本分析"><a href="#两表连接的成本分析" class="headerlink" title="两表连接的成本分析"></a>两表连接的成本分析</h3><p>内连接时，分析不同驱动表的情形，重点优化查询被驱动表的成本。</p>
+<h3 id="多表连接的成本分析"><a href="#多表连接的成本分析" class="headerlink" title="多表连接的成本分析"></a>多表连接的成本分析</h3><p>多表时，可能的搜索策略过多，MySQL有以下方法减少计算连接顺序的成本：</p>
+<ul>
+<li>提前结束某种顺序的成本评估：如果某次计算已经大于其他执行方式的成本，提前结束。</li>
+<li>系统变量<code>optimizer_search_depth</code>：连接表大于该值时，只对该值数量的表进行穷举分析。</li>
+<li>根据某些规则不考虑某些连接顺序：<code>启发式规则</code>，就是使用经验。</li>
+</ul>
+<h2 id="调节成本常数"><a href="#调节成本常数" class="headerlink" title="调节成本常数"></a>调节成本常数</h2><ul>
+<li>读取一个页面花费的成本默认是<code>1.0</code></li>
+<li>检测一条记录是否符合搜索条件的成本默认是<code>0.2</code></li>
+</ul>
+<p>成本常数被存在mysql数据库中的server_cost表和engine_cost表中。</p>
+<h1 id="四、统计数据的收集"><a href="#四、统计数据的收集" class="headerlink" title="四、统计数据的收集"></a>四、统计数据的收集</h1><h2 id="两种的统计数据存储方式"><a href="#两种的统计数据存储方式" class="headerlink" title="两种的统计数据存储方式"></a>两种的统计数据存储方式</h2><ul>
+<li>永久性的统计数据：存硬盘</li>
+<li>非永久性的统计数据：存内存</li>
+</ul>
+<p><code>InnoDB</code>默认是以表为单位来收集和存储统计数据的，通过修改表可调整策略。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> 表名 (...) Engine<span class="hljs-operator">=</span>InnoDB, STATS_PERSISTENT <span class="hljs-operator">=</span> (<span class="hljs-number">1</span><span class="hljs-operator">|</span><span class="hljs-number">0</span>); <br><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> 表名 Engine<span class="hljs-operator">=</span>InnoDB, STATS_PERSISTENT <span class="hljs-operator">=</span> (<span class="hljs-number">1</span><span class="hljs-operator">|</span><span class="hljs-number">0</span>);<br></code></pre></td></tr></table></figure>
+
+<h3 id="基于磁盘的永久性统计数据"><a href="#基于磁盘的永久性统计数据" class="headerlink" title="基于磁盘的永久性统计数据"></a>基于磁盘的永久性统计数据</h3><p>统计数据存储到了两个表里，都位于<code>mysql</code>系统数据库，其中：</p>
+<ul>
+<li><code>innodb_table_stats</code>存储了关于表的统计数据，每一条记录对应着一个表的统计数据。</li>
+<li><code>innodb_index_stats</code>存储了关于索引的统计数据，每一条记录对应着一个索引的一个统计项的统计数据。</li>
+</ul>
+<h4 id="innodb-table-stats"><a href="#innodb-table-stats" class="headerlink" title="innodb_table_stats"></a>innodb_table_stats</h4><table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>database_name</td>
+<td>数据库名</td>
+</tr>
+<tr>
+<td>table_name</td>
+<td>表名</td>
+</tr>
+<tr>
+<td>last_update</td>
+<td>本条记录最后更新时间</td>
+</tr>
+<tr>
+<td>n_rows</td>
+<td>表中记录的条数</td>
+</tr>
+<tr>
+<td>clustered_index_size</td>
+<td>表的聚簇索引占用的页面数量</td>
+</tr>
+<tr>
+<td>sum_of_other_index_sizes</td>
+<td>表的其他索引占用的页面数量</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>n_rows是估计值</p>
+</blockquote>
+<h4 id="innodb-index-stats"><a href="#innodb-index-stats" class="headerlink" title="innodb_index_stats"></a>innodb_index_stats</h4><table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>database_name</td>
+<td>数据库名</td>
+</tr>
+<tr>
+<td>table_name</td>
+<td>表名</td>
+</tr>
+<tr>
+<td>index_name</td>
+<td>索引名</td>
+</tr>
+<tr>
+<td>last_update</td>
+<td>本条记录最后更新时间</td>
+</tr>
+<tr>
+<td>stat_name</td>
+<td>统计项的名称</td>
+</tr>
+<tr>
+<td>stat_value</td>
+<td>对应的统计项的值</td>
+</tr>
+<tr>
+<td>sample_size</td>
+<td>为生成统计数据而采样的页面数量</td>
+</tr>
+<tr>
+<td>stat_description</td>
+<td>对应的统计项的描述</td>
+</tr>
+</tbody></table>
+<h4 id="定期更新统计数据"><a href="#定期更新统计数据" class="headerlink" title="定期更新统计数据"></a>定期更新统计数据</h4><ul>
+<li><code>innodb_stats_auto_recalc</code>：系统变量。默认为开启状态，当发送变动的记录超过表大小的10%，即重新计算。</li>
+<li><code>ANALYZE TABLE</code>：手动调用命令，重新计算。</li>
+</ul>
+<h3 id="基于内存的非永久性统计数据"><a href="#基于内存的非永久性统计数据" class="headerlink" title="基于内存的非永久性统计数据"></a>基于内存的非永久性统计数据</h3><p>非永久性的统计数据采样的页面数量是由<code>innodb_stats_transient_sample_pages</code>控制的，这个系统变量的默认值是<code>8</code>。</p>
+<h4 id="innodb-stats-method"><a href="#innodb-stats-method" class="headerlink" title="innodb_stats_method"></a>innodb_stats_method</h4><p>是一个系统变量，设置对于<code>允许NULL的索引列</code>的基数计算策略：</p>
+<ul>
+<li><code>nulls_equal</code>：认为所有<code>NULL</code>值都是相等的。</li>
+<li><code>nulls_unequal</code>：认为所有<code>NULL</code>值都是不相等的。</li>
+<li><code>nulls_ignored</code>：直接把<code>NULL</code>值忽略掉。</li>
+</ul>
+<h1 id="五、基于规则优化"><a href="#五、基于规则优化" class="headerlink" title="五、基于规则优化"></a>五、基于规则优化</h1><h2 id="条件化简"><a href="#条件化简" class="headerlink" title="条件化简"></a>条件化简</h2><ul>
+<li>移除不必要的括号</li>
+<li>常量传递</li>
+<li>等值传递</li>
+<li>移除没用的条件</li>
+<li>表达式计算</li>
+<li>HAVING子句和WHERE子句的合并：没有出现聚集函数时，合并HAVING子句和WHERE子句。</li>
+<li>常量表检测：表中只有一条数据或使用主键等值匹配的子句，优先执行。</li>
+<li>外连接消除：WHERE子句中指定<code>被驱动表</code>的 <code>连接列</code> 不为NULL，则变成了内连接。</li>
+</ul>
+<h2 id="子查询优化"><a href="#子查询优化" class="headerlink" title="子查询优化"></a>子查询优化</h2><h3 id="子查询分类"><a href="#子查询分类" class="headerlink" title="子查询分类"></a>子查询分类</h3><p><em>按查询结果分类</em></p>
+<ul>
+<li>标量子查询</li>
+<li>行子查询</li>
+<li>列子查询</li>
+<li>表子查询</li>
+</ul>
+<p><em>按与外层查询关系分类</em></p>
+<ul>
+<li>不相关子查询：子查询可以独立运行</li>
+<li>相关子查询：子查询的执行需要依赖于外层查询的值（一般表现为子查询中有带有外层表的条件）</li>
+</ul>
+<p><em>子查询语法注意事项</em></p>
+<ul>
+<li>子查询必须用小括号扩起来。</li>
+<li>在<code>SELECT</code>子句中的子查询必须是标量子查询。</li>
+<li>对于<code>[NOT] IN/ANY/SOME/ALL</code>子查询来说，子查询中不允许有<code>LIMIT</code>语句。</li>
+<li>不允许在一条语句中增删改某个表的记录时同时还对该表进行子查询。</li>
+</ul>
+<h3 id="子查询在MySQL中执行"><a href="#子查询在MySQL中执行" class="headerlink" title="子查询在MySQL中执行"></a>子查询在MySQL中执行</h3><p>原始子查询：先执行子查询，然后将结果作为外层参数。</p>
+<h4 id="标量子查询、行子查询"><a href="#标量子查询、行子查询" class="headerlink" title="标量子查询、行子查询"></a>标量子查询、行子查询</h4><p>原始子查询。</p>
+<h4 id="IN子查询优化（列子查询）"><a href="#IN子查询优化（列子查询）" class="headerlink" title="IN子查询优化（列子查询）"></a>IN子查询优化（列子查询）</h4><h5 id="物化表"><a href="#物化表" class="headerlink" title="物化表"></a>物化表</h5><p>将不相关子查询的结果集写入一个临时表（基于内存的使用<code>Memory</code>存储引擎，并且会自动去重，如果太大了就会转而使用磁盘和B+树存储），这个表叫做<strong>物化表</strong>。</p>
+<p><em>物化表转连接</em><br>将物化表转化成内连接，提供了转换驱动表的可能。</p>
+<h5 id="semi-join"><a href="#semi-join" class="headerlink" title="semi-join"></a>semi-join</h5><p>对于<code>s1</code>表的某条记录来说，我们只关心在<code>s2</code>表中是否存在与之匹配的记录，而不关心具体有多少条记录与之匹配，最终的结果集中只保留<code>s1</code>表的记录。</p>
+<blockquote>
+<p>内连接时，驱动表的每行都要在被驱动表中匹配（被驱动表中可能有多条匹配的行），但IN子句查询，只需要判断被驱动表中有匹配的行即可。</p>
+</blockquote>
+<p>实现方式：</p>
+<ul>
+<li>Table pullout （子查询中的表上拉）：连接列是被驱动表的唯一索引时，连接；</li>
+<li>DuplicateWeedout execution strategy （重复值消除）：临时表去重；</li>
+<li>LooseScan execution strategy （松散扫描）：子查询做驱动表，使用其结果扫描主表的各行结果是否满足条件；</li>
+<li>Semi-join Materialization execution strategy：物化；</li>
+<li>FirstMatch execution strategy （首次匹配）：原始查询。</li>
+</ul>
+<h5 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h5><ul>
+<li>满足转换为<code>semi-join</code>的条件时，查询优化器会优先把该子查询转换为<code>semi-join</code>，然后再考虑下边5种执行半连接的策略中哪个成本最低。</li>
+<li>不满足转换<code>semi-join</code>的条件时，查询优化器会从下边两种策略中找出一种成本更低的方式执行子查询：<ul>
+<li><p>先将子查询物化之后再执行查询</p>
+</li>
+<li><p>执行<code>IN to EXISTS</code>转换，转化后可能可以使用索引。</p>
+<p>  任意一个IN子查询都可以被转为<code>EXISTS</code>子查询，通用的例子如下：</p>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql">outer_expr <span class="hljs-keyword">IN</span> (<span class="hljs-keyword">SELECT</span> inner_expr <span class="hljs-keyword">FROM</span> ... <span class="hljs-keyword">WHERE</span> subquery_where)<br><span class="hljs-comment">--可转化为：</span><br><span class="hljs-keyword">EXISTS</span> (<span class="hljs-keyword">SELECT</span> inner_expr <span class="hljs-keyword">FROM</span> ... <span class="hljs-keyword">WHERE</span> subquery_where <span class="hljs-keyword">AND</span> outer_expr<span class="hljs-operator">=</span>inner_expr)<br></code></pre></td></tr></table></figure>
+
+<h4 id="ANY-x2F-ALL子查询优化"><a href="#ANY-x2F-ALL子查询优化" class="headerlink" title="ANY&#x2F;ALL子查询优化"></a>ANY&#x2F;ALL子查询优化</h4><table>
+<thead>
+<tr>
+<th>原始表达式</th>
+<th>转换为</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&lt; ANY (SELECT inner_expr …)</td>
+<td>&lt; (SELECT MAX(inner_expr) …)</td>
+</tr>
+<tr>
+<td>&gt; ANY (SELECT inner_expr …)</td>
+<td>&gt; (SELECT MIN(inner_expr) …)</td>
+</tr>
+<tr>
+<td>&lt; ALL (SELECT inner_expr …)</td>
+<td>&lt; (SELECT MIN(inner_expr) …)</td>
+</tr>
+<tr>
+<td>&gt; ALL (SELECT inner_expr …)</td>
+<td>&gt; (SELECT MAX(inner_expr) …)</td>
+</tr>
+</tbody></table>
+<h4 id="NOT-EXISTS子查询的执行"><a href="#NOT-EXISTS子查询的执行" class="headerlink" title="[NOT] EXISTS子查询的执行"></a>[NOT] EXISTS子查询的执行</h4><ul>
+<li>对于不相关子查询，查出来true&#x2F;false然后重写原语句</li>
+<li>对于相关子查询，只能使用原始子查询</li>
+</ul>
+<h4 id="对于派生表的优化"><a href="#对于派生表的优化" class="headerlink" title="对于派生表的优化"></a>对于派生表的优化</h4><p>子查询放在外层查询的<code>FROM</code>子句后，那么这个子查询的结果相当于一个<code>派生表</code></p>
+<div class="note note-primary">
+            <p>列子查询结果叫<strong>物化表</strong><br>表子查询结果叫<strong>派生表</strong></p>
+          </div>
+
+<h1 id="六、Explain"><a href="#六、Explain" class="headerlink" title="六、Explain"></a>六、Explain</h1><p><code>EXPLAIN</code>是一个语句，能帮助我们查看查询语句的执行计划。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">EXPLAIN <span class="hljs-keyword">SELECT</span> <span class="hljs-number">1</span>;<br></code></pre></td></tr></table></figure>
+<p>输出结果的各列：</p>
+<table>
+<thead>
+<tr>
+<th>列名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>在一个大的查询语句中每个SELECT关键字都对应一个唯一的id</td>
+</tr>
+<tr>
+<td>select_type</td>
+<td>SELECT关键字对应的那个查询的类型</td>
+</tr>
+<tr>
+<td>table</td>
+<td>表名</td>
+</tr>
+<tr>
+<td>partitions</td>
+<td>匹配的分区信息</td>
+</tr>
+<tr>
+<td>type</td>
+<td>针对单表的访问方法</td>
+</tr>
+<tr>
+<td>possible_keys</td>
+<td>可能用到的索引</td>
+</tr>
+<tr>
+<td>key</td>
+<td>实际上使用的索引</td>
+</tr>
+<tr>
+<td>key_len</td>
+<td>实际使用到的索引长度</td>
+</tr>
+<tr>
+<td>ref</td>
+<td>当使用索引列等值查询时，与索引列进行等值匹配的对象信息</td>
+</tr>
+<tr>
+<td>rows</td>
+<td>预估的需要读取的记录条数</td>
+</tr>
+<tr>
+<td>filtered</td>
+<td>某个表经过搜索条件过滤后剩余记录条数的百分比</td>
+</tr>
+<tr>
+<td>Extra</td>
+<td>一些额外的信息</td>
+</tr>
+</tbody></table>
+<ul>
+<li>id，查询语句中每出现一个<code>SELECT</code>关键字，设计<code>MySQL</code>的大叔就会为它分配一个唯一的<code>id</code>值。<ul>
+<li>若被转化为连接则与驱动表查询SELECT的id相同。</li>
+<li>若创建了临时表，则临时表的id为null。</li>
+</ul>
+</li>
+<li>select_type：<ul>
+<li>SIMPLE：独立查询</li>
+<li>PRIMARY：驱动表查询</li>
+<li>UNION：被驱动表查询</li>
+</ul>
+</li>
+<li>type：访问方法，如const,ref</li>
+<li>filtered：估算满足驱动表查询条件的结果占比，用于估计扇出</li>
+<li>Extra：一些可并列的额外信息</li>
+</ul>
+<h2 id="JSON格式的执行计划"><a href="#JSON格式的执行计划" class="headerlink" title="JSON格式的执行计划"></a>JSON格式的执行计划</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">EXPLAIN FORMAT<span class="hljs-operator">=</span>JSON <span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br></code></pre></td></tr></table></figure>
+<p>输出json形式的查询语句执行策略，包括成本计算过程。</p>
+<h2 id="optimizer-trace"><a href="#optimizer-trace" class="headerlink" title="optimizer trace"></a>optimizer trace</h2><p><code>optimizer trace</code>是一个系统变量，开启后可以到<code>information_schema</code>数据库下的<code>OPTIMIZER_TRACE</code>表中查看完整的优化过程。</p>
+<p>优化过程大致分为了三个阶段：</p>
+<ul>
+<li><code>prepare</code>阶段</li>
+<li><code>optimize</code>阶段（优化主要在这个阶段）</li>
+<li><code>execute</code>阶段</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/" class="category-chain-item">Mysql</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Mysql/Mysql%E5%9F%BA%E7%A1%80/" class="category-chain-item">Mysql基础</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+      
+        <a href="/tags/Mysql/">#Mysql</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MySQL基础（查询与优化）</div>
+      <div>http://example.com/2023/02/11/概念整理/数据库DB/Mysql/Mysql基础/MySQL基础（查询与优化）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年2月11日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/02/12/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E5%86%85%E5%AD%98%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/" title="MySQL基础（内存与事务）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MySQL基础（内存与事务）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/02/10/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/" title="MySQL基础（InnoDB数据存储）">
+                        <span class="hidden-mobile">MySQL基础（InnoDB数据存储）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/fluid-extention.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

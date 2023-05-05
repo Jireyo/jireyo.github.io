@@ -1,0 +1,914 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、准备工作虚拟机网络配置NAT（VMnet8）每台虚拟机有自己的虚拟网卡与虚拟交换机通讯，本处未标出来。为整个虚拟网络设置了一个虚拟DHCP服务器，并为该DHCP服务器分配了一个子网。后续Linux操作系统开启时，自动获得IP。每个虚拟机和主机不需要在同一个网段，而是通过NAT转换实现借用主机网关发送请求。 Briged（VMnet0）每台虚拟机有自己的虚拟网卡与虚拟交换机通讯，本处未标出来。虚">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux">
+<meta property="og:url" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Linux/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
+<meta property="og:description" content="一、准备工作虚拟机网络配置NAT（VMnet8）每台虚拟机有自己的虚拟网卡与虚拟交换机通讯，本处未标出来。为整个虚拟网络设置了一个虚拟DHCP服务器，并为该DHCP服务器分配了一个子网。后续Linux操作系统开启时，自动获得IP。每个虚拟机和主机不需要在同一个网段，而是通过NAT转换实现借用主机网关发送请求。 Briged（VMnet0）每台虚拟机有自己的虚拟网卡与虚拟交换机通讯，本处未标出来。虚">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Linux/v2-cba959e53f730199ecfb6b001e0497ea_1440w.webp">
+<meta property="og:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Linux/v2-3c4584024508a5632e1932b5e524ecdf_1440w.webp">
+<meta property="og:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Linux/v2-f3d48608da3167419b71c740e11d6c37_1440w.webp">
+<meta property="article:published_time" content="2023-03-27T14:46:30.000Z">
+<meta property="article:modified_time" content="2023-03-31T16:53:33.640Z">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="常用工具">
+<meta property="article:tag" content="概念整理">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Linux/v2-cba959e53f730199ecfb6b001e0497ea_1440w.webp">
+  
+  
+  
+  <title>Linux - Jin&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Linux"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-27 22:46" pubdate>
+          2023年3月27日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          28 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Linux</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、准备工作"><a href="#一、准备工作" class="headerlink" title="一、准备工作"></a>一、准备工作</h1><h2 id="虚拟机"><a href="#虚拟机" class="headerlink" title="虚拟机"></a>虚拟机</h2><h3 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h3><p><em>NAT（VMnet8）</em><br><img src="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Linux/v2-cba959e53f730199ecfb6b001e0497ea_1440w.webp" srcset="/img/loading.gif" lazyload><br>每台虚拟机有自己的虚拟网卡与虚拟交换机通讯，本处未标出来。<br>为整个虚拟网络设置了一个虚拟DHCP服务器，并为该DHCP服务器分配了一个子网。后续Linux操作系统开启时，自动获得IP。<br><strong>每个虚拟机和主机不需要在同一个网段，而是通过NAT转换实现借用主机网关发送请求。</strong></p>
+<p><em>Briged（VMnet0）</em><br><img src="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Linux/v2-3c4584024508a5632e1932b5e524ecdf_1440w.webp" srcset="/img/loading.gif" lazyload><br>每台虚拟机有自己的虚拟网卡与虚拟交换机通讯，本处未标出来。<br><strong>虚拟机和主机要在同一个网段，相当于只是借用主机网关向真路由器发请求。</strong></p>
+<p><em>Only Host（VMnet1）</em><br><img src="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Linux/v2-f3d48608da3167419b71c740e11d6c37_1440w.webp" srcset="/img/loading.gif" lazyload><br>只与主机内网通讯。</p>
+<h2 id="SSH连接"><a href="#SSH连接" class="headerlink" title="SSH连接"></a>SSH连接</h2><p>1.本地生成RSA公钥和密钥，将公钥上传到Linux服务器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">scp C:\Users\Jin\.ssh\id_rsa.pub root@192.168.196.128<br></code></pre></td></tr></table></figure>
+
+<p>2.远程连接</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">ssh root@192.168.196.128<br></code></pre></td></tr></table></figure>
+
+<p>3.输入密码：root</p>
+<h1 id="二、Linux"><a href="#二、Linux" class="headerlink" title="二、Linux"></a>二、Linux</h1><h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><p><em>用户相关</em></p>
+<ul>
+<li>&#x2F;bin：二进制文件</li>
+<li>&#x2F;sbin：超级管理员二进制文件</li>
+<li>&#x2F;home：普通用户的主目录，相当于Users，其下每一个文件夹代表一个用户的文件</li>
+<li>&#x2F;root：超级管理员的主目录</li>
+</ul>
+<p><em>应用程序</em></p>
+<ul>
+<li>&#x2F;usr：相当于program files，可安装应用的核心文件</li>
+<li>&#x2F;etc：配置文件和子目录</li>
+</ul>
+<p><em>文件相关：</em></p>
+<ul>
+<li>&#x2F;mnt：挂载文件系统</li>
+<li>&#x2F;opt：额外安装软件使用的目录，如数据库内存</li>
+<li>&#x2F;usr&#x2F;local：也是供本机额外安装软件的目录</li>
+<li>&#x2F;var：日志文件等经常修改的文件</li>
+</ul>
+<p><em>系统相关：</em><br>常用：</p>
+<ul>
+<li>&#x2F;boot：Linux启动核心文件</li>
+<li>&#x2F;lib：动态连接共享库，应用程序都需要用到这个文件夹下的文件</li>
+<li>&#x2F;lost+found：非法关机后存放临时文件</li>
+</ul>
+<p>不常用（不要修改）：</p>
+<ul>
+<li>&#x2F;proc：虚拟目录，是内存映射</li>
+<li>&#x2F;srv：service缩写</li>
+<li>&#x2F;sys：文件系统</li>
+</ul>
+<p><em>设备相关：</em></p>
+<ul>
+<li>&#x2F;dev：设备管理器</li>
+<li>&#x2F;media：外接设备</li>
+</ul>
+<p><em>磁盘挂载</em>：<br>磁盘的不同分区会挂载在文件系统的不同目录中</p>
+<h1 id="三、Vi与Vim"><a href="#三、Vi与Vim" class="headerlink" title="三、Vi与Vim"></a>三、Vi与Vim</h1><p>基本概念：</p>
+<ul>
+<li><code>vim 文件</code>后进入<strong>一般模式</strong></li>
+<li>使用<code>i</code>或<code>a</code>或<code>r</code>进入<strong>编辑模式</strong>，ESC返回一般模式</li>
+<li>使用<code>:</code>或<code>/</code>进入<strong>命令模式</strong>，ESC返回一般模式，命令模式下使用<code>:wq</code>、<code>:q</code>、<code>:q!</code>等退出vim。</li>
+</ul>
+<p><em>快捷键</em></p>
+<ul>
+<li>拷贝：<code>yy</code>，拷贝当前行下5行 5yy</li>
+<li>删除：<code>dd</code>，删除当前行下5行 5dd</li>
+<li>命令模式下：<code>/关键词</code></li>
+</ul>
+<h1 id="四、开机、重启"><a href="#四、开机、重启" class="headerlink" title="四、开机、重启"></a>四、开机、重启</h1><p><em>关机、重启</em></p>
+<ul>
+<li>shutdown -h now 现在关机</li>
+<li>shutdown -h 1 1分钟后关机</li>
+<li>shutdown -r now 现在重启计算机</li>
+<li>halt 关机</li>
+<li>reboot 重启</li>
+<li>sync 内存同步到磁盘</li>
+</ul>
+<blockquote>
+<p>所有关机操作都会先执行sync</p>
+</blockquote>
+<p><em>用户登录和注销</em></p>
+<ul>
+<li>su user 切换到user用户</li>
+<li>sudo cmd 允许临时使用超级管理员身份执行cmd，需要输入密码</li>
+<li>logout 登出</li>
+</ul>
+<h1 id="五、用户管理"><a href="#五、用户管理" class="headerlink" title="五、用户管理"></a>五、用户管理</h1><p><em>用户管理</em></p>
+<ul>
+<li>useradd 添加用户</li>
+<li>userdel 删除用户</li>
+<li>su user 切换用户（高权限可随意切低权限，低权限切高权限要密码）</li>
+<li>passwd user 修改用户密码</li>
+<li>whoami 查询用户名</li>
+</ul>
+<p><em>组管理</em></p>
+<ul>
+<li>groupadd 添加组</li>
+<li>groupdel 删除组</li>
+</ul>
+<p><em>用户与组</em></p>
+<ul>
+<li>useradd -g 用户组 用户名</li>
+<li>usermod -g 用户组 用户名</li>
+</ul>
+<p><em>权限</em><br>权限分类：rwx，可读&#x2F;可写&#x2F;可执行，通过<code>ll</code>命令可查看权限：第一位为文件类型，后面三组，分别是所属用户&#x2F;所属组&#x2F;其他用户的权限。</p>
+<ul>
+<li>ls -ahl 查看文件管理者</li>
+<li>chown 用户名 文件名 修改文件管理者</li>
+<li>chgrp 组名 文件名 将文件转入该组</li>
+<li>chmod ?+? 修改权限，前一个？可以为u、g、o代表不同所属，后一个？可以为rwx。</li>
+</ul>
+<h1 id="六、实用指令"><a href="#六、实用指令" class="headerlink" title="六、实用指令"></a>六、实用指令</h1><p><em>运行级别</em><br>例子：0：关机 3：多用户有网络 5：图形界面<br>指令：init n</p>
+<p><em>获取帮助</em></p>
+<ul>
+<li>man cmd，包括shell外部信息</li>
+<li>help cmd，只包括shell内部信息</li>
+</ul>
+<p><em>文件目录类</em></p>
+<ul>
+<li>pwd 当前目录绝对路径</li>
+<li>ls 当前目录下文件和目录 <code>-l</code>以列表形式给出</li>
+<li>cd 移动</li>
+<li>mkdir 生成目录 <code>-p</code>生成多级目录</li>
+<li>rmdir 删除目录，只能删除空目录，删除非空目录：<code>rm -rf 文件夹</code></li>
+</ul>
+<p><em>文件类</em></p>
+<ul>
+<li>touch 生成空文件</li>
+<li>cp source target 拷贝文件 <code>-r</code>递归复制</li>
+<li>rm 删除</li>
+<li>mv old new 移动&#x2F;重命名文件</li>
+</ul>
+<p><em>文件查看</em></p>
+<ul>
+<li>cat 查看 <code>-n</code>显示行号</li>
+<li>more 查看文本查看器，内置了很多翻页的快捷键，如空格翻页</li>
+<li>less 查看文本查看器，更强大的文本查看器</li>
+<li>echo 将内容输出到控制台</li>
+<li>head 显示文件前10行</li>
+<li>tail 显示文件后10行，<code>-f</code> 可以追踪文件更新，实时监控</li>
+</ul>
+<p><em>写入和追加</em></p>
+<ul>
+<li><code>&gt;</code>:ls -l&gt;文件 写入文件</li>
+<li><code>&gt;&gt;</code>:ls -al&gt;&gt;文件 追加到文件末尾</li>
+</ul>
+<p><em>常用的文件查找</em></p>
+<ul>
+<li>find 查找起点 查找文件名 递归查找文件 eg: <code>find /home hello.txt</code></li>
+<li>locate 文件名 快速定位文件 eg:<code>locate hello.txt</code></li>
+<li><strong>grep 查找内容 源文件</strong>，可以将源文件以管道的形式传入，eg：<code>cat /home/hello.txt |grep &quot;yes&quot;</code></li>
+</ul>
+<p><em>其他</em></p>
+<ul>
+<li>ln -s sourse 链接名， 创建一个软连接</li>
+<li>history 查看历史命令</li>
+<li>data “+%Y-%m-%d %H:%M:%S” 显示年月日时分秒 <code>-s</code>设置</li>
+</ul>
+<p><em>打包压缩</em></p>
+<ul>
+<li>gzip&#x2F;gunzip</li>
+<li>zip&#x2F;unzip</li>
+<li>tar xxx.tar.gz 打包内容 （打包到压缩文件，格式未.tar.gz）</li>
+</ul>
+<h1 id="七、定时任务"><a href="#七、定时任务" class="headerlink" title="七、定时任务"></a>七、定时任务</h1><p><em>任务调度</em></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">1.crontab -e<br>2.*/1 * * * * * 任务内容<br>2.或sh脚本<br></code></pre></td></tr></table></figure>
+
+<p><em>cron其他</em></p>
+<ul>
+<li>crontab -r终止</li>
+<li>crontab -l查看</li>
+</ul>
+<p><em>定时任务（一次性）</em></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">1.at 5pm + 2days<br>2.任务内容<br></code></pre></td></tr></table></figure>
+
+<p><em>at其他</em></p>
+<ul>
+<li>atrm删除</li>
+<li>atq查看</li>
+</ul>
+<h1 id="八、进程管理"><a href="#八、进程管理" class="headerlink" title="八、进程管理"></a>八、进程管理</h1><h2 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h2><p><code>-a</code>显示所有，<code>-u</code>显示详情，<code>-x</code>显示其他使用者的线程<br><code>-e</code>显示所有进程<br><code>-f</code>全格式<br>常用： ps -ef|grep xxx</p>
+<h2 id="pstree"><a href="#pstree" class="headerlink" title="pstree"></a>pstree</h2><p>pstree，可以看进程树，<code>-u</code>查看用户</p>
+<h2 id="top"><a href="#top" class="headerlink" title="top"></a>top</h2><p><code>-P</code>按CPU使用率排序，默认<br><code>-M</code>按内存使用率排序<br><code>-N</code>按PID排序</p>
+<h2 id="kill"><a href="#kill" class="headerlink" title="kill"></a>kill</h2><p>kill -9 pid，-9表示强制<br>killall name，支持通配符杀进程</p>
+<h2 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h2><p>服务本质就是运行在后台的守护进程，在&#x2F;etc&#x2F;init.d中执行程序<br>service xxx start&#x2F;stop&#x2F;reload&#x2F;status<br>可以为服务设置在对应的运行级别下是否自动开启关闭。<br>chkconfig –level 3 服务名 off</p>
+<h2 id="systemctl"><a href="#systemctl" class="headerlink" title="systemctl"></a>systemctl</h2><p><strong>systemctl兼容了service</strong>，也会去&#x2F;etc&#x2F;init.d中执行程序<br>systemctl start xxx服务</p>
+<p>systemctl start farewalld 开启防火墙<br>firewall-cmd –premanent -add-port&#x3D;端口 打开端口<br>firewall-cmd –premanent -remove-port&#x3D;端口 打开端口</p>
+<h1 id="九、Shell编程"><a href="#九、Shell编程" class="headerlink" title="九、Shell编程"></a>九、Shell编程</h1><h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><ul>
+<li>key&#x3D;value，定义变量</li>
+<li>unset key 撤销变量</li>
+<li>readonly key&#x3D;value，定义静态变量（无法撤销）</li>
+<li>read -p “aaaaaa&#x3D;” num1 阻塞获取控制台输入，赋值给变量num1</li>
+</ul>
+<h2 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h2><ul>
+<li>export key&#x3D;value 设置环境变量</li>
+<li>source 配置文件 修改后信息立刻生效</li>
+<li>echo $key 查询环境变量</li>
+</ul>
+<h2 id="shell内置变量"><a href="#shell内置变量" class="headerlink" title="shell内置变量"></a>shell内置变量</h2><ul>
+<li><code>$1</code>，获取执行shell脚本时携带的参数</li>
+<li><code>$*</code>，获取执行shell脚本时携带的所有</li>
+<li><code>$#</code>，获取执行shell脚本时携带的参数列表</li>
+<li><code>$$</code>，当前进程号</li>
+<li><code>$!</code>，后台运行的最后一个进程号</li>
+<li><code>$?</code>，上一个指令的返回状态，0为成功</li>
+</ul>
+<h2 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h2><ul>
+<li>$计算，使用<code>()或[]</code><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">res=$((2+3)*4)<br>echo &quot;res=$res&quot;<br></code></pre></td></tr></table></figure></li>
+<li>expr计算<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">res=`expr 2+3`<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="十、其他"><a href="#十、其他" class="headerlink" title="十、其他"></a>十、其他</h1><p><em>包下载器</em><br>rpm、yum、apt-get（Unbuntu）</p>
+<p><em>环境变量配置</em><br>vim &#x2F;etc&#x2F;profile 系统环境变量<br>vim ~&#x2F;.bashrc 用户环境变量</p>
+<p><em>备份与恢复</em><br>dump、restore，需要下载</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/" class="category-chain-item">常用工具</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Linux/" class="category-chain-item">Linux</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/">#常用工具</a>
+      
+        <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+      
+        <a href="/tags/Linux/">#Linux</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Linux</div>
+      <div>http://example.com/2023/03/27/概念整理/常用工具/Linux/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年3月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/" title="Git">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Git</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF/Docker&amp;K8S/" title="Docker&amp;K8S">
+                        <span class="hidden-mobile">Docker&amp;K8S</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/fluid-extention.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,948 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、消息队列概念基本概念与场景MQ是什么？Message Queue（MQ）主要用于不同进程&#x2F;线程之间的通讯，本质是一个队列。 消息队列的作用&#x2F;场景异步、解耦、削峰、日志（如kafka） 与java阻塞队列之间的区别消息队列可以实现高可用（集群、分布式），持久化，pull与push两种消费方式，去重、排序等功能。 架构消费模式push服务端推送。无法获取消费者状态，面对多消费者">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker&amp;K8S">
+<meta property="og:url" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
+<meta property="og:description" content="一、消息队列概念基本概念与场景MQ是什么？Message Queue（MQ）主要用于不同进程&#x2F;线程之间的通讯，本质是一个队列。 消息队列的作用&#x2F;场景异步、解耦、削峰、日志（如kafka） 与java阻塞队列之间的区别消息队列可以实现高可用（集群、分布式），持久化，pull与push两种消费方式，去重、排序等功能。 架构消费模式push服务端推送。无法获取消费者状态，面对多消费者">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/v2-0f4f29094907bd57584b0caeb6242177_1440w.webp">
+<meta property="og:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/Pasted-image-20230331215449.png">
+<meta property="og:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/Pasted-image-20230401221735.png">
+<meta property="og:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/051f3722fd064e08b961581611ab3e04_tplv-k3u1fbpfcp-zoom-in-crop-mark_1512_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/e1f636d367614a798ae701766d750dd5_tplv-k3u1fbpfcp-zoom-in-crop-mark_1512_0_0_0.webp">
+<meta property="og:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/ab1e1b406af641e883bb00c0ec1ab4fb_tplv-k3u1fbpfcp-zoom-in-crop-mark_1512_0_0_0.webp">
+<meta property="article:published_time" content="2023-03-27T14:46:30.000Z">
+<meta property="article:modified_time" content="2023-04-23T10:56:14.951Z">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="概念整理">
+<meta property="article:tag" content="分布式">
+<meta property="article:tag" content="消息队列">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/v2-0f4f29094907bd57584b0caeb6242177_1440w.webp">
+  
+  
+  
+  <title>Docker&amp;K8S - Jin&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Docker&amp;K8S"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-27 22:46" pubdate>
+          2023年3月27日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          58 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Docker&amp;K8S</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、消息队列概念"><a href="#一、消息队列概念" class="headerlink" title="一、消息队列概念"></a>一、消息队列概念</h1><h2 id="基本概念与场景"><a href="#基本概念与场景" class="headerlink" title="基本概念与场景"></a>基本概念与场景</h2><p><em>MQ是什么？</em><br>Message Queue（MQ）主要用于不同进程&#x2F;线程之间的通讯，本质是一个队列。</p>
+<p><em>消息队列的作用</em>&#x2F;场景<br>异步、解耦、削峰、日志（如kafka）</p>
+<p><em>与java阻塞队列之间的区别</em><br>消息队列可以实现高可用（集群、分布式），持久化，pull与push两种消费方式，去重、排序等功能。</p>
+<h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><h2 id="消费模式"><a href="#消费模式" class="headerlink" title="消费模式"></a>消费模式</h2><p><em>push</em><br>服务端推送。无法获取消费者状态，面对多消费者无法处理消费速度差异；<br><em>pull</em><br>客户端拉取。实时性较差；<br><em>Long-Polling</em><br>长请求，服务器有消息时才返回；<br><em>Dynamic Push&#x2F;Pull</em><br>long-polling请求+缓冲数组，每次polling请求时，告知Broker当前消费者的消费能力，从而批量获取，减少请求次数，单需要考虑更多丢包、顺序问题。</p>
+<h3 id="重复消息问题"><a href="#重复消息问题" class="headerlink" title="重复消息问题"></a>重复消息问题</h3><p><em>重复生产消息</em></p>
+<ul>
+<li>对于相同id的消息，消息队列只做一次处理</li>
+<li>对于不同id相同含义的消息，不做处理，令消费者避免重复消费即可。</li>
+</ul>
+<p><em>重复消费消息</em></p>
+<ul>
+<li>消费者确认后通过数据库记录消息，遇到相同消息时避免重复消费。</li>
+<li>使用redis消费，set&#x2F;setnx具有幂等性。</li>
+</ul>
+<h2 id="消息丢失问题"><a href="#消息丢失问题" class="headerlink" title="消息丢失问题"></a>消息丢失问题</h2><p>使用消息发送表，之后收到消费者消费成功的通知时，才将其标记为发送成功。</p>
+<h3 id="数据一致性问题"><a href="#数据一致性问题" class="headerlink" title="数据一致性问题"></a>数据一致性问题</h3><p><em>同步重试</em><br>处理失败后立刻执行几次（可能消息堆积）<br><em>异步重试</em><br>写入重试表，稍后重试（影响消费顺序）</p>
+<h2 id="消息顺序问题"><a href="#消息顺序问题" class="headerlink" title="消息顺序问题"></a>消息顺序问题</h2><p>分布式环境下，将同一个来源的消息发到同一个partion上。</p>
+<h2 id="消息堆积问题"><a href="#消息堆积问题" class="headerlink" title="消息堆积问题"></a>消息堆积问题</h2><p>本质上需要加快消费：</p>
+<ul>
+<li>不需要保证顺序的，使用多线程加快处理。</li>
+<li>需要保证顺序的，按合理的顺序分发到多个指定队列中。</li>
+</ul>
+<p>如果无法保证可靠性：</p>
+<ul>
+<li>限制队列大小、长度</li>
+<li>限制队列、消息TTL</li>
+</ul>
+<h2 id="主流消息队列"><a href="#主流消息队列" class="headerlink" title="主流消息队列"></a>主流消息队列</h2><p><img src="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/v2-0f4f29094907bd57584b0caeb6242177_1440w.webp" srcset="/img/loading.gif" lazyload></p>
+<h1 id="二、RabbitMQ"><a href="#二、RabbitMQ" class="headerlink" title="二、RabbitMQ"></a>二、RabbitMQ</h1><h2 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h2><p><img src="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/Pasted-image-20230331215449.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>Vitual host：虚拟分组，实现用户隔离</li>
+<li>Exchange：对消息进行路由发配，匹配查询表中的routing key，并分发到queue中。</li>
+</ul>
+<h2 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h2><p><em>docker启动</em></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> run -d --name rabbitmq -p <span class="hljs-number">5672</span>:<span class="hljs-number">5672</span> -p <span class="hljs-number">15672</span>:<span class="hljs-number">15672</span> rabbitmq:<span class="hljs-number">3</span>.<span class="hljs-number">11</span>-management<br></code></pre></td></tr></table></figure>
+
+<p><em>用户管理</em><br>默认会有一个guest用户为administrator。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">rabbitmqctl add_user root root<br>rabbitmqctl set_user_tags root administrator<br>rabbitmqctl set_permissions -p &quot;/&quot; admin &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;<br>rabbitmqctl list_users<br></code></pre></td></tr></table></figure>
+
+<p><em>进程管理</em></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">rabbitmqctl stop_app<br>rabbitmqctl reset<br>rabbitmqctl start_app<br></code></pre></td></tr></table></figure>
+
+<h2 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a>基本功能</h2><h3 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h3><p><em>java库</em><br>java需要使用（amqp-client依赖），生产者和消费者都需要使用用户名和密码与MQServer建立Connection，并通过Channel向Server发送请求。</p>
+<p><em>基本组成</em></p>
+<ul>
+<li>生产者发布消息时：<ul>
+<li>需要先声明队列；</li>
+<li>需要指明是否持久化该消息；</li>
+<li>需要指明<strong>交换机和路由</strong>，以及消息体；</li>
+</ul>
+</li>
+<li>消费者消费消息时：<ul>
+<li>需要指明消费<strong>路由</strong></li>
+<li>消费成功后是否自动应答</li>
+<li>消费消息的回调函数（手动应答发送在回调函数中）</li>
+<li>消费被中断（如消息队列被删除）时的回调函数。</li>
+</ul>
+</li>
+</ul>
+<p><em>消息应答</em><br>mq收到消息应答后即可移除消息。</p>
+<ul>
+<li>关闭(none)</li>
+<li>自动应答(auto)：消费者收到消息即回复，只用于消费者消费能力很强的时候。</li>
+<li>手动应答(manual)：<ul>
+<li><code>channel.basicAck(tag,true)</code>，可通过参数指定是否批量应答。</li>
+<li><code>channel.basicNack(tag)</code>，消费失败。</li>
+<li><code>channel.basicReject(tag)</code>，拒绝该消息（可能是死信）。</li>
+</ul>
+</li>
+</ul>
+<p><em>不公平分发实现与预取值</em><br>消费者指定自己的qos等级，其值表示该消费者通道上允许的未确认消息的最大数量。这个值可以在测试中调节到最优。</p>
+<p><em>持久化</em></p>
+<ul>
+<li>队列持久化：声明队列时指定，如过该队列已存在需要先删除。</li>
+<li>消息持久化：生产消息时指定，通知MQ对该消息持久化（默认持久化，不需要特别指定）。</li>
+</ul>
+<h3 id="发布确认"><a href="#发布确认" class="headerlink" title="发布确认"></a>发布确认</h3><p><em>基本原理</em></p>
+<ul>
+<li>生产者可以将<strong>通道</strong>设置成confirm模式，此后所有的发布的消息都会被指定唯一id（由mq指定，java可以通过<code>getNextPublishSeqNo()</code>获取）。</li>
+<li>生产者消息投递到队列上后，Broker会异步返回消息，告知生产者已经收到消息。<ul>
+<li>如果是持久化队列，Broker会在在完成持久化后返回</li>
+<li>如果MQ出现错误，会返回nack给生产者</li>
+</ul>
+</li>
+</ul>
+<p><em>发布模式</em></p>
+<ul>
+<li>单个确认(<code>simple</code>)：生产者只有确认消息投递成功后，才投递下一条消息。</li>
+<li>批量确认：批量确认，确认前需要保存批量信息在内存中，出现问题时，需要定位出错的消息。</li>
+<li>异步确认(<code>correlated</code>)：生产者通过回调函数来处理投递情况，配合<code>ConcurrentSkipListMap</code>缓存消息，收到ack后移除对应消息或比该消息小的所有消息（取决于mq返回的确认信息时批量确认还是单个确认）</li>
+</ul>
+<h3 id="交换机"><a href="#交换机" class="headerlink" title="交换机"></a>交换机</h3><p><em>临时队列</em><br>如果希望在连接时临时生成一个队列，断开连接后将队列删除，可使用<code>channel.queueDecalare().getQueue()</code>。</p>
+<p><em>bindings</em><br>exchange可以和queue进行绑定，这段绑定关系可以用一个routingKey指定。<br><code>channel.queueBind(queueName,EXCHANGE_NAME,&quot;routingKey&quot;)</code>。</p>
+<p><em>类型分类</em><br>fanout、direct、topic、headers</p>
+<p><em>fanout</em><br>广播交换机，该交换机会把消息转发到所有与其绑定的队列中。</p>
+<p><em>direct</em><br>直连交换机，交换机与各队列绑定时指定了routingKey，只有发布消息时携带的routingKey与绑定key一致时才转发到对应队列，支持多重绑定（不同队列使用同一个routingKey绑定，匹配时都会转发到这些队列中）。</p>
+<p><em>topic</em><br>话题交换机（类似redis的基于模式匹配），使用<code>*</code>代替一个单词，使用<code>#</code>代替0或多个单词。<br>eg:<br><img src="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/Pasted-image-20230401221735.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>headers</em><br>不使用<code>routingKey</code>，而是使用若干<code>key:value</code>与队列绑定。生产者发送消息时，需要以requestHeader的方式携带<code>key:value</code>，只有与绑定时的某个<code>key:value</code>匹配时才转发到对应队列。</p>
+<p><em>默认交换机</em><br>空字符串即可指定默认交换机，是一个direct型的交换机；创建queue时，会自动为该交换机绑定以队列名为routingKey与队列进行绑定。</p>
+<h3 id="工作队列"><a href="#工作队列" class="headerlink" title="工作队列"></a>工作队列</h3><p><em>概念</em><br>work模型，即多消费者。</p>
+<p><em>公平性配置</em><br>队列会默认平均分发消息，可配置消费者的<code>listener.simple.prefetch</code>指定一次最多获取消息的数量，消息处理完成回复ack后才会接受新的消息。</p>
+<h3 id="死信队列"><a href="#死信队列" class="headerlink" title="死信队列"></a>死信队列</h3><p><em>死信来源</em></p>
+<ul>
+<li>TTL：可以为消息和队列设置TTL</li>
+<li>队列达到最大长度</li>
+<li>消息被拒绝（reject）或nack且requeue&#x3D;false（否则会尝试重新获取）</li>
+</ul>
+<p><em>如何使用死信队列</em></p>
+<ul>
+<li>死信交换机：每个需要使用死信的业务队列都需要配置一个死信交换机，死信交换机的类型也是可选择的。同项目可共用一个死信交换机，不过需要为每个队列分配一个独立的路由key。</li>
+<li>死信队列：为死信交换机配置死信队列并将其绑定在死信交换机上，不同死信队列也用不同的路由key绑定。一般每个业务队列都会配置一个死信队列以处理。</li>
+<li>死信路由：每个业务队列可配置一个<code>x-dead-letter-routing-key</code>参数，当某个消息被判定为死信时，其路由会变成该参数的值；若不配置，则保持原路由。</li>
+</ul>
+<h3 id="延迟队列"><a href="#延迟队列" class="headerlink" title="延迟队列"></a>延迟队列</h3><p><em>两种TTL区别</em></p>
+<ul>
+<li>队列TTL：消息在队列中存活超过TTL后立刻被丢弃（或路由到死信交换机）</li>
+<li>消息TTL：消费者消费时判断是否过期，因此会存在消息过期仍未丢弃的情况，且如果先投递的消息延迟时间很久，后面的消息即使会过期了也会一直积压。</li>
+</ul>
+<p><em>延迟队列的实现</em></p>
+<ul>
+<li>利用消息丢弃，可以拒绝一些超时未完成的业务。</li>
+<li>利用死信队列，可以实现一些定时任务，即<strong>延迟队列</strong>。</li>
+</ul>
+<p><em>优化</em></p>
+<ul>
+<li>安装延迟队列插件，其提供了新的路由器类型，其支持消息在路由器的数据表中存储，到达投递时间时，才会投递到对应队列，实现延迟。</li>
+</ul>
+<p><em>其他延迟队列实现</em><br>Java的DelayQueue，Redis的zset，Quartz，Kafka的时间轮。</p>
+<h2 id="高级功能"><a href="#高级功能" class="headerlink" title="高级功能"></a>高级功能</h2><h3 id="可靠投递"><a href="#可靠投递" class="headerlink" title="可靠投递"></a>可靠投递</h3><h4 id="生产者处理投递失败"><a href="#生产者处理投递失败" class="headerlink" title="生产者处理投递失败"></a>生产者处理投递失败</h4><p><em>投递交换机确认（ConfirmCallback）参数配置</em><br><code>spring.rabbitmq.publisher-confirm-type</code>，有以下参数可选：</p>
+<ul>
+<li>NONE：禁用发布确认模式</li>
+<li>CORRELATED：发布消息成功到交换器触发回调方法ConfirmCallback</li>
+<li>SIMPLE：发布消息成功到交换器触发回调方法waitForConfirm等待交换机路由队列的结果，根据结果判断下一步的逻辑。</li>
+</ul>
+<blockquote>
+<p>ConfirmCallBack可以在rabbitTemplate上全局注册，也可以注册在具体消息的关联数据CorrelationData上：<code>correlationData.getFuture().addCallback(result-&gt;&#123;&#125;)</code>。</p>
+</blockquote>
+<h4 id="生产者处理路由失败"><a href="#生产者处理路由失败" class="headerlink" title="生产者处理路由失败"></a>生产者处理路由失败</h4><p><em>路由到队列确认（ReturnCallback）参数配置</em><br><code>spring.rabbitmq.publisher-returns</code>，有以下参数可选：</p>
+<ul>
+<li>false：关闭失败回调</li>
+<li>true：开启失败回调，失败时触发ReturnCallback</li>
+</ul>
+<blockquote>
+<p>在RedisTemplate中可以通过<code>setMandatory(boolean mandatory)</code>方法或者在yml配置文件中通过<code>template.mandatory: true</code>来配置当消息没能路由到指定队列时消息是重回生产者还是丢弃。</p>
+</blockquote>
+<h4 id="备份交换机处理路由失败"><a href="#备份交换机处理路由失败" class="headerlink" title="备份交换机处理路由失败"></a>备份交换机处理路由失败</h4><p><em>目的</em><br>无法路由的消息返回生产者也很难处理，在集群下更需要统一处理。</p>
+<p><em>功能实现</em><br>为原交换机配置备份交换机，当原交换机无法路由消息时，将其转发到备份交换机（Fanout），从而实现对无法路由的消息的消费（单独做报警）</p>
+<p><em>其他</em><br>备份交换机和madatory参数优先级中，备份交换机优先级更高。</p>
+<h3 id="幂等性"><a href="#幂等性" class="headerlink" title="幂等性"></a>幂等性</h3><p>在业务上一般而言，保证<strong>消费者</strong>的幂等性即可，重复投递是为了保证消息不丢失的必然措施，且mq对每条消息都有一个全局唯一id，可以判断重复的消息。</p>
+<h4 id="重复投递"><a href="#重复投递" class="headerlink" title="重复投递"></a>重复投递</h4><p><em>原因</em><br>队列发送的投递成功的ack丢失，可能造成生产者重复投递。<br><em>解决</em><br>消息队列MQ本身有全局唯一id，可判断重复消息。</p>
+<h4 id="重复消费"><a href="#重复消费" class="headerlink" title="重复消费"></a>重复消费</h4><p><em>原因</em><br>消费者发送消费成功的ack丢失，可能造成队列向其重复发送。<br><em>解决</em></p>
+<ul>
+<li>全局唯一ID，消费前先去db查询该消息（有性能瓶颈），不存在则正常消费，然后写入db。</li>
+<li>消费者使用redis消费，set&#x2F;setnx操作天然具有幂等性</li>
+</ul>
+<h3 id="其他特性"><a href="#其他特性" class="headerlink" title="其他特性"></a>其他特性</h3><p><em>优先队列</em><br>将队列设置为优先级队列，投递消息时指定消息的优先级。</p>
+<p><em>惰性队列</em><br>将队列设置成惰性队列，队列会将消息存入磁盘，只有被消费时加载到内存中，主要解决消费者因各种原因可能宕机导致消息堆积的情况。</p>
+<h2 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h2><h3 id="集群基础"><a href="#集群基础" class="headerlink" title="集群基础"></a>集群基础</h3><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1174657?from=article.detail.1795578&areaSource=106000.2&traceId=JELSFIqWoI8zLnesxfh4Q">集群全解与docker搭建</a><br><a target="_blank" rel="noopener" href="https://juejin.cn/post/7085011568991141919#heading-3">镜像队列策略全解</a></p>
+<p><em>为什么集群？</em><br>高并发、高性能、高可用的需求</p>
+<p><em>节点类型</em></p>
+<ul>
+<li>内存节点</li>
+<li>磁盘节点<ul>
+<li>单节点模式下必须使用磁盘节点，否则可能丢数据。</li>
+<li>集群中至少要有一个磁盘节点，其他节点离开时必须通知磁盘节点。（启动时先启动磁盘节点，关闭时最后关闭磁盘节点）</li>
+<li>如果唯一的磁盘节点崩溃了，不允许对rabbitmq集群做任何修改，只能使用已有的交换机、队列进行生产消费。</li>
+</ul>
+</li>
+</ul>
+<p><em>集群模式</em></p>
+<ul>
+<li>普通模式：分布式集群，节点可转发请求，无法实现高可用</li>
+<li>镜像模式：主从集群，一般3节点以上，同时持有彼此的副本实现高可用</li>
+<li>仲裁队列：与镜像模式类似，由于镜像模式不是强一致的，仲裁队列通过Raft协议保证一致性</li>
+</ul>
+<p><em>rabbitmq集群基础</em></p>
+<ul>
+<li>节点之间通过domain域名识别，所以要修改各节点host文件</li>
+<li>rabbitmq集群基于erlang集群，需要让所有节点的cookie文件值相同，具体为复制一个节点的cookie文件到其他节点覆盖。</li>
+<li>启动一个节点，其他节点逐一加入集群。</li>
+</ul>
+<p><em>docker启动</em></p>
+<ul>
+<li>启动的时候指定hostname和containName，并通过 <code>--link</code>指定其他节点的<code>containName:alias</code>进行连接，alias表示别名。</li>
+<li>其他节点containName,alias都可以作为其hostname由当前节点访问，所以分别进入容器执行mq的集群相关命令</li>
+</ul>
+<p><em>镜像模式配置</em></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">rabbitmqctl set_policy mypolicy &quot;^amp*&quot; &#x27;&#123;&quot;ha-mode&quot;:&quot;exactly&quot;,&quot;ha-params&quot;:2&#125;&#x27;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>name：名称，随意填</li>
+<li>“匹配规则”：正则表达式，匹配集群内的交换机或队列</li>
+<li>“镜像队列：”json：{}<ul>
+<li>ha-mode：镜像模式，可使用all&#x2F;exactly&#x2F;nodes，all表示备份所有队列，excaclt表示随机存储部分数量节点，nodes，表示存储指定存储节点。</li>
+<li>ha-params：作为mode的补充，指定数量或节点名称</li>
+<li>ha-sync-mode：同步方式，automatic表示自动向master同步数据，manually表示手动向master同步数据。</li>
+</ul>
+</li>
+</ul>
+<p><em>集群异常</em></p>
+<ul>
+<li>消息持久化，节点掉线后上线可恢复。</li>
+<li>消息未持久化，双活冗余队列和镜像队列实现可靠性。</li>
+</ul>
+<h4 id="镜像模式"><a href="#镜像模式" class="headerlink" title="镜像模式"></a>镜像模式</h4><h5 id="参数设置"><a href="#参数设置" class="headerlink" title="参数设置"></a>参数设置</h5><p><em>从节点晋升策略</em><br><code>ha-promote-on-shutdown</code>、<code>ha-promote-on-failure</code>分别配置在主节点正常关闭和掉线时，从节点是否需要保证数据同步才提升。</p>
+<p><em>主队列选择策略</em><br><code>queue-master-locator</code>，主队列应该绑定在哪个节点的策略。</p>
+<p><em>多少镜像合适？</em><br>建议复制到（N&#x2F;2+1）个节点。</p>
+<p><em>生产者确认机制</em><br>允许生产者开启事物，只有完成对主队列和所有镜像队列的投递时才收到执行完成的消息。</p>
+<p><em>流控</em><br>生产者只有收到所有镜像授予的信用许可后才能发送新的消息，否则会阻塞。</p>
+<p><em>消费者取消消费</em><br>从镜像队列中消费的客户端希望感知到队列的失败转移，使用<code>x-cancel-on-ha-failover</code>参数进行消费，故障转移发生时，该消费会被取消。此时创建新的消费者进行消费。</p>
+<h5 id="镜像队列数据流"><a href="#镜像队列数据流" class="headerlink" title="镜像队列数据流"></a>镜像队列数据流</h5><p><em>客户端连接主节点时</em><br><img src="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/051f3722fd064e08b961581611ab3e04_tplv-k3u1fbpfcp-zoom-in-crop-mark_1512_0_0_0.webp" srcset="/img/loading.gif" lazyload><br><em>客户端连接从节点</em><br><img src="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/e1f636d367614a798ae701766d750dd5_tplv-k3u1fbpfcp-zoom-in-crop-mark_1512_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<h5 id="镜像队列实现原理"><a href="#镜像队列实现原理" class="headerlink" title="镜像队列实现原理"></a>镜像队列实现原理</h5><p><img src="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/ab1e1b406af641e883bb00c0ec1ab4fb_tplv-k3u1fbpfcp-zoom-in-crop-mark_1512_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>amqqueue_process处理协议</li>
+<li>backing_queue是主从节点上特殊的queue</li>
+<li>GM分两部分，一部分负责广播，一部分负责接受消息并回调。其中主节点的回调函数是<code>coordinator</code>、从节点上则是<code>mirror_queue_slave</code>。</li>
+</ul>
+<p><em>GM</em><br>原子广播，所有节点形成链表，消息循环传播回自己则说明同步完成。</p>
+<h5 id="镜像队列缺点"><a href="#镜像队列缺点" class="headerlink" title="镜像队列缺点"></a>镜像队列缺点</h5><ul>
+<li>broker重新上线：此时是否应该从leader同步？可能回丢弃其所有数据。</li>
+<li>同步阻塞：同步镜像耗时太长。</li>
+</ul>
+<h3 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h3><p>RabbitMQ中使用Keepalived和HaProxy实现集群的高可用和负载均衡。<br><em>HAProxy</em><br>负载均衡代理，但本身单机也可能宕机，需要集群。<br><em>Keepalived</em><br>协助HAProxy集群，自身也是集群，起类似哨兵的作用，只允许一个master HAProxy，统一了访问路径。（提供一个虚拟IP，由HAProxy集群的节点争夺）<br><em>VRRP</em><br>虚拟路由冗余协议，keepalived这种提供虚拟IP的机制属于VRRP</p>
+<h3 id="集群之间"><a href="#集群之间" class="headerlink" title="集群之间"></a>集群之间</h3><p>为了实现高可用，有一些模式：</p>
+<ul>
+<li>主备模式：主备节点共享存储空间。</li>
+<li>镜像模式：节点之间互相备份的镜像模式。</li>
+<li>远程模式：Shovel集群，模型会变成<strong>近端同步确认</strong>、<strong>远端异步确认</strong>两步。近端集群同步确认后转发给远端。</li>
+<li>多活模式：基于AMQP协议实现多中心通讯（不同于集群），连接双方可以使用不同users和vhost，不同版本MQ。某节点使用federated exchange，实现向远程另一节点订阅消息的功能，并放入本地队列。</li>
+</ul>
+<h2 id="实战代码风格"><a href="#实战代码风格" class="headerlink" title="实战代码风格"></a>实战代码风格</h2><ul>
+<li>使用一个Config类文件，通过@Bean的方式生成所有的队列、交换机、绑定关系。</li>
+<li>使用@RabbitListener做消息回调函数。</li>
+<li>引入依赖，修改序列化方式，在启动类上添加消息转换器：</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.fasterxml.jackson.dataformat<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>jackson-dataformat-xml<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.9.10<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Bean</span><br><span class="hljs-keyword">public</span> MessageConverter <span class="hljs-title function_">jsonMessageConverter</span><span class="hljs-params">()</span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Jackson2JsonMessageConverter</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/" class="category-chain-item">分布式</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" class="category-chain-item">消息队列</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+      
+        <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/">#分布式</a>
+      
+        <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">#消息队列</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Docker&amp;K8S</div>
+      <div>http://example.com/2023/03/27/概念整理/分布式/消息队列/消息队列/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年3月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF/Docker&amp;K8S/" title="Docker&amp;K8S">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Docker&amp;K8S</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E5%BE%AE%E6%9C%8D%E5%8A%A1/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" title="Docker&amp;K8S">
+                        <span class="hidden-mobile">Docker&amp;K8S</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/fluid-extention.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

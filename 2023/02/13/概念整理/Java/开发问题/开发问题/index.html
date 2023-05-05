@@ -1,0 +1,1093 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、Javajar包和war包的区别  jar包：java类集合的压缩包，便于代码统一管理。 war包：包含整个web引用程序，是一个可直接运行的web模块，可直接部署在tomcat中发布。 ear包：企业引用程序，一般是多个jar包、war包的集合。   springboot项目中对比：  可直接打jar包利用内置tomcat运行，所有tomcat的配置应该在springboot配置文件中修改；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开发问题">
+<meta property="og:url" content="http://example.com/2023/02/13/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
+<meta property="og:description" content="一、Javajar包和war包的区别  jar包：java类集合的压缩包，便于代码统一管理。 war包：包含整个web引用程序，是一个可直接运行的web模块，可直接部署在tomcat中发布。 ear包：企业引用程序，一般是多个jar包、war包的集合。   springboot项目中对比：  可直接打jar包利用内置tomcat运行，所有tomcat的配置应该在springboot配置文件中修改；">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/02/13/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/Pasted-image-20230422234611.png">
+<meta property="og:image" content="http://example.com/2023/02/13/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/Pasted-image-20230422235927.png">
+<meta property="og:image" content="http://example.com/2023/02/13/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/Pasted-image-20230422235934.png">
+<meta property="og:image" content="http://example.com/2023/02/13/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/Pasted-image-20230422235940.png">
+<meta property="article:published_time" content="2023-02-13T05:47:55.000Z">
+<meta property="article:modified_time" content="2023-04-22T16:00:02.803Z">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="概念整理">
+<meta property="article:tag" content="开发问题">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/02/13/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/Pasted-image-20230422234611.png">
+  
+  
+  
+  <title>开发问题 - Jin&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="开发问题"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-13 13:47" pubdate>
+          2023年2月13日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          47 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">开发问题</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、Java"><a href="#一、Java" class="headerlink" title="一、Java"></a>一、Java</h1><p><em>jar包和war包的区别</em></p>
+<ul>
+<li>jar包：java类集合的压缩包，便于代码统一管理。</li>
+<li>war包：包含整个web引用程序，是一个可直接运行的web模块，可直接部署在tomcat中发布。</li>
+<li>ear包：企业引用程序，一般是多个jar包、war包的集合。</li>
+</ul>
+<blockquote>
+<p>springboot项目中对比：</p>
+<ul>
+<li>可直接打jar包利用内置tomcat运行，所有tomcat的配置应该在springboot配置文件中修改；</li>
+<li>可打包为war包，作为传统的应用交付方式，可灵活选择tomcat版本和修改配置。</li>
+</ul>
+</blockquote>
+<p><em>同源政策</em><br><a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html">同源政策</a></p>
+<ul>
+<li>定义：浏览器政策，在一个页面中，浏览器只能访问同源（协议相同、域名相同、端口相同）的资源；</li>
+<li>目的：保护cookie，避免cookie共享；</li>
+<li>限制范围：主要限制cookie、LocalStorage、IndexDB、dom、ajax请求的发送；</li>
+<li>规避方法：不同限制类型都有具体的规避方法，这里主要介绍ajax请求规避同源政策的一种方法：跨域CORS</li>
+</ul>
+<blockquote>
+<p>Nginx代理请求可解决同源政策问题。</p>
+</blockquote>
+<p><em>跨域</em><br><a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2016/04/cors.html">跨域详解</a></p>
+<ul>
+<li>CORS需要浏览器和服务器同时支持，具体地</li>
+<li>对于简单请求：浏览器发送请求时会增加Origin字段，表示本次请求来源，服务器根据该值判断是否允许访问：<ul>
+<li>如果不在许可范围，则返回正常HTTP响应，浏览器会对其进行拦截并抛出错误。</li>
+<li>如果在许可范围内，响应头上会新增一些字段，如许可范围、是否接受cookie、允许查看的响应头字段。</li>
+</ul>
+</li>
+<li>对于复杂请求（<code>PUT</code>或<code>DELETE</code>请求或<code>Content-Type</code>字段的类型是<code>application/json</code>的请求）：浏览器需要先询问服务器（预检），得到许可后才会发起正式的请求。</li>
+</ul>
+<h1 id="二、项目部署"><a href="#二、项目部署" class="headerlink" title="二、项目部署"></a>二、项目部署</h1><p><em>前端Vue项目部署</em></p>
+<ul>
+<li><code>vue.config.js</code>里的<code>publicPath</code>指的是打包后，所有资源相对根路径（nginx配置到的路径）所在的位置，如果应用被部署在一个子路径上，就需要用这个选项指定这个子路径。(同时需要注意静态资源的访问情况)</li>
+</ul>
+<p><em>开发环境代理</em><br>开发环境的devServer可实现页面请求的代理</p>
+<p><em>若依部署</em><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/u014440968/article/details/115753615">ruoyi部署</a><br><a target="_blank" rel="noopener" href="http://doc.ruoyi.vip/ruoyi-vue/document/hjbs.html#tomcat%E9%85%8D%E7%BD%AE">官方文档</a></p>
+<h1 id="三、Ruoyi项目"><a href="#三、Ruoyi项目" class="headerlink" title="三、Ruoyi项目"></a>三、Ruoyi项目</h1><h2 id="ruoyi-server项目结构"><a href="#ruoyi-server项目结构" class="headerlink" title="ruoyi-server项目结构"></a>ruoyi-server项目结构</h2><ul>
+<li>ruoyi-admin：主程序入口，依赖了framework、quartz、generator模块<ul>
+<li><code>common</code>:包含&#x3D;&#x3D;验证码&#x3D;&#x3D;接口和&#x3D;&#x3D;文件上传&#x2F;下载&#x3D;&#x3D;接口（Service文件在framework中）</li>
+<li><code>monitor</code>:包含&#x3D;&#x3D;缓存监控&#x3D;&#x3D;接口、&#x3D;&#x3D;服务器监控&#x3D;&#x3D;接口、&#x3D;&#x3D;系统访问记录&#x3D;&#x3D;接口、&#x3D;&#x3D;操作日志记录&#x3D;&#x3D;接口、&#x3D;&#x3D;在线用户监控&#x3D;&#x3D;接口。</li>
+<li><code>system</code>:包含&#x3D;&#x3D;参数管理、部门管理、字典管理、登录认证、菜单管理、通告管理、岗位管理、个人信息管理、注册管理、角色管理、用户管理&#x3D;&#x3D;。（Service文件在System中）</li>
+<li><code>tools</code>:有&#x3D;&#x3D;Swagger接口&#x3D;&#x3D;访问。</li>
+<li><code>resources</code>:包含&#x3D;&#x3D;i18n、mybatis&#x3D;&#x3D;等配置。</li>
+</ul>
+</li>
+<li>ruoyi-common：主要是一些通用功能。<ul>
+<li><code>annotation</code>:主要注释</li>
+<li><code>config</code>:配置文件，读取yml信息</li>
+<li><code>constant</code>:常用常量</li>
+<li><code>core</code>:常用基类:&#x3D;&#x3D;BaseController&#x3D;&#x3D;、&#x3D;&#x3D;系统类entity&#x3D;&#x3D;、&#x3D;&#x3D;登录对象model&#x3D;&#x3D;、&#x3D;&#x3D;AjaxResult&#x3D;&#x3D;、&#x3D;&#x3D;TreeEntity&#x3D;&#x3D;</li>
+<li><code>enum</code>:常用枚举</li>
+<li><code>exception</code>:包含各种&#x3D;&#x3D;异常entity&#x3D;&#x3D;</li>
+<li><code>filter</code>:请求过滤器，包括&#x3D;&#x3D;包装可重复读取inputStream的request&#x3D;&#x3D;(因为多次读取会报错，我们缓存起来)和&#x3D;&#x3D;防止xss攻击&#x3D;&#x3D;</li>
+<li><code>utils</code>:常用工具类,包括&#x3D;&#x3D;对象处理、文件处理、HTML处理、HTTP处理、IP地址获取处理、Excel处理、反射工具类、加密处理、Spring工具类、SQL处理、ID生成器、浮点数、时间、日期、异常、日志、安全、分页、字符串、线程等处理类。&#x3D;&#x3D;</li>
+<li><code>xss</code>:防止xss注入的的&#x3D;&#x3D;validator&#x3D;&#x3D;和注解</li>
+</ul>
+</li>
+<li>ruoyi-framework：主要为系统层的框架配置，如鉴权、限流、拦截、异常、校验等功能。<ul>
+<li><code>aspectj</code>:切面，包括&#x3D;&#x3D;数据权限鉴别，多数据源切换，日志，限流&#x3D;&#x3D;切面</li>
+<li><code>config</code>:配置文件</li>
+<li><code>datasource</code>:&#x3D;&#x3D;多数据源&#x3D;&#x3D;</li>
+<li><code>interceptor</code>:&#x3D;&#x3D;防止重复提交&#x3D;&#x3D;的拦截器</li>
+<li><code>security</code>: 实现&#x3D;&#x3D;jwt功能&#x3D;&#x3D;</li>
+<li><code>manager</code>: 异步任务管理器</li>
+<li><code>web</code>: 服务器相关信息，&#x3D;&#x3D;全局异常处理器&#x3D;&#x3D;，&#x3D;&#x3D;权限实现服务，登录服务，注册校验方法，token验证处理，用户验证处理服务&#x3D;&#x3D;</li>
+</ul>
+</li>
+<li>ruoyi-generator：代码生成器</li>
+<li>ruoyi-quartz：定时任务</li>
+<li>ruoyi-system：主要为system类的vo，mapper，service等，有用户角色等一些服务业务。</li>
+<li>pom：管理子模块、管理公共依赖，子模块要依赖该公共依赖时，不用再指定版本。</li>
+</ul>
+<p><em>新功能编写步骤</em></p>
+<ol>
+<li>sql结构编写</li>
+<li>配置好数据字典</li>
+<li>前后台代码生成</li>
+<li>部分服务代码修改，如导入导出代码、更新和插入判断重复代码</li>
+</ol>
+<h2 id="业务功能"><a href="#业务功能" class="headerlink" title="业务功能"></a>业务功能</h2><p><em>分页</em></p>
+<ul>
+<li>使用：<code>startPage()</code>会使下一个sql语句分页。</li>
+<li>原理：<ul>
+<li>从Request中获取分页参数（起始索引，每页记录，排序，排序方向）注入<code>PageDomain</code>实体，调用<code>PageHelper.startPage()</code>；</li>
+<li><code>PageHelper.startPage()</code>将分页信息通过<code>setLocalPage</code>存入当前线程中；</li>
+<li>SpringBoot启动时，为<code>SqlSessionFactory</code>添加了<code>PageHelperInterceptor</code>，其在SQL执行前为其添加分页信息；</li>
+</ul>
+</li>
+<li>注意：<ul>
+<li>该分页请求参数的获取基于GET请求的路径，所以其他如POST请求若有分页需求，需要将请求参数添加在请求路径上，eg：<code>?pageSize=20&amp;pageNum=1</code></li>
+<li><code>startPage()</code>是一个重载函数，其可接受参数：<ul>
+<li>pageNum(int)：起始页</li>
+<li>pageSize(int)：每页数量</li>
+<li>reasonable(bool)：是否允许非法的pageNum和pageSize</li>
+<li><strong>count</strong>(bool)：是否预先执行一次count以得到本查询的结果总数。</li>
+<li>pageSizeZero(bool)：该值为true时，如果 pageSize&#x3D;0就会查询出全部的结果，不进行分页。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><em>功能权限</em><br>基于角色和细分权限：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PreAuthorize(&quot;@ss.hasRole(&#x27;user&#x27;)&quot;)</span><br><span class="hljs-meta">@PreAuthorize(&quot;@ss.hasPermi(&#x27;system:user:list&#x27;)&quot;)</span><br></code></pre></td></tr></table></figure>
+
+<p><em>数据权限</em></p>
+<ul>
+<li>使用：在controller上注解<code>@DataScope</code>，并在mapper.xml中加上<code>&#123;params.dataScope&#125;</code></li>
+<li>原理：<ul>
+<li>通过用户id获取部门dept_id，根据用户的数据权限等级（超级管理员、本部门、部门及以下、本人）判断执行方式。</li>
+<li>根据<code>@DataScope</code>获取当前查询的表别名，进行sql字符串拼接，添加到BaseEntity的params属性中。</li>
+</ul>
+</li>
+</ul>
+<p><em>日志</em><br>在接口上标注log，会在数据库中记录系统日志。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Log(title = &quot;用户管理&quot;, businessType = BusinessType.INSERT)</span><br><span class="hljs-keyword">public</span> AjaxResult <span class="hljs-title function_">addSave</span><span class="hljs-params">(...)</span><br>&#123;<br>    <span class="hljs-keyword">return</span> success(...);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><em>事务</em></p>
+<ul>
+<li><code>@Transactional</code>只回滚运行异常<code>（RuntimeException）</code>和程序错误<code>（Error）</code>，若需要回滚其他，需要标识<code>@Transactional(rollbackFor = Exception.class)</code></li>
+<li>推荐服务层抛出异常，只在控制层处理异常</li>
+</ul>
+<h1 id="四、MyBatis"><a href="#四、MyBatis" class="headerlink" title="四、MyBatis"></a>四、MyBatis</h1><p><em>使用map传值</em></p>
+<ul>
+<li>Map接受值可能会忽略为null的值，需要在mybatis-config中配置：<code> &lt;setting name=&quot;callSettersOnNulls&quot; value=&quot;true&quot;/&gt;</code></li>
+</ul>
+<h1 id="六、数据类型对照"><a href="#六、数据类型对照" class="headerlink" title="六、数据类型对照"></a>六、数据类型对照</h1><h2 id="SQL-to-Java"><a href="#SQL-to-Java" class="headerlink" title="SQL to Java"></a>SQL to Java</h2><p><em>字符</em></p>
+<table>
+<thead>
+<tr>
+<th align="left">数据库类型</th>
+<th align="left">JDBC类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">varchar</td>
+<td align="left">java.lang.String</td>
+</tr>
+<tr>
+<td align="left">char</td>
+<td align="left">java.lang.String</td>
+</tr>
+<tr>
+<td align="left">nchar</td>
+<td align="left">java.lang.String</td>
+</tr>
+<tr>
+<td align="left">nvarchar</td>
+<td align="left">java.lang.String</td>
+</tr>
+<tr>
+<td align="left">text</td>
+<td align="left">java.lang.String</td>
+</tr>
+<tr>
+<td align="left">ntext</td>
+<td align="left">java.lang.String</td>
+</tr>
+</tbody></table>
+<p><em>整数</em></p>
+<table>
+<thead>
+<tr>
+<th align="left">数据库类型</th>
+<th align="left">JDBC类型</th>
+<th align="left">描述</th>
+<th>项目中使用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">bool</td>
+<td align="left">java.lang.Boolean</td>
+<td align="left">tiny(1)的另一种写法</td>
+<td>Boolean</td>
+</tr>
+<tr>
+<td align="left">bit(1)&#x2F;bit(n)</td>
+<td align="left">java.lang.Boolean&#x2F;byte[]</td>
+<td align="left">根据n&#x3D;1和其他分别对应</td>
+<td>Boolean&#x2F;byte[]</td>
+</tr>
+<tr>
+<td align="left">tinyint</td>
+<td align="left">java.lang.Integer</td>
+<td align="left">n&#x3D;1时为boolean</td>
+<td>Integer</td>
+</tr>
+<tr>
+<td align="left">smallint</td>
+<td align="left">java.lang.Integer</td>
+<td align="left">有无符号都是Integer</td>
+<td>Integer</td>
+</tr>
+<tr>
+<td align="left">int</td>
+<td align="left">java.lang.Integer&#x2F;Long</td>
+<td align="left">无符号时为Long</td>
+<td>Long</td>
+</tr>
+<tr>
+<td align="left">bigint</td>
+<td align="left">java.lang.Long</td>
+<td align="left">无符号时是BigInteger</td>
+<td>BigInteger</td>
+</tr>
+</tbody></table>
+<p><em>浮点类</em></p>
+<table>
+<thead>
+<tr>
+<th align="left">数据库类型</th>
+<th align="left">JDBC类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">float</td>
+<td align="left">java.lang.Float</td>
+</tr>
+<tr>
+<td align="left">double</td>
+<td align="left">java.lang.Double</td>
+</tr>
+<tr>
+<td align="left">decimal</td>
+<td align="left">java.math.BigDecimal</td>
+</tr>
+<tr>
+<td align="left">money</td>
+<td align="left">java.math.BigDecimal</td>
+</tr>
+<tr>
+<td align="left">smallmoney</td>
+<td align="left">java.math.BigDecimal</td>
+</tr>
+<tr>
+<td align="left">numeric</td>
+<td align="left">java.math.BigDecimal</td>
+</tr>
+<tr>
+<td align="left">real</td>
+<td align="left">java.lang.Float</td>
+</tr>
+<tr>
+<td align="left">说明：</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<ul>
+<li>Mysql中小数实际上只有<strong>float</strong> 和 <strong>decimal</strong>两种类型，分别是近似数值和精确数值。<code>double = float(53)</code>，<code>real = float(24) </code>，<code>numeric = decimal</code>。</li>
+<li>float存在精度损失，实际上只有float(53)和float(24)两种类型，分别占用8byte和4byte。</li>
+<li>decimal不存在精度损失，decimal(p,s)中p指定最大位数，s指定小数点右侧的最大位数。</li>
+</ul>
+<p><img src="/2023/02/13/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/Pasted-image-20230422234611.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>其他类</em></p>
+<table>
+<thead>
+<tr>
+<th align="left">数据库类型</th>
+<th align="left">JDBC类型</th>
+<th>项目中使用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">date</td>
+<td align="left">java.sql.Date</td>
+<td>java.util.Date</td>
+</tr>
+<tr>
+<td align="left">datetime</td>
+<td align="left">java.sql.Timestamp</td>
+<td>java.util.Date</td>
+</tr>
+<tr>
+<td align="left">timestamp</td>
+<td align="left">java.sql.Timestamp</td>
+<td>java.util.Date</td>
+</tr>
+<tr>
+<td align="left">binary</td>
+<td align="left">byte[]</td>
+<td></td>
+</tr>
+<tr>
+<td align="left">image</td>
+<td align="left">byte[]</td>
+<td></td>
+</tr>
+<tr>
+<td align="left">blob</td>
+<td align="left">byte[]</td>
+<td></td>
+</tr>
+<tr>
+<td align="left">说明：</td>
+<td align="left"></td>
+<td></td>
+</tr>
+</tbody></table>
+<ul>
+<li><code>date</code>：YY-MM-DD</li>
+<li><code>time</code>：HH:MM:SS</li>
+<li><code>datetime</code>：YY-MM-DD HH:MM:SS</li>
+<li><code>timestamp</code>：同datetime，可表示的时间范围不同，且受时区影响</li>
+<li>实际上，mysql中datetime、timestamp可以表示到毫秒，只需要设置<code>datetime(3)/datetime(6)</code>或<code>timestamp(3)/timestamp(6)</code>即可。</li>
+<li>java.sql.Date是java.util.Date的子类，前者无法表示毫秒而后者可以。</li>
+</ul>
+<h2 id="PLC-to-Java"><a href="#PLC-to-Java" class="headerlink" title="PLC to Java"></a>PLC to Java</h2><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>精度(位)</th>
+<th>说明（以java为基准）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>bit</strong></td>
+<td>1</td>
+<td>相当于Boolean</td>
+</tr>
+<tr>
+<td>Byte</td>
+<td>8</td>
+<td>byte</td>
+</tr>
+<tr>
+<td>Int</td>
+<td>?</td>
+<td>与机器相关</td>
+</tr>
+<tr>
+<td>Short</td>
+<td>16</td>
+<td>相当于short</td>
+</tr>
+<tr>
+<td>Long</td>
+<td>32</td>
+<td>相当于int</td>
+</tr>
+<tr>
+<td>Real</td>
+<td>32</td>
+<td>相当于float</td>
+</tr>
+<tr>
+<td>Double</td>
+<td>64</td>
+<td>相当于double</td>
+</tr>
+</tbody></table>
+<h2 id="OPCUA-to-Java"><a href="#OPCUA-to-Java" class="headerlink" title="OPCUA to Java"></a>OPCUA to Java</h2><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>精度(位)</th>
+<th>说明（以java为基准）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Int8~Int64</td>
+<td>8~64</td>
+<td>相当于byte~long</td>
+</tr>
+<tr>
+<td>Float</td>
+<td>32</td>
+<td>相当于float</td>
+</tr>
+<tr>
+<td>Double</td>
+<td>64</td>
+<td>相当于Double</td>
+</tr>
+<tr>
+<td>Boolean</td>
+<td>1</td>
+<td>相当于Boolean</td>
+</tr>
+</tbody></table>
+<h1 id="X、流媒体"><a href="#X、流媒体" class="headerlink" title="X、流媒体"></a>X、流媒体</h1><h2 id="ZLMediaKit"><a href="#ZLMediaKit" class="headerlink" title="ZLMediaKit"></a>ZLMediaKit</h2><p><em>工作原理</em><br><img src="/2023/02/13/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/Pasted-image-20230422235927.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/02/13/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/Pasted-image-20230422235934.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/02/13/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/Pasted-image-20230422235940.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>虚拟主机</em><br>虚拟主机的设置在没有域名的情况下作用不大，但是在关闭流和拉取流的时候，要使用正确的虚拟主机域才能正常使用，播放格式为：<code>http://132.186.192.100:8088/camera/1.flv?vhost=newwish</code></p>
+<p><em>rtsp鉴权</em><br>在局域网内拉流会出现授权问题，需要在配置文件中修改参数为不鉴权。</p>
+<h2 id="摄像头"><a href="#摄像头" class="headerlink" title="摄像头"></a>摄像头</h2><p><em>摄像头配置问题</em><br>对于摄像头，需要注意是否开启音频，flv.js播放时可能会有点问题，解决方案：<br>1.设置海康威视摄像头的音频输出为第一个或ACC（默认的设置不行）；<br>2.可能在设置文件中把enable_audio关闭即可；</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/" class="category-chain-item">开发问题</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+      
+        <a href="/tags/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98/">#开发问题</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>开发问题</div>
+      <div>http://example.com/2023/02/13/概念整理/Java/开发问题/开发问题/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年2月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/02/13/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JAVA-IO/Java-IO/" title="Java IO">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Java IO</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/02/13/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6/Spring/Spring%E5%9F%BA%E7%A1%80/" title="Spring基础">
+                        <span class="hidden-mobile">Spring基础</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/fluid-extention.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

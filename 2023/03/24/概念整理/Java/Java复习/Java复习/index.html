@@ -61,7 +61,7 @@
 <meta property="og:image" content="http://example.com/Pasted%20image%2020230326235238.png">
 <meta property="og:image" content="http://example.com/Pasted%20image%2020230326235543.png">
 <meta property="article:published_time" content="2023-03-24T11:00:55.000Z">
-<meta property="article:modified_time" content="2023-03-27T12:51:56.119Z">
+<meta property="article:modified_time" content="2023-05-04T14:55:52.148Z">
 <meta property="article:author" content="Jin">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2023/03/24/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%A4%8D%E4%B9%A0/Java%E5%A4%8D%E4%B9%A0/Pasted-image-20230324213918.png">
@@ -279,7 +279,7 @@
         
         
         
-          152 分钟
+          153 分钟
         
       </span>
     
@@ -346,8 +346,7 @@
 <p><em>享元模式</em><br>利用共享的方式来支持大量细粒度的对象，这些对象一部分内部状态是相同的。</p>
 <p><em>观察者模式</em><br>定义对象之间的一对多依赖，当一个对象状态改变时，它的所有依赖都会收到通知并且自动更新状态。</p>
 <p><em>访问者模式</em><br>为数据结构中的每个元素提供多种访问方式。它将<strong>对数据的操作与数据结构进行分离</strong>。</p>
-<h1 id="二、Java基础复习"><a href="#二、Java基础复习" class="headerlink" title="二、Java基础复习"></a>二、Java基础复习</h1><p>本部分不完整，主要用于查漏补缺。</p>
-<h2 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h2><p><em>类型转换</em><br>字面浮点数是double类型的。<br>字面整数是int类型的。<br><code>+=</code>可以隐式转换</p>
+<h1 id="二、Java基础复习"><a href="#二、Java基础复习" class="headerlink" title="二、Java基础复习"></a>二、Java基础复习</h1><h2 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h2><p><em>类型转换</em><br>字面浮点数是double类型的。<br>字面整数是int类型的。<br><code>+=</code>可以隐式转换</p>
 <p><em>缓存池</em><br>boolean、bytes、short、int、char有-128~127的缓存池，<code>valueOf()</code>可以获取。</p>
 <p><em>String</em></p>
 <ul>
@@ -590,7 +589,7 @@
 </li>
 <li>添加：<ul>
 <li>判断头节点类型，看使用链表头插还是红黑树（超过8个转红黑树）</li>
-<li>先插入再判断是否扩容</li>
+<li>先插入再判断是否扩容（有时put只会覆盖不会生产新节点，先插入后扩容可以避免不必要的扩容发生）</li>
 </ul>
 </li>
 <li>扩容：<ul>
@@ -765,7 +764,7 @@
 </ul>
 <p><em>锁粗化</em><br>连续的加锁操作合并成一个</p>
 <h3 id="Volatile"><a href="#Volatile" class="headerlink" title="Volatile"></a>Volatile</h3><p>保证可见性和有序性，不能保证原子性。</p>
-<p><em>可见性</em><br>通过写内存的内存语义，写时会直接将工作内存同步到主内存并无效其他线程。</p>
+<p><em>可见性</em><br>通过写内存的内存语义，写时会直接将工作内存同步到主内存并无效其他线程中的内存。</p>
 <p><em>有序性</em><br>volatile写：前插入storestore内存屏障，后插入storeload内存屏障。<br>volatile读：后插入loadload,loadstore内存屏障。</p>
 <p><em>双重校验锁</em><br>单例模式的健全版</p>
 <h3 id="Final"><a href="#Final" class="headerlink" title="Final"></a>Final</h3><p>保证<strong>可见性</strong>。<br><strong>不可变对象永远是线程安全的。</strong>（只要发生方法逃逸）</p>
@@ -887,7 +886,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Entry</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">WeakReference</span>&lt;ThreadLocal&lt;?&gt;&gt; &#123;  <br>    <span class="hljs-comment">/** The value associated with this ThreadLocal. */</span>  <br>    Object value;<br>    <span class="hljs-comment">//private ThreadLocal referent; 继承字段</span><br>  <br>    Entry(ThreadLocal&lt;?&gt; k, Object v) &#123;  <br>        <span class="hljs-built_in">super</span>(k);  <span class="hljs-comment">// referent = k</span><br>        value = v;  <br>    &#125;  <br>&#125;<br></code></pre></td></tr></table></figure>
 
 <div class="note note-primary">
-            <p>注意ThreadLocal中：</p><ul><li>key是<strong>弱引用</strong>，因为ThreadLocal过多时会出现内存泄漏，而在强引用下其是不可回收的。</li><li>value是强引用，因为value可能还存在其他引用，不可盲目回收，且要避免key还在而value为null的情况。</li></ul><p>因此，需要手动的remove(key)实现资源释放。</p>
+            <p>注意ThreadLocalMap.Entry中：</p><ul><li>key是<strong>弱引用</strong>，因为ThreadLocal过多时会出现内存泄漏，而在强引用下其是不可回收的。</li><li>value是强引用，因为value可能还存在其他引用，不可盲目回收，且要避免key还在而value为null的情况。</li></ul><p>因此，需要手动的remove(key)实现资源释放。</p>
           </div>
 
 <h2 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h2><p><img src="/Pasted%20image%2020230326145701.png" srcset="/img/loading.gif" lazyload><br><em>工作流程</em><br><img src="/Pasted%20image%2020230326145908.png" srcset="/img/loading.gif" lazyload></p>
@@ -1084,7 +1083,7 @@
 <ul>
 <li>单&#x2F;多线程，重新标记时使用多线程，低延迟。</li>
 <li>因为并发清理，所以使用了标记清除算法，存在内存碎片</li>
-<li>三色标记法，修正时把不考虑浮动垃圾，若A新增了执行B的指针，则把A标记为灰色。</li>
+<li>三色标记法，修正时把不考虑浮动垃圾，若A新增了指向B的指针，则把A标记为灰色。</li>
 </ul>
 <p><em>G1</em><br>延迟可控的情况下吞吐量，一般设置延迟和最大堆内存即可。<br><strong>现在互联网的项目，基本都是使用G1。</strong></p>
 <p><em>G1分区</em><br>H区装大对象，Region之间使用空闲链表，Region内部使用指针压缩。<br><img src="/Pasted%20image%2020230326234923.png" srcset="/img/loading.gif" lazyload></p>
@@ -1141,7 +1140,7 @@
 <p><em>JVM调优实际案例</em></p>
 <ul>
 <li>合理配置JVM参数，如栈(-xss)、堆内存(-xms,-xmx)，选择合适的GC回收器。（IO密集型的可以稍微把「年轻代」空间加大些，因为大多数对象都是在年轻代就会灭亡。内存计算密集型的可以稍微把「老年代」空间加大些，对象存活时间会更长些）</li>
-<li>本应用中，就适当调大了young区，因为接收到的大多数产线数据处理后即回收。</li>
+<li>项目应用中，就适当调大了young区，因为接收到的大多数产线数据处理后即回收。</li>
 <li>-XX:MetaspaceSize，初始元空间大小，建议设置大一点，以免项目启动时为了调整元空间大小频繁Full GC。</li>
 </ul>
 <p><em>其他概念</em></p>
@@ -1154,7 +1153,7 @@
 <li>内存泄漏：有不用或不常用的垃圾无法回收</li>
 <li>内存溢出：内存泄漏常常导致内存溢出</li>
 </ul>
-
+<h1 id="五、IO"><a href="#五、IO" class="headerlink" title="五、IO"></a>五、IO</h1><h1 id="六、Spring"><a href="#六、Spring" class="headerlink" title="六、Spring"></a>六、Spring</h1>
                 
               </div>
             
@@ -1251,7 +1250,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/03/25/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%A4%8D%E4%B9%A0/" title="">
+                      <a href="/2023/03/25/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/" title="">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile"></span>
                         <span class="visible-mobile">上一篇</span>
