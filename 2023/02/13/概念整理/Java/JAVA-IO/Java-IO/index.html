@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://example.com/2023/02/13/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JAVA-IO/Java-IO/1676302539083.png">
 <meta property="og:image" content="http://example.com/2023/02/13/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JAVA-IO/Java-IO/Pasted-image-20230213174047.png">
 <meta property="article:published_time" content="2023-02-13T06:26:04.000Z">
-<meta property="article:modified_time" content="2023-04-05T15:15:04.877Z">
+<meta property="article:modified_time" content="2023-05-05T06:17:57.430Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="Java-IO">
@@ -418,6 +418,7 @@
 </ul>
 <h3 id="DirectByteBuffer"><a href="#DirectByteBuffer" class="headerlink" title="DirectByteBuffer"></a>DirectByteBuffer</h3><p>ByteBuffer调用allocateDirect函数创建DirectByteBuffer：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> ByteBuffer <span class="hljs-title function_">allocateDirect</span><span class="hljs-params">(<span class="hljs-type">int</span> capacity)</span> &#123; <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DirectByteBuffer</span>(capacity); &#125;<br></code></pre></td></tr></table></figure>
+
 <p><em>底层原理</em><br>对象引用在Java内存模型中，字节缓冲区在直接内存中，底层调用<code>malloc()</code>函数</p>
 <h3 id="FileChannel"><a href="#FileChannel" class="headerlink" title="FileChannel"></a>FileChannel</h3><p>并发环境下是线程安全的。<br><em>相关方法</em></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//把文件数据写入target Channel</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-type">long</span> <span class="hljs-title function_">transferTo</span><span class="hljs-params">(<span class="hljs-type">long</span> position, <span class="hljs-type">long</span> count, WritableByteChannel target)</span> <span class="hljs-keyword">throws</span> IOException;<br><br><span class="hljs-comment">//把src Channel数据写入文件</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-type">long</span> <span class="hljs-title function_">transferFrom</span><span class="hljs-params">(ReadableByteChannel src, <span class="hljs-type">long</span> position, <span class="hljs-type">long</span> count)</span> <span class="hljs-keyword">throws</span> IOException;<br></code></pre></td></tr></table></figure>
@@ -425,7 +426,7 @@
 <p><em>底层原理</em><br>Linux <code>sendFile()</code></p>
 <h3 id="Netty"><a href="#Netty" class="headerlink" title="Netty"></a>Netty</h3><p>netty在用户态中对零拷贝进行了优化：</p>
 <ul>
-<li>DefaultFileRegion类，包装了<code>transferTo()</code>，直接将；</li>
+<li>DefaultFileRegion类，包装了<code>transferTo()</code>，直接将文件发送到输出Channel；</li>
 <li>ByteBuf类，包装了ByteBuffer，避免了用户态中Buf之间的拷贝。</li>
 </ul>
 <h1 id="三、JAVA-I-x2F-O模式"><a href="#三、JAVA-I-x2F-O模式" class="headerlink" title="三、JAVA I&#x2F;O模式"></a>三、JAVA I&#x2F;O模式</h1><p>具体细节见操作系统章节，这里主要关注java代码实现。</p>

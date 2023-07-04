@@ -235,160 +235,6 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC7%E7%AB%A0%EF%BC%88%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%EF%BC%89/" target="_self">
-          Redis第7章（性能监控）
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC7%E7%AB%A0%EF%BC%88%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%EF%BC%89/" target="_self">
-        <div>
-          状态命令 状态信息 - info通过info命令查看实时吞吐量（ops&#x2F;sec）。 监控执行命令 - monitor监控接受到的命令 监控延迟 - latency测量响应延迟1redis-cli --latency -h 127.0.0.1 内部机制监控123&gt;CONFIG SET latency-monitor-threshold 100 #100是阈值，只有慢于100ms的才记
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-01-06 18:32" pubdate>
-              2023-01-06
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/" class="category-chain-item">Redis</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
-  
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
-            
-              <a href="/tags/Redis/">#Redis</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/01/05/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/" target="_self">
-          Redis第6章（缓存问题）
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/05/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/" target="_self">
-        <div>
-          缓存问题 缓存穿透 缓存击穿 缓存雪崩 缓存污染（或者满了） 缓存和数据库一致性  缓存穿透问题缓存穿透是指缓存和数据库中都没有的数据。缓存不命中则会一直请求数据库，数据库查不到，又无法写入缓存。 解决 禁止非法请求，如校验参数合法性 数据库取不到的数据，在redis中置为key-null，防止大量数据库请求 bloomfilter，判断key是否在容器中  缓存击穿问题缓存击穿是指缓存中没有但数
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-01-05 01:05" pubdate>
-              2023-01-05
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/" class="category-chain-item">Redis</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
-  
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
-            
-              <a href="/tags/Redis/">#Redis</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
         <a href="/2023/01/04/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%AB%98%E5%8F%AF%E7%94%A8%EF%BC%89/" target="_self">
           Redis第5章（高可用）
         </a>
@@ -426,13 +272,20 @@
   
     <span>></span>
     
-  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/" class="category-chain-item">Redis</a>
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/" class="category-chain-item">Redis</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  
+  
+
   
 
   
@@ -503,13 +356,20 @@
   
     <span>></span>
     
-  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/" class="category-chain-item">Redis</a>
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/" class="category-chain-item">Redis</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  
+  
+
   
 
   
@@ -580,13 +440,20 @@
   
     <span>></span>
     
-  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/" class="category-chain-item">Redis</a>
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/" class="category-chain-item">Redis</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  
+  
+
   
 
   
@@ -657,13 +524,20 @@
   
     <span>></span>
     
-  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/" class="category-chain-item">Redis</a>
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/" class="category-chain-item">Redis</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  
+  
+
   
 
   
@@ -734,13 +608,20 @@
   
     <span>></span>
     
-  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/" class="category-chain-item">Redis</a>
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/" class="category-chain-item">Redis</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  
+  
+
   
 
   
@@ -946,6 +827,160 @@
             <i class="iconfont icon-date"></i>
             <time datetime="2022-12-14 20:48" pubdate>
               2022-12-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/" class="category-chain-item">计网基础</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+            
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">#计算机网络</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/" target="_self">
+          计算机网络第3章（数据链路层）
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/12/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%89/" target="_self">
+        <div>
+          一、概述物理层已经保证了数据在物理层面上的传输功能，但无法避免传输中发生的错误。数据链路层作为网络层、物理层之间的桥梁，主要的职责则是保证数据传输过程的差错控制和可靠传输，即识别、纠正传输中发生的错误。 网络中的主机、路由器、交换机等都必须实现数据链路层。 术语：  链路（Link）表示一段没有交换节点物理线路 数据链路（Data Link）表示具有通讯协议的软硬件实现的链路
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-12-11 02:48" pubdate>
+              2022-12-11
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/" class="category-chain-item">计网基础</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+            
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">#计算机网络</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/12/10/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC2%E7%AB%A0%EF%BC%88%E7%89%A9%E7%90%86%E5%B1%82%EF%BC%89/" target="_self">
+          计算机网络第2章（物理层）
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/12/10/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC2%E7%AB%A0%EF%BC%88%E7%89%A9%E7%90%86%E5%B1%82%EF%BC%89/" target="_self">
+        <div>
+          一、物理层的基本概念物理层主要考虑如何传输数据比特流。 二、物理层传输媒体传输媒体也称为传输介质或传输媒介，分为两大类，即导引型传输媒体和非导引型传输媒体。 导引型传输媒体 同轴电缆（已被淘汰） 双绞线（主要用于局域网） 光纤（主要用于ISP接入服务） 多模光纤：允许多条不同角度的光纤同时传输 单模光纤：如同一根波导，没有反射   电力线（主要用于家庭网络扩展：猫）  非引导型传输媒体 无线电波（
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-12-10 22:46" pubdate>
+              2022-12-10
             </time>
           </div>
         
