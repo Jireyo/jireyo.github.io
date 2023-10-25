@@ -28,7 +28,7 @@
 <meta property="og:image" content="http://example.com/2023/02/09/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E6%A0%91%EF%BC%89/Pasted-image-20230423002057.png">
 <meta property="og:image" content="http://example.com/2023/02/09/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E6%A0%91%EF%BC%89/Pasted-image-20230423002105.png">
 <meta property="article:published_time" content="2023-02-09T08:24:43.000Z">
-<meta property="article:modified_time" content="2023-06-18T11:12:03.612Z">
+<meta property="article:modified_time" content="2023-10-16T16:04:16.668Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="算法">
 <meta property="article:tag" content="树">
@@ -248,7 +248,7 @@
         
         
         
-          108 分钟
+          109 分钟
         
       </span>
     
@@ -375,47 +375,45 @@
 </ul>
 <h2 id="构造"><a href="#构造" class="headerlink" title="构造"></a>构造</h2><p>每次将根节点权值最小的树合并即可。<br><img src="/2023/02/09/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E6%A0%91%EF%BC%89/Pasted-image-20230404233232.jpg" srcset="/img/loading.gif" lazyload></p>
 <h2 id="赫夫曼编码"><a href="#赫夫曼编码" class="headerlink" title="赫夫曼编码"></a>赫夫曼编码</h2><p>统计各字符使用次数，将其作为权重然后构造赫夫曼树。</p>
-<h1 id="四、B树和B-树"><a href="#四、B树和B-树" class="headerlink" title="四、B树和B+树"></a>四、B树和B+树</h1><h2 id="B树"><a href="#B树" class="headerlink" title="B树"></a>B树</h2><p><img src="/2023/02/09/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E6%A0%91%EF%BC%89/Pasted-image-20230423002057.png" srcset="/img/loading.gif" lazyload><br><em>定义</em></p>
-<ul>
-<li>多路自平衡的搜索树，B树允许每个节点有多个子节点。</li>
-<li>关键字分布在整颗树中。</li>
-</ul>
-<p><em>优点</em></p>
-<ul>
-<li>相对二叉树，逻辑上接近的节点物理上也会更近，可以充分利用磁盘预读。</li>
-<li>相比二叉树，有效降低了树的高度，且每个节点区确定的范围更精确。</li>
-</ul>
-<h2 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h2><p><img src="/2023/02/09/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E6%A0%91%EF%BC%89/Pasted-image-20230423002105.png" srcset="/img/loading.gif" lazyload><br><em>定义</em></p>
-<ul>
-<li>B树的变体，多路自平衡的搜索树。</li>
-<li>关键字存储在叶子节点上，且叶子节点之间存在链指针。</li>
-</ul>
-<p><em>与B树的区别</em></p>
-<ul>
-<li>结构上，由于关键字存储位置不同，B+树的查询时间复杂度更固定，B树则取决于搜索关键字的位置；</li>
-<li>B+树叶节点两两相连可大大增加区间访问性，可使用在范围查询等，而B-树每个节点 key 和 data 在一起，则无法区间查找。</li>
-<li>B+树更适合外部存储，由于内节点不保存数据，每个节点占用空间更少，意味着一次可以读出更多的节点，读出的索引更多，搜索更快。</li>
-</ul>
-<h2 id="为什么使用B-x2F-B-树做存储？"><a href="#为什么使用B-x2F-B-树做存储？" class="headerlink" title="为什么使用B-&#x2F;B+树做存储？"></a>为什么使用B-&#x2F;B+树做存储？</h2><p><em>预备知识</em></p>
+<h1 id="四、B树和B-树"><a href="#四、B树和B-树" class="headerlink" title="四、B树和B+树"></a>四、B树和B+树</h1><h2 id="B树"><a href="#B树" class="headerlink" title="B树"></a>B树</h2><p><em>定义</em><br>B树是一类树，包括B-树、B+树、B* 树等，这是一种专门为<strong>外部存储器</strong>设计的，如磁盘，它对于读取和写入大块数据有良好的性能，所以一般被用在文件系统及数据库中，其在结构上允许每个节点有更多的子节点。</p>
+<h2 id="为什么使用B树做存储？"><a href="#为什么使用B树做存储？" class="headerlink" title="为什么使用B树做存储？"></a>为什么使用B树做存储？</h2><p><em>预备知识</em></p>
 <ul>
 <li>存储时总存在一个<strong>存储最小单元</strong>（如InnoDB的页）；</li>
-<li>主存的存取过程中，通过地址总线传入矩阵后即可从数据总线中得到存储数据，该过程中数据之间的距离对效率<strong>没有影响</strong>；</li>
-<li>磁盘I&#x2F;O的存取过程中，存在机械运动，每个<strong>扇区是磁盘的最小存储单元</strong>；</li>
+<li><strong>主存的存取过程</strong>中，通过地址总线传入矩阵后即可从数据总线中得到存储数据，该过程中数据之间的距离对效率<strong>没有影响</strong>；</li>
+<li><strong>磁盘I&#x2F;O的存取过程</strong>中，存在机械运动，每个<strong>扇区是磁盘的最小存储单元</strong>；</li>
 <li><strong>局部性原理</strong>：当一个数据被用到时，其附近的数据也通常会马上被使用。</li>
 </ul>
 <p><em>解释</em></p>
 <ul>
-<li>由于磁盘I&#x2F;O相对主存过慢，为提高效率，需要减少磁盘I&#x2F;O，即进行预读；</li>
-<li>预读一般以页为基本单位，B-树和B+树为磁盘位置检索和预读提供了良好的数据结构。</li>
+<li>当数据量较大时，内存不够使用，必然需要<strong>磁盘I&#x2F;O</strong>；</li>
+<li>由于磁盘I&#x2F;O相对主存过慢，为提高效率，需要减少磁盘I&#x2F;O，即进行<strong>预读</strong>；</li>
+<li>预读一般以页为基本单位，B树为磁盘位置检索和预读提供了良好的<strong>数据结构</strong>。</li>
 </ul>
-<h1 id="五、序列化与反序列化"><a href="#五、序列化与反序列化" class="headerlink" title="五、序列化与反序列化"></a>五、序列化与反序列化</h1><p><em>解释</em></p>
+<h2 id="B-树"><a href="#B-树" class="headerlink" title="B-树"></a>B-树</h2><p><img src="/2023/02/09/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E6%A0%91%EF%BC%89/Pasted-image-20230423002057.png" srcset="/img/loading.gif" lazyload><br><em>定义</em></p>
 <ul>
-<li>树的反序列化，最需要关注和维护的就是节点之间的父子和子子关系，实现隔离一个父的多个子；</li>
-<li>其维护的难点在于，遍历子节点时，需要维护其父节点以维护父子关系。</li>
+<li><strong>多路自平衡的搜索树</strong>，B树允许每个节点有多个子节点。</li>
+<li><strong>关键字分布在整颗树中</strong>。</li>
 </ul>
+<p><em>优点</em></p>
+<ul>
+<li>相对二叉树，逻辑上接近的节点物理上也会更近，可以<strong>充分利用磁盘预读</strong>。</li>
+<li>相比二叉树，有效降低了树的高度，且每个节点区确定的范围更精确。</li>
+</ul>
+<h2 id="B-树-1"><a href="#B-树-1" class="headerlink" title="B+树"></a>B+树</h2><p><img src="/2023/02/09/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E6%A0%91%EF%BC%89/Pasted-image-20230423002105.png" srcset="/img/loading.gif" lazyload><br><em>定义</em></p>
+<ul>
+<li>B树的变体，也是<strong>多路自平衡的搜索树</strong>。</li>
+<li><strong>关键字存储在叶子节点上，且叶子节点之间存在链指针</strong>。</li>
+</ul>
+<p><em>与B树的区别</em></p>
+<ul>
+<li>结构上，由于关键字存储位置不同，B+树的<strong>查询时间复杂度</strong>更稳定，B树则取决于搜索关键字的位置；</li>
+<li><strong>B+树叶子节点两两相连</strong>可大大增加区间访问性，可使用在范围查询等，而B-树每个节点 key 和 data 在一起，则无法区间查找。</li>
+<li>B+树更适合外部存储，由于<strong>内节点不保存数据</strong>，每个节点占用空间更少，意味着一次可以读出更多的非叶子节点，读出的索引更多，搜索更快。</li>
+</ul>
+<h1 id="五、序列化与反序列化"><a href="#五、序列化与反序列化" class="headerlink" title="五、序列化与反序列化"></a>五、序列化与反序列化</h1><p><em>解释</em><br>树的反序列化，最需要关注和维护的就是节点之间的父子和子子关系，实现隔离一个父的多个子，其维护的难点在于，遍历子节点时，需要维护其父节点以维护父子关系。</p>
 <p><em>方法</em><br>无论使用那种方法，序列化的字符串中每个节点或特殊标记之间需要用<strong>空格</strong>或<strong>逗号</strong>等隔开，反序列化时才方便执行：</p>
 <ul>
-<li>DFS+递归：顺序构建字符串，字符串记录节点值后记录子节点值。<ul>
+<li>DFS+递归：先序构建字符串，字符串记录节点值后记录子节点值。<ul>
 <li>序列化时：为了区分出子节点结构，对于二叉树，空节点传<code>&quot;Null&quot;</code>，对于N叉树，固定使用一位记录节点数量即可。</li>
 <li>反序列化时：使用一个全局变量代表索引即可；</li>
 </ul>

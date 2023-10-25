@@ -1,0 +1,842 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="基本概念分布式数据库传统集中式数据库  优势：成熟、稳定，生态完善 劣势：成本高、无法横向扩展  分库分表方案  优势：水平扩展，技术成本低（不需要改造数据库引擎） 劣势： 全局一致性：多个数据库服务器时间戳不一致； 负载均衡：无法动态调整分片规则，需要停机； 跨库分布式事务：只能在中间件层面完成，但中间件难以做到RPO&#x3D;0； 跨库复杂SQL：只能在中间件层面完成，但中间件又不具备分布式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jin&#39;s Blog">
+<meta property="og:url" content="http://example.com/2023/10/15/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/OceanBase/OceanBase%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
+<meta property="og:description" content="基本概念分布式数据库传统集中式数据库  优势：成熟、稳定，生态完善 劣势：成本高、无法横向扩展  分库分表方案  优势：水平扩展，技术成本低（不需要改造数据库引擎） 劣势： 全局一致性：多个数据库服务器时间戳不一致； 负载均衡：无法动态调整分片规则，需要停机； 跨库分布式事务：只能在中间件层面完成，但中间件难以做到RPO&#x3D;0； 跨库复杂SQL：只能在中间件层面完成，但中间件又不具备分布式">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015131227.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015131158.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015131453.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015144046.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015144441.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015145749.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015150320.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015150828.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015151106.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015152534.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015152520.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015153548.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015161513.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015162057.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015165404.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015170023.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015170324.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015171155.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015172632.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015172928.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015173004.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231015173557.png">
+<meta property="article:published_time" content="2023-10-15T04:22:06.067Z">
+<meta property="article:modified_time" content="2023-10-17T08:46:04.915Z">
+<meta property="article:author" content="Jin">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/Pasted%20image%2020231015131227.png">
+  
+  
+  
+  <title>Jin&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-10-15 12:22" pubdate>
+          2023年10月15日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          37 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><h2 id="分布式数据库"><a href="#分布式数据库" class="headerlink" title="分布式数据库"></a>分布式数据库</h2><p><em>传统集中式数据库</em></p>
+<ul>
+<li>优势：成熟、稳定，生态完善</li>
+<li>劣势：成本高、<strong>无法横向扩展</strong></li>
+</ul>
+<p><em>分库分表方案</em></p>
+<ul>
+<li>优势：水平扩展，技术成本低（不需要改造数据库引擎）</li>
+<li>劣势：<ul>
+<li><strong>全局一致性</strong>：多个数据库服务器时间戳不一致；</li>
+<li><strong>负载均衡</strong>：无法动态调整分片规则，需要停机；</li>
+<li><strong>跨库分布式事务</strong>：只能在中间件层面完成，但中间件难以做到RPO&#x3D;0；</li>
+<li><strong>跨库复杂SQL</strong>：只能在中间件层面完成，但中间件又不具备分布式并行计算能力、限制应用的使用。</li>
+</ul>
+</li>
+</ul>
+<p><em>分布式关系型数据库</em></p>
+<ul>
+<li>数据高可靠+服务高可用：<strong>多副本一致性协议Paxos</strong>的工业级实现，个别节点发生故障时保证数据零丢失（RPO&#x3D;0）和服务快速恢复（RTO&lt;30秒）</li>
+<li>线性扩容：弹性扩容、缩容</li>
+<li>低成本：基于普通X86服务器保证高可用性，无需使用高端小型机和存储</li>
+<li>全局一致性：支持<strong>分布式事务</strong>，确保全局一致性，支持分布式复杂查询</li>
+<li>灵活的部署方式：支持<strong>三中心、五中心、主备等多种部署模式</strong></li>
+<li><strong>对业务透明</strong>：业务系统可以像使用单点数据库一样使用分布式数据库，业务迁移改造成本低</li>
+</ul>
+<h2 id="OceanBase产品"><a href="#OceanBase产品" class="headerlink" title="OceanBase产品"></a>OceanBase产品</h2><h3 id="TPC-C测试"><a href="#TPC-C测试" class="headerlink" title="TPC-C测试"></a>TPC-C测试</h3><p><em>TPC-C 认证</em></p>
+<ul>
+<li>第一个通过认证的中国数据库</li>
+<li>第一个通过认证的分布式数据库</li>
+</ul>
+<p><em>TPC-C测试</em></p>
+<ul>
+<li>业务场景：若干个仓库，每个仓库有很多的商品（Item），有许多买家，绝大多数情况下，买家只会从绑定的一个仓库买东西；少数情况下，买家才会从其他仓库买东西。</li>
+<li>测试指标：TPMC就是指每分钟下单（New-Order）的数量，是TPCC官方进行性能排名使用的指标。<ul>
+<li>下单（Order）和支付（Payment）两种事务的数量，占了总事务量的88%。</li>
+<li>90%的下单操作是单机事务，85%的支付操作是单机事务，分布式事务合计占比11%。</li>
+</ul>
+</li>
+</ul>
+<h3 id="产品矩阵"><a href="#产品矩阵" class="headerlink" title="产品矩阵"></a>产品矩阵</h3><p><img src="/Pasted%20image%2020231015131227.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="OCP——运维工具"><a href="#OCP——运维工具" class="headerlink" title="OCP——运维工具"></a>OCP——运维工具</h4><p>OCP多节点部署，主要用于元数据管理，OCP Agent用于监控被管理者，如OB Server。<br><img src="/Pasted%20image%2020231015131158.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="ODC——开发工具"><a href="#ODC——开发工具" class="headerlink" title="ODC——开发工具"></a>ODC——开发工具</h4><p>用于连接管理，提供SQL控制台和高级工具<br><img src="/Pasted%20image%2020231015131453.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="OMS——迁移工具"><a href="#OMS——迁移工具" class="headerlink" title="OMS——迁移工具"></a>OMS——迁移工具</h4><p><em>能力</em></p>
+<ul>
+<li>支持多种类型数据源：支持包括 Oracle、MySQL、DB2、OceanBase等数据库到 OceanBase 的<strong>全量迁移</strong>和<strong>增量实时数据同步</strong>。</li>
+<li>多重数据校验：提供多种方式校验的保护，更加全面、省时、高效地保证数据质量；同时展示差异数据，提供快速订正途径</li>
+</ul>
+<p><em>迁移步骤</em><br>应用读写 -&gt; 实时同步 -&gt; 应用停写 -&gt; 全量校验 -&gt; 实时同步 -&gt; 切换读写OB</p>
+<h4 id="其他组件"><a href="#其他组件" class="headerlink" title="其他组件"></a>其他组件</h4><ul>
+<li>JDBC驱动：<code>com.alipay.oceanbase.obproxy.mysql.jdbc.Driver</code>；</li>
+<li>数据同步框架DataX：通过配置Reader和Writer实现将<strong>数据库之间</strong>的数据同步；</li>
+<li>OBLOADER&#x2F;OBDUMPER：实现数据的<strong>文件存储和导入</strong>；</li>
+</ul>
+<h2 id="OceanBase基本概念"><a href="#OceanBase基本概念" class="headerlink" title="OceanBase基本概念"></a>OceanBase基本概念</h2><p><em>基本概念</em><br><img src="/Pasted%20image%2020231015144046.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li><strong>一个集群由多个Zone组成</strong>，给集群内的一批机器打上同一个tag，则属于同一个Zone；</li>
+<li>不同的Zone可以对应不同城市、一个城市的不同机房、或者一个机房的不同机架；</li>
+<li>Zone个数&gt;&#x3D;3，建议是奇数；</li>
+<li><strong>每个zone均有且只有一份完整的副本；</strong></li>
+<li>单 Zone的故障不影响业务；</li>
+<li><strong>每台OB Server相对独立</strong>，有独立计算和存储引擎。</li>
+</ul>
+<p><em>总控服务</em><br><img src="/Pasted%20image%2020231015144441.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="分布式架构"><a href="#分布式架构" class="headerlink" title="分布式架构"></a>分布式架构</h1><h2 id="数据分区与分区副本"><a href="#数据分区与分区副本" class="headerlink" title="数据分区与分区副本"></a>数据分区与分区副本</h2><p><em>水平分区</em><br>当表较大时可以水平拆分为若干分区，根据行数据到分区的映射关系不同，分为hash分区、list分区、range分区等。<strong>本质上是传统数据库的分区表在分布式系统上的实现。</strong></p>
+<p><em>分区副本</em><br>每个分区的数 据在物理上存储多份，每一份叫做分区的一个副本。每个Zone都应该有完整的数据副本。<br><img src="/Pasted%20image%2020231015145749.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>副本构成</em><br>分区副本有三种类型：</p>
+<ul>
+<li>全能型的副本可以随时切换为Leader对外提供数据服务</li>
+<li>日志型的副本只包含日志的副本，无法对外提供服务，但可以投票，优势是成本更低。</li>
+<li>只读型副本类似全能型副本，区别在于不会作为Paxos成员，只提供弱一致读能力。（不干涉原分区功能结构）</li>
+</ul>
+<p><img src="/Pasted%20image%2020231015150320.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>Paxos协议组结构</em><br><img src="/Pasted%20image%2020231015150828.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>自动负载均衡与智能路由</em></p>
+<ul>
+<li>自动负载均衡：主副本均匀打散到各个服务器中，使得各个服务器都能承载业务流量。</li>
+<li>每台OB Server相互独立：每台OB Server均可以独立执行SQL，如果应用需要访问的数据在不同机器上， OB Server自动将请求路由至数据所在的机器，对业务完全透明。</li>
+</ul>
+<p><img src="/Pasted%20image%2020231015151106.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>数据同步</em><br>同步方式：<strong>多副本同步Redo Log确保数据持久化</strong>。</p>
+<ul>
+<li>Paxos组成员通过Redo-Log的多数派强同步， 确保数据的持久化；</li>
+<li>Leader无需等待所有Follower的反馈，多数派 完成同步即可向应用反馈成功。</li>
+<li>例如P1分区（Leader）承接业务请求，然后将Redo-Log同步请求发送到其他Zone的P1分区（Follower），任何Follower完成Redo-Log落盘并响应返回Leader后，Leader即视为Redo-Log完成强同步，再等待其他Follower的反馈，多数副本完成同步后即操作完成。</li>
+</ul>
+<p><em>OB Proxy特点</em><br><img src="/Pasted%20image%2020231015152534.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>高效路由转发：对SQL做基本解析，确定对应Leader所在的机器，实现反向代理，将请求路由至对应Leader，当Leader位置无法确定时则随机选择OB Server。</li>
+<li>无状态：OB Proxy不做数据持久化，是一个<strong>无状态</strong>的服务进程。</li>
+</ul>
+<h2 id="副本分布配置"><a href="#副本分布配置" class="headerlink" title="副本分布配置"></a>副本分布配置</h2><p><em>分区主副本在Zone之间的分布</em><br><img src="/Pasted%20image%2020231015152520.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>Table Group</em><br>条件：</p>
+<ul>
+<li>如果多个表的分区方式完全相同（分区类型、分区键个数、分区数量等） ，可以<strong>在逻辑上将这些表归属到同一个Table Group</strong>中，以影响动态负载均衡的策略。</li>
+<li>同一个Table Group中的所有表，分区ID（partition_id）相同的所有分区，<strong>这些表的相同分区的leader在同一个ObServer上</strong>；在不影响全局负载均衡的前提下，可有效减少分布式事务引入的跨机访问开销。</li>
+</ul>
+<p>例子：<br><img src="/Pasted%20image%2020231015153548.png" srcset="/img/loading.gif" lazyload><br>T1和T2的分区规则一致，将其配置在同一个table group中，则这两个表的相同分区id的Leader会被分配在同一个ObServer。</p>
+<h2 id="扩容与缩容"><a href="#扩容与缩容" class="headerlink" title="扩容与缩容"></a>扩容与缩容</h2><p><img src="/Pasted%20image%2020231015161513.png" srcset="/img/loading.gif" lazyload><br><img src="/Pasted%20image%2020231015162057.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="数据可靠及高可用"><a href="#数据可靠及高可用" class="headerlink" title="数据可靠及高可用"></a>数据可靠及高可用</h2><h3 id="灾难恢复能力等级"><a href="#灾难恢复能力等级" class="headerlink" title="灾难恢复能力等级"></a>灾难恢复能力等级</h3><ul>
+<li>RTO（Recovery Time Objective）恢复时间目标：在故障或灾难发生之后，数据库停止工作的最高可承受时间，这是一个最大可容忍时限，必须在此时限内恢复数据；</li>
+<li>RPO（Recovery Point Object）恢复点目标：这是一个过去的时间点，当灾难或紧急事 件发生时，数据可以恢复到的时间点，是业务系统所能容忍的数据丢失量。</li>
+</ul>
+<p>其中，<strong>RTO代表着可用性，RPO代表着数据可靠性</strong>。OceanBase RPO&#x3D;0 RTO&lt;30秒，意味着当少数派故障时，OceanBase能够在30秒内恢复业务，且不会丢失任何数据。</p>
+<h3 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h3><p><em>节点故障</em></p>
+<ul>
+<li>主副本故障：从副本协商选主承接业务，主副本恢复后先追平数据，加入Paxos组，然后重新称为主副本（负载均衡）。</li>
+<li>从副本故障：对业务无影响，恢复后追平数据并加入Paxos组。</li>
+</ul>
+<p><em>进程异常</em></p>
+<ul>
+<li>异常抖动（终止时长小于设定时间）：OB暂不做处理，等待进程恢复</li>
+<li>临时下线（终止时长大于设定时间）：对机器做临时下线处理，将<strong>从其他Zone主副本将缺失数据复制到本Zone的其他机器上</strong>，维持副本个数，<strong>保证每个Zone拥有全量数据</strong>。待ObServer进程恢复后自动加入集群，然后回迁分片。</li>
+</ul>
+<h3 id="高可用方案对比"><a href="#高可用方案对比" class="headerlink" title="高可用方案对比"></a>高可用方案对比</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>技术实现</th>
+<th>备故障情况</th>
+<th>主故障情况</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>传统数据库</td>
+<td>主库+从库，使用redo-log同步，通常采用“最大可用模式”，不能保证RPO&#x3D;0</td>
+<td>在“最大保护模式”下，备故障或网络故障会导致不可用，因此常使用“最大可用模式”，但RPO&gt;0</td>
+<td>备无法主动切换为主，需要人工切换，RTO&gt;30min</td>
+</tr>
+<tr>
+<td>OceanBase</td>
+<td>基于Paxos协议的典型三副本部署：数据强一致性、主备自动切换，高可用。</td>
+<td>不影响业务，RPO&#x3D;0</td>
+<td>副本选主接管业务，RTO&lt;30s</td>
+</tr>
+</tbody></table>
+<h2 id="容灾架构"><a href="#容灾架构" class="headerlink" title="容灾架构"></a>容灾架构</h2><p><em>OceanBase容灾：同城三机房</em><br>低延迟，无法应付城市级灾难</p>
+<p><em>OceanBase容灾：三地五中心五副本</em><br>解决城市级灾难<br><img src="/Pasted%20image%2020231015165404.png" srcset="/img/loading.gif" lazyload></p>
+<div class="note note-primary">
+            <p>同城三机房或者三地五中心的方案对基础设施要求太高。为了利旧企业现网的基础设施，OceanBase提供了<strong>同城两机房</strong>和<strong>两地三中心</strong>两种方案。</p>
+          </div>
+
+<p><em>OceanBase容灾：同城两机房“主-备”方案</em><br>一个OB集群为主集群，另一个OB集群为副集群，集群之间通过redo-log做数据同步，类似传统数据库的主从复制。</p>
+<p><em>OceanBase容灾：两地三中心“主-备”方案</em><br><img src="/Pasted%20image%2020231015170023.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>主城市与备城市组成一个5副本的集群。任何IDC的故障，最多损失2份副本，剩余的3份副本依然满足多数派；</li>
+<li>备用城市建设一个独立的3副本集群，做为一个备集群，从主集群“异步同步”或者“强同步”到备集群；</li>
+<li>一旦主城市遭遇灾难，备城市可以接管业务。</li>
+</ul>
+<h2 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h2><p><em>分布式数据库面临的挑战</em><br><img src="/Pasted%20image%2020231015170324.png" srcset="/img/loading.gif" lazyload><br>由于OceanBase的分布式架构，采用了多点无共享（即 Shared-Nothing）的架构，其分布式数据库在实现快照隔离和多版本并发控制时会面临挑战（如最新的事务id无法及时同步，服务器获取快照时可能得不到最新的数据，即服务器之间存在时钟差异）。</p>
+<p><em>OceanBase全局一致性快照技术</em><br>OceanBase数据库利用<strong>一个集中式服务（GTS）来提供全局一致的版本号</strong>。事务在修改数据或者查询数据的时候，无论请求源自哪台物理机器，都会从这个集中式的服务处获取版本号，保证所有的版本号单调向前并且和真实世界的时间顺序保持一致。</p>
+<p><em>两阶段提交</em><br><img src="/Pasted%20image%2020231015171155.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>事务协调者和所有参与者都是高可用的；</li>
+<li>单机多分区事务，所有参与者都prepare成功即认为事务进入提交状态，立即返回客户端commit。</li>
+</ul>
+<p><em>多版本并发控制MVCC</em><br>依赖全局唯一时间戳服务实现全局的数据版本号管理。</p>
+<p><em>事务隔离级别</em><br>基于MVCC实现隔离级别，不支持脏读（Dirty-Read），只能获取已提交数据。</p>
+<h1 id="SQL引擎和存储引擎"><a href="#SQL引擎和存储引擎" class="headerlink" title="SQL引擎和存储引擎"></a>SQL引擎和存储引擎</h1><h2 id="SQL引擎"><a href="#SQL引擎" class="headerlink" title="SQL引擎"></a>SQL引擎</h2><p>兼容MYSQL、Oracle的语法和协议，也支持事务和EXPLAIN等功能。</p>
+<h2 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h2><p><em>传统数据库的问题</em><br>操作BufferPool（内存）时较快，但刷盘时会出现<strong>随机写</strong>和<strong>写放大</strong>问题：</p>
+<ul>
+<li>数据页离散分布，造成大量随机写，延迟大，影响性能；</li>
+<li>SSD上的随机写会导致严重的写放大，不仅影响写操作性能，而且显著降低SSD的寿命。</li>
+</ul>
+<blockquote>
+<p>SSD的写放大是由于NAND存储器的工作原理和GC垃圾回收的影响，导致写入和擦除的最小单元是page，而写入放大的原因是无用数据必须先擦除，才能腾出空白空间。</p>
+</blockquote>
+<p><em>OceanBase的存储引擎</em><br>主要原理为将写磁盘操作变为批量合并的顺序写。<br><img src="/Pasted%20image%2020231015172632.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>转储与合并</em></p>
+<ul>
+<li>当 MemTable 的大小超过一定阈值时，就需要将 MemTable 中的数据转存到SSTable中以释放内存，这一过程称之为<strong>转储</strong> 。</li>
+<li>转储会生成新的SSTable，当转储的次数超过一定阈值时，或者在每天的业务低峰期，系统会将基线SSTable与之后转储的增量SSTable给合并为一个SSTable，这一过程称之为 <strong>合并。</strong><br><img src="/Pasted%20image%2020231015172928.png" srcset="/img/loading.gif" lazyload><br><img src="/Pasted%20image%2020231015173004.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<p><em>LSMTree存储压缩</em><br><img src="/Pasted%20image%2020231015173557.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="SQL执行过程"><a href="#SQL执行过程" class="headerlink" title="SQL执行过程"></a>SQL执行过程</h1><p><a target="_blank" rel="noopener" href="https://mdn.alipayobjects.com/huamei_22khvb/afts/file/A*r4XJQKfFsnIAAAAAAAAAAAAADiGDAQ/3_OBCP%E7%AC%AC%E4%B8%89%E7%AB%A0%20OB%20SQL%20%E5%BC%95%E6%93%8E%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF_V3.0.pdf">SQL执行</a><br><a target="_blank" rel="noopener" href="https://mdn.alipayobjects.com/huamei_22khvb/afts/file/A*GeP2Q4bhuckAAAAAAAAAAAAADiGDAQ/5_OBCP%E7%AC%AC%E4%BA%94%E7%AB%A0%20OB%20%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF_V3.0.pdf">分布式事务</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2023/10/15/概念整理/数据库DB/OceanBase/OceanBase基础/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年10月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/fluid-extention.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

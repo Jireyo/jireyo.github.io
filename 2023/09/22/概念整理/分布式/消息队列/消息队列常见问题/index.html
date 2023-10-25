@@ -1,0 +1,844 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="高可用消息丢失可能出现的地方  消息生产阶段产生消息丢失 网络传输中丢失消息 MQ发送异常   消息转发阶段产生消息丢失 MQ成功接收消息后，内部处理出错 Broker宕机   消息消费阶段产生消息丢失 采用消息自动确认模式，消费者取到消息后未完成消费（或业务逻辑未执行完）    如何保证消息不会丢失？  生产者： 事务机制：开启事务后投递消息，若投递失败则事务回滚，然后重试。由于需要同步等待消息">
+<meta property="og:type" content="article">
+<meta property="og:title" content="消息队列常见问题">
+<meta property="og:url" content="http://example.com/2023/09/22/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
+<meta property="og:description" content="高可用消息丢失可能出现的地方  消息生产阶段产生消息丢失 网络传输中丢失消息 MQ发送异常   消息转发阶段产生消息丢失 MQ成功接收消息后，内部处理出错 Broker宕机   消息消费阶段产生消息丢失 采用消息自动确认模式，消费者取到消息后未完成消费（或业务逻辑未执行完）    如何保证消息不会丢失？  生产者： 事务机制：开启事务后投递消息，若投递失败则事务回滚，然后重试。由于需要同步等待消息">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/09/22/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230922010212.png">
+<meta property="og:image" content="http://example.com/2023/09/22/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230930214852.png">
+<meta property="og:image" content="http://example.com/2023/09/22/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230930233227.png">
+<meta property="og:image" content="http://example.com/2023/09/22/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20231001005533.png">
+<meta property="og:image" content="http://example.com/2023/09/22/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20231001005540.png">
+<meta property="article:published_time" content="2023-09-22T14:46:30.000Z">
+<meta property="article:modified_time" content="2023-10-08T06:11:19.861Z">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="概念整理">
+<meta property="article:tag" content="分布式">
+<meta property="article:tag" content="消息队列常见问题">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/09/22/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230922010212.png">
+  
+  
+  
+  <title>消息队列常见问题 - Jin&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="消息队列常见问题"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-09-22 22:46" pubdate>
+          2023年9月22日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          36 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">消息队列常见问题</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="高可用"><a href="#高可用" class="headerlink" title="高可用"></a>高可用</h1><p><em>消息丢失可能出现的地方</em></p>
+<ol>
+<li>消息生产阶段产生消息丢失<ul>
+<li>网络传输中丢失消息</li>
+<li>MQ发送异常</li>
+</ul>
+</li>
+<li>消息转发阶段产生消息丢失<ul>
+<li>MQ成功接收消息后，内部处理出错</li>
+<li>Broker宕机</li>
+</ul>
+</li>
+<li>消息消费阶段产生消息丢失<ul>
+<li>采用消息自动确认模式，消费者取到消息后未完成消费（或业务逻辑未执行完）</li>
+</ul>
+</li>
+</ol>
+<p><em>如何保证消息不会丢失？</em></p>
+<ol>
+<li>生产者：<ul>
+<li>事务机制：开启事务后投递消息，若投递失败则事务回滚，然后重试。由于需要同步等待消息投递结果，造成阻塞，造成吞吐量下降。</li>
+<li>确认机制：如RabbitMQ每次写的消息都会分配一个唯一的 ID。Broker在收到消息后，会返回一个Ack信号给生产者，确认消息发送成功。可以异步进行，不会产生阻塞。</li>
+</ul>
+</li>
+<li>消息队列：开启持久化机制，对于集群多副本队列，保证至少写入若干台机器后才回复消息确认（具体写入多少台取决于对可用性的要求）</li>
+<li>消费者：手动确认模式，消费者成功消费消息后，再确认。</li>
+</ol>
+<div class="note note-primary">
+            <p>基于ack机制在高并发模式下的限流控制：为了避免消费者积压大量消息导致OOM，可以为某channel设置最大unack消息数量，当超过该值时，停止向消费者推送消息。</p>
+          </div>
+
+<p><em>如何解决重复消费的问题？</em><br><em>重复生产</em><br>消息队列对一个消息ID只做一次处理。具体地，消息队列会给每一个生产者一个唯一的 ID，并且为生产的每一条消息赋予一个唯一 ID，消息队列的服务端会存储 &lt; 生产者 ID，最后一条消息 ID&gt; 的映射。当某一个生产者产生新的消息时，消息队列服务端会比对消息 ID 是否与存储的最后一条 ID 一致，如果一致，就认为是重复的消息，服务端会自动丢弃。</p>
+<p><em>重复消费</em><br>为了保证消息不丢失，「失败重试」机制是必不可少的，必须考虑保证消费端的幂等性：</p>
+<ul>
+<li>通用层：消息ID幂等，对每个消息ID只做一次处理，但需要使用事务保证消息的消费和消息ID的持久化的一致性，代价较大。</li>
+<li>应用层：业务上实现幂等，如乐观锁、状态机等。</li>
+</ul>
+<h1 id="有序性"><a href="#有序性" class="headerlink" title="有序性"></a>有序性</h1><p><em>有序性场景</em><br>保证消息按顺序执行，即保证「有序性」。「有序性」可分为全局有序和局部有序，全局有序要求所有消息按照投递顺序消费，局部有序则只要求某组消息实现顺序消费（如只需要对同一来源的消息进行顺序消费）</p>
+<p><em>有序性实现</em></p>
+<ol>
+<li>全局有序：<ul>
+<li>只能由一个生产者向 Topic 发送消息，并且一个 Topic 内部只能有一个队列（分区）</li>
+<li>消费者也必须是单线程消费这个队列</li>
+</ul>
+</li>
+<li>局部有序：<ul>
+<li>将 Topic 内部划分成我们需要的队列数，把消息通过特定的策略发往固定的队列中</li>
+<li>每个队列对应一个单线程处理的消费者</li>
+</ul>
+</li>
+</ol>
+<h1 id="消息积压"><a href="#消息积压" class="headerlink" title="消息积压"></a>消息积压</h1><h3 id="消息积压概念"><a href="#消息积压概念" class="headerlink" title="消息积压概念"></a>消息积压概念</h3><p><em>原因</em><br>消费端消费消息过慢，导致大量消息积压在 MQ 中。<br><em>后果</em></p>
+<ul>
+<li>消息被丢弃：例如 RabbitMQ 有一个消息过期时间 TTL，过期的消息会被扔掉，这样消息就彻底没有了。</li>
+<li>如果堆积量太大，可能导致磁盘空间不足，那么新消息就进不来了。</li>
+<li>如果消息没过期，并且磁盘空间也够用，那么就是产生海量消息等待被消费，Consumer 的噩梦。</li>
+</ul>
+<h3 id="解决消息积压"><a href="#解决消息积压" class="headerlink" title="解决消息积压"></a>解决消息积压</h3><p><em>事前：预防与监控</em></p>
+<ul>
+<li>建设监控措施：监控broker的入口&#x2F;出口流量，便于快速发现和定位问题。</li>
+<li>建设弹性扩容能力：根据监控动态提高消费者实例数量，需要公司有一定的弹性架构基础。</li>
+</ul>
+<p><em>事中：评估业务影响，止血</em></p>
+<ul>
+<li>发布方：系统降级，关闭一些不重要业务，减少发送方发送数据量，最低限度让系统还能正常运转。</li>
+<li>中间件：<ul>
+<li>消息丢弃：判断消息的丢弃是否是业务能容忍的，如果可容忍，则可以限制<strong>队列、消息的TTL</strong>或<strong>限制队列的大小、长度</strong>，丢掉队列中的消息或将其投递到死信队列。</li>
+<li>磁盘空间：系统通常都是有监控的，达到空间阈值时就会发警报，在其他机器上创建临时的消息队列，再写一个临时的 Consumer，作为消息的中转，把消息积压队列中的消息取出来，放到临时队列里面去。</li>
+<li>消费模式：更改消费模式，如拉-&gt;推-&gt;批推，消费者也要提前做相应改造。</li>
+</ul>
+</li>
+<li>消费端：扩大消费者数量，通过提高消费速度实现快速处理：<ul>
+<li>不需要保证顺序的，使用多线程&#x2F;多实例加快处理。</li>
+<li>需要保证顺序的或无法扩大消费者数量的场景，按合理的顺序（局部有序）分发到多个指定队列中，即让消费者再次分流消息，实现快速处理。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/09/22/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230922010212.png" srcset="/img/loading.gif" lazyload><br><em>事后：快速处理海量积压消息</em><br>同事中，扩大消费者数量，通过提高消费速度实现快速处理。</p>
+<div class="note note-primary">
+            <p><strong>在扩容消费者的实例数的同时，必须同步扩容主题 Topic 的队列（分区）数量，确保消费者的实例数和分区数相等。如果消费者的实例数超过了分区数，由于分区是单线程消费，所以这样的扩容就没有效果。</strong><br>比如在 Kafka 中，一个 Topic 可以配置多个 Partition（分区），数据会被写入到多个分区中。但在消费的时候，Kafka 约定一个分区只能被一个消费者消费，Topic 的分区数量决定了消费的能力，所以，可以通过增加分区来提高消费者的处理能力。</p>
+          </div>
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/linwenbin/p/13382753.html">消息队列面试连环问：如何保证消息不丢失？处理重复消息？消息有序性？消息堆积处理？</a></p>
+</blockquote>
+<h1 id="延迟队列"><a href="#延迟队列" class="headerlink" title="延迟队列"></a>延迟队列</h1><h2 id="延迟队列概念"><a href="#延迟队列概念" class="headerlink" title="延迟队列概念"></a>延迟队列概念</h2><p><em>延迟队列定义</em><br>生产者把消息发送到消息队列中以后，并不期望被立即消费，而是等待指定时间后才可以被消费者消费，这类消息通常被称为<strong>延迟消息</strong>。</p>
+<p><em>延迟队列应用场景</em><br>延迟消息的应用场景其实是非常的广泛，比如以下的场景：</p>
+<ul>
+<li>订单提交成功后1个小时内未支付，订单需要及时关闭并且释放对应商品的库存。</li>
+<li>用户超过15天未登录时，给该用户发送召回推送。</li>
+<li>工单提交后超过24小时未处理，向相关责任人发送催促处理的提醒。</li>
+</ul>
+<p><em>为什么要使用延迟队列？</em><br>如果不使用延迟队列，把任务存入数据库定期扫描（很多定时任务的实现方式）也能实现，但是会有一个问题：如果扫描时间间隔长了，执行时间不准，如果扫描间隔时间短了，那么对数据库压力比较大。</p>
+<h2 id="延迟队列实现"><a href="#延迟队列实现" class="headerlink" title="延迟队列实现"></a>延迟队列实现</h2><h3 id="优先队列"><a href="#优先队列" class="headerlink" title="优先队列"></a>优先队列</h3><h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>将消息按照到期时间（执行时间）排序，取队头元素判断是否到期：</p>
+<ul>
+<li>若不存在队头元素或队头元素没有到期则等待一小会后再次执行。</li>
+<li>若队头元素到期了则继续取出下一个队头元素判断，直到所有到期的消息被取出。</li>
+</ul>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><p><em>JDK的DelayQueue</em><br>JDK中的DelayQueue，其底层通过PriorityQueue、Condition实现。线程可以从中取出已经到期的消息，支持阻塞和非阻塞方式（没有到期元素则返回null）。</p>
+<p><em>Redis的Zset</em><br>元素的score为预期执行时间，完整方案如下：<br><img src="/2023/09/22/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230930214852.png" srcset="/img/loading.gif" lazyload><br>如果到达了执行时间，执行 <code>zrem member</code>，<code>ZREM</code>执行这个命令有两个目的：</p>
+<ol>
+<li>从延迟队列中删除这条消息防止其它线程再次获取；</li>
+<li>可能存在多个线程同时获取到这条消息，所以这里靠 zrem 只有返回 &gt; 0，才说明当前线程成功获取到消息，可以消费消息，如果返回 &#x3D; 0，说明已有其它线程抢先获取到消息了，当前线程不可以消费消息。</li>
+</ol>
+<p>缺点：</p>
+<ul>
+<li>单个有序集合无法支持太大的数据量。</li>
+<li>定时任务不断读取可能造成不必要的请求。</li>
+</ul>
+<h3 id="时间轮"><a href="#时间轮" class="headerlink" title="时间轮"></a>时间轮</h3><h4 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h4><p><code>wheel</code> ：时间轮，图中的圆盘可以看作是钟表的刻度，当需要添加任务时，将任务添加到当前时间指针的后 <code>延迟时间/每格时间</code> 格上（可以超过一圈，所以与hash的取模有点类似），其时间轮可以用简单的数组或者是环形链表来实现，该数据结构最重要的是两个指针：</p>
+<ol>
+<li>触发任务的函数指针</li>
+<li>触发的总第几圈数</li>
+</ol>
+<p><img src="/2023/09/22/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230930233227.png" srcset="/img/loading.gif" lazyload><br>相比优先队列的数据结构，时间轮在算法复杂度上有一定优势。优先队列由于涉及到排序，需要调整数据的位置，插入和移除的复杂度是 <code>O(lgn)</code>，而时间轮在插入和移除的复杂度都是 <code>O(1)</code>。</p>
+<h4 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h4><p><em>netty的HashedWheelTimer</em><br>HashedWheelTimer是netty的一个工具类，该类用来计划执行非精准的I&#x2F;O超时。其默认时间间隔为100ms，格数为512格。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/Netty%20%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E5%89%96%E6%9E%90%E4%B8%8E%20RPC%20%E5%AE%9E%E8%B7%B5-%E5%AE%8C/21%20%20%E6%8A%80%E5%B7%A7%E7%AF%87%EF%BC%9A%E5%BB%B6%E8%BF%9F%E4%BB%BB%E5%8A%A1%E5%A4%84%E7%90%86%E7%A5%9E%E5%99%A8%E4%B9%8B%E6%97%B6%E9%97%B4%E8%BD%AE%20HashedWheelTimer.md">21 技巧篇：延迟任务处理神器之时间轮 HashedWheelTimer</a></p>
+</blockquote>
+<h3 id="定时扫描"><a href="#定时扫描" class="headerlink" title="定时扫描"></a>定时扫描</h3><p><em>Redis的过期回调</em><br><code>Redis</code> 的<code>key</code>过期回调事件，也能达到延迟队列的效果，开启监听key是否过期的事件，一旦key过期会触发一个callback事件。<br>Redis 并不保证生存时间（TTL）变为 0 的键会立即被删除： 如果程序没有访问这个过期键， 或者带有生存时间的键非常多的话， 那么在键的生存时间变为 0 ， 直到键真正被删除这中间， 可能会有一段比较显著的时间间隔。<br>因此， Redis 产生 expired 通知的时间为过期键被删除的时候， 而不是键的生存时间变为 0 的时候。</p>
+<p><em>RabbitMQ的实现</em></p>
+<ol>
+<li>消息TTL：为消息设置TTL，当消息在TTL时间内未被消费时会被投递到死信队列，通过消费死信队列即可实现消息延迟，该方式只判断队头是否过期，因此若队头消息的TTL过大，后续的消息即使过期，也不一定会被马上丢弃。</li>
+<li>队列TTL：为队列设置TTL，即队列中所有的消息在DTL时间内未被消费时都会被投递到死信队列，该方式会对队列进行定期扫描，只要消息生存时间超过队列TTL，就会立即被丢弃。</li>
+<li>延迟队列插件：为消息声明TTL。延迟消息不会立刻投递到目标队列，而是会被存储在mnesia表中，RabbitMQ通过定期扫描，判断队列中到达可投递时间的消息，然后将其投递到对应的队列。</li>
+</ol>
+<p>前两种方案本质上是优先队列方案，其只会判断队头元素的过期时间，由于RabbitMQ的架构，master单节点会导致性能瓶颈，吞吐量受限。</p>
+<p><em>ActiveMQ的实现</em><br>类似RabbitMQ的延迟队列插件，缺点也一致。</p>
+<p><em>RocketMQ的实现</em><br>在开源版的RocketMQ中，支持延迟消息，但是不支持任意时间精度的延迟消息，只支持特定级别的延迟消息。如果要支持任意时间精度，不能避免在Broker层面做消息排序，再涉及到持久化的考量，那么消息排序就不可避免产生巨大的性能开销。Rocket通过规范延迟的时间精度，每个延迟时间级别对应一个独立的队列，因此只需要判断这些队列的队头消息是否到达延迟时间即可。<br>优点是支持分布式、高吞吐量、高性能、高可靠，缺点则是仅支持18个特定级别的延时，且无法自定义延时时间。</p>
+<p><em>RocketMQ的改造</em><br>不支持自定义延时时间的RocketMQ是开源版的，在阿里云中商业版的RocketMQ是支持的。对于开源版，分析其原理：<br><img src="/2023/09/22/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20231001005533.png" srcset="/img/loading.gif" lazyload alt="改造前"><br>可以将规范的的延迟时间作为基本延迟单位，为消息做多次延迟实现自定义延迟时间。<br><img src="/2023/09/22/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20231001005540.png" srcset="/img/loading.gif" lazyload alt="改造后"></p>
+<h3 id="线程等待"><a href="#线程等待" class="headerlink" title="线程等待"></a>线程等待</h3><p><em>JAVA的定时任务</em><br>ScheduledExecutorService底层通过<code>ReentrantLock.newCondition().awaitNanos(long nanosTimeout)</code>方法实现的定时等待，其在每次执行完成后会调用<code>setNextRunTime()</code>来设置下次需要调度的时间，然后根据当前时间和下次执行时间的差值进行<code>await()</code>。</p>
+<div class="note note-primary">
+            <p><em>延迟队列与定时任务的关系？</em><br>延迟队列本身就是对定时任务的一种实现，只是指定了该任务的行为是消息投递行为，因此所有对定时任务的在计时层面上的实现都可以适用于延迟队列。</p>
+          </div>
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000039354865">延迟队列的几种实现方案</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/heihaozi/p/14266311.html">延迟消息的五种实现方案</a></p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/" class="category-chain-item">分布式</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" class="category-chain-item">消息队列</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+      
+        <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/">#分布式</a>
+      
+        <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/">#消息队列常见问题</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>消息队列常见问题</div>
+      <div>http://example.com/2023/09/22/概念整理/分布式/消息队列/消息队列常见问题/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年9月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/09/25/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E5%A4%8D%E4%B9%A0/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/fluid-extention.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

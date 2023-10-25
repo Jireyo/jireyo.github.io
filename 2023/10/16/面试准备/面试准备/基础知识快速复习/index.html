@@ -1,0 +1,995 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="操作系统存储结构CPU都有三级缓存，同一个核心共享L1，L2缓存，整个CPU共享L3缓存。内存块Block会映射到CPU CacheLine上，每条Cache根据有效位、所属组、偏移量判断是否命中。 CPU缓存一致性  写内存的方式： 写直达(Write Through)：把数据同时写入内存和 Cache 中。 写回(Write Back)：只把数据写入Cache Block中（标记为脏块），当其">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基础知识面试准备">
+<meta property="og:url" content="http://example.com/2023/10/16/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%BF%AB%E9%80%9F%E5%A4%8D%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
+<meta property="og:description" content="操作系统存储结构CPU都有三级缓存，同一个核心共享L1，L2缓存，整个CPU共享L3缓存。内存块Block会映射到CPU CacheLine上，每条Cache根据有效位、所属组、偏移量判断是否命中。 CPU缓存一致性  写内存的方式： 写直达(Write Through)：把数据同时写入内存和 Cache 中。 写回(Write Back)：只把数据写入Cache Block中（标记为脏块），当其">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-10-16T15:04:35.000Z">
+<meta property="article:modified_time" content="2023-10-19T06:39:47.957Z">
+<meta property="article:author" content="Jin">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>基础知识面试准备 - Jin&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="基础知识面试准备"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-10-16 23:04" pubdate>
+          2023年10月16日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          60 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">基础知识面试准备</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h1><p><em>存储结构</em><br>CPU都有三级缓存，同一个核心共享L1，L2缓存，整个CPU共享L3缓存。<br>内存块Block会映射到CPU CacheLine上，每条Cache根据有效位、所属组、偏移量判断是否命中。</p>
+<p><em>CPU缓存一致性</em></p>
+<ul>
+<li>写内存的方式：<ul>
+<li>写直达(Write Through)：把数据同时写入内存和 Cache 中。</li>
+<li>写回(Write Back)：只把数据写入Cache Block中（标记为脏块），当其被替换时，才写回内存。</li>
+</ul>
+</li>
+<li>需要解决的问题：<ul>
+<li>写传播（可见性）：某CPU写内存后对其他CPU可见。</li>
+<li>事物串行化（有序性）：其他CPU收到的写传播顺序与原CPU写入顺序一致。</li>
+</ul>
+</li>
+<li>解决方案：总线嗅探</li>
+</ul>
+<p><em>内核态</em><br>操作系统内核是应用连接硬件设备的桥梁，操作系统将内存分为了<strong>用户空间</strong>和<strong>系统空间</strong>，<strong>当程序使用用户空间时</strong>，称程序在<strong>用户态</strong>执行，当程序使用内核空间时，程序在<strong>内核态</strong>执行。</p>
+<p><em>程序使用内存的方式</em><br><strong>MMU</strong>（内存管理单元）负责虚拟内存地址和物理内存地址的映射，有<strong>分段式和分页式</strong>映射，分段方式能避免程序内的空间碎片，但会造成程序之间的空间碎片，分页方式无法避免程序内的空间碎片，但程序之间的内存利用率更高，<strong>分页方式的内存的交换效率更高</strong>。<br>实际中使用多级页表可解决该问题，但由于Linux的历史原因（已经使用分段的方式），现采用段页式内存管理。</p>
+<p><em>Linux获取内存的方式</em></p>
+<ul>
+<li>malloc()：<code>brk()</code>从堆中分配内存、<code>mmap()</code>在文件映射区中分配内存</li>
+<li>free()：<code>brk()</code>申请的内存释放时将内存缓存在内存池中以便复用，进程退出后才释放；<code>mmap()</code>申请的内存：free释放内存时直接归还资源给操作系统。</li>
+</ul>
+<p><em>内存回收</em><br>申请内存发现没有足够多的空闲物理内存，逐级进行异步回收和直接回收，对于文件页释放回磁盘即可，对于匿名页则通过Swap机制交换到磁盘。</p>
+<p><em>Linux的内存回收算法</em><br>使用了<strong>LRU</strong>算法，其维护了active和inactive两个双向链表，优先淘汰inactive。</p>
+<ul>
+<li>预读失效<ul>
+<li>定义：使用预读提前加载进来的页并没有被访问。</li>
+<li>解决：没有被真正使用的页应该被视为冷数据：<ul>
+<li>Linux使用了活跃LRU链表和非活跃LRU链表。</li>
+<li>Mysql将LRU链表分为了young区和old区</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>缓存污染<ul>
+<li>定义：只使用了一次的页占用热数据。</li>
+<li>解决：降低热数据的门槛：<ul>
+<li>Linux只有数据被访问第二次时才加入活跃链表。</li>
+<li>Mysql只有数据两次访问时间之差<strong>超过1秒</strong>时才加入young区</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><em>进程模型</em><br>进程7态模型</p>
+<p><em>进程控制块</em><br>每个进程通过PCB块（记录了进程id，状态和优先级，内存资源，CPU寄存信息）。</p>
+<p><em>进程与线程</em></p>
+<ul>
+<li>进程是资源分配的单位，线程是CPU调度的单位；</li>
+<li>线程信息只有寄存器和栈，创建、释放、上下文切换更快速；</li>
+<li>线程之间通过同一个进程的内存实现数据共享。</li>
+<li>CPU时间片不是先分给进程然后再由进程分给进程下的线程的，CPU时间片是直接分配给线程的，线程拿到CPU时间片就能执行了。</li>
+</ul>
+<p><em>协程</em><br>协程是一种用户态的轻量级线程，协程的调度完全由用户控制，其作用为在单线程下实现并发效果，由于没有内核态的开销，<strong>协程的开销远远小于线程的开销。</strong></p>
+<p><em>CPU调度算法</em><br>多级反馈队列MFQ，高优先级作业获得执行后若没结束会降低优先级，低优先级作业能获得更多的时间片。兼顾了长短作业，短作业在前面的队列即完成执行，长作业也可以获得更长的运行时间。</p>
+<p><em>进程之间的通讯方式</em></p>
+<ul>
+<li>双向通道：命名通道（基于磁盘）、匿名通道（基于内存，只有父子进程通过共享文件描述符的方式才能使用）</li>
+<li>消息队列：基于内核中的消息队列（基于内存），消耗高</li>
+<li>共享内存</li>
+<li>信号量</li>
+<li>信号：如<code>kill -9</code></li>
+<li>Socket：可以跨设备</li>
+</ul>
+<p><em>互斥量和信号量区别</em></p>
+<ul>
+<li>P操作减，V操作加，操作后根据与信号量值与0的大小关系判断是否通知。因此互斥量的值为1，信号量的值为0。</li>
+<li>互斥量用于线程的互斥，信号量用于线程的同步，本质是互斥与同步的区别。</li>
+<li>互斥是为了保证某一资源的<strong>排他性</strong>访问，同步则是为了实现一定的<strong>顺序性</strong>。</li>
+<li>互斥量的加锁和解锁必须由同一线程分别对应使用，信号量可以由一个线程释放，另一个线程得到。</li>
+</ul>
+<p><em>死锁条件</em></p>
+<ul>
+<li>互斥条件</li>
+<li>不可剥夺</li>
+<li>持有等待</li>
+<li>环形等待</li>
+</ul>
+<p><em>DMA技术</em><br>将I&#x2F;O设备与内存间的数据传输工作交给DMA控制器，避免CPU工作。</p>
+<p><em>零拷贝技术</em></p>
+<ul>
+<li>mmap+write：可省1次内存数据拷贝</li>
+<li>sendfile：可省2次状态转化和3次内存拷贝</li>
+</ul>
+<p><em>大文件传输</em><br>使用 <strong>「异步 I&#x2F;O + 直接 I&#x2F;O」</strong> 来替代零拷贝技术：</p>
+<ul>
+<li>直接 I&#x2F;O 绕过了 PageCache</li>
+<li>异步 I&#x2F;O 避免了直接 I&#x2F;O效率较慢的阻塞</li>
+</ul>
+<p><em>Unix IO</em></p>
+<ul>
+<li>同步（分阻塞和非阻塞）：是否阻塞本质是应用的行为（即是否使用了超时机制），同步IO中由用户完成数据从内核态到用户态的拷贝。</li>
+<li>异步（非阻塞）：异步IO中会在把数据拷贝到用户态后再通知用户进程</li>
+</ul>
+<p><em>阻塞与非阻塞</em><br>指用户进程是否停止等待资源的准备。</p>
+<p><em>同步和异步</em><br>是一种通讯机制，即异步通讯机制不会等待响应（因此必然是非阻塞的）</p>
+<p><em>IO多路复用</em></p>
+<ul>
+<li>select&#x2F;poll，都是将已连接的 Socket 都放到一个<strong>文件描述符集合</strong>，然后调用 select&#x2F;poll 函数将文件描述符集合<strong>拷贝</strong>到内核里，让内核来检查是否有网络事件产生。select使用bitmap存储文件描述符集合，上限1024个，poll为链表，突破了上限。</li>
+<li>epoll，为应用在内核中维护一个<strong>文件描述符</strong>红黑树，用户需要新增加socket时，只需要调用<code>epoll_ctl()</code>即可，不再需要拷贝整个集合。epoll使用了一个链表记录就绪事件，当用户调用<code>epoll_wait()</code>时，只会复制就绪链表中的socket到用户态进行处理。</li>
+</ul>
+<p><em>水平触发与垂直触发</em></p>
+<ul>
+<li>水平触发：服务器端不断地从 <code>epoll_wait</code> 中苏醒，直到数据读取完成，<strong>支持阻塞I&#x2F;0和非阻塞I&#x2F;0</strong>，是默认的方式。</li>
+<li>边缘触发ET：服务器端只会从 epoll_wait 中苏醒一次，只支持<strong>非阻塞I&#x2F;O</strong>。</li>
+</ul>
+<p><em>多路复用方式对比</em></p>
+<ul>
+<li>select实时性更高，一致性更好</li>
+<li>poll无最大描述符限制</li>
+<li>epoll处理大量文件描述符时最好</li>
+</ul>
+<p><em>高性能网络模型</em></p>
+<ul>
+<li>Reactor：非阻塞同步网络模式，组成有Reactor、Acceptor、Handler，感知已就绪的可读写事件。</li>
+<li>Proactor：阻塞同步模式，感知已完成的读写事件。</li>
+</ul>
+<h1 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h1><p><em>基本操作</em></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs shell">//ssh连接<br>ssh root@192.168.196.128<br><br>//现在关机<br>shutdown -h now<br><br>//内存同步到磁盘<br>sync<br><br>//用户与组<br>useradd<br>useradd -g 用户组 用户名<br>usermod -g 用户组 用户名<br><br>//文件权限：rwx可读/可写/可执行，第一位为文件类型，后面三组分别是所属用户/所属组/其他用户的权限。<br>chown 用户名 文件名 修改文件管理者<br>chgrp 组名 文件名 将文件转入该组<br>chmod ?+? 修改权限，前一个？可以为u、g、o代表不同所属，后一个？可以为rwx。<br><br>//文件<br>touch 生成空文件<br>cp source target 拷贝文件 `-r`递归复制<br>rm 删除<br>mv old new 移动/重命名文件<br>cat 查看 `-n`显示行号<br>less 查看文本查看器，更强大的文本查看器<br>head 显示文件前10行<br>tail 显示文件后10行，`-f` 可以追踪文件更新，实时监控<br><br>// 文件查找<br>find 查找起点 查找文件名 递归查找文件 eg: find /home hello.txt<br><br>// 进程<br>pstree 进程树<br>top `-P`按CPU使用率排序，默认 `-M`按内存使用率排序 `-N`按PID排序<br>kill -9 pid<br></code></pre></td></tr></table></figure>
+
+<h1 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h1><p><em>设计模式七大原则</em><br>开单依接里迪合</p>
+<p><em>设计模式</em><br>单抽工建原、适装代外桥组享、策模观迭责名、状备访中解</p>
+<p><em>需要注意的设计模式</em></p>
+<ul>
+<li>单例模式：双重校验锁</li>
+<li>工厂方法模式：项目中使用</li>
+<li>建造者模式：Http2 Client的构建</li>
+<li>装饰器模式：Stream流</li>
+<li>代理模式：注意静态、动态代理</li>
+<li>模板方法：AQS中的<code>tryAcquire</code>提供重写，而<code>acquire</code>不提供重写。</li>
+<li>状态模式：分布式事务中使用</li>
+</ul>
+<h1 id="JAVA"><a href="#JAVA" class="headerlink" title="JAVA"></a>JAVA</h1><h2 id="JDK"><a href="#JDK" class="headerlink" title="JDK"></a>JDK</h2><p><em>数据类型</em></p>
+<ul>
+<li>基本类型有缓存池</li>
+<li>String：final不可变便于hash和网络传输，线程安全，字符串常量池在JDK1.6时位于永久代，1.7后位于堆。</li>
+</ul>
+<p><em>面向对象</em><br>封装、基础、多态</p>
+<p><em>static关键词</em><br>类初始化时执行</p>
+<p><em>对象初始化顺序</em><br>初始化代码、默认初始化（0）、构造代码、构造函数</p>
+<p><em>Clone</em><br>原生clone是浅克隆，重写时需要实现接口、重写、抛异常。</p>
+<p><em>接口和抽象类</em></p>
+<ul>
+<li>单继承与多继承</li>
+<li>接口无构造方法</li>
+<li>成员变量（接口只允许public static final）</li>
+<li>成员方法（接口必须public abstract，后来允许有默认实现和private方法）</li>
+</ul>
+<p><em>泛型</em><br>泛型的目的是复用代码并进行类型检查。JAVA是假泛型，其主要用于编译时检查，编译后泛型擦除。</p>
+<blockquote>
+<p>因为“真泛型”的引入，势必会为原本不支持泛型的 API 平行添加一套泛型 API，为了引入泛型，又不影响原有的项目，使用了泛型擦除的方式。</p>
+</blockquote>
+<p><em>异常</em><br>基础抽象类为Throwable，分为Error和Exception，其中非运行时异常必须捕获。</p>
+<p><em>反射获取构造器</em></p>
+<ul>
+<li>getConstructors() 获取所有public构造器（包括父类）</li>
+<li>getDeclaredConstructors() 获取所有声明的构造器</li>
+</ul>
+<p><em>反射原理</em><br>Class对象中缓存了ReflectionData，这是软引用。为了实现线程安全，method对象会被先copy一份再执行invoke。</p>
+<p><em>集合</em></p>
+<ul>
+<li>ArrayList：底层是数组</li>
+<li>LinkedList：双向链表，ArrayList在绝大部分时候（除了头插）的性能都明显要强于LinkedList，因为其内存连续。</li>
+<li>HashMap：<ul>
+<li>结构：1.7链，1.8在数量大于8时先扩容，容量到达64后再变红黑树。</li>
+<li>插入：1.7头插，1.8尾插。</li>
+<li>rehash：2倍，前后映射关系可控，均匀。</li>
+</ul>
+</li>
+<li>ConcurrentHashMap：<ul>
+<li>结构：1.7采用分段锁（2次hash），利用ReentrantLock控制；1.8则为锁头节点（CAS+synchronized控制）。</li>
+<li>rehash：每个线程负责一部分桶的迁移，支持扩容时读，扩容时写会发生堵塞。</li>
+</ul>
+</li>
+<li>CopyOnWriteArrayList：写时加锁，复制一个新数组，复制原数据到新数组然后写，最后切换。</li>
+</ul>
+<h2 id="JUC"><a href="#JUC" class="headerlink" title="JUC"></a>JUC</h2><p><em>线程安全</em><br>原子性、可见性、有序性</p>
+<p><em>线程安全实现</em></p>
+<ul>
+<li>原子性：CAS操作、锁、原子指令</li>
+<li>可见性：final、volatile、synchronized</li>
+<li>有序性：<ul>
+<li>as-if-serial</li>
+<li>happens-before</li>
+</ul>
+</li>
+</ul>
+<p><em>创建线程方式</em></p>
+<ul>
+<li>继承Thread</li>
+<li>实现Runnable，传入Thread构造</li>
+<li>实现Callable，用FutureTask包装后传入Thread构造</li>
+</ul>
+<p><em>synchronized和lock的区别</em></p>
+<ul>
+<li>释放锁：synchronized在异常时释放，lock必须手动释放，也因此lock可能死锁。</li>
+<li>性能：synchronized更好</li>
+<li>功能性：lock提供了更多的功能<ul>
+<li>lock可以管理锁状态</li>
+<li>控制是否公平</li>
+<li>提供读写锁，提高并发</li>
+<li>可超时</li>
+</ul>
+</li>
+</ul>
+<p><em>synchronized原理</em><br>ObjectMonitor对象，持有state，entrylist、waitlist</p>
+<p><em>synchronized锁优化</em><br>无锁 -&gt; 偏向锁 -&gt; 轻量级锁 -&gt; 重量级锁，偏向锁和轻量级锁依赖对象头实现，前者通过修改锁状态和ThreadID记录，后者通过交换对象头到栈帧（CAS操作，重入时创建新的空白Lock Record）中解决。</p>
+<p><em>volatile</em><br>保证<strong>可见性</strong>和<strong>有序性</strong>，不能保证<strong>原子性</strong>，通过内存屏障实现。</p>
+<p><em>final</em><br>保证<strong>可见性</strong>，禁止构造函数和读对象属性的重排序</p>
+<p><em>ReentrantLock原理</em></p>
+<ul>
+<li>定义：<code>Lock</code>接口的具体实现类，如<code>ReentrantLock</code>都聚合了一个<strong>AQS（抽象队列同步器）的子类</strong>，来实现同步，具体而言<code>ReentrantLock</code>实现了<strong>Sync</strong>抽象类，再提供了<strong>FairSync和NonFairSync的实现类</strong>。</li>
+<li>实现：<ul>
+<li>通过volatile int state的CAS操作实现原子操作</li>
+<li>通过<code>CLH队列</code>实现同步</li>
+</ul>
+</li>
+<li>设计：模板方法，<code>acquire(int arg)</code>，被final修饰，<strong>不可被重写</strong>，其中调用的<code>tryAcqure(arg)</code>，<strong>可被子类重写</strong>，从而实现了是否公平。</li>
+</ul>
+<p><em>并发工具</em></p>
+<ul>
+<li>CountDownLatch</li>
+<li>CyclicBarrier</li>
+<li>Semaphore</li>
+<li>Exchanger</li>
+<li>ThreadLocal</li>
+</ul>
+<p><em>线程池</em></p>
+<ul>
+<li>原理：先核心线程、再队列、最后最大线程</li>
+<li>参数：核心线程数、最大线程数、阻塞队列、存活时间和单位、工厂、处理器。</li>
+</ul>
+<p><em>线程池配置方式</em></p>
+<ul>
+<li>IO密集时，尽可能多</li>
+<li>CPU密集时，内核数量+1</li>
+</ul>
+<h2 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h2><p><em>类加载器</em></p>
+<ul>
+<li>引导类加载器由C、C++编写</li>
+<li>系统类加载器也叫应用程序类加载器AppClassLoader</li>
+<li>底层loadClass()模板方法实现了双亲委派，一般重写findClass()即可。</li>
+</ul>
+<p><em>自定义加载器目的</em><br>隔离类、扩展记载源、自定义加载方式</p>
+<p><em>破坏双亲委派的破坏</em></p>
+<ul>
+<li>线程上下文加载器（通过Thread传入）：SPI实现时，系统类找实现类。</li>
+<li>热加载&#x2F;热部署</li>
+</ul>
+<p><em>运行时数据区</em></p>
+<ul>
+<li>线程共享：<ul>
+<li>方法区 &#x3D; 元空间 + 运行时常量池 + 字符串常量池（在堆中）</li>
+<li>堆：新生代、老年代、元空间</li>
+</ul>
+</li>
+<li>线程私有：<ul>
+<li>程序计数器</li>
+<li>虚拟机栈：<ul>
+<li>栈帧：局部变量表、操作数栈、方法返回地址、动态链接</li>
+</ul>
+</li>
+<li>本地方法栈</li>
+</ul>
+</li>
+</ul>
+<p><em>对象创建过程</em></p>
+<ul>
+<li>执行类、父类、接口的加载、初始化</li>
+<li>内存分配</li>
+<li>对象准备</li>
+<li>设置对象头</li>
+<li>INIT初始化</li>
+</ul>
+<p><em>执行引擎</em></p>
+<ul>
+<li>解释器：字节码 -&gt; 机器码</li>
+<li>编译器：前端编译器（java代码 -&gt; 字节码）、后端编译器（字节码 -&gt; 机器码）</li>
+</ul>
+<p><em>GC垃圾回收算法</em></p>
+<ul>
+<li>标记：三色标记法</li>
+<li>回收：标记-清除算法、复制算法、标记-压缩算法、增量收集（G1）</li>
+<li>分配内存：指针碰撞、空闲列表</li>
+</ul>
+<p><em>引用类型</em><br>强&#x2F;软&#x2F;弱&#x2F;虚。软引用空间不足时回收，弱引用GC则回收，虚引用关联一个引用队列，可以获取其回收通知。</p>
+<p><em>GC回收器</em><br>CMS：老年代回收算法，注重低延迟</p>
+<ul>
+<li>三色标记法：不考虑浮动垃圾，A新增指向B的指针，将A标记为灰色</li>
+<li>过程：单线程GCRoot -&gt;单线程并发标记 -&gt; 多线程并行重新标记 -&gt; 单线程并发清理</li>
+</ul>
+<p>G1：全堆收集，适用于大堆，控制延迟情况下最大化吞吐量</p>
+<ul>
+<li>特点：引入了Region，Region之间使用空闲链表法，Region内使用指针压缩</li>
+<li>三色标记法：B被取消引用时，将B标记为灰色</li>
+<li>过程：YoungGC -&gt; MixedGC（并发标记、排序回收区域、并发清理（全垃圾区）、混合回收）</li>
+</ul>
+<h1 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h1><p>参考《Redis复习》。</p>
+<h1 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h1><p><em>消息队列的作用</em><br>异步、解耦、削峰、日志（如kafka）</p>
+<p><em>推拉模式</em></p>
+<ul>
+<li>拉实时性低，消耗高，推不安全，本质还是发送能力和消费能力的平衡。</li>
+<li>两者都可以通过批量实现优化</li>
+<li>最佳实践是动态推拉，消费端通过反应自己的消费能力，有发送端进行有流量控制的推。</li>
+</ul>
+<p><em>重复消息</em></p>
+<ul>
+<li>原因：基于可靠性的重试机制</li>
+<li>解决：Broker或消费端判断消息ID或实现业务幂等</li>
+</ul>
+<p><em>消息如何不丢失</em></p>
+<ul>
+<li>原因：发送失败、持久化失败、消费失败</li>
+<li>解决：ACK机制 + 集群高可用</li>
+</ul>
+<p><em>顺序消息</em></p>
+<ul>
+<li>全局有序时，单消费者单线程消费单队列</li>
+<li>局部有序时，单消费者单线程消费指定分区</li>
+</ul>
+<p><em>消息堆积</em></p>
+<ul>
+<li>生产者：服务降级，减少非必要消息</li>
+<li>Broker：可选择的丢弃和扩大分区。</li>
+<li>消费端：提高分区数量和消费者数量，提高消费能力，如果分区无法改造可以实现消费者对消息的再发配。</li>
+</ul>
+<p><em>延迟队列</em></p>
+<ul>
+<li>队头检查机制（多级延迟队列或堆排列）</li>
+<li>全消息扫描机制（不合适）</li>
+</ul>
+<p><em>Kafka特点</em><br>分布式、支持分区、多副本、基于zookeeper协调的分布式消息系统。</p>
+<p><em>Kafka结构</em></p>
+<ul>
+<li>系统结构：每个TOPIC分为多个分区，每个分区有一个消费组消费</li>
+<li>日志保留：文件系统，每个分区是一个目录，其中有多个SegmentFile（Index文件 + Log文件），实现了消息的二分查找</li>
+</ul>
+<p><em>Kafka高性能</em></p>
+<ul>
+<li>零拷贝技术：数据读到操作系统内存后直接通过网卡转发</li>
+<li>IO多路复用：多级Reactor实现IO</li>
+</ul>
+<p><em>Kafka高可用</em></p>
+<ul>
+<li>Kafka集群存在一个Controller（通过任期防止脑裂）来控制集群的主题和分区分配管理，选举方式为抢占式（WATCH机制）。</li>
+<li>每个分区有多个副本，但只有一个Leader副本负责读写，其会维护一个ISR列表，每条消息要保证列表中节点都写入才算成功。Follower则对其进行数据拉取。Leader的选举方式是，ISR列表中的第一个节点。</li>
+</ul>
+<p><em>消费组</em><br>Partition会为每个消费组保存一个偏移量记录其消费到的位置，该值是根据一个内部TOPIC，由消费端主动上报后根据Group+Topic+Partition来去重保留最新数据的。</p>
+<p><em>Kafka为什么是Pull模型</em><br>pull 模式可<strong>简化 broker 的设计</strong>，Consumer 可自主控制消费消息的速率。</p>
+<p><em>分区重平衡</em></p>
+<ul>
+<li>时机：当出现以下场景时，会触发分区<strong>重平衡（rebalance）</strong>，消费组与分区关系的再分配：<ol>
+<li>消费组成员个数发生变化，例如有新的 Consumer 实例加入或离开该消费组。</li>
+<li>订阅的 Topic 个数发生变化。</li>
+<li>订阅 Topic 的分区数发生变化。</li>
+</ol>
+</li>
+<li>介绍：重平衡是 Kafka 一个很重要的性质，这个性质保证了高可用和水平扩展。<strong>不过，在重平衡期间，所有消费者都不能消费消息，因此会造成整个消费组短暂的不可用。</strong></li>
+<li>实施：每个group有一个broker是它的coordinator，其选择一个消费者作为leader，从中拉取分区和消费者的对应关系，决定消费方案，一般而言，尽可能的让消费者按区间均分Partition，且尽可能与原分配保持一致。</li>
+</ul>
+<p><em>Kafka舍弃ZooKeeper的理由</em><br>ZooKeeper需要选举，选举的过程中是无法提供服务的。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>基础知识面试准备</div>
+      <div>http://example.com/2023/10/16/面试准备/面试准备/基础知识快速复习/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年10月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/fluid-extention.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

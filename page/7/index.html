@@ -235,15 +235,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/12/10/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC1%E7%AB%A0%EF%BC%88%E6%A6%82%E8%BF%B0%EF%BC%89/" target="_self">
-          计算机网络第1章（概述）
+        <a href="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/" target="_self">
+          Redis复习
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/12/10/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC1%E7%AB%A0%EF%BC%88%E6%A6%82%E8%BF%B0%EF%BC%89/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/" target="_self">
         <div>
-          一、概念互连网（internet）：多个网络通过路由器互连起来构成的网络（通用名词，可使用任意协议）因特网（Internet）：是世界上最大的互连网（专有名词，使用TCP&#x2F;IP协议）ISP（Internet Service Provider）：因特网服务提供者，如电信、联通、移动。 端系统之间通信：主机 A 的某个进程和主机 B 上的另一个进程进行通信。              端对端
+          一、数据类型与结构基本数据结构：String、List、Set、Zset、Hash高级数据结构：Bitmap、Geo、HyberLogLog、Stream redisObjecttype和encoding共同实现了redis对象的多态处理。 123456789101112typedef struct redisObject &#123;    // 类型    unsigned type:4;
         </div>
       </a>
 
@@ -251,8 +251,764 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-12-10 21:00" pubdate>
-              2022-12-10
+            <time datetime="2023-01-06 18:32" pubdate>
+              2023-01-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/" class="category-chain-item">Redis</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/" class="category-chain-item">Redis复习</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+            
+              <a href="/tags/Redis/">#Redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" target="_self">
+          Redis常见问题
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" target="_self">
+        <div>
+          Redis概念什么是Redis?Redis 是一个使用 C 语言写成的，基于内存的高性能key-value非关系缓存数据库。特点：支持事务 、持久化、Lua 脚本、多种集群方案（主从复制模式、哨兵模式、切片机群模式）、发布&#x2F;订阅模式，内存淘汰机制、过期删除机制等等。 Redis 和 Memcached 有什么区别？Redis 与 Memcached 共同点：  都是基于内存的数据库，一般
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-01-06 18:32" pubdate>
+              2023-01-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/" class="category-chain-item">Redis</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" class="category-chain-item">Redis常见问题</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+            
+              <a href="/tags/Redis/">#Redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC7%E7%AB%A0%EF%BC%88%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%EF%BC%89/" target="_self">
+          Redis第7章（性能监控）
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC7%E7%AB%A0%EF%BC%88%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%EF%BC%89/" target="_self">
+        <div>
+          状态命令 状态信息 - info通过info命令查看实时吞吐量（ops&#x2F;sec）。 监控执行命令 - monitor监控接受到的命令 监控延迟 - latency测量响应延迟1redis-cli --latency -h 127.0.0.1 内部机制监控123&gt;CONFIG SET latency-monitor-threshold 100 #100是阈值，只有慢于100ms的才记
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-01-06 18:32" pubdate>
+              2023-01-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/" class="category-chain-item">Redis</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+            
+              <a href="/tags/Redis/">#Redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/01/05/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/" target="_self">
+          Redis第6章（缓存问题）
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/05/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC6%E7%AB%A0%EF%BC%88%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%EF%BC%89/" target="_self">
+        <div>
+          缓存问题 缓存穿透 缓存击穿 缓存雪崩 缓存污染（或者满了） 缓存和数据库一致性  缓存穿透问题缓存穿透是指缓存和数据库中都没有的数据。缓存不命中则会一直请求数据库，数据库查不到，又无法写入缓存。 解决 禁止非法请求，如校验参数合法性 数据库取不到的数据，在redis中置为key-null，防止大量数据库请求 bloomfilter，判断key是否在容器中  缓存击穿问题缓存击穿是指缓存中没有但数
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-01-05 01:05" pubdate>
+              2023-01-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/" class="category-chain-item">Redis</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+            
+              <a href="/tags/Redis/">#Redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/01/04/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%AB%98%E5%8F%AF%E7%94%A8%EF%BC%89/" target="_self">
+          Redis第5章（高可用）
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/04/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC5%E7%AB%A0%EF%BC%88%E9%AB%98%E5%8F%AF%E7%94%A8%EF%BC%89/" target="_self">
+        <div>
+          主从复制 主从复制，是指将一台Redis服务器的数据，复制到其他的Redis服务器。前者称为主节点(master)，后者称为从节点(slave)；  主从复制的作用主要包括：性能上：  负载均衡：在主从复制的基础上，配合读写分离，可以由主节点提供写服务，由从节点提供读服务（即写Redis数据时应用连接主节点，读Redis数据时应用连接从节点），分担服务器负载；尤其是在写少读多的场景下，通过多个从节
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-01-04 03:00" pubdate>
+              2023-01-04
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/" class="category-chain-item">Redis</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+            
+              <a href="/tags/Redis/">#Redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/01/03/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC4%E7%AB%A0%EF%BC%88%E4%BA%8B%E4%BB%B6%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/" target="_self">
+          Redis第4章（事件与事物）
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/03/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC4%E7%AB%A0%EF%BC%88%E4%BA%8B%E4%BB%B6%E4%B8%8E%E4%BA%8B%E5%8A%A1%EF%BC%89/" target="_self">
+        <div>
+          线程基础Redis的单线程指的是「接收客户端请求-&gt;解析请求 -&gt;进行数据读写等操作-&gt;发送数据给客户端」这个过程是由一个线程（主线程）来完成的。Redis程序并不是单线程的，Redis 在启动的时候，是会启动后台线程（BIO）的：  Redis 在 2.6 版本，有2个后台线程，分别处理关闭文件、AOF 刷盘这两个任务； Redis 在 4.0 版本之后，新增了1个后台线程，用
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-01-03 23:08" pubdate>
+              2023-01-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/" class="category-chain-item">Redis</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+            
+              <a href="/tags/Redis/">#Redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/01/03/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%8C%81%E4%B9%85%E5%8C%96%EF%BC%89/" target="_self">
+          Redis第3章（持久化）
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/03/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC3%E7%AB%A0%EF%BC%88%E6%8C%81%E4%B9%85%E5%8C%96%EF%BC%89/" target="_self">
+        <div>
+          持久化：RDB和AOF机制详解RDB(Redis DataBase)持久化触发方式 手动触发 和 自动触发  手动触发 save命令：由主线程执行，会造成长时间阻塞。 bgsave命令：fork子线程执行，阻塞只发生在fork阶段。   具体流程如下：  redis客户端执行bgsave命令或者自动触发bgsave命令； 主进程判断当前是否已经存在正在执行的子进程，如果存在，那么主进程直接返回；
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-01-03 21:04" pubdate>
+              2023-01-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/" class="category-chain-item">Redis</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+            
+              <a href="/tags/Redis/">#Redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/01/03/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC2%E7%AB%A0%EF%BC%88%E5%AF%B9%E8%B1%A1%E6%9C%BA%E5%88%B6%EF%BC%89/" target="_self">
+          Redis第2章（对象机制）
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/01/03/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC2%E7%AB%A0%EF%BC%88%E5%AF%B9%E8%B1%A1%E6%9C%BA%E5%88%B6%EF%BC%89/" target="_self">
+        <div>
+          引入 前面介绍了Redis的基本数据类型，针对这些数据类型有着不同的底层实现。  对象模型：  Redis对象有不同的数据类型，而一个数据类型可能有多种实现方式（编码类型），根据value的情况灵活变化。编码类型作为一种类型标识，告诉了Redis应该如何解析这个对象，不同编码类型也有不同的底层数据结构实现。  Redis对象机制作用：Redis 必须让每个键都带有类型信息, 使得程序可以检查键的类
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-01-03 18:57" pubdate>
+              2023-01-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/" class="category-chain-item">Redis</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+            
+              <a href="/tags/Redis/">#Redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/12/30/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC1%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E7%BB%93%E6%9E%84%EF%BC%89/" target="_self">
+          Redis第1章（数据类型与结构）
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/12/30/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC1%E7%AB%A0%EF%BC%88%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E7%BB%93%E6%9E%84%EF%BC%89/" target="_self">
+        <div>
+          一、Redis知识体系 二、Redis概念与基础Redis特点 读写性能优异：Redis能读的速度是110000次&#x2F;s,写的速度是81000次&#x2F;s。 数据类型丰富：Redis支持二进制案例的 Strings, Lists, Hashes, Sets 及 Ordered Sets 数据类型操作。 原子性：Redis的所有操作都是原子性的，同时Redis还支持对几个操作全并后的原子
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-12-30 19:08" pubdate>
+              2022-12-30
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/" class="category-chain-item">Redis</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%9F%BA%E7%A1%80/" class="category-chain-item">Redis基础</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+            
+              <a href="/tags/Redis/">#Redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/12/30/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC6%E7%AB%A0%EF%BC%88%E5%BA%94%E7%94%A8%E5%B1%82%EF%BC%89/" target="_self">
+          计算机网络第6章（应用层）
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/12/30/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%AC6%E7%AB%A0%EF%BC%88%E5%BA%94%E7%94%A8%E5%B1%82%EF%BC%89/" target="_self">
+        <div>
+          一、概述例子：万维网WWW应用，其相关的应用层协议为超文本传送协议HTTP，该应用还涉及到域名到IP地址的转换，由属于应用层范畴的域名系统DNS完成。 二、两种组织方式客户&#x2F;服务器方式（C&#x2F;S方式） 对等方式（P2P方式）              www,email,ftp为C&#x2F;S架构。             三、动态主机配置协议DHCP概念互联网广泛使用的动态主
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-12-30 18:30" pubdate>
+              2022-12-30
             </time>
           </div>
         
@@ -306,88 +1062,11 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/12/09/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/" target="_self">
-          计算机网络-基础篇
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/12/09/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E7%A1%80%E7%AF%87/" target="_self">
-        <div>
-          一、TCP&#x2F;IP网络模型主要针对TCP&#x2F;IP网络模型。 应用层应用层（Application Layer）只专注于提供应用功能，比如 HTTP、FTP、Telnet、DNS、SMTP等。 应用层是工作在操作系统中的用户态，传输层及以下则工作在内核态。 传输层应用层的数据包会传给传输层，传输层（Transport Layer）是为应用层提供网络支持的。  传输层会有两个传输协议，
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-12-09 23:04" pubdate>
-              2022-12-09
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/" class="category-chain-item">网络协议</a>
-  
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
-            
-              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">#计算机网络</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/6/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/#board">5</a><a class="page-number" href="/page/6/#board">6</a><span class="page-number current">7</span>
+      <a class="extend prev" rel="prev" href="/page/6/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/#board">5</a><a class="page-number" href="/page/6/#board">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/#board">8</a><a class="extend next" rel="next" href="/page/8/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

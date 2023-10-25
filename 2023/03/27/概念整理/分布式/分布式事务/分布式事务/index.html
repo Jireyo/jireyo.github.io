@@ -1,0 +1,971 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、概念定义  事务：一次大型活动，其中所有活动要么全部成功要么全部失败 本地事务：基于关系型数据库的事务，利用数据库本身的事务性质实现 分布式事务：跨数据库连接的事务，如多服务多数据库，单服务多数据库，多服务单数据库  分布式事务产生的原因  数据库拆分（同应用不同库） 服务拆分（不同应用不同库）  二、分布式事务概述ACID（事务规范）定义参照事务的基本规范：  原子性：分布式事务无法保证原子">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式事务">
+<meta property="og:url" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
+<meta property="og:description" content="一、概念定义  事务：一次大型活动，其中所有活动要么全部成功要么全部失败 本地事务：基于关系型数据库的事务，利用数据库本身的事务性质实现 分布式事务：跨数据库连接的事务，如多服务多数据库，单服务多数据库，多服务单数据库  分布式事务产生的原因  数据库拆分（同应用不同库） 服务拆分（不同应用不同库）  二、分布式事务概述ACID（事务规范）定义参照事务的基本规范：  原子性：分布式事务无法保证原子">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-03-27T14:46:30.000Z">
+<meta property="article:modified_time" content="2023-10-14T09:39:00.243Z">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="概念整理">
+<meta property="article:tag" content="分布式事务">
+<meta property="article:tag" content="分布式">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>分布式事务 - Jin&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="分布式事务"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-27 22:46" pubdate>
+          2023年3月27日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          50 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">分布式事务</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、概念"><a href="#一、概念" class="headerlink" title="一、概念"></a>一、概念</h1><p><em>定义</em></p>
+<ul>
+<li>事务：一次大型活动，其中所有活动要么全部成功要么全部失败</li>
+<li>本地事务：基于关系型数据库的事务，利用数据库本身的事务性质实现</li>
+<li>分布式事务：<strong>跨数据库连接的事务</strong>，如多服务多数据库，单服务多数据库，多服务单数据库</li>
+</ul>
+<p><em>分布式事务产生的原因</em></p>
+<ul>
+<li>数据库拆分（同应用不同库）</li>
+<li>服务拆分（不同应用不同库）</li>
+</ul>
+<h1 id="二、分布式事务概述"><a href="#二、分布式事务概述" class="headerlink" title="二、分布式事务概述"></a>二、分布式事务概述</h1><h3 id="ACID（事务规范）"><a href="#ACID（事务规范）" class="headerlink" title="ACID（事务规范）"></a>ACID（事务规范）</h3><p><em>定义</em><br>参照事务的基本规范：</p>
+<ul>
+<li>原子性：分布式事务无法保证原子性，是逐个分支事务提交（刚性事务近似原子）；</li>
+<li>一致性：分布式事务一般只保证最终一致性（刚性事务接近实时原子）；</li>
+<li>隔离性：分布式事务所操作的业务数据是否会因为被其他事务脏写，取决于框架实现；</li>
+<li>持久性：分布式事务能实现持久性。</li>
+</ul>
+<h3 id="CAP理论"><a href="#CAP理论" class="headerlink" title="CAP理论"></a>CAP理论</h3><p><em>定义</em><br>一致性，可用性，分区容错性</p>
+<p><em>概念</em></p>
+<ul>
+<li>分区容错性：因为不可能保证网络的可靠，所以系统必须实现分区容错性</li>
+<li>一致性与可用性的矛盾：分区的存在导致数据同步存在延迟，如果要保证一致性，就只能让尚未实现同步的数据不可用。</li>
+</ul>
+<p><em>模式</em></p>
+<ul>
+<li>AP模式：允许数据短暂不一致，只要求最终一致</li>
+<li>CP模式：强一致，数据在同步完成前不可用</li>
+</ul>
+<h3 id="柔性事务（BASE理论）"><a href="#柔性事务（BASE理论）" class="headerlink" title="柔性事务（BASE理论）"></a>柔性事务（BASE理论）</h3><p><em>定义</em><br>基本可用（Basice Avaliable）、柔性状态（Soft state）、最终一致性（Eventually consistent），BASE理论是对AP理论的扩展。</p>
+<p><em>概念</em></p>
+<ul>
+<li>基本可用：分布式系统在出现故障时，允许损失部分可用功能，保证核心功能可用。</li>
+<li>软状态：由于不要求强一致，所以系统中会存在中间状态，这个状态不影响系统可用性。</li>
+<li>最终一致性：最终一致指结果一段时间后，所有节点数据都将达到一致。</li>
+</ul>
+<p><em>分类</em></p>
+<ul>
+<li>两阶段型（XA等）</li>
+<li>补偿型（TCC、SAGA、AT等，实际上是<strong>两阶段的业务层实现</strong>）</li>
+<li>异步确保型（消息事务，将同步阻塞的事务变成异步）</li>
+<li>最大努力通知型（消息）</li>
+</ul>
+<h3 id="2PC两阶段协议"><a href="#2PC两阶段协议" class="headerlink" title="2PC两阶段协议"></a>2PC两阶段协议</h3><p><em>定义</em><br><strong>分布式事务的基础协议</strong>，将整个事务流程分为两个阶段，准备阶段P、提交阶段C。</p>
+<p><em>执行</em><br>由TM(Transaction Manager)协调多个资源管理器RM(Resource Manager)，一阶段各RM汇报自身活动状态，二阶段TM决定事务提交或回滚。</p>
+<p><em>特点</em></p>
+<ul>
+<li>超时：<ul>
+<li><strong>事务协调者具有一阶段超时机制</strong>，当一阶段超时时仍未收到个别参与者的响应，会判断事务失败，发送回滚命令。</li>
+<li><strong>事务参与者二阶段不具有超时机制</strong>，当其接受不到二阶段命令时，不会进行操作，此时会有<strong>不一致现象</strong>。</li>
+</ul>
+</li>
+<li>一致性：<strong>刚性事务（刚性事务并不能完全保证一致性，只是理论事务的提交时间是同一时刻）</strong></li>
+</ul>
+<p><em>规范</em><br>DTP模型：分布式事务处理模型，由国际开放标准组织Open Group定义处理模型，DTP模型（Distributed Transaction Processing Reference Model）定义如下角色。</p>
+<ul>
+<li>AP（Application Program）：即<strong>应用程序</strong>，可以理解为使用DTP分布式事务的程序。</li>
+<li>RM（Resource Manager）：即<strong>资源管理器</strong>，可以理解为事务的参与者，一般情况下是指一个数据库实例，通过资源管理器对数据库进行控制，资源管理器控制着分支事务。</li>
+<li>TM（Transaction Manager）：即<strong>事务管理器</strong>，负责协调和管理事务，事务管理器控制着全局事务，管理事务生命周期，并协调各个RM。全局事务是指分布式事务处理环境中，需要操作多个数据库共同完成一个工作，这个工作即一个全局事务。</li>
+</ul>
+<p><em>实现</em><br>XA协议，是X&#x2F;OPEN组织提出的，定义了TM与RM之间的通信接口，从而在<strong>数据库层面</strong>实现的2PC，是刚性事务（虽然是刚性事务，但也无法保证数据一致性）</p>
+<blockquote>
+<p><strong>Percolator协议</strong></p>
+<ul>
+<li>介绍：2PC的改进，基于分布式存储系统BigTable建立的模型</li>
+<li>思想：</li>
+<li>准备阶段，A、B事务执行完成后，在A事务的记录上添加锁标记，B事务的记录上添加执向A事务的锁指针，此时两个记录对外不可见。</li>
+<li>提交阶段，找到A事务锁，抹去，此时A事务完成提交，B事务无需提交，当其找不到A事务的锁的时候即视为提交。</li>
+</ul>
+</blockquote>
+<h3 id="3PC三阶段协议"><a href="#3PC三阶段协议" class="headerlink" title="3PC三阶段协议"></a>3PC三阶段协议</h3><p><em>定义</em><br>三阶段协议在两阶段前加入了一个CanCommit阶段，用于判断各节点健康状态，若存在不健康节点，则不会发起两阶段，避免了健康节点执行PreCommit后又回滚的成本。</p>
+<blockquote>
+<p>3PC以一种非阻塞的方式决定了事务是否开启。</p>
+</blockquote>
+<p><em>特点</em></p>
+<ul>
+<li>超时：<ul>
+<li><strong>事务协调者具有二阶段超时机制</strong>，当二阶段超时时仍未收到个别参与者的响应，会判断事务失败，发送回滚命令。</li>
+<li><strong>事务参与者三阶段具有超时机制</strong>，当参与者一直接受不到三阶段命令时，会进行超时提交（因为三阶段协议下，认为其他节点能执行成功是大概率时间），因此会有<strong>不一致现象</strong>。</li>
+</ul>
+</li>
+<li>一致性：<strong>刚性事务（刚性事务并不能完全保证一致性，只是理论事务的提交时间是同一时刻）</strong></li>
+</ul>
+<h1 id="三、实现方案"><a href="#三、实现方案" class="headerlink" title="三、实现方案"></a>三、实现方案</h1><h2 id="TCC模式"><a href="#TCC模式" class="headerlink" title="TCC模式"></a>TCC模式</h2><p><em>定义</em><br>业务上实现try、comfirm、cancel三个接口，其中try接口起到预占资源的作用，所以一阶段成功后，二阶段是不允许在业务层出现失败的（但可能网络故障，需要重试提交）</p>
+<blockquote>
+<p>TCC本质上是两阶段的业务层实现。</p>
+</blockquote>
+<p><em>特点</em></p>
+<ul>
+<li>超时：机制同2PC的，仅协调者一阶段存在超时机制。</li>
+<li>一致性：柔性事务（当然也不能保证一致性，且达成一致性的时间差比刚性事务要久）</li>
+</ul>
+<p><em>衍生问题</em><br>TCC模式需要业务处理以下问题：防悬挂、空回滚、幂等。<br>详细解决见下文XTS实现。</p>
+<p><em>TCC变体</em></p>
+<ul>
+<li>无try的TCC：一阶段执行业务操作，二阶段confirm无实际操作，二阶段cancel回滚，适用无法使用占用的场景，要重点关注回滚操作是否被及时执行，避免长时间不一致。</li>
+<li>异步TCC：对于不需要实时操作的事务，可以使用异步TCC，即二阶段消息化。</li>
+</ul>
+<h2 id="AT模式"><a href="#AT模式" class="headerlink" title="AT模式"></a>AT模式</h2><p><em>定义</em><br>自动模式，由框架代理的两阶段提交协议，也叫FMT。</p>
+<p><em>基本原理</em></p>
+<ul>
+<li>一阶段：业务数据和回滚日志（解析sql，保存原快照和改后数据，分别用于回滚和脏写校验）在同一个本地事务中提交</li>
+</ul>
+<p>![[Pasted image 20230904210508.png]]</p>
+<ul>
+<li>二阶段：<ul>
+<li>提交：异步提交，删除回滚日志即可</li>
+<li>回滚：利用回滚日志进行回滚并删除</li>
+</ul>
+</li>
+</ul>
+<p>![[Pasted image 20230904211549.png]]</p>
+<blockquote>
+<p><strong>redo log 与 undo log</strong></p>
+<ul>
+<li>redo log：写后数据</li>
+<li>undo log：写前数据<br>如果redo log与数据库数据不一致，说明发生了脏写，需要人工干预。</li>
+</ul>
+</blockquote>
+<p><em>与TCC的对比</em></p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>TCC</th>
+<th>FMT</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>原子性</td>
+<td>2PC业务实现</td>
+<td>2PC框架实现</td>
+</tr>
+<tr>
+<td>一致性</td>
+<td>天然实现</td>
+<td>天然实现</td>
+</tr>
+<tr>
+<td>隔离性</td>
+<td>放宽一致性协议条件，最终一致（读已修改）</td>
+<td>1.如果读加锁，串行化隔离级别；2.读不加锁，读已修改隔离级别</td>
+</tr>
+<tr>
+<td>持久性</td>
+<td>天然实现</td>
+<td>天然实现</td>
+</tr>
+<tr>
+<td>写并发控制</td>
+<td>加锁（业务实现，资源锁+业务锁）</td>
+<td>加锁（资源锁 + 框架行锁）</td>
+</tr>
+<tr>
+<td>CAP一致性</td>
+<td>放宽一致性协议条件，最终一致</td>
+<td>1.如果读加锁，强一致；2.读不加锁，最终一致</td>
+</tr>
+</tbody></table>
+<h2 id="SAGA模式"><a href="#SAGA模式" class="headerlink" title="SAGA模式"></a>SAGA模式</h2><p><em>定义</em><br>一系列本地事务串行执行，有以下两种模式：</p>
+<ul>
+<li>基于事件的模式：每个服务执行完本地事务后产生一个事件（消息），其他服务会监听这个事件，从而触发后续服务的执行，回滚时也通过事件发出。只适用于小业务场景，可能出现环形监听、失控。</li>
+<li>基于命令的模式：通过状态机维护事务的阶段和状态，需要一个协调者进行状态推进。</li>
+</ul>
+<p><em>场景</em><br>长事务的解决方案，适用于业务流程多且长的情况，避免TCC事务嵌套。</p>
+<ul>
+<li>正向恢复（Forward Recovery）：如果 Ti 事务提交失败，则一直对 Ti 进行重试，直至成功为止（最大努力交付）。这种恢复方式不需要补偿，适用于事务最终都要成功的场景，比如在别人的银行账号中扣了款，就一定要给别人发货。正向恢复的执行模式为：T1，T2，…，Ti（失败），Ti（重试）…，Ti+1，…，Tn。</li>
+<li>反向恢复（Backward Recovery）：如果 Ti 事务提交失败，则一直执行 Ci 对 Ti 进行补偿，直至成功为止（最大努力交付）。这里要求 Ci 必须（在持续重试后）执行成功。反向恢复的执行模式为：T1，T2，…，Ti（失败），Ci（补偿），…，C2，C1。</li>
+</ul>
+<p><em>缺点</em><br>无法保证事务隔离性，也需要空补偿、防悬挂、幂等。</p>
+<p><em>与TCC的对比</em><br>与 TCC 相比，SAGA 不需要为资源设计冻结状态和撤销冻结的操作，补偿操作往往要比冻结操作容易实现得多。</p>
+<h2 id="最终一致性方案"><a href="#最终一致性方案" class="headerlink" title="最终一致性方案"></a>最终一致性方案</h2><h2 id="本地消息表"><a href="#本地消息表" class="headerlink" title="本地消息表"></a>本地消息表</h2><p>![[Pasted image 20230906195026.png]]<br><em>步骤</em><br>2. 事务发起方把要处理的业务事务和写消息表这两个操作放在同一个本地事务里<br>3. 事务发起方有一个定时任务轮询消息表，把没处理的消息发送到消息中间件<br>4. 事务被动方从消息中间件获取消息后，返回成功<br>5. 事务发起方更新消息状态为已成功</p>
+<p><em>缺点</em><br>业务耦合过强，无法共用、影响性能。</p>
+<h3 id="事务消息-可靠消息"><a href="#事务消息-可靠消息" class="headerlink" title="事务消息(可靠消息)"></a>事务消息(可靠消息)</h3><p>![[Pasted image 20230906200711.png]]<br>见MsgBroker，对比本地消息表，其将消息数据的写入放置在了MQ侧，MQ通过消息回查来处理异常情况。</p>
+<p><em>缺点</em><br>业务需要暴露接口供MQ做消息回查，需要保证接口的安全性，且若由于网络问题一直投递失败，下游无法感知，主要用于内部系统。</p>
+<h3 id="最大努力通知"><a href="#最大努力通知" class="headerlink" title="最大努力通知"></a>最大努力通知</h3><p>对比MQ事务消息，其发布者会暴露第三方查询接口供外部访问，下游等待MQ超时后也可以主动查询事务结果，主要用于外部系统。<br>![[Pasted image 20230906200801.png]]</p>
+<blockquote>
+<p>事务消息与最大努力通知的区别：</p>
+<ol>
+<li>解决方案思想不同：事务消息中消息的可靠性由消息发送方保证，最大努力通知中消息的可靠性由消息接受方保证。</li>
+<li>业务场景不同：可靠消息一致性关注的是事务中的一致性，最大努力通知关注的是事务后的通知。</li>
+</ol>
+</blockquote>
+<h2 id="XTS实现原理"><a href="#XTS实现原理" class="headerlink" title="XTS实现原理"></a>XTS实现原理</h2><p><em>基本原理</em></p>
+<ul>
+<li>XTS基于2PC原理。</li>
+<li>事务的发起方作为TM。</li>
+<li>事务发起方在本地事务（必须在本地事务模板中执行）中调用分支事务，该本地事务的最终状态决定整个分布式事务的最终状态。</li>
+<li>框架代理实现二阶段的提交和回滚。</li>
+</ul>
+<blockquote>
+<p><strong>最末参与者优化（LPO）</strong><br>由于两阶段提交的“准备”操作的实现复杂性和效率都会在实际业务中产生影响，支付宝分布式事务 在两阶段提交中引入一个简单的优化——最末参与者优化(Last Participant Optimization)。<br>在这个模型中将<strong>有一个参与者不参加两段提交的过程</strong>（称为单阶段参与者），而是在其余两阶段参与者都准备好之后，再请求单阶段参与者提交，单阶段参与者的提交结果将决定整个分布式事务的结果。如果单阶段参与者提交成功，那么协调者要求其余参与者提交，如果提交失败则协调者要求其余参与者事务回滚。<br>在较新版本的 XTS 中，LPO 这个思想已经演变成了另外一种呈现形式：<strong>所谓的“单阶段参与者”在 XTS 中扮演发起方的角色</strong>，它的功能和两阶段提交中的协调者非常相似但又不尽相同。</p>
+</blockquote>
+<p>![[Pasted image 20230904213122.png]]</p>
+<p><em>状态机</em><br><strong>主事务</strong><br>![[Pasted image 20230904220141.png]]<br><strong>分支事务</strong><br>![[Pasted image 20230904220705.png]]</p>
+<p><em>恢复机制</em><br>二阶段执行出现异常时，恢复系统会自动捞取没有提交成功的参与者进行重试直到提交成功。</p>
+<p><em>防悬挂</em><br>需要一个防悬挂表，一、二阶段都可以执行悬挂记录。</p>
+<ul>
+<li>一阶段到达时先尝试插入幂等表：<ul>
+<li>若能插入说明是首次执行，正常执行即可；</li>
+<li>若无法插入，且发现是一阶段插入的记录，执行幂等操作即可；</li>
+<li>若无法插入，且发现是二阶段插入的记录，拒绝执行。</li>
+</ul>
+</li>
+<li>二阶段到达时先查询悬挂表，若有记录说明一阶段执行完成，执行回滚，否则执行空回滚并插入悬挂记录。</li>
+</ul>
+<p><em>嵌套事务</em><br>嵌套事务在一阶段执行完成后，不会立马提交，需要等待全局事务提交后自己才提交。</p>
+<ul>
+<li>嵌套事务需要认知到自己是一个嵌套事务，一阶段完成后不立马提交；</li>
+<li>嵌套事务在接受到提交请求时，将本地事务提交，并开始提交下游分支事务；</li>
+<li>嵌套事务需要知道自己的根节点事务，以便在出现超时等异常时知道自己的状态。</li>
+</ul>
+<p><em>性能优化</em></p>
+<ul>
+<li>二阶段异步化：一阶段完成后直接返回执行成功，可能由于二阶段执行超时导致数据临时不一致。</li>
+<li>二阶段并发：二阶段的请求并发执行，减少耗时</li>
+</ul>
+<p><em>参与者系统设计规范</em><br>框架层面</p>
+<ul>
+<li>实现两阶段接口：二阶段入参一般只包括事务信息，需要参与者自己做好一二阶段的操作关联。</li>
+<li>业务幂等：同一笔事务只能成功一次</li>
+<li>空回滚：一二阶段乱序时，防止二阶段实际回滚</li>
+<li>防悬挂：一二阶段乱序时，防止一阶段悬挂</li>
+</ul>
+<p><em>业务层面</em></p>
+<ul>
+<li>数据可见性：数据的中间状态对客表达要友好</li>
+<li>隔离性控制：多个事务操作同一个资源时（如余额），需要控制好隔离性</li>
+</ul>
+<blockquote>
+<p>参考资料：<a target="_blank" rel="noopener" href="http://wwyz-study.oss-cn-hangzhou.aliyuncs.com/XTS%20%E6%94%AF%E4%BB%98%E5%AE%9D%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97.pdf">XTS支付宝分布式事务学习指南</a></p>
+</blockquote>
+<p><em>代码实现</em></p>
+<ul>
+<li>发起者二阶段的提交、回滚以来本地事务的提交、回滚，具体而言，是通过为事务注册事务同步管理器TransactionSynchronizationManager，实现对本地事务提交前的上下文清理，提交后的事务状态修改。</li>
+<li>参与者二阶段的自动提交，来自于一阶段对action的拦截，具体而言，需要参与者将暴露的try接口打上TCC注解（标注了actionName和本类中二阶段对应的两个方法名），发起者启动时便会建立action和方法及其bean的联系，执行一阶段时会插入对应分支事务记录，二阶段时便可以找到分支事务执行对应的方法。</li>
+</ul>
+<h1 id="四、MIT6-824-分布式事务"><a href="#四、MIT6-824-分布式事务" class="headerlink" title="四、MIT6.824 分布式事务"></a>四、MIT6.824 分布式事务</h1><p><em>组成</em><br>分布式事务主要有两部分组成：并发控制、原子提交</p>
+<p><em>隔离性与可序列化</em></p>
+<ul>
+<li><strong>隔离性</strong>意味着<strong>可序列化</strong>，可序列化指并行执行的一些事务得到的结果与按照某种串行的顺序来执行这些事务可以得到相同的结果。</li>
+<li><strong>可序列化</strong>可以确保可以安全的写事务，就像没有其他事情发生一样，如果这些被操作的数据之间没有交集，则事务之间具有<strong>隔离性</strong>。</li>
+</ul>
+<p><em>并发控制</em></p>
+<ul>
+<li>并发控制类型主要分悲观锁，乐观锁两类</li>
+<li><strong>二阶段锁</strong>是一种悲观并发控制，其内容为：<ul>
+<li>在执行任何数据读写之前，需要先<strong>获取锁</strong></li>
+<li>只有事务提交或回滚后，才允许事务<strong>释放锁</strong></li>
+</ul>
+</li>
+</ul>
+<p><em>故障点分析</em></p>
+<ul>
+<li>发起者没有收到一阶段回复，此时发起者会发起二阶段回滚、参与者状态未知：参与者需要实现<strong>幂等、空回滚、防悬挂</strong>。</li>
+<li>一阶段成功，参与者接受到二阶段命令前故障：参与者需要记录本事务的业务信息，以得知在收到二阶段命令后如何执行业务。</li>
+<li>一阶段成功，参与者接受到二阶段命令后故障：这不是分布式事务的特有问题，需要参与者实现二阶段事务的原子性和幂等。</li>
+<li>一阶段成功，参与者回复二阶段时故障：参与者实现二阶段回滚即可。</li>
+</ul>
+<p><em>Commit Point选择</em><br>comimit point即决策整体事务提交or回滚的时点，该时点状态也是事务恢复时依赖的状态。</p>
+<ol>
+<li>使用协调者的提交记录作为commit point，如XA事务（需要防止单点故障），恢复事务时依赖该记录状态。</li>
+<li>所有参与者完成第一阶段时作为commit point，即收集到所有参与者的一阶段ACK，恢复事务时重新问各参与者是否可执行，优势是延迟最小，如OceanBase。</li>
+<li>某一个特殊参与者完成二阶段时为commit point，即从参与者中选出一个primary，提交二阶段时，协调者优先把请求发送给Primary，以Primary提交成功作为事务的Commit Point，缺点是延迟较高，如TiDB。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/" class="category-chain-item">分布式</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/" class="category-chain-item">分布式事务</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+      
+        <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">#分布式事务</a>
+      
+        <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/">#分布式</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>分布式事务</div>
+      <div>http://example.com/2023/03/27/概念整理/分布式/分布式事务/分布式事务/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年3月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Linux/" title="Linux">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Linux</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" title="消息队列">
+                        <span class="hidden-mobile">消息队列</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/fluid-extention.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

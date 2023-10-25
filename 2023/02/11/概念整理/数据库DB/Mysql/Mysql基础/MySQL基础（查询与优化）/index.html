@@ -16,19 +16,19 @@
   <meta name="author" content="Jin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="一、单表访问访问方法（access method）Mysql中查询的执行方式大致分两种：  使用全表扫描进行查询 使用索引进行查询（使用xx索引的xx查询）  访问方法分类：  all：全表 const：主键 &#x3D; 常数 ref：二级索引 &#x3D; 常数 ref_or_null：二级索引 &#x3D; 常数 或 二级索引 &#x3D; null range：利用索引进行范围查询 ind">
+    <meta name="description" content="一、单表访问访问方法（access method）Mysql中查询的执行方式大致分两种：  使用全表扫描进行查询 使用索引进行查询（使用xx索引的xx查询）  访问方法分类：  all：全表查询 system：该表只有一行（系统表） const：命中主键(primary key)或者唯一索引(unique) 且被连接的部分是一个常量值(const) ref：使用非唯一性索引或者唯一索引的前缀扫描">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL基础（查询与优化）">
 <meta property="og:url" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/index.html">
 <meta property="og:site_name" content="Jin&#39;s Blog">
-<meta property="og:description" content="一、单表访问访问方法（access method）Mysql中查询的执行方式大致分两种：  使用全表扫描进行查询 使用索引进行查询（使用xx索引的xx查询）  访问方法分类：  all：全表 const：主键 &#x3D; 常数 ref：二级索引 &#x3D; 常数 ref_or_null：二级索引 &#x3D; 常数 或 二级索引 &#x3D; null range：利用索引进行范围查询 ind">
+<meta property="og:description" content="一、单表访问访问方法（access method）Mysql中查询的执行方式大致分两种：  使用全表扫描进行查询 使用索引进行查询（使用xx索引的xx查询）  访问方法分类：  all：全表查询 system：该表只有一行（系统表） const：命中主键(primary key)或者唯一索引(unique) 且被连接的部分是一个常量值(const) ref：使用非唯一性索引或者唯一索引的前缀扫描">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/167e43ab3feccc29_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
 <meta property="og:image" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/167e43ab3a02660b_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
 <meta property="og:image" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/167e43ab3fa0f107_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
 <meta property="og:image" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/167e43ab3e5fa2f6_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
 <meta property="article:published_time" content="2023-02-11T12:43:46.000Z">
-<meta property="article:modified_time" content="2023-05-24T06:24:07.004Z">
+<meta property="article:modified_time" content="2023-09-28T14:23:27.531Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="Mysql">
@@ -237,7 +237,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          5.7k 字
+          6.5k 字
         
       </span>
     
@@ -248,7 +248,7 @@
         
         
         
-          48 分钟
+          55 分钟
         
       </span>
     
@@ -298,9 +298,11 @@
 </ul>
 <p>访问方法分类：</p>
 <ul>
-<li>all：全表</li>
-<li>const：主键 &#x3D; 常数</li>
-<li>ref：二级索引 &#x3D; 常数</li>
+<li>all：全表查询</li>
+<li>system：该表只有一行（系统表）</li>
+<li>const：命中主键(primary key)或者唯一索引(unique) 且被连接的部分是一个常量值(const)</li>
+<li>ref：使用<strong>非唯一性索引</strong>或者唯一索引的前缀扫描</li>
+<li>eq_ref：类似ref，区别就在使用的索引是<strong>唯一索引</strong></li>
 <li>ref_or_null：二级索引 &#x3D; 常数 或 二级索引 &#x3D; null</li>
 <li>range：利用索引进行范围查询</li>
 <li>index：不用回表的二级索引搜索</li>
@@ -328,7 +330,7 @@
 <p>注意：往往应该使用联合索引替代Intersection索引合并，即一个索引完成了两个列的范围搜索。</p>
 </blockquote>
 <h1 id="二、连接的原理"><a href="#二、连接的原理" class="headerlink" title="二、连接的原理"></a>二、连接的原理</h1><h2 id="连接本质"><a href="#连接本质" class="headerlink" title="连接本质"></a>连接本质</h2><p><code>连接</code>的本质就是把各个连接表中的记录都取出来依次匹配的组合加入结果集并返回给用户，如下，这样的结果集称为<code>笛卡尔积</code>。<br><img src="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/167e43ab3feccc29_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
-<h2 id="连接过程"><a href="#连接过程" class="headerlink" title="连接过程"></a>连接过程</h2><p><em>驱动表</em><br>第一个需要查询的表，这个表称之为<code>驱动表</code>。<br><em>被驱动表</em><br>使用<code>驱动表</code>中的搜索结果，每条记录都对<code>被驱动表</code>进行一次搜索，过滤得到满足连接的结果。</p>
+<h2 id="连接过程"><a href="#连接过程" class="headerlink" title="连接过程"></a>连接过程</h2><p><em>驱动表</em><br>第一个需要查询的表，这个表称之为<code>驱动表</code>。<br><em>被驱动表</em><br>使用<code>驱动表中的搜索结果</code>，每条记录都对<code>被驱动表</code>进行一次搜索，过滤得到满足连接的结果。</p>
 <p><em>eg:</em></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> t1, t2 <span class="hljs-keyword">WHERE</span> t1.m1 <span class="hljs-operator">&gt;</span> <span class="hljs-number">1</span> <span class="hljs-keyword">AND</span> t1.m1 <span class="hljs-operator">=</span> t2.m2 <span class="hljs-keyword">AND</span> t2.n2 <span class="hljs-operator">&lt;</span> <span class="hljs-string">&#x27;d&#x27;</span>;<br></code></pre></td></tr></table></figure>
 <p><img src="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/167e43ab3a02660b_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp" srcset="/img/loading.gif" lazyload></p>
@@ -349,7 +351,7 @@
 </blockquote>
 <h3 id="使用索引加快连接速度"><a href="#使用索引加快连接速度" class="headerlink" title="使用索引加快连接速度"></a>使用索引加快连接速度</h3><p>加速连接查询主要是要加速被驱动表的查询。</p>
 <ul>
-<li>参考单表查询中索引的使用，建立合适的所以避免对被驱动表全表扫描。</li>
+<li>参考单表查询中索引的使用，建立合适的索引避免对被驱动表全表扫描。</li>
 <li>为了避免被驱动表反复被加载到内存中，使用join buffer：<ul>
 <li>执行连接查询前申请一块固定大小的内存，先把若干条<strong>驱动表结果集</strong>中的记录装在这个<code>join buffer</code>中</li>
 <li>然后开始扫描被驱动表，每一条被驱动表的记录一次性和<code>join buffer</code>中的多条驱动表记录做匹配</li>
@@ -384,15 +386,14 @@
 </ul>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span>I/O成本<br>聚簇索引页数 * <span class="hljs-number">1.0</span> + <span class="hljs-number">1.1</span><br><span class="hljs-regexp">//</span>CPU成本<br>rows * <span class="hljs-number">0.2</span> + <span class="hljs-number">1.0</span><br></code></pre></td></tr></table></figure>
 
-<h3 id="索引查询成本的代价"><a href="#索引查询成本的代价" class="headerlink" title="索引查询成本的代价"></a>索引查询成本的代价</h3><blockquote>
-<p>范围搜索：</p>
+<h3 id="索引查询成本的代价"><a href="#索引查询成本的代价" class="headerlink" title="索引查询成本的代价"></a>索引查询成本的代价</h3><p><em>范围搜索</em><br>查询优化器粗暴的认为读取索引的<strong>一个范围区间</strong>的<code>I/O</code>成本和读取一个页面是相同的。</p>
 <ul>
-<li>查询优化器粗暴的认为读取索引的<strong>一个范围区间</strong>的<code>I/O</code>成本和读取一个页面是相同的。</li>
-<li>对于范围搜索如<code>IN</code>，会预估rows：</li>
+<li>对于范围搜索如<code>IN</code>，会预估rows：<ul>
 <li>先获取<code>B+</code>树的<code>区间最左记录</code>和<code>区间最右记录</code>，在统计两者之间的记录数量（<code>index dive</code>）</li>
 <li>IN中参数过多（多于200）时，会使用基数估算索引。</li>
 </ul>
-</blockquote>
+</li>
+</ul>
 <p><em>使用索引处理对于range类型的查询条件</em></p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span>I/O成本<br><span class="hljs-regexp">//</span>根据索引搜索一个范围<br><span class="hljs-number">1.0</span><br><span class="hljs-regexp">//</span>回表<br>rows * <span class="hljs-number">1.0</span><br><br><span class="hljs-regexp">//</span>CPU成本<br><span class="hljs-regexp">//</span>读取二级索引<br>rows * <span class="hljs-number">0.2</span> + <span class="hljs-number">0.01</span><br><span class="hljs-regexp">//</span>读取聚簇索引<br>rows * <span class="hljs-number">0.2</span><br></code></pre></td></tr></table></figure>
 
@@ -517,15 +518,11 @@
 <li><code>nulls_ignored</code>：直接把<code>NULL</code>值忽略掉。</li>
 </ul>
 <h1 id="五、基于规则优化"><a href="#五、基于规则优化" class="headerlink" title="五、基于规则优化"></a>五、基于规则优化</h1><h2 id="条件化简"><a href="#条件化简" class="headerlink" title="条件化简"></a>条件化简</h2><ul>
-<li>移除不必要的括号</li>
-<li>常量传递</li>
-<li>等值传递</li>
-<li>移除没用的条件</li>
-<li>表达式计算</li>
-<li>HAVING子句和WHERE子句的合并：没有出现聚集函数时，合并HAVING子句和WHERE子句。</li>
+<li>基本语句：移除不必要的括号、移除没用的条件、常量传递、等值传递、表达式计算（必须是常量类型简单表达式，不支持函数类型和复杂表达式）。</li>
+<li>条件合并：HAVING子句和WHERE子句的合并：没有出现聚集函数时，合并HAVING子句和WHERE子句。</li>
 <li>常量表检测：表中只有一条数据或使用主键等值匹配的子句，优先执行。</li>
-<li>外连接消除：WHERE子句中指定<code>被驱动表</code>的 <code>连接列</code> 不为NULL，则变成了内连接。</li>
 </ul>
+<h2 id="外连接消除"><a href="#外连接消除" class="headerlink" title="外连接消除"></a>外连接消除</h2><p>WHERE子句中指定<code>被驱动表</code>的 <code>连接列</code> 不为NULL，则变成了内连接。</p>
 <h2 id="子查询优化"><a href="#子查询优化" class="headerlink" title="子查询优化"></a>子查询优化</h2><h3 id="子查询分类"><a href="#子查询分类" class="headerlink" title="子查询分类"></a>子查询分类</h3><p><em>按查询结果分类</em></p>
 <ul>
 <li>标量子查询</li>
@@ -542,36 +539,58 @@
 <ul>
 <li>子查询必须用小括号扩起来。</li>
 <li>在<code>SELECT</code>子句中的子查询必须是标量子查询。</li>
-<li>对于<code>[NOT] IN/ANY/SOME/ALL</code>子查询来说，子查询中不允许有<code>LIMIT</code>语句。</li>
+<li>对于<code>[NOT] IN/ANY/SOME/ALL</code>子查询来说，子查询中不允许有<code>LIMIT</code>语句。（没有原因，InnoDB当前就是这样规定的）</li>
 <li>不允许在一条语句中增删改某个表的记录时同时还对该表进行子查询。</li>
 </ul>
-<h3 id="子查询在MySQL中执行"><a href="#子查询在MySQL中执行" class="headerlink" title="子查询在MySQL中执行"></a>子查询在MySQL中执行</h3><p>原始子查询：先执行子查询，然后将结果作为外层参数。</p>
-<h4 id="标量子查询、行子查询"><a href="#标量子查询、行子查询" class="headerlink" title="标量子查询、行子查询"></a>标量子查询、行子查询</h4><p>原始子查询。</p>
-<h4 id="IN子查询优化（列子查询）"><a href="#IN子查询优化（列子查询）" class="headerlink" title="IN子查询优化（列子查询）"></a>IN子查询优化（列子查询）</h4><h5 id="物化表"><a href="#物化表" class="headerlink" title="物化表"></a>物化表</h5><p>将不相关子查询的结果集写入一个临时表（基于内存的使用<code>Memory</code>存储引擎，并且会自动去重，如果太大了就会转而使用磁盘和B+树存储），这个表叫做<strong>物化表</strong>。</p>
-<p><em>物化表转连接</em><br>将物化表转化成内连接，提供了转换驱动表的可能。</p>
-<h5 id="semi-join"><a href="#semi-join" class="headerlink" title="semi-join"></a>semi-join</h5><p>对于<code>s1</code>表的某条记录来说，我们只关心在<code>s2</code>表中是否存在与之匹配的记录，而不关心具体有多少条记录与之匹配，最终的结果集中只保留<code>s1</code>表的记录。</p>
-<blockquote>
-<p>内连接时，驱动表的每行都要在被驱动表中匹配（被驱动表中可能有多条匹配的行），但IN子句查询，只需要判断被驱动表中有匹配的行即可。</p>
-</blockquote>
-<p>实现方式：</p>
+<h3 id="子查询在MySQL中执行方式"><a href="#子查询在MySQL中执行方式" class="headerlink" title="子查询在MySQL中执行方式"></a>子查询在MySQL中执行方式</h3><p><em>原始子查询方式</em></p>
 <ul>
-<li>Table pullout （子查询中的表上拉）：连接列是被驱动表的唯一索引时，连接；</li>
-<li>DuplicateWeedout execution strategy （重复值消除）：临时表去重；</li>
-<li>LooseScan execution strategy （松散扫描）：子查询做驱动表，使用其结果扫描主表的各行结果是否满足条件；</li>
-<li>Semi-join Materialization execution strategy：物化；</li>
-<li>FirstMatch execution strategy （首次匹配）：原始查询。</li>
+<li>不相关子查询：先执行子查询，然后将结果作为外层参数。</li>
+<li>相关子查询：对驱动表的每条记录执行一次子查询。</li>
 </ul>
+<h4 id="标量子查询、行子查询"><a href="#标量子查询、行子查询" class="headerlink" title="标量子查询、行子查询"></a>标量子查询、行子查询</h4><p>标量子查询或者行子查询，无论是否相关，查询方式都为原始的子查询方式。</p>
+<h4 id="IN子查询优化（列子查询）"><a href="#IN子查询优化（列子查询）" class="headerlink" title="IN子查询优化（列子查询）"></a>IN子查询优化（列子查询）</h4><h5 id="物化表"><a href="#物化表" class="headerlink" title="物化表"></a>物化表</h5><p><em>物化表定义</em><br>将不相关子查询的结果集写入一个临时表（基于内存使用<code>Memory</code>存储引擎，使用哈希索引并自动去重，如果太大了就会转而使用磁盘和B+树存储），这个表叫做<strong>物化表</strong>。</p>
+<p><em>物化表转连接</em><br>将物化表转化成内连接，此时可以根据成本选择使用外部表或物化表作为驱动表执行连接操作。</p>
+<h5 id="semi-join"><a href="#semi-join" class="headerlink" title="semi-join"></a>semi-join</h5><p><em>semi-join定义</em><br><code>semi-join</code>只是在MySQL内部采用的一种执行子查询的方式，其目的是在不生成物化表的情况上实现内连接。<br>直接连接还需要解决去重问题，因为实际上IN子句查询只需要判断被驱动表中有否有与驱动表记录匹配的行即可，其无需关心被驱动表中有多少行与之匹配，而这种只判断存在匹配值，而不判断具体匹配行数量的连接就是半连接<code>semi-join</code>。</p>
+<p><em>实现方式</em></p>
+<ul>
+<li>Table pullout （子查询中的表上拉）：连接列是被驱动表的<strong>唯一索引</strong>时，直接连接；</li>
+<li>DuplicateWeedout execution strategy （重复值消除）：使用临时表对驱动表记录做去重（即每个驱动表记录只匹配一次）；</li>
+<li>LooseScan execution strategy （松散扫描）：子查询排序后做驱动表，使用其结果扫描主表的各行结果是否满足条件，由于对子查询结果做了排序，相邻的相同的索引直接进行忽略；</li>
+<li>Semi-join Materialization execution strategy：即物化表的方式；</li>
+<li>FirstMatch execution strategy （首次匹配）：原始子查询方式，但只做首次匹配。</li>
+</ul>
+<div class="note note-primary">
+            <p>相关子查询无法使用物化表的方式执行。</p>
+          </div>
+
+<h5 id="semi-join使用条件"><a href="#semi-join使用条件" class="headerlink" title="semi-join使用条件"></a>semi-join使用条件</h5><p><em>适用情况</em></p>
+<ul>
+<li>该子查询必须是和<code>IN</code>语句组成的布尔表达式，并且在外层查询的<code>WHERE</code>或者<code>ON</code>子句中出现。</li>
+<li>外层查询也可以有其他的搜索条件，只不过和<code>IN</code>子查询的搜索条件必须使用<code>AND</code>连接起来。</li>
+<li>该子查询必须是一个单一的查询，不能是由若干查询由<code>UNION</code>连接起来的形式。</li>
+<li>该子查询不能包含<code>GROUP BY</code>或者<code>HAVING</code>语句或者聚集函数。</li>
+</ul>
+<p><em>不适用情况</em></p>
+<ul>
+<li>外层查询的WHERE条件中有其他搜索条件与IN子查询组成的布尔表达式使用<code>OR</code>连接起来</li>
+<li>使用<code>NOT IN</code>而不是<code>IN</code>的情况</li>
+<li>在<code>SELECT</code>子句中的IN子查询的情况</li>
+<li>子查询中包含<code>GROUP BY</code>、<code>HAVING</code>或者聚集函数的情况</li>
+<li>子查询中包含<code>UNION</code>的情况</li>
+</ul>
+<h5 id="兜底策略"><a href="#兜底策略" class="headerlink" title="兜底策略"></a>兜底策略</h5><ol>
+<li>不相关子查询：物化表查询</li>
+<li>把<code>IN</code>子查询尝试转为<code>EXISTS</code>子查询</li>
+</ol>
 <h5 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h5><ul>
 <li>满足转换为<code>semi-join</code>的条件时，查询优化器会优先把该子查询转换为<code>semi-join</code>，然后再考虑下边5种执行半连接的策略中哪个成本最低。</li>
-<li>不满足转换<code>semi-join</code>的条件时，查询优化器会从下边两种策略中找出一种成本更低的方式执行子查询：<ul>
-<li><p>先将子查询物化之后再执行查询</p>
-</li>
-<li><p>执行<code>IN to EXISTS</code>转换，转化后可能可以使用索引。</p>
-<p>  任意一个IN子查询都可以被转为<code>EXISTS</code>子查询，通用的例子如下：</p>
-</li>
+<li>不满足转换<code>semi-join</code>的条件时，查询优化器会从下边<strong>两种策略</strong>中找出一种成本更低的方式执行子查询：<ul>
+<li>先将子查询物化之后再执行查询</li>
+<li>执行<code>IN to EXISTS</code>转换，<strong>转化后可能可以使用索引</strong></li>
 </ul>
 </li>
 </ul>
+<p>任意一个IN子查询都可以被转为<code>EXISTS</code>子查询，通用的例子如下：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql">outer_expr <span class="hljs-keyword">IN</span> (<span class="hljs-keyword">SELECT</span> inner_expr <span class="hljs-keyword">FROM</span> ... <span class="hljs-keyword">WHERE</span> subquery_where)<br><span class="hljs-comment">--可转化为：</span><br><span class="hljs-keyword">EXISTS</span> (<span class="hljs-keyword">SELECT</span> inner_expr <span class="hljs-keyword">FROM</span> ... <span class="hljs-keyword">WHERE</span> subquery_where <span class="hljs-keyword">AND</span> outer_expr<span class="hljs-operator">=</span>inner_expr)<br></code></pre></td></tr></table></figure>
 
 <h4 id="ANY-x2F-ALL子查询优化"><a href="#ANY-x2F-ALL子查询优化" class="headerlink" title="ANY&#x2F;ALL子查询优化"></a>ANY&#x2F;ALL子查询优化</h4><table>
@@ -598,15 +617,20 @@
 <td>&gt; (SELECT MAX(inner_expr) …)</td>
 </tr>
 </tbody></table>
-<h4 id="NOT-EXISTS子查询的执行"><a href="#NOT-EXISTS子查询的执行" class="headerlink" title="[NOT] EXISTS子查询的执行"></a>[NOT] EXISTS子查询的执行</h4><ul>
-<li>对于不相关子查询，查出来true&#x2F;false然后重写原语句</li>
+<h4 id="NOT-EXISTS子查询的执行"><a href="#NOT-EXISTS子查询的执行" class="headerlink" title="[NOT] EXISTS子查询的执行"></a><code>[NOT] EXISTS</code>子查询的执行</h4><ul>
+<li>对于不相关子查询，先执行子查询，查出来true&#x2F;false结果后重写原语句</li>
 <li>对于相关子查询，只能使用原始子查询</li>
 </ul>
-<h4 id="对于派生表的优化"><a href="#对于派生表的优化" class="headerlink" title="对于派生表的优化"></a>对于派生表的优化</h4><p>子查询放在外层查询的<code>FROM</code>子句后，那么这个子查询的结果相当于一个<code>派生表</code></p>
+<h4 id="对于派生表的优化"><a href="#对于派生表的优化" class="headerlink" title="对于派生表的优化"></a>对于派生表的优化</h4><p><em>派生表的定义</em><br>子查询放在外层查询的<code>FROM</code>子句后，那么这个子查询的结果相当于一个<code>派生表</code></p>
 <div class="note note-primary">
             <p>列子查询结果叫<strong>物化表</strong><br>表子查询结果叫<strong>派生表</strong></p>
           </div>
 
+<p><em>派生表优化</em></p>
+<ul>
+<li>派生表物化：将派生表物化为一个临时表。</li>
+<li>派生表合并：将派生表与外层查询的表连接，并将派生表的查询条件也移动至外层的查询条件。（当派生表有一些特殊函数或处理时，不能使用派生表合并）。</li>
+</ul>
 <h1 id="六、Explain"><a href="#六、Explain" class="headerlink" title="六、Explain"></a>六、Explain</h1><p><code>EXPLAIN</code>是一个语句，能帮助我们查看查询语句的执行计划。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">EXPLAIN <span class="hljs-keyword">SELECT</span> <span class="hljs-number">1</span>;<br></code></pre></td></tr></table></figure>
 <p>输出结果的各列：</p>
@@ -814,8 +838,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/02/10/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/" title="MySQL基础（InnoDB数据存储）">
-                        <span class="hidden-mobile">MySQL基础（InnoDB数据存储）</span>
+                      <a href="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E9%AB%98%E7%BA%A7%EF%BC%88%E7%B4%A2%E5%BC%95%EF%BC%89/" title="MySQL高级（索引）">
+                        <span class="hidden-mobile">MySQL高级（索引）</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

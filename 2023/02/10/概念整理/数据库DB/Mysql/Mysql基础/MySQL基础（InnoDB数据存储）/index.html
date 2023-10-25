@@ -50,7 +50,7 @@
 <meta property="og:image" content="http://example.com/2023/02/10/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16efe1e5a01aeac9_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
 <meta property="og:image" content="http://example.com/2023/02/10/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/16a739f4a99c9a08_tplv-t2oaga2asx-zoom-in-crop-mark_3024_0_0_0.webp">
 <meta property="article:published_time" content="2023-02-10T12:16:13.000Z">
-<meta property="article:modified_time" content="2023-05-15T11:18:45.979Z">
+<meta property="article:modified_time" content="2023-10-19T07:50:46.315Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="Mysql">
@@ -259,7 +259,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          12k 字
+          13k 字
         
       </span>
     
@@ -270,7 +270,7 @@
         
         
         
-          105 分钟
+          108 分钟
         
       </span>
     
@@ -756,6 +756,20 @@
 <li>先在B+根节点上添加用户数据</li>
 <li>根节点满后将记录复制到新页中，并对新页A进行分裂，得到新页A1和新页A2，新记录选择性的插入页A或页B，然后根节点升级成目录页。</li>
 </ol>
+<p><em>InnoDB的页分裂优化</em><br>分裂的方式：</p>
+<ul>
+<li>传统B+树页面分裂操作：原页面按照 <strong>50%</strong> 对半分裂成两页，然后将新记录插入其中一个页。<ul>
+<li>优势：分裂之后，两个页面的<strong>空间利用率是一样的</strong>；如果新的插入是随机在两个页面中挑选进行，那么<strong>下一次分裂的操作就会更晚触发</strong>；</li>
+<li>劣势：空间利用率不高；如果后续的插入不是随机，而是递增或递减的，则<strong>分裂频率较大</strong>。</li>
+</ul>
+</li>
+<li>优化B+树分裂操作的优化：原页面不变动，将新记录插入到新的页中。<ul>
+<li>优势：原记录<strong>空间利用率高</strong>(100%)；索引分裂的代价小：<strong>不需要移动记录</strong>；对于递增&#x2F;递减记录，<strong>分裂频率较低</strong>。</li>
+<li>劣势：如果新的插入，不再满足递增插入的条件，而是插入到原有页面，那么就会导致原有页面再次进行50%分裂，<strong>增加了分裂的概率</strong>。</li>
+</ul>
+</li>
+</ul>
+<p>在InnoDB的实现中，为每个索引页面维护了一个上次插入的位置，以及上次的插入是递增&#x2F;递减的标识。根据这些信息，InnoDB能够判断出新插入到页面中的记录，是否仍旧满足递增&#x2F;递减的约束，若满足约束，则采用优化后的分裂策略；若不满足约束，则退回到50%的分裂策略。</p>
 <h3 id="二级索引B-树"><a href="#二级索引B-树" class="headerlink" title="二级索引B+树"></a>二级索引B+树</h3><p>二级索引B+树的主键不唯一，可能导致无法确定唯一的索引方向，所以<strong>二级索引的非叶子节点</strong>也会保存<strong>主键</strong>列，以便快速确定新记录位置。</p>
 <h2 id="MyISAM中的索引方案"><a href="#MyISAM中的索引方案" class="headerlink" title="MyISAM中的索引方案"></a>MyISAM中的索引方案</h2><p><code>MyISAM</code>的索引方案虽然也使用树形结构，但是却将索引和数据分开存储。</p>
 <ul>
@@ -1648,9 +1662,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/" title="MySQL基础（查询与优化）">
+                      <a href="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" title="MySQL常见问题">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">MySQL基础（查询与优化）</span>
+                        <span class="hidden-mobile">MySQL常见问题</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

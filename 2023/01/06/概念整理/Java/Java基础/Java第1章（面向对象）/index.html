@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://example.com/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%9F%BA%E7%A1%80/Java%E7%AC%AC1%E7%AB%A0%EF%BC%88%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%EF%BC%89/Pasted-image-20230106192246.png">
 <meta property="og:image" content="http://example.com/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%9F%BA%E7%A1%80/Java%E7%AC%AC1%E7%AB%A0%EF%BC%88%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%EF%BC%89/Pasted-image-20230106192243.png">
 <meta property="article:published_time" content="2023-01-06T11:00:55.000Z">
-<meta property="article:modified_time" content="2023-03-21T16:09:31.853Z">
+<meta property="article:modified_time" content="2023-10-04T15:00:18.678Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="Java">
@@ -239,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          8.6k 字
+          9.1k 字
         
       </span>
     
@@ -250,7 +250,7 @@
         
         
         
-          73 分钟
+          76 分钟
         
       </span>
     
@@ -331,6 +331,10 @@
 <li>对于基本类型，final 使数值不变；</li>
 <li>对于引用类型，final 使引用不变。</li>
 </ul>
+<div class="note note-primary">
+            <p>final可以修饰局部变量，但在编译时会抹去。</p><ul><li>从虚拟机层面来说，局部变量声明final是没有意义的，生成的字节码根本不会记录。</li><li>从java语言层面来说是有意义的，如我们通过内部类访问外部对象需要通过final修饰，另外在做代码重构时，将对象临时修饰为final来判断对象的作用域以及是否变化等情况也是有意义的。</li><li>对于匿名内部类，若需要使用到局部变量，需要把局部变量标注为final，JVM会将所有的局部内部类对象要访问的final型局部变量，都拷贝成为该内部类对象中的一个数据成员。（JDK8后不用可以标注了，是一种语法糖）。</li></ul>
+          </div>
+
 <p>2.修饰类<br>表示类不可继承</p>
 <p>3.修饰方法<br>表示不可重写</p>
 <h4 id="static"><a href="#static" class="headerlink" title="static"></a>static</h4><p>1.静态变量<br>静态变量就是类变量<br>2.静态方法<br>类加载时就存在，必须实现，不可为抽象方法，也只能访问所属类的静态变量和静态方法<br>3.静态代码块<br>见代码块，类初始化时运行<br>4.静态内部类<br>不依赖外部实例的静态类（内部类本质上是一个单独的class文件）</p>
@@ -421,15 +425,13 @@
             <p>匿名内部类是lambda表达式的原型，因此也很好理解为声明lambda表达式只能使用final变量</p>
           </div>
 
-<h3 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h3><h4 id="通用方法"><a href="#通用方法" class="headerlink" title="通用方法"></a>通用方法</h4><ul>
-<li>equals()<br>默认为比较对象是否等价，需要满足对称等性质。<br><code>==</code>则判断值（基本类型或指针）是否相等。 </li>
-<li>hashCode()<br>默认：是一个native方法，返回int，使用的是对象的地址（引用地址）进行计算。<br>其可以被覆盖（String,Integer等都覆盖了这个方法）。对于两个对象，如果equals返回true,其hashCode()必须相等，因此覆盖equals时总是应该覆盖hashCode方法。</li>
-<li>toString()<br>默认返回对象类型+@+16进制的hashCode()</li>
-<li>clone()<br>clone()是一个native,protected方法<blockquote>
+<h3 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h3><h4 id="通用方法"><a href="#通用方法" class="headerlink" title="通用方法"></a>通用方法</h4><p><em>equals()</em><br>默认为比较对象是否等价，需要满足对称等性质。<br><code>==</code>则判断值（基本类型或指针）是否相等。 </p>
+<p><em>hashCode()</em><br>默认：是一个native方法，返回int，使用的是对象的地址（引用地址）进行计算。<br>其可以被覆盖（String,Integer等都覆盖了这个方法）。对于两个对象，如果equals返回true,其hashCode()必须相等，因此覆盖equals时总是应该覆盖hashCode方法。</p>
+<p><em>toString()</em><br>默认返回对象类型+@+16进制的hashCode()</p>
+<p><em>clone()</em><br>clone()是一个native,protected方法</p>
+<blockquote>
 <p>因为clone修饰符为protected，其只对本包和其子类可见，对于自定义类1，2<br>在类1中调用类2的clone()，Object的默认clone只对类2可见，对类1不可见，所以要重写，一般重写为 return (T)super.clone()</p>
 </blockquote>
-</li>
-</ul>
 <p>另外，一个类要使用clone()方法，必须先继承Cloneable接口，并重写clone()，且要抛出CloneNotSupportedException异常。</p>
 <p>另外，克隆也有浅拷贝和深拷贝，native的clone()只能获得一个对象的<strong>浅拷贝</strong>，对象的属性（引用类型）仍相同。想要获得<strong>深拷贝</strong>，需要在重写中实现。</p>
 <p>替代方案，clone()既复杂又危险，可以使用拷贝构造函数或者拷贝工厂来拷贝一个对象。</p>
@@ -447,6 +449,9 @@
 <blockquote>
 <p>枚举更像是在创建父类后，在父类中直接构造子类。</p>
 </blockquote>
+<p><em>枚举类swicth语句</em><br>使用<code>switch</code>语句时必须使用非限定名：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Color</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> Color.RED;<br><span class="hljs-keyword">switch</span>(c)&#123;<br>	<span class="hljs-comment">// case Color.RED 是错误的，必须直接使用RED</span><br>	<span class="hljs-keyword">case</span> RED:<br>		System.out.println(<span class="hljs-string">&quot;RED&quot;</span>);<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-keyword">default</span>:<br>		System.out.println(<span class="hljs-string">&quot;OTHER COLOR&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
 <h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><h2 id="JavaBean"><a href="#JavaBean" class="headerlink" title="JavaBean"></a>JavaBean</h2><p>指一个公共的，有无参公共构造器，有对应的set，get方法的，即一个标准的实体类。</p>
 <h2 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h2><p><strong>私有化构造器</strong>（外部不能new）</p>
 <h3 id="饿汉式"><a href="#饿汉式" class="headerlink" title="饿汉式"></a>饿汉式</h3><p><strong>类自己持有自己的实例</strong>，通过static方法取得该实例，饿汉式表示会预加载。</p>

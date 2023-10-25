@@ -1,0 +1,856 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="JDK集合ArrayList和LinkedList插入速度？  结论：ArrayList在绝大部分时候的性能都明显要强于LinkedList，LinkedList只有在头部插入元素的时候，性能会明显优于ArrayList。 原因： 头部插入时，LinkedList直接维护了头节点，而ArrayList需要重排数组，故LinkedList快。 中间插入时，两者都需要遍历，但ArrayList底层是数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java常见问题">
+<meta property="og:url" content="http://example.com/2023/09/18/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Java%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
+<meta property="og:description" content="JDK集合ArrayList和LinkedList插入速度？  结论：ArrayList在绝大部分时候的性能都明显要强于LinkedList，LinkedList只有在头部插入元素的时候，性能会明显优于ArrayList。 原因： 头部插入时，LinkedList直接维护了头节点，而ArrayList需要重排数组，故LinkedList快。 中间插入时，两者都需要遍历，但ArrayList底层是数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/09/18/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Java%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230326233958.png">
+<meta property="article:published_time" content="2023-09-18T03:28:55.000Z">
+<meta property="article:modified_time" content="2023-10-19T06:38:09.630Z">
+<meta property="article:author" content="Jin">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/09/18/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Java%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230326233958.png">
+  
+  
+  
+  <title>Java常见问题 - Jin&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Java常见问题"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-09-18 11:28" pubdate>
+          2023年9月18日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          48 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Java常见问题</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="JDK"><a href="#JDK" class="headerlink" title="JDK"></a>JDK</h1><h2 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h2><p><em>ArrayList和LinkedList插入速度？</em></p>
+<ul>
+<li>结论：ArrayList在绝大部分时候的性能都明显要强于LinkedList，LinkedList只有在头部插入元素的时候，性能会明显优于ArrayList。</li>
+<li>原因：<ul>
+<li>头部插入时，LinkedList直接维护了头节点，而ArrayList需要重排数组，故LinkedList快。</li>
+<li>中间插入时，两者都需要遍历，但ArrayList底层是数组（内存上是连续的，遍历更快），故ArrayList快</li>
+<li>尾部插入时，ArrayList不需要重排数组，故ArrayList快</li>
+</ul>
+</li>
+</ul>
+<h2 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h2><p><em>Java序列化有什么风险隐患？</em></p>
+<ul>
+<li>我们使用Java原生功能序列化出<code>byte[]</code>后在网络或磁盘上进行共享、传输，可能会被在数据层面上篡改。</li>
+<li>Java反序列化过程中，会首先调用<code>readObject</code>。且当我们在序列化&#x2F;反序列化过程中需要实现特殊签名时，可以自行实现<code>readObject</code>方法，这会导致代码注入，其可能会包括恶意代码。</li>
+</ul>
+<p><em>泛型可以序列化吗？</em></p>
+<ul>
+<li>结论：可以，但反序列化时需要指明泛型类型</li>
+<li>现象：对于泛型类的对象，其反序列化后得到的时LinkedHashMap。</li>
+<li>原因：泛型擦除导致JVM运行时不知道泛型的具体类型，如<code>List&lt;User&gt;</code>，反序列化时系统只知道还原成List，于是Jaskson就使用了默认的<code>List&lt;LinkedHashMap&gt;</code>，所以需要指明泛型类型才能正确的反序列化。</li>
+</ul>
+<h1 id="JUC"><a href="#JUC" class="headerlink" title="JUC"></a>JUC</h1><h2 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h2><p><em>Java如何保证线程安全？</em><br>线程安全在三个方面体现：原子性、可见性、有序性：</p>
+<ol>
+<li>原子性：提供互斥访问，同一时刻只能有一个线程对数据进行操作（atomic,synchronized）；</li>
+<li>可见性：一个线程对主内存的修改可以及时地被其他线程看到（synchronized,volatile,final）；</li>
+<li>有序性：一个线程观察其他线程中的指令执行顺序，由于指令重排序，该观察结果一般杂乱无序（volatile,synchronized,happens-before原则）。</li>
+</ol>
+<div class="note note-primary">
+            <p>线程安全中的原子性实际上指的是一种互斥性：其他线程获取操作的变量时，<strong>只能获取操作前的变量值和操作后的变量值</strong>，不能获取到操作过程中的中间值，在操作过程中其他操作需要获取变量值，需要进入<strong>阻塞状态</strong>等待操作结束。</p>
+          </div>
+
+<p><em>Lock和Synchronize的区别？</em></p>
+<ul>
+<li>层次上：lock是一个接口，而synchronized是java的一个关键字，synchronized是内置的语言实现；</li>
+<li>底层上：synchronzied锁的是对象，锁是保存在对象头里面的，根据对象头数据来标识是否有线程获得锁&#x2F;争抢锁，依赖字节码；ReentrantLock锁的是线程，根据进入的线程和int类型的state标识锁的获得&#x2F;争抢，依赖CAS乐观锁。</li>
+<li>锁的功能上：<ul>
+<li>synchronized锁隐式的<strong>限定了锁的获取和释放位置</strong>，导致某线程获取锁的顺序总是先获取先释放（栈式），满足不了更多的需要，而lock手动获取释放；</li>
+<li>synchronized只实现了<strong>互斥锁</strong>，且无法被中断（而且如果持有锁的线程永远不释放锁，那么尝试获取锁的线程只能永远等下去）；</li>
+<li>lock可以选择是否<strong>公平</strong>；</li>
+<li>condition上，synchronized只有一个waitset，而lock可以有多个condition。</li>
+</ul>
+</li>
+<li>锁的使用：<ul>
+<li>获取：synchronized获取锁失败会阻塞，lock则可以通过tryLock非阻塞的获取锁。</li>
+<li>释放：synchronized方法异常后会自动放弃锁，lock必须手动finally释放；</li>
+<li>可中断：lock等待锁过程中可以用interrupt来中断等待，而synchronized只能等待锁的释放，不能响应中断；</li>
+<li>性能上：在资源竞争不是很激烈的情况下，Synchronized的性能要优于ReetrantLock，但是在资源竞争很激烈的情况下，Synchronized的性能会下降几十倍，但是ReetrantLock的性能能维持常态，但lock可以实现读写分离。</li>
+</ul>
+</li>
+</ul>
+<p><em>原子类原理</em><br>原子变量提供的原子性来自CAS操作，CAS来自Unsafe，然后由CPU的cmpxchg指令来保证。</p>
+<p><em>原子类能保证线程安全吗</em><br>Atomic所说的线程安全只是保证了原子方法的线程安全，并不能保证整个方法（如多个连续原子操作）是线程安全的，因此，原子类往往还是需要结合锁来共同实现线程安全。</p>
+<p><em>ABA问题</em><br>ABA问题的实质是：在并发编程中，仅靠检查变量的值是无法知道这个变量是否被改动过的，还要加上一个版本号（当变量改变就改变其版本号）才能确定变量保持不变。<br>AtomicStampedReference实现了此功能，它保存变量引用的同时，还赋予此变量一个版本号。</p>
+<h2 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h2><p><em>线程池的基本参数</em><br>共七个参数，一般使用前五个参数。</p>
+<ul>
+<li><strong>核心线程数</strong>、<strong>最大线程数</strong>、<strong>阻塞队列</strong>是限制大小的。</li>
+<li><strong>存活时间</strong>和<strong>单位</strong>是管理非核心线程的。</li>
+<li><strong>工厂</strong>管理生成线程策略（默认为<strong>正常优先级、非守护线程</strong>）。</li>
+<li><strong>处理器</strong>决定饱和策略（默认为<strong>拒绝执行并抛出异常</strong>）。</li>
+</ul>
+<p><em>execute和submit的区别</em></p>
+<ul>
+<li>execute用于提交不需要返回值的任务，所以无法判断任务是否被线程池执行成功。</li>
+<li>submit用于提交需要返回值的任务，线程池会返回一个 Future 类型的对象。</li>
+</ul>
+<p><em>怎么中断线程池</em></p>
+<ul>
+<li>方法：<ul>
+<li>shutdown：禁止添加新任务</li>
+<li>shutdownNow：禁止添加新任务，禁止执行队列中的任务</li>
+</ul>
+</li>
+<li>原理：<ul>
+<li>状态：shutdown将线程池标记为<code>SHUTDOWN</code>状态，shutdownNow将线程池标记为<code>STOP</code>状态，待线程池数量变为0后进入<code>TIDYING</code>状态，最后变为<code>TERMINATED</code>状态。</li>
+<li>线程：shutdown会对所有空闲线程调用中断，shutdownNow会对所有线程调用中断。</li>
+</ul>
+</li>
+<li>工作方式：根据线程池状态，一个线程可以判断当前任务执行完成后的行为：<ul>
+<li>shutdown：继续从任务队列中取任务执行，直到没有任务后执行<code>tryTerminate()</code></li>
+<li>shutdownNow：直接执行<code>tryTerminate()</code></li>
+</ul>
+</li>
+</ul>
+<p><em>线程池中线程如何实现复用，终止</em><br>通过<code>addWorker()</code>方法新增的线程，通过<code>getTask()</code>循环从任务队列中取出任务执行，若返回null则该线程终止。<br><code>getTask()</code>会做一系列的判断：</p>
+<ol>
+<li>线程池状态判断：<code>SHUTDOWN+队列无任务</code> 或 <code>STOP</code>会直接返回空对象。</li>
+<li>线程池大小判断：（<code>线程数量&gt;最大线程数量</code> 或 <code>线程数量&gt;核心线程数量+本线程获取任务超时</code> ） 且任务队列中无任务时，直接返回空对象。</li>
+</ol>
+<div class="note note-primary">
+            <p>若任务队列中无任务，且线程数量大于核心线程数量并超时，即可终止该线程。</p>
+          </div>
+
+<p><em>创建线程的方式？</em></p>
+<ol>
+<li>继承Thread</li>
+<li>new Thread + Runnable</li>
+<li>new Thread + Future(Callable)</li>
+</ol>
+<h1 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h1><h2 id="GC"><a href="#GC" class="headerlink" title="GC"></a>GC</h2><p><em>垃圾回收算法有哪些？</em></p>
+<ul>
+<li>标记：引用计数算法和可达性算法（root包括栈和方法区引用，同步锁对象，脏表上的对象等）。<ul>
+<li>判断对象是否可直接回收，finalize()方法可能复活，需要交付给F-Queue队列执行finalize方法，执行后GC再扫描该队列看是否可触及。</li>
+</ul>
+</li>
+<li>回收：标记-清除算法、复制算法、标记-压缩算法、增量收集（G1）</li>
+<li>分配内存方法：指针碰撞法、空闲列表法</li>
+</ul>
+<p><em>应用</em><br>复制算法一般在YoungGC中，迁移到Survivor。<br>标记压缩算法一般在OldGC中。<br>标记清除算法一般在CMS或G1的GC中，因为其需要并发标记清除。<br>增量收集只在G1中。</p>
+<p><em>垃圾回收器分类</em></p>
+<ul>
+<li>按线程数分，可以分为<strong>串行垃圾回收器</strong>和<strong>并行垃圾回收器</strong>。  </li>
+<li>按照工作模式分，可以分为<strong>并发式垃圾回收器</strong>和<strong>独占式垃圾回收器</strong>。  </li>
+<li>按碎片处理方式分，可分为<strong>压缩式垃圾回收器</strong>和<strong>非压缩式垃圾回收器</strong>。  </li>
+<li>按工作的内存区间分，又可分为<strong>年轻代垃圾回收器</strong>和<strong>老年代垃圾回收器</strong>。</li>
+</ul>
+<p><em>经典垃圾回收器</em><br><img src="/2023/09/18/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Java%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230326233958.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>Serial GC&#x2F;Serial Old GC：单线程、STW、复制&#x2F;标记压缩算法（JDK8下的默认Client）</li>
+<li>ParNew：多线程版Serial GC</li>
+<li>Parallel Scavenge&#x2F;Parallel Old：多线程、STW、复制&#x2F;标记压缩算法，追求吞吐量（JDK8下的默认Server）</li>
+<li>CMS（JDK9中已过时）：单&#x2F;多线程，重新标记时使用多线程，低延迟。（三色标记法，若对象A新增了指向其他对象的指针，则将A标记为灰色）</li>
+<li>G1：延迟可控的情况下吞吐量，一般设置延迟和最大堆内存即可。<ul>
+<li>YoungGC：复制算法，整理Region</li>
+<li>MixedGC：<ul>
+<li>并发标记：先做一次YoungGC，然后并发标记（三色标记法若对象B被取消了指针，将B标记为灰色），区域排序，并发清理（清理全为垃圾的区域）</li>
+<li>混合回收：分8次回收所有区域，每次回收与YoungGC类似（复制算法整理Region）</li>
+</ul>
+</li>
+<li>FullGC：复制算法时没有空的内存分段，回退到FullGC</li>
+</ul>
+</li>
+</ul>
+<p><em>JVM调优过吗？怎么调整的？</em><br>数据采集类的程序需要进行大量的IO操作，属于IO密集型系统，这种系统的年轻代持续会产生大量的垃圾，导致了频繁的YoungGC，为了避免频繁的YoungGC导致的卡顿，选择提高年轻代的比例：<code>-XX:NewRatio = 2</code>，表示 <code>新生代:老年代 = 1:2</code><br>另外，系统需要预加载的类较多：<code>-XX:MetaspaceSize</code>，设置初始元空间大小，设置大一点，以免项目启动时为了调整元空间大小频繁Full GC。</p>
+<p><em>其他JVM配置</em></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs shell">//大小设置<br>-Xms&lt;size&gt; 设置初始 Java 堆大小  <br>-Xmx&lt;size&gt; 设置最大 Java 堆大小  <br>-Xss&lt;size&gt; 设置 Java 线程堆栈大小<br>-XX:MetaspaceSize / -XX:PermSize=256m 设置元空间/永久代初始值为256M<br>-XX:SurvivorRatio=8 设置Eden区与Survivor区的比值，默认为8  <br>-XX:NewRatio=2 设置老年代与年轻代的比例，默认为2<br><br>//快照<br>-XX:+HeapDumpOnOutMemoryError 内存出现OOM时生成Heap转储文件<br>-XX:+HeapDumpBeforeFullGC 出现FullGC时生成Heap转储文件<br><br>//GC选择<br>-XX:+UseG1GC 手动指定使用G1收集器执行内存回收任务<br>//GC信息<br>-XX:+PrintGC 打印简要日志信息<br>-verbose:gc 打印简要日志信息，等效于PrintGC<br>-XX:+PrintGCDetails 输出详细GC日志<br>-XX:+PrintHeapAtGC 在进行GC的前后打印出堆的信息<br>-XX:+TraceClassLoading 监控类的加载<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">[GC (Allocation Failure) [PSYoungGen: 31744K-&gt;2192K (36864K) ] 31744K-&gt;2200K (121856K), <span class="hljs-number">0.0139308</span> secs] [Times: user=<span class="hljs-number">0.05</span> sys=<span class="hljs-number">0.01</span>, real=<span class="hljs-number">0.01</span> secs]<br><br>[GC(原因)][GC回收器：年轻代回收前内存占用-&gt;年轻代回收后内存占用（区域总内存）]总内存变化，时间][时间：用户时间，核心时间，实际时间]<br></code></pre></td></tr></table></figure>
+
+<p><em>JVM排查工具</em></p>
+<ul>
+<li><code>jps</code>，查看java进程</li>
+<li><code>jstat</code>，查看统计信息</li>
+<li><code>jinfo</code>，JVM参数</li>
+<li><code>jmap</code>，内存dump文件</li>
+<li><code>jstack</code>，线程快照</li>
+<li><code>Arthas</code>：在线远程排查，需要在服务端开启arthas，客户端对其进行连接；<ul>
+<li>启动：<code>java -jar arthas-boot.jar</code>，选择进程后开启监控面板；</li>
+<li><code>thread 1</code>打印线程id为1的栈；</li>
+</ul>
+</li>
+<li><code>JProfiler</code>：有样本采集（每隔一段时间快照）和重构模式（侵入式统计）两种模式。</li>
+</ul>
+<h1 id="IO"><a href="#IO" class="headerlink" title="IO"></a>IO</h1><p>JAVA NIO是同步非阻塞IO。<br><strong>同步和异步说的是消息的通知机制，阻塞非阻塞说的是线程的状态 。</strong></p>
+<h1 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h1><h2 id="Transaction"><a href="#Transaction" class="headerlink" title="Transaction"></a>Transaction</h2><p><em>有哪些常见的事务传播级别？</em></p>
+<ul>
+<li>REQUIRED（默认值）：在有transaction状态下执行；如当前没有transaction，则创建新的transaction；</li>
+<li>REQUIRES_NEW：创建新的transaction并执行；如果当前已有transaction，则将当前transaction挂起；</li>
+<li>NESTED ：和 Propagation.REQUIRED 效果类似，区别在于：子事务的提交依赖于主事务，但子事务的回滚不依赖于主事务（即如果子事务异常会直接回滚，而主事务如果catch掉了这个异常，则主事务不会回滚）</li>
+<li>MANDATORY：必须在有transaction状态下执行，如果当前没有transaction，则抛出异常IllegalTransactionStateException；</li>
+<li>SUPPORTS：如当前有transaction，则在transaction状态下执行；如果当前没有transaction，在无transaction状态下执行；</li>
+<li>NOT_SUPPORTED：在无transaction状态下执行；如果当前已有transaction，则将当前transaction挂起；</li>
+<li>NEVER：在无transaction状态下执行；如果当前已有transaction，则抛出异常IllegalTransactionStateException。</li>
+</ul>
+<p><em>事务传播级别使用需要注意什么？</em></p>
+<ol>
+<li>业务需求，对于事务中开启的新事务，需要理清它们之间的一致性关系。</li>
+<li>使用注意：<ol>
+<li>同类中的@Transaction方法无法互相调用，原因是AOP的机制</li>
+<li>嵌套类型，需要考虑外层事务与嵌套事务是否一起回滚，不能随意的catch异常。</li>
+</ol>
+</li>
+</ol>
+<h1 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h1><p><em>观察者模式</em><br><strong>观察者模式</strong>也称作监听模式，即观察与被观察的关系，其是指对象之间<strong>一对多</strong>的依赖关系，每当那个特定对象改变状态时，所有依赖于它的对象都会得到通知并被自动更新。</p>
+<p><em>对同一方法而言，不同执行顺序会产生不同事件结果，应该选择哪种设计模式？</em><br>状态模式、建造者模式</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" class="category-chain-item">Java常见问题</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Java常见问题</div>
+      <div>http://example.com/2023/09/18/概念整理/Java/Java常见问题/Java常见问题/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年9月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/fluid-extention.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,829 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、MySQL索引类型按结构分  B+Tree 索引：即B+树索引。 R-Tree索引：即空间索引，仅支持geometry数据类型，优势在于范围查找。 S-Full-text索引：即全文索引，通过倒排索引实现。 Hash索引：不支持范围查询，主要用于内存临时表，实现O(1)时间复杂度的精准查找，对于范围查询、排序及组合索引效率不高。   按性质分  普通索引：仅加速查询 唯一索引：加速查询 + 列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL高级（索引）">
+<meta property="og:url" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E9%AB%98%E7%BA%A7%EF%BC%88%E7%B4%A2%E5%BC%95%EF%BC%89/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
+<meta property="og:description" content="一、MySQL索引类型按结构分  B+Tree 索引：即B+树索引。 R-Tree索引：即空间索引，仅支持geometry数据类型，优势在于范围查找。 S-Full-text索引：即全文索引，通过倒排索引实现。 Hash索引：不支持范围查询，主要用于内存临时表，实现O(1)时间复杂度的精准查找，对于范围查询、排序及组合索引效率不高。   按性质分  普通索引：仅加速查询 唯一索引：加速查询 + 列">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E9%AB%98%E7%BA%A7%EF%BC%88%E7%B4%A2%E5%BC%95%EF%BC%89/Pasted-image-20230928184121.png">
+<meta property="og:image" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E9%AB%98%E7%BA%A7%EF%BC%88%E7%B4%A2%E5%BC%95%EF%BC%89/Pasted-image-20230926181718.png">
+<meta property="article:published_time" content="2023-02-11T12:43:46.000Z">
+<meta property="article:modified_time" content="2023-09-28T10:56:03.533Z">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="概念整理">
+<meta property="article:tag" content="Mysql">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E9%AB%98%E7%BA%A7%EF%BC%88%E7%B4%A2%E5%BC%95%EF%BC%89/Pasted-image-20230928184121.png">
+  
+  
+  
+  <title>MySQL高级（索引） - Jin&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MySQL高级（索引）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-11 20:43" pubdate>
+          2023年2月11日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          39 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">MySQL高级（索引）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、MySQL索引类型"><a href="#一、MySQL索引类型" class="headerlink" title="一、MySQL索引类型"></a>一、MySQL索引类型</h1><p><em>按结构分</em></p>
+<ul>
+<li>B+Tree 索引：即B+树索引。</li>
+<li>R-Tree索引：即空间索引，仅支持<code>geometry</code>数据类型，优势在于范围查找。</li>
+<li>S-Full-text索引：即全文索引，通过倒排索引实现。</li>
+<li>Hash索引：不支持范围查询，主要用于内存临时表，实现O(1)时间复杂度的精准查找，对于范围查询、排序及组合索引效率不高。</li>
+</ul>
+<p><img src="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E9%AB%98%E7%BA%A7%EF%BC%88%E7%B4%A2%E5%BC%95%EF%BC%89/Pasted-image-20230928184121.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>按性质分</em></p>
+<ul>
+<li>普通索引：仅加速查询</li>
+<li>唯一索引：加速查询 + 列值唯一（可以有null）</li>
+<li>主键索引：加速查询 + 列值唯一（不可以有null）+ 表中只有一个</li>
+<li>组合索引：多列值组成一个索引，专门用于组合搜索，其效率大于索引合并</li>
+<li>全文索引：对文本的内容进行分词，进行搜索</li>
+<li>前缀索引：在文本类型如BLOB、TEXT或者很长的VARCHAR列上创建索引时，可以使用前缀索引，数据量相比普通索引更小，可以指定索引列的长度，但是数值类型不能指定。</li>
+<li>空间索引：MySQL在5.7之后的版本支持了空间索引，而且支持OpenGIS几何数据模型。</li>
+</ul>
+<h1 id="二、全文索引"><a href="#二、全文索引" class="headerlink" title="二、全文索引"></a>二、全文索引</h1><h2 id="倒排索引"><a href="#倒排索引" class="headerlink" title="倒排索引"></a>倒排索引</h2><p>全文检索通常使用倒排索引(invertd index)来实现。倒排索引同B+树索引一样，也是一种索引结构。它在辅助表(auxiliary table)中存储了单词与单词自身在一个或多个文档中所在位置之间的映射。</p>
+<ul>
+<li><code>inverted file index</code>, 其表现形式为 {单词，单词所在文档的ID}</li>
+<li><code>full inverted index</code>, 其表现形式为 {单词，(单词所在文档的ID，在具体文档中的位置)}</li>
+</ul>
+<h2 id="InnoDB全文检索"><a href="#InnoDB全文检索" class="headerlink" title="InnoDB全文检索"></a>InnoDB全文检索</h2><p><em>实现</em><br>InnoDB存储引擎采用了 <code>full inverted index</code> 的方式，在 InnoDB存储引擎中，将 （DocumentId, Position）视为一个 “ilist”。因此在全文检索的表中，有两个列，一个是word字段，另一个是 ilist字段， 并且在word字段上设有索引。此外，由于 InnoDB 存储引擎在 ilist 字段中存放了 Position 信息，故可以进行 <code>Proximity Search</code>（邻近检索）。</p>
+<p><em>相关表</em></p>
+<ul>
+<li><code>Auxiliary Table</code>（辅助表）是持久的表，存放于磁盘上，倒排索引需要将 word 字段存放到该表中。InnoDB 存储引擎会批量对 Auxiliary Table 进行更新，而不是每次插入后更新一次<code>Auxiliary Table</code>。</li>
+<li><code>FTS Index Cache</code>（ 全文检索索引缓存表），其用来提高全文检索的性能。是一个红黑树结构，其根据（word, ilist）进行排序。对于InnoDB 存储引擎而言，其总是在事务提交时将分词写入到 <code>FTS Index Cache</code>，然后再通过批量更新写入到磁盘。</li>
+</ul>
+<p><em>FTS Document ID</em><br>在 InnoDB 存储引擎中，为了支持全文检索，有一个索引与word进行映射，在InnoDB 中这个列被命名为 FTS_DOC_ID，其类型必须是 BIGINT UNSIGNED NOT NULL。</p>
+<p><em>索引删除</em><br>文档中分词的插入操作是在事务提交时完成，然而对于删除操作，其在事务提交时，不删除磁盘 Auxiliary Table 中的记录，而只是删除 FTS Index Cache 中的记录，并将其保存在 DELETED auxiliary table 中。在设置参数 innodb_ft_aux_table 后，用户同样可以访问 information_schema 库下的表 INNODB_FT_DELETED 来观察删除的 FTS Document ID。</p>
+<blockquote>
+<p>由于文档的DML 操作实际并不删除索引中的数据，相反还会在对应的DELETED 表中插入记录，因此随着应用程序的允许，索引会变得非常大，即使索引中的有些数据已经被删除，查询也不会选择这类记录。为此，InnoDB 存储引擎提供了一种方式，允许用户手动地将已经存储的记录从索引中彻底删除，该命令是 optimize table。</p>
+</blockquote>
+<p><em>故障恢复</em><br>当数据库关闭时，在 FTS Index Cache 中的数据库会同步到磁盘上的 Auxiliary Table 中。<br>当数据库发生宕机时，一些 FTS Index Cache 中的数据库可能未被同步到磁盘上。那么下次重启数据库时，当用户对表进行全文检索（查询或者插入操作）时，InnoDB 存储引擎会自动读取未完成的文档，然后进行分词操作，再将分词的结果放入到 FTS Index Cache 中。</p>
+<p><em>stopword列表</em><br>该列表中的word 不需要对其进行索引分词操作。</p>
+<p><em>其他限制</em><br>Innodb 存储引擎的全文检索还存在以下的限制：</p>
+<ol>
+<li><strong>每张表只能有一个全文检索的索引</strong></li>
+<li>由多列组合而成的全文检索的索引列必须使用相同的字符集与排序规则。</li>
+<li>不支持没有单词界定符（delimiter）的语言，如中文、日语、韩语等(这一点可以通过自定义分词器ngram来解决，下文有介绍)。</li>
+</ol>
+<h2 id="全文索引使用"><a href="#全文索引使用" class="headerlink" title="全文索引使用"></a>全文索引使用</h2><h3 id="建立全文索引"><a href="#建立全文索引" class="headerlink" title="建立全文索引"></a>建立全文索引</h3><p><em>创建表</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> fulltext (<br>    id <span class="hljs-type">INT</span> <span class="hljs-keyword">PRIMARY</span> KEY AUTO_INCREMENT,<br>    title <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">255</span>),<br>    body TEXT,<br>    FULLTEXT KEY content_fulltext(title,body) <span class="hljs-keyword">WITH</span> PARSER NGRAM<br>)  ENGINE<span class="hljs-operator">=</span>INNODB <span class="hljs-type">CHARACTER</span> <span class="hljs-keyword">SET</span> UTF8;<br></code></pre></td></tr></table></figure>
+<p>以NGRAM（一种中文分词器）为分词器为tile和body创建全文索引。</p>
+<p><em>修改表</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">create</span> fulltext index content_fulltext <span class="hljs-keyword">on</span> fulltext_test(title,body);<br><br><span class="hljs-keyword">alter</span> <span class="hljs-keyword">table</span> fulltext <span class="hljs-keyword">add</span> fulltext index content_fulltext(title,body);<br></code></pre></td></tr></table></figure>
+
+<p><em>删除全文索引</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> INDEX content_fulltext <span class="hljs-keyword">ON</span> fulltext;<br><br><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> fulltext <span class="hljs-keyword">DROP</span> INDEX content_fulltext;<br></code></pre></td></tr></table></figure>
+
+<h3 id="查询语法"><a href="#查询语法" class="headerlink" title="查询语法"></a>查询语法</h3><p>MySQL数据库支持全文检索（Full-Text Search）的查询，其语法为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">MATCH</span> (col1, col2,...) AGAINST (expr [search_modifier])<br></code></pre></td></tr></table></figure>
+<p>MATCH指定了需要被查询的列，AGAINST指定了使用何种模式去进行查询。<br><strong>注意：</strong> match() 函数中指定的列必须和全文索引中指定的列完全相同，否则就会报错。</p>
+<h3 id="查询模式"><a href="#查询模式" class="headerlink" title="查询模式"></a>查询模式</h3><p><em>Natural Language模式（默认）</em><br>查找<code>body</code>字段中带有<code>&quot;porridge&quot;</code>的记录，可以替代<code>like &quot;porridge&quot;</code>。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">where</span> <span class="hljs-keyword">match</span>(body) against (<span class="hljs-string">&#x27;porridge&#x27;</span> <span class="hljs-keyword">in</span> <span class="hljs-keyword">natural</span> <span class="hljs-keyword">language</span> mode);<br><span class="hljs-operator">-</span> 也可以简写为<br><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> fts_a <span class="hljs-keyword">where</span> <span class="hljs-keyword">match</span>(body) against (<span class="hljs-string">&#x27;porridge&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>在where条件中使用MATCH函数，查询返回的结果是根据相关性（Relevance）进行降序排序的，即相关性最高的结果放在第一位。相关性的值是一个非负的浮点数字，0表示没有任何相关性。根据MySQL官方文档可知，其相关性的计算依据以下四个条件：</p>
+<ol>
+<li>word是否在文档中出现。</li>
+<li>word在文档中出现的次数。</li>
+<li>word在索引列中的数量。</li>
+<li>多少个文档中包含该word。</li>
+</ol>
+<p><em>Boolean模式</em><br>MySQL数据库允许使用 IN BOOLEAN MODE 修饰符来进行全文检索。当使用该修饰符时，查询字符串的前后字符会有特殊的含义。<br>例如下面的语句要求查询有字符串 Pease 但没有 hot 的文档，其中 + 和 - 分别表示这个单词必须出现，或者一定不存在。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> fts_a <span class="hljs-keyword">where</span> <span class="hljs-keyword">match</span>(body) against (<span class="hljs-string">&#x27;+Pease -hot&#x27;</span> <span class="hljs-keyword">in</span> <span class="hljs-type">boolean</span> mode)\G;<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E9%AB%98%E7%BA%A7%EF%BC%88%E7%B4%A2%E5%BC%95%EF%BC%89/Pasted-image-20230926181718.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>Query Expansion模式（查询扩展）</em><br>这种查询通常在查询的关键词太短，用户需要implied knowledge（隐含知识）时进行。例如，对于单词database的查询，用户可能希望查询的不仅仅是包含database的文档，可能还指那些包含MySQL、oracle、DB2单词。而这时可以使用Query Expansion模式开启全文检索的implied knowledge。</p>
+<p>通过在查询短语中添加 <code>WITH QUERY EXPANSION</code> 或 <code>IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION</code>可以开启blind query expansion，执行语句和方式如下：</p>
+<ol>
+<li>根据搜索的单词进行全文索引查询。</li>
+<li>根据第一阶段产生的结果分词后再进行一次全文检索查询。</li>
+</ol>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/377711689">InnoDB &amp; MySQL 全文索引</a></p>
+</blockquote>
+<h1 id="三、降序索引"><a href="#三、降序索引" class="headerlink" title="三、降序索引"></a>三、降序索引</h1><p>降序索引是索引的子集，其目的是弥补升序时执行特点查询语句带来的性能问题：</p>
+<ul>
+<li>性能代价：MySQL 5.7的优化器<strong>可以降序遍历升序索引</strong>，但这是需要成本代价的，正序访问可能会比降序访问的效率高15%左右。</li>
+<li>排序代价：如果非最左索引的顺序与order by顺序不一致，还需要额外排序操作，即还可能使用到<code>filesort</code>。</li>
+</ul>
+<h2 id="降序索引"><a href="#降序索引" class="headerlink" title="降序索引"></a>降序索引</h2><p><em>使用限制</em></p>
+<ul>
+<li>MySQL5.7不支持降序索引，即使指定了降序排列，实际创建的索引里面也并没有按照降序排列。MySQL8.0支持降序索引。</li>
+<li>降序索引只能在innodb存储引擎中使用，其他存储引擎不支持。</li>
+<li>使用聚合函数如果没有使用 group by 子句，不能使用降序索引进行优化。</li>
+<li>change buffer不支持二级索引或者主键包含降序字段。这可能会一定程度影响插入的性能。</li>
+</ul>
+<p><em>sql语句</em><br>例子：联合索引c1升序、c2降序。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> test (c1 <span class="hljs-type">int</span>,c2 <span class="hljs-type">int</span>,index idx_c1_c2(c1,c2 <span class="hljs-keyword">desc</span>));<br></code></pre></td></tr></table></figure>
+<h2 id="降序索引使用"><a href="#降序索引使用" class="headerlink" title="降序索引使用"></a>降序索引使用</h2><p><em>单字段排序</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> test <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> c1;<br></code></pre></td></tr></table></figure>
+<p>降序的索引的执行计划中多了个Backward index scan反向索引扫描，与正向索引性能差别很小。</p>
+<p><em>多字段不同方向</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> test <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> c1,c2 <span class="hljs-keyword">desc</span>;<br></code></pre></td></tr></table></figure>
+<p>降序索引可以避免文件排序，如果是正向索引则需要使用<code>sort_buffer</code>，<code>sort_buffer</code>不够用时还需要<code>using filesort</code></p>
+<p><em>降序索引group by</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> c2 <span class="hljs-keyword">from</span> test <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> c2;<br></code></pre></td></tr></table></figure>
+<p>group by具有隐式的排序功能，但如果group by 的是降序索引，则<strong>不再主动进行隐式排序</strong>。</p>
+<h1 id="四、外键"><a href="#四、外键" class="headerlink" title="四、外键"></a>四、外键</h1><h2 id="外键"><a href="#外键" class="headerlink" title="外键"></a>外键</h2><p><em>外键的定义</em><br>表的外键是另一张表的<strong>主键</strong>。将两张表联系到一起。</p>
+<p><em>外键的目的</em><br>保证数据的一致性</p>
+<p><em>外键的要求</em></p>
+<ol>
+<li>父表与子表必须具有相同的存储引擎（InnoDB），而且禁用使用临时表；</li>
+<li>外键列与参照列必须具有相似的数据类型，其中数字的长度或有无符号位必须相同，而字符的长度可以不同。</li>
+<li>外键列和参照列必须创建索引，如果外键列不存在索引，mysql会自动创建索引。</li>
+</ol>
+<h2 id="外键约束"><a href="#外键约束" class="headerlink" title="外键约束"></a>外键约束</h2><p>外键约束是一系列规则，目的是为了保证数据的完整性和一致性，有以下规则：</p>
+<ol>
+<li>CASCADE：从父表删除或更新会自动删除或更新子表中匹配的行</li>
+<li>RESTRICT：如果子表中有匹配的记录，则不允许对父表对应候选键进行update&#x2F;delete操作，这个是ANSI SQL-92标准,从MySQL4.0.8开始支持）</li>
+<li>NO ACTION：标准SQL的关键字，在mysql中与RESTRICT相同。</li>
+<li>SET NULL：从父表删除或更新行，会设置子表中的外键列为NULL，但必须保证子表列没有指定NOT NULL</li>
+<li>SET DEFAULT：从父表删除或更新行，会设置子表中的外键列为默认值，但必须保证子表列没有指定NOT NULL</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/" class="category-chain-item">Mysql</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E9%AB%98%E7%BA%A7/" class="category-chain-item">Mysql高级</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+      
+        <a href="/tags/Mysql/">#Mysql</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MySQL高级（索引）</div>
+      <div>http://example.com/2023/02/11/概念整理/数据库DB/Mysql/Mysql基础/MySQL高级（索引）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年2月11日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/" title="MySQL基础（查询与优化）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MySQL基础（查询与优化）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" title="MySQL常见问题">
+                        <span class="hidden-mobile">MySQL常见问题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/fluid-extention.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

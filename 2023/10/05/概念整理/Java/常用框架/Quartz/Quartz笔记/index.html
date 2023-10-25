@@ -1,0 +1,850 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、Quartz基础核心类Quartz 的核心类有以下部四部分：  任务 Job： 需要实现的任务类，实现 execute() 方法，执行后完成任务。 任务实例 JobDetail：表示一个具体的可执行的调度程序，包含了这个任务调度的方案和策略。 触发器 Trigger： 包括 SimpleTrigger 和 CronTrigger。 调度器 Scheduler： 任务调度器，负责基于 Trigg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Quartz笔记">
+<meta property="og:url" content="http://example.com/2023/10/05/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6/Quartz/Quartz%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
+<meta property="og:description" content="一、Quartz基础核心类Quartz 的核心类有以下部四部分：  任务 Job： 需要实现的任务类，实现 execute() 方法，执行后完成任务。 任务实例 JobDetail：表示一个具体的可执行的调度程序，包含了这个任务调度的方案和策略。 触发器 Trigger： 包括 SimpleTrigger 和 CronTrigger。 调度器 Scheduler： 任务调度器，负责基于 Trigg">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231005164838.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231005165527.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231005171615.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231005184310.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020231005185301.png">
+<meta property="article:published_time" content="2023-10-05T08:28:55.000Z">
+<meta property="article:modified_time" content="2023-10-08T06:12:49.049Z">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="概念整理">
+<meta property="article:tag" content="Quartz">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/Pasted%20image%2020231005164838.png">
+  
+  
+  
+  <title>Quartz笔记 - Jin&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Quartz笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-10-05 16:28" pubdate>
+          2023年10月5日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          70 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Quartz笔记</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、Quartz基础"><a href="#一、Quartz基础" class="headerlink" title="一、Quartz基础"></a>一、Quartz基础</h1><p><em>核心类</em><br>Quartz 的核心类有以下部四部分：</p>
+<ul>
+<li><strong>任务 Job</strong>： 需要实现的任务类，实现 <code>execute()</code> 方法，执行后完成任务。</li>
+<li><strong>任务实例 JobDetail</strong>：表示一个具体的可执行的调度程序，包含了这个任务调度的方案和策略。</li>
+<li><strong>触发器 Trigger</strong>： 包括 <code>SimpleTrigger</code> 和 <code>CronTrigger</code>。</li>
+<li><strong>调度器 Scheduler</strong>： 任务调度器，负责基于 <code>Trigger</code>触发器，来执行 <code>JobDetail</code>任务。</li>
+</ul>
+<p><img src="/Pasted%20image%2020231005164838.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Job"><a href="#Job" class="headerlink" title="Job"></a>Job</h2><p><em>JobDetail</em><br>JobDetail 的作用是绑定 Job，是一个任务实例，它为 Job 添加了许多扩展参数。</p>
+<p><em>为什么设计成JobDetail + Job，不直接使用Job？</em><br>JobDetail 定义的是任务数据，而真正的执行逻辑是在Job中。<br>这是因为任务是有可能并发执行，如果Scheduler直接使用Job，就会存在对同一个Job实例并发访问的问题。<br>而<code>JobDetail &amp; Job</code> 方式，Sheduler每次执行，都会根据JobDetail创建一个新的Job实例，这样就可以规避并发访问的问题。</p>
+<p><em>JobExecutionContext</em><br>当 <code>Scheduler</code> 调用一个 job，就会将 <code>JobExecutionContext</code> 传递给 Job 的 <code>execute()</code> 方法，Job 能通过 <code>JobExecutionContext</code> 对象访问到 Quartz 运行时候的环境以及 Job 本身的明细数据。</p>
+<p><em>Job 状态参数</em><br>有状态的 job 可以理解为多次 job调用期间可以持有一些状态信息，这些状态信息存储在 <code>JobDataMap</code> 中。<br>而默认的无状态 job，每次调用时都会创建一个新的 <code>JobDataMap</code>。</p>
+<p><em>Job与JobDetail示例</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Job类,主要定义execute方法</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HelloJob</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Job</span> &#123;<br>	<span class="hljs-meta">@Override</span><br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">execute</span><span class="hljs-params">(JobExecutionContext context)</span> <span class="hljs-keyword">throws</span> JobExecutionException &#123;<br>		System.err.println(context.getJobDetail().getKey());<span class="hljs-comment">// JobDetail的key又他的name和group组成</span><br>		System.err.println(context.getTrigger().getKey());<span class="hljs-comment">// Trigger的key又他的name和group组成</span><br>		System.err.println(<span class="hljs-string">&quot;hello,quartz&quot;</span>);<br>	&#125;<br>&#125;<br><br><span class="hljs-comment">// JobDetail实例</span><br><span class="hljs-type">JobDataMap</span> <span class="hljs-variable">jobDataMap</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JobDataMap</span>();<br>jobDataMap.put(<span class="hljs-string">&quot;jobcc&quot;</span>, <span class="hljs-string">&quot;哈哈&quot;</span>);<br><span class="hljs-type">JobDetail</span> <span class="hljs-variable">job</span> <span class="hljs-operator">=</span> JobBuilder.newJob(HelloJob.class)<br>						  .withIdentity(<span class="hljs-string">&quot;helloJob&quot;</span>, <span class="hljs-string">&quot;hello&quot;</span>)<span class="hljs-comment">//给job命名并分组</span><br>						  .usingJobData(<span class="hljs-string">&quot;jobdd&quot;</span>, <span class="hljs-string">&quot;hello job&quot;</span>)<span class="hljs-comment">//通过JobBuilder的usingJobData方法给JobDataMap中塞</span><br>						  .usingJobData(jobDataMap)<br>						  .build();<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Job在执行过程中，可以从jobdata中取出数据</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HelloJob</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Job</span> &#123;<br>	<span class="hljs-keyword">private</span> String jobAdata;<br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setJobAdata</span><span class="hljs-params">(String jobAdata)</span> &#123;<br>		<span class="hljs-built_in">this</span>.jobAdata = jobAdata;<br>	&#125;<br>	<span class="hljs-meta">@Override</span><br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">execute</span><span class="hljs-params">(JobExecutionContext context)</span> <span class="hljs-keyword">throws</span> JobExecutionException &#123;<br>		System.err.println(<span class="hljs-string">&quot;当前运行的job实例的key:&quot;</span> + context.getJobDetail().getKey().toString());<br>		System.err.println(context.getJobDetail().getKey());<span class="hljs-comment">// JobDetail的key又他的name和group组成</span><br>		System.err.println(context.getTrigger().getKey());<span class="hljs-comment">// Trigger的key又他的name和group组成</span><br>		System.err.println(context.getJobDetail().getJobDataMap().get(<span class="hljs-string">&quot;jobcc&quot;</span>));<br>		System.err.println(context.getJobDetail().getJobDataMap().get(<span class="hljs-string">&quot;jobdd&quot;</span>));<br>		System.err.println(context.getJobDetail().getJobDataMap().get(<span class="hljs-string">&quot;jobaa&quot;</span>));<br>		System.err.println(<span class="hljs-string">&quot;jobA中的数据：&quot;</span> + jobAdata);<br>		System.err.println(<span class="hljs-string">&quot;hello,quartz&quot;</span>);<br>		System.out.println(<span class="hljs-string">&quot;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&quot;</span>);<br>	&#125;<br>&#125;<br><br><span class="hljs-type">JobDetail</span> <span class="hljs-variable">jobA</span> <span class="hljs-operator">=</span> JobBuilder.newJob(HelloJob.class)<br>					  .withIdentity(<span class="hljs-string">&quot;A&quot;</span>, <span class="hljs-string">&quot;hello_A&quot;</span>)<br>					  .usingJobData(<span class="hljs-string">&quot;jobAdata&quot;</span>, <span class="hljs-string">&quot;hello A&quot;</span>)<br>					  .build();<br><br></code></pre></td></tr></table></figure>
+<p>如果你在<code>Job</code>类中，为<code>JobDataMap</code>中存储的数据的<code>key</code>增加<strong>set方法</strong>，那么Quartz的默认<code>JobFactory</code>实现在job被实例化（使用<code>usingJobData()</code>）的时候会自动调用这些<strong>set方法</strong>，这样你就不需要在<code>execute()</code>方法中显式地从map中取数据了。</p>
+<p><em>JobDataMap</em><br>在Job执行时，<code>JobExecutionContext</code>中的<code>JobDataMap</code>是<code>JobDetail</code>中的<code>JobDataMap</code>和<code>Trigger</code>中的<code>JobDataMap</code>的并集，但是如果存在相同的数据，则后者会覆盖前者的值。<br>如果在job运行中，从<code>JobExecutionContext</code>分别获取<code>JobDetail</code>和<code>Trigger</code>，然后再分别获取它们中的<code>JobDataMap</code>，就算有相同的key，也是没有什么影响的，只有当调用<code>getMergedJobDataMap()</code>方法时才会获取它们的<code>JobDataMap</code>合并后的数据，或者用set方法获取也是获取到覆盖后的值。</p>
+<h2 id="Trigger"><a href="#Trigger" class="headerlink" title="Trigger"></a>Trigger</h2><p><em>作用</em><br><code>Trigger</code> 可以设置任务的开始结束时间， <code>Scheduler</code> 会根据参数进行触发。</p>
+<p><em>SimpleTrigger</em><br>较简单的一类触发器，能实现很多基础的应用：</p>
+<ul>
+<li>在指定时间段内，执行一次任务</li>
+<li>在指定时间段内，循环执行任务</li>
+<li>立即开始，指定时间结束</li>
+</ul>
+<p><em>主要线程</em><br>quartz中线程主要分为<strong>执行线程</strong>和<strong>调度线程</strong></p>
+<ul>
+<li>执行线程：线程池，在需要执行任务的时候使用</li>
+<li>调度线程：分为regular Scheduler Thread和Misfire Scheduler Thread：<ul>
+<li>Regular Thread 轮询Trigger，如果有将要触发的Trigger，则从任务线程池中获取一个空闲线程，然后执行与改Trigger关联的job；</li>
+<li>Misfire Thraed则是扫描所有的trigger，查看是否有错失的，如果有的话，根据一定的策略进行处理。</li>
+</ul>
+</li>
+</ul>
+<h2 id="Schedule"><a href="#Schedule" class="headerlink" title="Schedule"></a>Schedule</h2><p><em>核心类之间的关系</em><br>由SchedulerFactory创建Scheduler调度器后，由调度器去调取即将执行的Trigger，执行时获取到对于的JobDetail信息，找到对应的Job类执行业务逻辑。</p>
+<p><em>使用方式</em><br>创建一个job类，然后创建多个与该job关联的JobDetail实例，每一个实例都有自己的属性集和JobDataMap，最后，将所有的实例都加到scheduler中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HelloQuartz</span> &#123;<br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> SchedulerException &#123;<br>		<span class="hljs-comment">//构建SchedulerFactory实例</span><br>		<span class="hljs-type">SchedulerFactory</span> <span class="hljs-variable">schedFact</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StdSchedulerFactory</span>();<br>		<span class="hljs-comment">//获取Scheduler实例</span><br>		<span class="hljs-type">Scheduler</span> <span class="hljs-variable">scheduler</span> <span class="hljs-operator">=</span> schedFact.getScheduler();<br>		<span class="hljs-type">JobDetail</span> <span class="hljs-variable">jobA</span> <span class="hljs-operator">=</span> JobBuilder.newJob(HelloJob.class)<br>				                  .withIdentity(<span class="hljs-string">&quot;A&quot;</span>, <span class="hljs-string">&quot;hello_A&quot;</span>)<br>				                  .usingJobData(<span class="hljs-string">&quot;jobAdata&quot;</span>, <span class="hljs-string">&quot;hello A&quot;</span>)<br>				                  .build();<br>		<span class="hljs-type">JobDetail</span> <span class="hljs-variable">jobB</span> <span class="hljs-operator">=</span> JobBuilder.newJob(HelloJob.class)<br>								.withIdentity(<span class="hljs-string">&quot;B&quot;</span>, <span class="hljs-string">&quot;hello_B&quot;</span>)<br>								.usingJobData(<span class="hljs-string">&quot;jobBdata&quot;</span>, <span class="hljs-string">&quot;hello B&quot;</span>)<br>								.build();<br>		<span class="hljs-comment">//构建Trigger实例</span><br>		<span class="hljs-type">SimpleTrigger</span> <span class="hljs-variable">triggerA</span> <span class="hljs-operator">=</span> TriggerBuilder.newTrigger()<br>				                              .withIdentity(<span class="hljs-string">&quot;helloTriggerA&quot;</span>, <span class="hljs-string">&quot;helloA&quot;</span>)<br>				                              .startNow()<br>				                              .withSchedule(SimpleScheduleBuilder<br>					                              .simpleSchedule().withIntervalInSeconds(<span class="hljs-number">5</span>).repeatForever())<br>				                              .build();<br>		<span class="hljs-type">SimpleTrigger</span> <span class="hljs-variable">triggerB</span> <span class="hljs-operator">=</span> TriggerBuilder.newTrigger()<br>											   .withIdentity(<span class="hljs-string">&quot;helloTriggerB&quot;</span>, <span class="hljs-string">&quot;helloB&quot;</span>)<br>											   .startNow()<br>											   .withSchedule(SimpleScheduleBuilder<br>													.simpleSchedule().withIntervalInSeconds(<span class="hljs-number">10</span>).repeatForever())<br>											   .build();<br>		<span class="hljs-comment">//将JobDetail实例和Trigger实例加入到调度容器</span><br>		scheduler.scheduleJob(jobA, triggerA);<br>		scheduler.scheduleJob(jobB, triggerB);<br>		<span class="hljs-comment">//启动容器</span><br>		scheduler.start();<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="二、Quartz运行"><a href="#二、Quartz运行" class="headerlink" title="二、Quartz运行"></a>二、Quartz运行</h1><h2 id="Quartz初始化"><a href="#Quartz初始化" class="headerlink" title="Quartz初始化"></a>Quartz初始化</h2><p>Quartz启动后会初始化Schedule，加载任务，具体执行逻辑如下：<br><img src="/Pasted%20image%2020231005165527.png" srcset="/img/loading.gif" lazyload><br>流程图简要说明：</p>
+<ol>
+<li>读取配置文件</li>
+<li>初始化SchedulerFactoryBean</li>
+<li>初始化SchedulerFactory</li>
+<li>实例化执行线程池（TheadPool）</li>
+<li>实例化数据存储（JobStore，用于加载定时任务）</li>
+<li>初始化QuartzScheduler(为Scheduler的简单实现，包括调度作业、注册JobListener实例等方法。)</li>
+<li>new一个QuartzSchedulerThread调度线程（负责执行在QuartzScheduler中注册的触发触发器的线程），并开始运行</li>
+<li>调度开始，注册监听器，注册Job和Trigger</li>
+<li>SchedulerFactoryBean初始化完成后执行start()方法</li>
+<li>创建ClusterManager线程并启动线程（该线程用来进行集群故障检测和处理）</li>
+<li>创建MisfireHandler线程并启动线程（该线程用来进行misfire任务的处理）</li>
+<li>置QuartzSchedulerThread的paused&#x3D;false，调度线程真正开始调度，开始执行run方法</li>
+</ol>
+<h2 id="QuartzSchedulerThread执行"><a href="#QuartzSchedulerThread执行" class="headerlink" title="QuartzSchedulerThread执行"></a>QuartzSchedulerThread执行</h2><p>执行<code>QuartzSchedulerThread</code>类的<code>run()</code>方法：<br><img src="/Pasted%20image%2020231005171615.png" srcset="/img/loading.gif" lazyload></p>
+<ol>
+<li>获取执行线程池中可用线程数量</li>
+<li>从JobStore通过trigger表获取30s内要执行的trigger（没有则随机等待一个30s内的时间）：<ol>
+<li>通过select..for update获取这些trigger的锁</li>
+<li>更新trigger的状态<code>wait -&gt; acquired</code></li>
+<li>插入trigger到firedtrigger表，状态为acquired</li>
+<li>释放trigger锁</li>
+</ol>
+</li>
+<li>当获取到的最早的trigger会在2ms内执行时<ol>
+<li>通过select…for update获取trigger的锁</li>
+<li>更新firedtrigger的状态<code>acquired -&gt; executing</code></li>
+<li>更新trigger的下次执行时间</li>
+<li>更新trigger的状态：无状态的<code>trigger-&gt;WAITING</code>，有状态的<code>trigger-&gt;BLOCKED</code>，若<code>nextFireTime == null -&gt; COMPLETE</code></li>
+<li>释放trigger锁</li>
+</ol>
+</li>
+<li>对每个要执行的trigger，创建JobRunShell，并放入线程池执行<ol>
+<li>执行job</li>
+<li>通过select…for update获取trigger的锁</li>
+<li>更新trigger状态：<code>BLOCKED-&gt;WAITING</code>,<code>PAUSED_BLOCKED-&gt;BLOCKED</code></li>
+<li>若@PersistJobDataAfterExecution，则<code>updateJobData</code></li>
+<li>释放锁</li>
+</ol>
+</li>
+</ol>
+<h2 id="MisfireHandler执行"><a href="#MisfireHandler执行" class="headerlink" title="MisfireHandler执行"></a>MisfireHandler执行</h2><p>Quartz对于任务的超时是有容忍度的，<strong>只有超过这个容忍度(默认1min)才会判定位misfire。</strong></p>
+<p><em>出现Misfired的原因</em></p>
+<ol>
+<li>系统因为某些原因被重启。在系统关闭到重新启动之间的一段时间里，可能有些任务会被 misfire；</li>
+<li>Trigger 被暂停（suspend）的一段时间里，有些任务可能会被 misfire；</li>
+<li>线程池中所有线程都被占用，导致任务无法被触发执行，造成 misfire；</li>
+<li>有状态任务在下次触发时间到达时，上次执行还没有结束；</li>
+</ol>
+<p><em>处理策略</em><br>Quartz 中为 trigger定义了处理策略：</p>
+<ul>
+<li>MISFIRE_INSTRUCTION_FIRE_ONCE_NOW：针对 Misfired job马上执行一次；</li>
+<li>MISFIRE_INSTRUCTION_DO_NOTHING：忽略 misfired job，等待下次触发；</li>
+<li>MISFIRE_INSTRUCTION_SMART_POLICY（默认）：该策略在CronTrigger中&#x3D;MISFIRE_INSTRUCTION_FIRE_ONCE_NOW</li>
+</ul>
+<p><em>实现</em><br>Misfire线程默认1分钟执行一次：</p>
+<ol>
+<li>若配置（默认为true，可配置）成获取锁前先检查是否有需要recovery的trigger，先获取misfireCount；</li>
+<li>获取trigger锁</li>
+<li>获取misfired的trigger（在一个事务中，默认一次最多recovery 20个）</li>
+<li>获取misfired的策略，将nextFireTime等更新到trigger表；</li>
+<li>释放trigger锁</li>
+</ol>
+<h2 id="并行控制"><a href="#并行控制" class="headerlink" title="并行控制"></a>并行控制</h2><p>Quartz定时任务默认都是并发执行的，不会等待上一次任务执行完毕，只要间隔时间到就会执行, 如果定时任执行太长，会长时间占用资源，导致其它任务堵塞。<br><em>@DisallowConcurrentExecution</em><br>注解在Job上，表示该Job下的相同的JobDetail不能被同时执行，不同的JobDetail可以同时执行。</p>
+<p><em>@PersistJobDataAfterExecution</em><br>表示当正常执行完Job后, JobDataMap中的数据应该被改动, 以被下一次调用时用。当使用<code>@PersistJobDataAfterExecution</code> 注解时, 为了避免并发时, 存储数据造成混乱, 强烈建议把<code>@DisallowConcurrentExecution</code>注解也加上。</p>
+<p><em>实现：StatefulJob</em><br>有状态的 job 不能被并行执行，只有上一次触发的任务被执行完之后，才能触发下一次执行。<br>Job 和 StatefulJob 在框架中使用中存在两个关键差异：</p>
+<ul>
+<li>有状态的Job会<strong>在每次执行之后将JobDataMap重新持久化到JobStore中</strong>，这样就确保对 Job 数据的改变直到下次执行仍然保持着；而无状态的Job不会更新JobStore中的JobDataMap。</li>
+<li>有状态的Job在被取出后状态会置为<code>BLOCKED</code>（表示真正执行），只有该次任务真正执行完成后才会变成<code>WAIT</code>状态；而无状态的Job在被取出后就会变成<code>WAIT</code>状态。</li>
+</ul>
+<div class="note note-primary">
+            <p>限制并发的对象是JobDetail，而不是Job或Trigger。因此若两个Trigger试图同一时刻执行相同的JobDetail会有一个Trigger阻塞等待。</p>
+          </div>
+
+<h1 id="三、Quartz集群"><a href="#三、Quartz集群" class="headerlink" title="三、Quartz集群"></a>三、Quartz集群</h1><h2 id="集群结构"><a href="#集群结构" class="headerlink" title="集群结构"></a>集群结构</h2><p><em>定义</em><br>一个<strong>Quartz集群中的每个节点是一个独立的Quartz应用</strong>，在Quartz集群中，独立的Quartz节点并不与另一其的节点或是管理节点通信，而是<strong>通过同一个数据库表来感知到另一Quartz应用的</strong>。<br><img src="/Pasted%20image%2020231005184310.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>集群配置</em></p>
+<ol>
+<li>配置Quartz集群数据库</li>
+<li>为每个Quartz应用配置属性，同一集群下：<ul>
+<li>instanceName必须相同</li>
+<li>instanceId可自动生成</li>
+<li>isClustered为true</li>
+<li>持久化存储，指定数据库类型对应的驱动类和数据源连接。</li>
+</ul>
+</li>
+</ol>
+<h2 id="集群高可用"><a href="#集群高可用" class="headerlink" title="集群高可用"></a>集群高可用</h2><h3 id="并发控制"><a href="#并发控制" class="headerlink" title="并发控制"></a>并发控制</h3><p><em>数据行锁避免重复执行</em><br>一个调度器实例在执行涉及到分布式问题的数据库操作前，<strong>首先要获取QUARTZ_LOCKS表中对应的行级锁</strong>，获取锁后即可执行其他表中的数据库操作，<strong>随着操作事务的提交，行级锁被释放，供其他调度实例获取</strong>。集群中的每一个调度器实例都遵循这样一种严格的操作规程。</p>
+<h3 id="故障切换"><a href="#故障切换" class="headerlink" title="故障切换"></a>故障切换</h3><p><em>故障发现</em></p>
+<ol>
+<li>每个节点Scheduler实例由<code>集群管理线程ClusterManager</code>周期性（默认是15 秒）定时检测CHECKIN数据库，遍历集群各兄弟节点的实例状态，检测集群各个兄弟节点的健康情况。</li>
+<li>当集群中一个节点的Scheduler实例执行CHECKIN时，它会查看是否有其他节点的Scheduler实例在到达它们所预期的时间还未CHECKIN。若检测到有节点在预期时间未CHECKIN，则认为该节点故障。判断节点是否故障与节点Scheduler实例最后CHECKIN的时间有关，而判断条件：<code>LAST_CHECKIN_TIME + Max(检测周期，检测节点现在距上次最后CHECKIN的时间) + 7500ms &lt; currentTime。</code></li>
+<li>集群管理线程检测到故障节点，就会更新触发器状态，状态更新如下：<br><img src="/Pasted%20image%2020231005185301.png" srcset="/img/loading.gif" lazyload></li>
+<li>集群管理线程删除故障节点的实例状态（<code>qrtz_scheduler_state</code>表），重置所有故障节点触发的任务。故障任务和正常任务一样就交由调度处理线程处理：<ul>
+<li>任何标记为恢复的作业（在JobDetail上都具有“请求恢复(<code>requests recovery</code>)”属性）将被剩余的节点重新执行，已达到失效任务转移。</li>
+<li>没有标记为恢复的作业将在下一次相关的Triggers触发时简单地被释放以执行。</li>
+</ul>
+</li>
+</ol>
+<p><em>负载均衡</em><br>负载平衡自动发生，群集的每个节点都尽可能快地触发Jobs。<strong>当Triggers的触发时间发生时，获取它的第一个节点（通过在其上放置一个锁定）是将触发它的节点</strong>。 因此哪个节点运行任务是随机的。<br>先获取Trigger的节点会修改其状态和下一次触发时间，保证了其他节点不会重复触发该任务。</p>
+<blockquote>
+<p>参考资料：<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/128567942">quartz核心元素及底层原理介绍</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/wh_07/article/details/111063023">详解Quartz中的注解：@DisallowConcurrentExecution和@PersistJobDataAfterExecution</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/MrSaver/p/11835374.html">Quartz学习笔记：集群部署&amp;高可用</a></p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Quartz/" class="category-chain-item">Quartz</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+      
+        <a href="/tags/Quartz/">#Quartz</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Quartz笔记</div>
+      <div>http://example.com/2023/10/05/概念整理/Java/常用框架/Quartz/Quartz笔记/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年10月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/10/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6/Mybatis/Mybatis%E7%AC%94%E8%AE%B0/" title="Mybatis笔记">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Mybatis笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/09/25/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E5%A4%8D%E4%B9%A0/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/fluid-extention.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

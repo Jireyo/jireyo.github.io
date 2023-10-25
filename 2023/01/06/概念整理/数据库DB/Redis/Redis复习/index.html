@@ -33,8 +33,10 @@
 <meta property="og:image" content="http://example.com/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20230323223354.png">
 <meta property="og:image" content="http://example.com/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20230323215824.png">
 <meta property="og:image" content="http://example.com/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/3%E5%B1%82%E8%B7%B3%E8%A1%A8-%E8%B7%A8%E5%BA%A6.drawio.webp">
+<meta property="og:image" content="http://example.com/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20231001212816.png">
 <meta property="og:image" content="http://example.com/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/98987d9417b2bab43087f45fc959d32a.webp">
 <meta property="og:image" content="http://example.com/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/t_70-20230309231944807.webp">
+<meta property="og:image" content="http://example.com/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20231001213203.png">
 <meta property="og:image" content="http://example.com/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/redis%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B.drawio.webp">
 <meta property="og:image" content="http://example.com/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20230323235505.png">
 <meta property="og:image" content="http://example.com/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20230323235714.png">
@@ -58,9 +60,8 @@
 <meta property="og:image" content="http://example.com/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20230324164739.png">
 <meta property="og:image" content="http://example.com/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20230324164801.png">
 <meta property="og:image" content="http://example.com/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/2ee2280e9f59b6b4879ebdec6eb0cf52.webp">
-<meta property="og:image" content="http://example.com/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/%E7%AE%A1%E9%81%93%E6%A8%A1%E5%BC%8F.webp">
 <meta property="article:published_time" content="2023-01-06T10:32:37.000Z">
-<meta property="article:modified_time" content="2023-06-18T07:05:03.377Z">
+<meta property="article:modified_time" content="2023-10-16T14:35:03.294Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="Redis">
@@ -280,7 +281,7 @@
         
         
         
-          100 分钟
+          103 分钟
         
       </span>
     
@@ -404,9 +405,13 @@
 <p><em>渐进式rehash</em></p>
 <ul>
 <li>给「ht2」分配空间</li>
-<li>在 rehash 进行期间，每次哈希表元素进行新增、删除、查找或者更新操作时，Redis除了会执行对应的操作（查找时先找old再找new，新增时直接添加在new上）之外，还会顺序将「ht1」中索引位置上的所有 key-value 迁移到「ht2」上；</li>
+<li>在 rehash 进行期间，每次哈希表元素进行新增、删除、查找或者更新操作时，Redis除了会执行对应的操作（查找时先找old再找new，新增时直接添加在new上）之外，还会<strong>顺序地</strong>（从第一个桶开始）将「ht1」中索引位置上的所有 key-value 迁移到「ht2」上；</li>
 <li>随着处理客户端发起的哈希表操作请求数量越多，最终在某个时间点会把「ht1」的所有 key-value 迁移到「ht2」，从而完成 rehash 操作。</li>
 </ul>
+<div class="note note-primary">
+            <p><em>扩展：rehash与ConcurrentHashMap的扩容方式相比，有什么区别？</em></p><ol><li>rehash单线程扩容，ConcurrentHashMap多线程扩容，一般而言后者更快</li><li>对于读操作，两者响应速度差不多</li><li>对于写操作，rehash更快，因为ConcurrentHashMap中线程需要帮助完成扩容，扩容完成后才进行真正的写操作。</li><li>对于删除操作，同写操作。</li></ol>
+          </div>
+
 <h3 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h3><p>无序集合，成员唯一。</p>
 <p><em>编码</em><br>整数集合（元素数量不超过512）或哈希表</p>
 <h4 id="整数集合"><a href="#整数集合" class="headerlink" title="整数集合"></a>整数集合</h4><p><em>组成</em></p>
@@ -438,7 +443,8 @@
 <li>内存占比上，每个节点的指针更少。</li>
 <li>算法实现更简单，不需要调整。</li>
 </ol>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><img src="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20231001212816.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
 <li>String：int&#x2F;SDS(embstr，raw)</li>
 <li>List：ziplist&#x2F;linkedlist -&gt; quicklist(3.2) -&gt; ListPack</li>
 <li>Hash：ziplist&#x2F;dict</li>
@@ -514,6 +520,9 @@
 <li>使用CopyOnWrite技术（复制物理内存，<strong>第二次阻塞</strong>，如果修改的是bigkey，则阻塞更久）和解决一致性；</li>
 <li>子线程完成rewrite，发送<strong>信号</strong>（<strong>第三次阻塞</strong>），通知主线程追加aof命令和改名<strong>原子覆盖</strong>。</li>
 </ul>
+<blockquote>
+<p>写时复制后，主进程使用原地址，子进程使用复制出来的地址。</p>
+</blockquote>
 <p><em>重写触发</em></p>
 <ul>
 <li>当前文件大小超过上次重写后的百分之多少。</li>
@@ -533,20 +542,23 @@
 <li>AOF日志：刷盘阻塞耗时</li>
 <li>AOF重写：快速触发重写，拷贝大虚拟页表阻塞耗时，如果对big key写，COW的物理内存复制也阻塞耗时。</li>
 </ul>
-<p>寻找Big Key</p>
+<p><em>寻找Big Key</em></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">redis-cli --bigkeys<br></code></pre></td></tr></table></figure>
 
-<p><em>避免Big Key</em></p>
-<ul>
-<li>拆分big key</li>
-</ul>
-<p>删除Big Key</p>
+<p><em>避免Big Key</em><br>拆分big key，即将一个键值拆分为多个键值。</p>
+<p><em>删除Big Key</em></p>
 <ul>
 <li>对其的删除使用unlink，异步延迟释放内存。</li>
-<li>分批次删除</li>
+<li>分批次删除：针对集合类型分多次删除</li>
 </ul>
 <p><em>Linux开启内存大页</em><br>会允许以2MB为单位分配内存，会导致小数据修改也要在COW中拷贝大页。</p>
-<h1 id="三、事件机制"><a href="#三、事件机制" class="headerlink" title="三、事件机制"></a>三、事件机制</h1><p><img src="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/redis%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B.drawio.webp" srcset="/img/loading.gif" lazyload><br><em>Redis事件处理模型</em><br><img src="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20230323235505.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="三、事件机制"><a href="#三、事件机制" class="headerlink" title="三、事件机制"></a>三、事件机制</h1><p><em>Redis的线程</em><br>Redis的单线程指的是「接收客户端请求-&gt;解析请求 -&gt;进行数据读写等操作-&gt;发送数据给客户端」这个过程是由一个线程（主线程）来完成的。<br>Redis程序并不是单线程的，Redis 在启动的时候，是会<strong>启动后台线程</strong>（BIO）的：</p>
+<ul>
+<li><strong>Redis 在 2.6 版本</strong>，有2个后台线程，分别处理关闭文件、AOF 刷盘这两个任务；</li>
+<li><strong>Redis 在 4.0 版本之后</strong>，新增了1个后台线程，用来异步释放 Redis 内存，即lazyfree 线程。</li>
+</ul>
+<p>后台线程相当于一个消费者，生产者把耗时任务丢到任务队列中，消费者（BIO）不停轮询这个队列，拿出任务就去执行对应的方法即可。<br><img src="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20231001213203.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>Redis事件机制</em><br><img src="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/redis%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B.drawio.webp" srcset="/img/loading.gif" lazyload><br><em>Redis事件处理模型</em><br><img src="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20230323235505.png" srcset="/img/loading.gif" lazyload></p>
 <p><code>aeEventLoop</code>是事件驱动的核心，同时管理<strong>文件事件</strong>和<strong>时间时间</strong>。</p>
 <p><em>Redis与IO多路复用</em><br>redis支持select、epoll、kqueue等技术，适配操作系统实现。</p>
 <p><em>Redis文件事件</em><br><img src="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20230323235714.png" srcset="/img/loading.gif" lazyload><br>使用<strong>Redis文件事件处理器</strong>实现<strong>连接应答</strong>、<strong>请求处理</strong>、<strong>响应处理</strong>等事件的分发。</p>
@@ -556,7 +568,7 @@
 <li><strong>周期性事件</strong>：让一段程序每隔指定时间就执行一次。</li>
 </ul>
 <blockquote>
-<p>Redis一般只使用<code>serverCron</code>时间事件，用于统计，删除过期键，RDB，AOF，同步，心跳等，周期执行</p>
+<p>Redis一般只使用<code>serverCron</code>时间事件，用于<strong>统计，删除过期键，RDB，AOF，同步，心跳等，周期执行</strong></p>
 </blockquote>
 <p><em>实现</em><br>初始化函数<code>initServer</code>创建了aeEventLoop对象，初始化文件、时间事件表，创建epoll实例。<br><img src="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20230324000231.png" srcset="/img/loading.gif" lazyload></p>
 <h1 id="四、事务"><a href="#四、事务" class="headerlink" title="四、事务"></a>四、事务</h1><p><em>语句</em><br><code>MULTI</code>开启事务，<code>EXEC</code>执行事务，<code>DISCARD</code>取消事务。</p>
@@ -580,10 +592,7 @@
 <li>定期删除（定期删除行为会在ServerCron函数中执行）</li>
 <li>惰性删除</li>
 </ul>
-<p>Redis 选择「<strong>惰性删除+定期删除</strong>」这两种策略配和使用</p>
-<blockquote>
-<p>对于RDB，其不会记录已经删除的键<br> 对于AOF文件，键过期后会在文件后面加上DEL key的命令，重写时则不会记录该key。</p>
-</blockquote>
+<p>Redis 选择「<strong>惰性删除+定期删除</strong>」这两种策略配和使用<br>    对于RDB，其不会记录已经删除的键<br>     对于AOF文件，键过期后会在文件后面加上DEL key的命令，重写时则不会记录该key。</p>
 <h2 id="淘汰策略"><a href="#淘汰策略" class="headerlink" title="淘汰策略"></a>淘汰策略</h2><p><em>内存淘汰策略</em></p>
 <ol>
 <li>noeviction：写满了就停止服务。</li>
@@ -663,7 +672,7 @@
 <ol>
 <li>首个发现哨兵A将其标记为<strong>主观下线</strong>，并询问其他哨兵是否下线。</li>
 <li>当哨兵A收集到达到<code>quorum</code>数量的赞成票时，将其标记为<strong>客观下线</strong>。</li>
-<li>做出<strong>客观下线判定的哨兵</strong>就是执行故障转移的Leader候选人，Leader候选人需要拿到达到<code>quorum</code>数量且达到<code>哨兵数量/2+1</code>数量的赞成票才能当选（Raft选举算法）。</li>
+<li>做出<strong>客观下线判定的哨兵</strong>就是执行故障转移的Leader候选人，Leader候选人需要拿到达到<code>quorum</code>数量且达到<code>哨兵数量/2+1</code>数量的赞成票才能当选（<strong>Raft选举算法</strong>）。</li>
 </ol>
 <p><em>Raft选举算法</em><br><a target="_blank" rel="noopener" href="https://juejin.cn/post/6998470783831900197">Raft选举算法</a><br>概念：</p>
 <ul>
@@ -722,10 +731,20 @@
 <li>meet message：发现消息，收到该消息后将消息源视为集群的一部分</li>
 <li>ping message：交换消息，收到集群内其他节点的gossip消息后，将消息中的新节点视为集群的一部分。</li>
 </ul>
+<p><em>Key迁移过程</em><br>key 迁移过程中，涉及到一下两个命令：</p>
+<ul>
+<li>CLUSTER SETSLOT slot8 MIGRATING node 命令</li>
+<li>CLUSTER SETSLOT slot8 IMPORTING node 命令</li>
+</ul>
+<p>前者用于将给定节点 node 中的槽 slot8 迁移出节点，而后者用于将给定槽 slot8 导入到节点 node ：</p>
+<ol>
+<li>如果一个槽被设置为 MIGRATING 状态时，<strong>原本持有该槽的节点会继续接受关于这个槽的命令请求</strong>，但只有当键存在于该节点时，节点才会处理这个请求。如果命令所使用的键不存在于该节点，那么节点将向客户端返回一个 ASK 转向（redirection）错误，告知客户端，要将命令请求发送到槽的迁移目标节点。</li>
+<li>如果一个槽被设置为 IMPORTING 状态时，<strong>节点仅在接收到 ASKING 命令之后，才会接受关于这个槽的命令请求。</strong> 如果客户端向节点发送该槽的数据请求，命令为非 ASKING 时，那么节点会使用 MOVED 转向错误将命令请求转向至真正负责处理这个槽的节点。</li>
+</ol>
 <p><em>请求重定向</em></p>
 <ul>
 <li>MOVED重定向：槽不命中时返回MOVED重定向</li>
-<li>ACK重定向：槽命中但找不到key，且槽在迁移中，则返回ASK重定向</li>
+<li>ASK重定向：槽命中但找不到key，且槽在迁移中，则返回ASK重定向</li>
 </ul>
 <p><em>SMART客户端</em><br>通过<code>cluster slots</code>命令获取集群的slots信息，自主计算key所在节点并访问，失败时随机访问节点，并更新slots缓存。</p>
 <h4 id="Gossip协议"><a href="#Gossip协议" class="headerlink" title="Gossip协议"></a>Gossip协议</h4><p><strong>即使集群节点的数量增加，每个节点的负载也不会增加很多，几乎是恒定的。</strong></p>
@@ -849,48 +868,15 @@
 <h4 id="Write-Behind-Caching-Pattern（异步缓存写入）"><a href="#Write-Behind-Caching-Pattern（异步缓存写入）" class="headerlink" title="Write Behind Caching Pattern（异步缓存写入）"></a>Write Behind Caching Pattern（异步缓存写入）</h4><p>更新时只更新缓存，定期异步批量更新数据库。<br><img src="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20230324165054.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><p><em>主动更新策略</em><br>主动更新策略能更好的保证实时性和命中率，但存在并发问题，解决方案：</p>
 <ul>
-<li>使用分布式锁，只允许一个请求更新缓存</li>
-<li>使用较短的过期时间，即使存在过期数据也快速刷新</li>
+<li>使用<strong>分布式锁</strong>，只允许一个请求更新缓存</li>
+<li>使用<strong>较短的过期时间</strong>，即使存在过期数据也快速刷新</li>
 </ul>
-<p><em>更新删除策略</em></p>
-<ul>
-<li>延迟双删：更新数据库前<strong>删除缓存</strong>，更新数据库后<strong>睡眠</strong>一小段时间，再执行一次<strong>删除缓存</strong>。</li>
-</ul>
+<p><em>更新删除策略</em><br>延迟双删：更新数据库前<strong>删除缓存</strong>，更新数据库后<strong>睡眠</strong>一小段时间，再执行一次<strong>删除缓存</strong>。</p>
 <p><em>执行失败</em><br>「先更新数据库， 再删除缓存」行为中，删除缓存可能未得到执行。</p>
 <h3 id="解决强一致性问题"><a href="#解决强一致性问题" class="headerlink" title="解决强一致性问题"></a>解决强一致性问题</h3><p>由于更新删除策略中删除缓存可能得不到执行，需要优化流程：<br><em>方案1：队列+重试</em><br>将删除缓存行为加入到消息队列保证其得到执行。<br><img src="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20230324164739.png" srcset="/img/loading.gif" lazyload></p>
 <p><em>方案2：队列+重试+非业务代码异步更新</em><br>使用数据库更新日志binlog，中间件（Canal 中间件，阿里巴巴开源）提取key并执行缓存删除，这中间也需要使用消息队列保证执行成功，但可以使用非业务代码完成这个操作。</p>
 <p><img src="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/Pasted-image-20230324164801.png" srcset="/img/loading.gif" lazyload></p>
 <p><img src="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/2ee2280e9f59b6b4879ebdec6eb0cf52.webp" srcset="/img/loading.gif" lazyload></p>
-<h1 id="八、常见"><a href="#八、常见" class="headerlink" title="八、常见"></a>八、常见</h1><p><em>什么是Redis?</em><br>nosql，基于内存，数据格式为键值对，单线程。</p>
-<p><em>Redis 和 Memcached 有什么区别？</em><br>都基于内存。但redis可以持久化、集群。</p>
-<p><em>为什么Redis可以做缓存？</em><br>高性能、高并发。</p>
-<p><em>单线程？</em></p>
-<ul>
-<li>处理文件事件是主线程单线程完成。</li>
-<li>关闭文件、AOF 刷盘、lazyfree等操作都由子线程异步完成。</li>
-<li>之前使用单线程，因为CPU不是性能瓶颈；6.0后使用了多线程，因为网络上开始出现瓶颈。</li>
-</ul>
-<p><em>为什么单线程模型如此快？</em></p>
-<ul>
-<li>内存</li>
-<li>无锁</li>
-<li>I&#x2F;O多路复用</li>
-</ul>
-<p><em>如何实现延迟队列？</em><br>zset记录目标延迟时间，业务循环处理，对比score和当前时间得到range，取出任务。</p>
-<p><em>管道？</em><br>管道技术（Pipeline）是客户端提供的一种批处理技术。<br><img src="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%A4%8D%E4%B9%A0/%E7%AE%A1%E9%81%93%E6%A8%A1%E5%BC%8F.webp" srcset="/img/loading.gif" lazyload></p>
-<p><em>分布式锁？</em></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">SET lock_key unique_value NX PX 10000 <br></code></pre></td></tr></table></figure>
-<p>由于异步复制导致<strong>不可靠</strong>，官方提供了RedLock算法：</p>
-<ol>
-<li>记录开始时间t1。</li>
-<li>为所有redis加锁，加锁超时（几十毫秒）则判定失败。</li>
-<li>成功加了N&#x2F;2+1的锁时，获取时间t2，判断总耗时。</li>
-<li>若总耗时也通过检测，则计算有效时间，若<code>过期时间-耗时&lt;0</code>则释放锁。（此时已经没有时间完成业务了）。</li>
-</ol>
-<p>即：如果有超过半数的 Redis 节点成功的获取到了锁，并且总耗时没有超过锁的有效时间，那么就是加锁成功，此时判断这个锁是否还有时间可用，不可用则释放。</p>
-<blockquote>
-<p>lua脚本可以原子执行</p>
-</blockquote>
 
                 
               </div>
@@ -1014,8 +1000,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E7%AC%AC7%E7%AB%A0%EF%BC%88%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%EF%BC%89/" title="Redis第7章（性能监控）">
-                        <span class="hidden-mobile">Redis第7章（性能监控）</span>
+                      <a href="/2023/01/06/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Redis/Redis%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" title="Redis常见问题">
+                        <span class="hidden-mobile">Redis常见问题</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

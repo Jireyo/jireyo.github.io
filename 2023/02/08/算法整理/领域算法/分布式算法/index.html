@@ -16,15 +16,15 @@
   <meta name="author" content="Jin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="一、一致性Hash算法二、Paxos算法三、Raft算法Raft实现了和Paxos相同的功能，它将一致性分解为多个子问题: Leader选举(Leader election)、日志同步(Log replication)、安全性(Safety)、日志压缩(Log compaction)、成员变更(Membership change)等。 Leader选举概念：  Raft定义了三种角色：领导者（Le">
+    <meta name="description" content="一、一致性Hash算法todo 二、Paxos算法todo 三、Raft算法Raft实现了和Paxos相同的功能，它将一致性分解为多个子问题: Leader选举(Leader election)、日志同步(Log replication)、安全性(Safety)、日志压缩(Log compaction)、成员变更(Membership change)等。 Leader选举概念：  Raft定义了三">
 <meta property="og:type" content="article">
 <meta property="og:title" content="领域算法（分布式算法）">
 <meta property="og:url" content="http://example.com/2023/02/08/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E9%A2%86%E5%9F%9F%E7%AE%97%E6%B3%95/%E5%88%86%E5%B8%83%E5%BC%8F%E7%AE%97%E6%B3%95/index.html">
 <meta property="og:site_name" content="Jin&#39;s Blog">
-<meta property="og:description" content="一、一致性Hash算法二、Paxos算法三、Raft算法Raft实现了和Paxos相同的功能，它将一致性分解为多个子问题: Leader选举(Leader election)、日志同步(Log replication)、安全性(Safety)、日志压缩(Log compaction)、成员变更(Membership change)等。 Leader选举概念：  Raft定义了三种角色：领导者（Le">
+<meta property="og:description" content="一、一致性Hash算法todo 二、Paxos算法todo 三、Raft算法Raft实现了和Paxos相同的功能，它将一致性分解为多个子问题: Leader选举(Leader election)、日志同步(Log replication)、安全性(Safety)、日志压缩(Log compaction)、成员变更(Membership change)等。 Leader选举概念：  Raft定义了三">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-02-08T10:44:05.000Z">
-<meta property="article:modified_time" content="2023-04-04T17:04:04.385Z">
+<meta property="article:modified_time" content="2023-10-19T07:32:09.914Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="算法">
 <meta property="article:tag" content="分布式算法">
@@ -243,7 +243,7 @@
         
         
         
-          11 分钟
+          12 分钟
         
       </span>
     
@@ -286,7 +286,9 @@
             
               <div class="markdown-body">
                 
-                <h1 id="一、一致性Hash算法"><a href="#一、一致性Hash算法" class="headerlink" title="一、一致性Hash算法"></a>一、一致性Hash算法</h1><h1 id="二、Paxos算法"><a href="#二、Paxos算法" class="headerlink" title="二、Paxos算法"></a>二、Paxos算法</h1><h1 id="三、Raft算法"><a href="#三、Raft算法" class="headerlink" title="三、Raft算法"></a>三、Raft算法</h1><p>Raft实现了和Paxos相同的功能，它将一致性分解为多个子问题: Leader选举(Leader election)、日志同步(Log replication)、安全性(Safety)、日志压缩(Log compaction)、成员变更(Membership change)等。</p>
+                <h1 id="一、一致性Hash算法"><a href="#一、一致性Hash算法" class="headerlink" title="一、一致性Hash算法"></a>一、一致性Hash算法</h1><p>todo</p>
+<h1 id="二、Paxos算法"><a href="#二、Paxos算法" class="headerlink" title="二、Paxos算法"></a>二、Paxos算法</h1><p>todo</p>
+<h1 id="三、Raft算法"><a href="#三、Raft算法" class="headerlink" title="三、Raft算法"></a>三、Raft算法</h1><p>Raft实现了和Paxos相同的功能，它将一致性分解为多个子问题: Leader选举(Leader election)、日志同步(Log replication)、安全性(Safety)、日志压缩(Log compaction)、成员变更(Membership change)等。</p>
 <h2 id="Leader选举"><a href="#Leader选举" class="headerlink" title="Leader选举"></a>Leader选举</h2><p>概念：</p>
 <ul>
 <li>Raft定义了三种角色：<strong>领导者（Leader）</strong>、<strong>跟随者（Follower）</strong> 和 <strong>候选人（Candidate）</strong>。跟随者发现领导者掉线时（收不到leader的心跳）成为候选人。</li>

@@ -1,0 +1,676 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="算法复习模板 树状数组 线段树 KMP 四种图算法 背包九讲 B树与B+树区别 数位dp（灵神） 并查集 排序：手写堆排、快排，归并排，工业级排序再看看 位运算枚举子集  错题集18. 四数之和239. 滑动窗口最大值995. K 连续位的最小翻转次数1358. 包含所有三种字符的子字符串数目795. 区间子数组个数992. K 个不同整数的子数组424. 替换后的最长重复字符732. 我的日程安">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jin&#39;s Blog">
+<meta property="og:url" content="http://example.com/2023/09/25/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E5%A4%8D%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
+<meta property="og:description" content="算法复习模板 树状数组 线段树 KMP 四种图算法 背包九讲 B树与B+树区别 数位dp（灵神） 并查集 排序：手写堆排、快排，归并排，工业级排序再看看 位运算枚举子集  错题集18. 四数之和239. 滑动窗口最大值995. K 连续位的最小翻转次数1358. 包含所有三种字符的子字符串数目795. 区间子数组个数992. K 个不同整数的子数组424. 替换后的最长重复字符732. 我的日程安">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-09-24T16:22:31.586Z">
+<meta property="article:modified_time" content="2023-10-19T06:35:22.417Z">
+<meta property="article:author" content="Jin">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Jin&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-09-25 00:22" pubdate>
+          2023年9月25日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          724 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          7 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="算法复习"><a href="#算法复习" class="headerlink" title="算法复习"></a>算法复习</h1><h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><ul>
+<li>树状数组</li>
+<li>线段树</li>
+<li>KMP</li>
+<li>四种图算法</li>
+<li>背包九讲</li>
+<li>B树与B+树区别</li>
+<li>数位dp（灵神）</li>
+<li>并查集</li>
+<li>排序：手写堆排、快排，归并排，工业级排序再看看</li>
+<li>位运算枚举子集</li>
+</ul>
+<h2 id="错题集"><a href="#错题集" class="headerlink" title="错题集"></a>错题集</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/4sum/">18. 四数之和</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sliding-window-maximum/">239. 滑动窗口最大值</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-number-of-k-consecutive-bit-flips/">995. K 连续位的最小翻转次数</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/number-of-substrings-containing-all-three-characters/">1358. 包含所有三种字符的子字符串数目</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/number-of-subarrays-with-bounded-maximum/">795. 区间子数组个数</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/subarrays-with-k-different-integers/">992. K 个不同整数的子数组</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-repeating-character-replacement/">424. 替换后的最长重复字符</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/my-calendar-iii/">732. 我的日程安排表 III</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-of-smaller-numbers-after-self/">315. 计算右侧小于当前元素的个数</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-permutation/">484. 寻找排列</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/basic-calculator-iii/">772. 基本计算器 III</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sort-list/">148. 排序链表</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/palindrome-linked-list/">234. 回文链表</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-zero-sum-consecutive-nodes-from-linked-list/">1171. 从链表中删去总和值为零的连续节点</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-k-digits/">402. 移掉 K 位数字</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-addition-to-make-integer-beautiful/">2457. 美丽整数的最小增量</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/lowest-common-ancestor-of-deepest-leaves/">1123. 最深叶节点的最近公共祖先</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/delete-node-in-a-bst/">450. 删除二叉搜索树中的节点</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/depth-of-bst-given-insertion-order/">1902. 给定二叉搜索树的插入顺序求深度</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/xu-lie-hua-er-cha-shu-lcof/">LCR 156. 序列化与反序列化二叉树</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-duplicate-subtrees/">652. 寻找重复的子树</a><br><a href="%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E6%95%B0%E5%AD%A6%EF%BC%89.md#%E5%8A%A0%E5%87%8F%E4%B9%98%E9%99%A4">加减乘除</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/single-number-ii/">137. 只出现一次的数字 II</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/single-number-iii/">260. 只出现一次的数字 III</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-primes/">204. 计数质数</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/closest-divisors/">1362. 最接近的因数</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/xor-operation-in-an-array/">1486. 数组异或操作</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-area-rectangle/">939. 最小面积矩形</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/majority-element-ii/">229. 多数元素 II</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/cracking-the-safe/">753. 破解保险箱</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/word-squares/">425. 单词方块</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/palindrome-partitioning-ii/">132. 分割回文串 II</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-different-palindromic-subsequences/">730. 统计不同回文子序列</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/shortest-way-to-form-string/">1055. 形成字符串的最短路径</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/scramble-string/">87. 扰乱字符串</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/distinct-subsequences/">115. 不同的子序列</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/distinct-subsequences-ii/">940. 不同的子序列 II</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/russian-doll-envelopes/">354. 俄罗斯套娃信封问题</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/the-number-of-weak-characters-in-the-game/">1996. 游戏中弱角色的数量</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/length-of-longest-fibonacci-subsequence/">873. 最长的斐波那契子序列的长度</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-boxes/">546. 移除盒子</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/encode-string-with-shortest-length/">471. 编码最短长度的字符串</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/profitable-schemes/">879. 盈利计划</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/shopping-offers/">638. 大礼包</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/android-unlock-patterns/">351. 安卓系统手势解锁</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/shortest-path-visiting-all-nodes/">847. 访问所有节点的最短路径</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/fair-distribution-of-cookies/">2305. 公平分发饼干</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/confusing-number-ii/">1088. 易混淆数 II</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sum-of-subarray-minimums/">907. 子数组的最小值之和</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/super-egg-drop/">887. 鸡蛋掉落</a></p>
+<h2 id="SQL题"><a href="#SQL题" class="headerlink" title="SQL题"></a>SQL题</h2><ol start="1412">
+<li>查找成绩处于中游的学生</li>
+<li>大满贯数量</li>
+<li>寻找没有被执行的任务对</li>
+<li>报告系统状态的连续日期</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2023/09/25/算法整理/算法专题/算法复习/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年9月25日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/10/05/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6/Quartz/Quartz%E7%AC%94%E8%AE%B0/" title="Quartz笔记">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Quartz笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/09/22/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" title="消息队列常见问题">
+                        <span class="hidden-mobile">消息队列常见问题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/fluid-extention.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

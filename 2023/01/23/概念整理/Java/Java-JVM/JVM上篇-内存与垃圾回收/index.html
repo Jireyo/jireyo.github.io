@@ -39,6 +39,7 @@
 <meta property="og:image" content="http://example.com/2023/01/23/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java-JVM/JVM%E4%B8%8A%E7%AF%87-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/Pasted-image-20230129214614.png">
 <meta property="og:image" content="http://example.com/2023/01/23/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java-JVM/JVM%E4%B8%8A%E7%AF%87-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/Pasted-image-20230129214618.png">
 <meta property="og:image" content="http://example.com/2023/01/23/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java-JVM/JVM%E4%B8%8A%E7%AF%87-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/Pasted-image-20230129215125.png">
+<meta property="og:image" content="http://example.com/Pasted%20image%2020230917225656.png">
 <meta property="og:image" content="http://example.com/2023/01/23/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java-JVM/JVM%E4%B8%8A%E7%AF%87-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/Pasted-image-20230129220927.png">
 <meta property="og:image" content="http://example.com/2023/01/23/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java-JVM/JVM%E4%B8%8A%E7%AF%87-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/Pasted-image-20230131114507.png">
 <meta property="og:image" content="http://example.com/2023/01/23/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java-JVM/JVM%E4%B8%8A%E7%AF%87-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/Pasted-image-20230131120156.png">
@@ -64,7 +65,7 @@
 <meta property="og:image" content="http://example.com/2023/01/23/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java-JVM/JVM%E4%B8%8A%E7%AF%87-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/Pasted-image-20230201152820.png">
 <meta property="og:image" content="http://example.com/2023/01/23/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java-JVM/JVM%E4%B8%8A%E7%AF%87-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/Pasted-image-20230201153244.png">
 <meta property="article:published_time" content="2023-01-23T05:55:59.000Z">
-<meta property="article:modified_time" content="2023-03-20T11:06:11.826Z">
+<meta property="article:modified_time" content="2023-10-03T12:05:31.390Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="JVM">
@@ -273,7 +274,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          26k 字
+          27k 字
         
       </span>
     
@@ -284,7 +285,7 @@
         
         
         
-          220 分钟
+          222 分钟
         
       </span>
     
@@ -352,7 +353,7 @@
 <ul>
 <li>类加载器子系统负责从文件系统或者网络中加载Class文件，class文件在文件开头有特定的文件标识。</li>
 <li><strong>ClassLoader只负责class文件的加载，至于它是否可以运行，则由Execution Engine决定。</strong></li>
-<li>加载的类信息存放于一块称为方法区的内存空间。除了类的信息外，方法区中还会存放运行时常量池信息，可能还包括字符串字面量和数字常量（这部分常量信息是Class文件中常量池部分的内存映射）</li>
+<li>加载的类信息存放于一块称为<strong>方法区</strong>的内存空间。除了类的信息外，方法区中还会存放运行时常量池信息，可能还包括字符串字面量和数字常量（这部分常量信息是Class文件中常量池部分的内存映射）</li>
 </ul>
 <h3 id="加载阶段"><a href="#加载阶段" class="headerlink" title="加载阶段"></a>加载阶段</h3><ol>
 <li>通过类的全限定名定义此类的二进制字节流</li>
@@ -645,7 +646,8 @@
 <li>在HotSpot中，Eden空间和另外两个survivor空间缺省所占的比例是8：1：1，可以使用<code>-XX:SurvivorRatio</code></li>
 <li>可以使用<code>-Xmn</code>设置新生代最大内存大小。</li>
 </ul>
-<h3 id="对象分配过程"><a href="#对象分配过程" class="headerlink" title="对象分配过程"></a>对象分配过程</h3><h4 id="小对象分配原则"><a href="#小对象分配原则" class="headerlink" title="小对象分配原则"></a>小对象分配原则</h4><ul>
+<h3 id="对象分配过程"><a href="#对象分配过程" class="headerlink" title="对象分配过程"></a>对象分配过程</h3><p><img src="/Pasted%20image%2020230917225656.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="小对象分配原则"><a href="#小对象分配原则" class="headerlink" title="小对象分配原则"></a>小对象分配原则</h4><ul>
 <li><code>Eden</code>出生，一次MinorGC后进入<code>Survivor</code></li>
 <li>15次（使用-XX:MaxTenuringThreshold&#x3D;N调整）Survivor移动后进入<code>Old</code>。</li>
 <li><code>Old</code>若被MajorGC可能会清理，若无法保存则报OOM。</li>
@@ -673,6 +675,8 @@
 <div class="note note-primary">
             <p>为什么需要空间担保：<br>minorGC时可能直接将大量Survivor区对象直接放入Old区，此时需要Old区保证能接受这些对象，若老年代剩余空间&gt;新生代所有对象大小，则肯定可以接受。若空间&lt;对象大小，则可以根据之前的回收情况预估实际进入老年代的对象大小，判断是否需要据此进行冒险的MinorGC，以避免盲目的FullGC。<br><strong>JDK7及以后已经弃用。此后，默认会进行冒险行为，否则FullGC。</strong></p>
           </div>
+
+
 
 <h4 id="TLAB"><a href="#TLAB" class="headerlink" title="TLAB"></a>TLAB</h4><p>Thread Local Allocation Buffer，堆是所有线程共享的，因此也是线程不安全的。TLAB表示JVM为每个线程提供一个私有缓存空间供其为对象分配内存，大小默认为1%的Eden区大小。<br>可以通过<code>-XX:UseTLAB</code>决定是否开启TLAB，通过<code>-XX:TLABWasteTargetPercent</code>决定TLAB占用Eden空间的大小。</p>
 <h3 id="Minor-GC，MajorGC、Full-GC"><a href="#Minor-GC，MajorGC、Full-GC" class="headerlink" title="Minor GC，MajorGC、Full GC"></a>Minor GC，MajorGC、Full GC</h3><p>GC按照回收区域又分为两大种类型：一种是部分收集（Partial GC），一种是整堆收集（FullGC）。</p>
@@ -799,7 +803,7 @@
 </tr>
 </tbody></table>
 <div class="note note-primary">
-            <ul><li>字符串常量池移动到了堆中，但运行时常量池依然在元空间。</li><li>元空间中可能持有字符串的引用。</li></ul>
+            <ul><li>方法区是一个逻辑概念，其定义了该区域应该存储的内容，而方法区的实现则由永久代&#x2F;元空间+部分堆空间实现。</li><li>字符串常量池移动到了堆中，但运行时常量池依然在元空间。</li><li>元空间中可能持有字符串的引用。</li></ul>
           </div>
 
 <h4 id="为什么要使用元空间"><a href="#为什么要使用元空间" class="headerlink" title="为什么要使用元空间"></a>为什么要使用元空间</h4><ul>
@@ -1127,7 +1131,12 @@
 </ul>
 <h4 id="对于垃圾回收"><a href="#对于垃圾回收" class="headerlink" title="对于垃圾回收"></a>对于垃圾回收</h4><p>并行（<em>Parallel</em>）：<strong>多条GC线程</strong>同时执行GC。<br>串行（<em>Serial</em>）：<strong>单GC线程</strong>执行GC。<br>并发（<em>Concurrent</em>）：<strong>用户线程与GC线程</strong>交替执行。</p>
 <p>一次GC可能同时具有并行、并发的特性。</p>
-<h3 id="安全点"><a href="#安全点" class="headerlink" title="安全点"></a>安全点</h3><p>只有在特定的位置才能STW，这些位置称为安全点。如果安全点过少，GC频率会很低。</p>
+<h3 id="安全点"><a href="#安全点" class="headerlink" title="安全点"></a>安全点</h3><p>只有在特定的位置才能STW，这些位置称为安全点。</p>
+<p>放置的安全点不能太多，当然也不能太少。放置安全点的位置一般是以“是否具有让程序长时间执行特征”为标准进行选定，当线程运行到安全点时，其状态是确定的。不同虚拟机对于自己safe point的实现不一定一样，对于HotSpot：</p>
+<ul>
+<li>解释器：每一段字节码的边界都可以作为一个safe point，因为对于解释器来说找到完整的执行状态实在是一件非常容易的事。</li>
+<li>JIT：对于来说则是以每个方法临返回前，以及所有的非 counted loop（可数循环） 循环回跳之前，放置一个safe point。并且在每个safepoint生成一些“调试符号信息”，方便VM找到需要的运行状态。</li>
+</ul>
 <p>中断方式：</p>
 <ul>
 <li>抢先式中断（已经不再使用），让所有线程在安全点中断。</li>

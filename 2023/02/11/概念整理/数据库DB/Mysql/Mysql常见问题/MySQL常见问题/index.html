@@ -1,0 +1,1294 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#727679">
+  <meta name="author" content="Jin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="临时表外部临时表通过CREATE TEMPORARY TABLE 创建的临时表，这种临时表称为外部临时表。这种临时表只对当前用户可见，当前会话结束的时候，该临时表会自动关闭。这种临时表的命名与非临时表可以同名（同名后非临时表将对当前会话不可见，直到临时表被删除）。 内部临时表union 执行流程union场景需要去重，会建立一个临时表存储前一个表的记录。如果是union all场景，就依次执行子查">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL常见问题">
+<meta property="og:url" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="Jin&#39;s Blog">
+<meta property="og:description" content="临时表外部临时表通过CREATE TEMPORARY TABLE 创建的临时表，这种临时表称为外部临时表。这种临时表只对当前用户可见，当前会话结束的时候，该临时表会自动关闭。这种临时表的命名与非临时表可以同名（同名后非临时表将对当前会话不可见，直到临时表被删除）。 内部临时表union 执行流程union场景需要去重，会建立一个临时表存储前一个表的记录。如果是union all场景，就依次执行子查">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230924164439.png">
+<meta property="og:image" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230924164530.png">
+<meta property="og:image" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230924164530.png">
+<meta property="og:image" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230918124620.png">
+<meta property="og:image" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230918120438.png">
+<meta property="og:image" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230918145402.png">
+<meta property="og:image" content="http://example.com/Pasted-image-20230928172633.png">
+<meta property="article:published_time" content="2023-02-11T12:43:46.000Z">
+<meta property="article:modified_time" content="2023-10-17T08:28:36.081Z">
+<meta property="article:author" content="Jin">
+<meta property="article:tag" content="概念整理">
+<meta property="article:tag" content="Mysql">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230924164439.png">
+  
+  
+  
+  <title>MySQL常见问题 - Jin&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/fluid-extention.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong style="color: #fff;">Jin&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                文章
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                归档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MySQL常见问题"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-11 20:43" pubdate>
+          2023年2月11日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          19k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          157 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">MySQL常见问题</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="临时表"><a href="#临时表" class="headerlink" title="临时表"></a>临时表</h1><h2 id="外部临时表"><a href="#外部临时表" class="headerlink" title="外部临时表"></a>外部临时表</h2><p>通过<code>CREATE TEMPORARY TABLE</code> 创建的临时表，这种临时表称为外部临时表。<strong>这种临时表只对当前用户可见，当前会话结束的时候，该临时表会自动关闭。这种临时表的命名与非临时表可以同名（同名后非临时表将对当前会话不可见，直到临时表被删除）</strong>。</p>
+<h2 id="内部临时表"><a href="#内部临时表" class="headerlink" title="内部临时表"></a>内部临时表</h2><h3 id="union-执行流程"><a href="#union-执行流程" class="headerlink" title="union 执行流程"></a>union 执行流程</h3><p>union场景需要去重，会建立一个临时表存储前一个表的记录。<br>如果是union all场景，就依次执行子查询，得到的结果直接作为结果集的一部分，发给客户端。因此也就不需要临时表了。</p>
+<h3 id="group-by-执行流程"><a href="#group-by-执行流程" class="headerlink" title="group by 执行流程"></a>group by 执行流程</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> id<span class="hljs-operator">%</span><span class="hljs-number">10</span> <span class="hljs-keyword">as</span> m, <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">as</span> c <span class="hljs-keyword">from</span> t1 <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> m;<br></code></pre></td></tr></table></figure>
+<ol>
+<li>创建内存临时表，表里有两个字段 m 和 c，主键是 m；</li>
+<li>扫描表 t1 的索引 a，依次取出叶子节点上的 id 值，计算 id%10 的结果，记为 x；</li>
+<li>如果临时表中没有主键为 x 的行，就插入一个记录 (x,1);如果表中有主键为 x 的行，就将 x 这一行的 c 值加 1；遍历完成后，再根据字段 m 做排序，得到结果集返回给客户端。</li>
+</ol>
+<p><img src="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230924164439.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230924164530.png" srcset="/img/loading.gif" lazyload></p>
+<div class="note note-primary">
+            <p>上图为所有使用临时内存表<strong>排序</strong>的过程，不仅仅指在group by中需要排序的场景。</p>
+          </div>
+
+<p><code>group by</code>默认会对分组字段排序如果你的需求并不需要对结果进行排序，那你可以在 SQL 语句末尾增加 order by null，也就是改成：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> id<span class="hljs-operator">%</span><span class="hljs-number">10</span> <span class="hljs-keyword">as</span> m, <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">as</span> c <span class="hljs-keyword">from</span> t1 <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> m <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> <span class="hljs-keyword">null</span>;<br></code></pre></td></tr></table></figure>
+<p>这样可以跳过最后的排序阶段。</p>
+<h4 id="group-by优化方法-索引"><a href="#group-by优化方法-索引" class="headerlink" title="group by优化方法-索引"></a>group by优化方法-索引</h4><p><em>问题分析</em><br>group by需要临时表的根本原因是扫描顺序和分组顺序是无序的，因此需要将所谓分组维护到临时表中。</p>
+<p><em>解决</em><br>在 MySQL 5.7 版本支持了 generated column 机制，用来实现列数据的关联更新。你可以用下面的方法创建一个列 z，然后在 z 列上创建一个索引，这样在以z为分组条件时即可以顺序扫描，<strong>不再需要临时表</strong>。</p>
+<h4 id="group-by-优化方法-直接排序"><a href="#group-by-优化方法-直接排序" class="headerlink" title="group by 优化方法-直接排序"></a>group by 优化方法-直接排序</h4><p><em>问题分析</em><br>对于不适合加索引且数据量大的场景，先使用内存临时表，后发现超过限制而使用磁盘临时表是比较没必要的环节。</p>
+<p><em>解决</em><br>在 group by 语句中加入 <code>SQL_BIG_RESULT</code> 这个提示（hint），就可以告诉优化器：这个语句涉及的数据量很大，请直接用磁盘临时表。相比使用索引，直接排序中通过数组保存所有的group by值，最后再排序。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>group by<ul>
+<li>当group by 索引的时候，当数据量较小的时候不会使用临时表，当数据量（我测试的数据量在30万左右）大的时候会使用临时表</li>
+<li>当group by不是索引的时候会使用临时表</li>
+<li>order by子句和group by子句不同， 例如：order by price group by name；</li>
+<li>ORDER BY中使用了DISTINCT关键字 ORDERY BY DISTINCT（price）</li>
+</ul>
+</li>
+<li>使用 union 或 union distinct 关键字的 SQL 语句。</li>
+<li>派生表（派生表是在外部查询的FROM子句中定义的，explain 输出结果的 select_type 列的值为 <code>DERIVED</code>）</li>
+<li>子查询半连接物化（把子查询结果存到临时表，然后和主查询进行 join 连接）。</li>
+<li>子查询物化（除半连接物化之外的场景，如<code>不相关子查询</code>，<code>半连接重复值消除</code>等）。</li>
+<li>insert … select 语句的源表和目标表是同一个表，例如：insert into t_recbuf(i1, str1) select i1, str1 from t_recbuf）。</li>
+</ul>
+<h2 id="内存临时表与磁盘临时表"><a href="#内存临时表与磁盘临时表" class="headerlink" title="内存临时表与磁盘临时表"></a>内存临时表与磁盘临时表</h2><p><em>使用磁盘临时表的场景</em></p>
+<ul>
+<li>内存临时表的大小限制，参数 <code>tmp_table_size</code> 就是控制这个内存大小的，默认是 16M。当内存临时表空间不足时，Mysql就会把内存临时表转成磁盘临时表，磁盘临时表默认使用的引擎是 InnoDB（也可以选择MyISAM）。</li>
+<li>表包含TEXT或者BLOB列；</li>
+<li>GROUP BY 或者 DISTINCT 子句中包含长度大于512字节的列</li>
+<li>使用UNION或者UNION ALL时，SELECT子句中包含大于512字节的列；</li>
+</ul>
+<h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2><p><em>使用内部临时表的场景</em></p>
+<ul>
+<li>union去重</li>
+<li>group by标记<ul>
+<li>优化1：为group by的条件建立索引，实现顺序分组</li>
+<li>优化2：使用sort buffer 或 磁盘缓存所有结果，然后排序，实现顺序分组</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://time.geekbang.org/column/article/80477">什么时候会使用内部临时表？</a></p>
+</blockquote>
+<h1 id="连接问题"><a href="#连接问题" class="headerlink" title="连接问题"></a>连接问题</h1><h2 id="连接算法"><a href="#连接算法" class="headerlink" title="连接算法"></a>连接算法</h2><h3 id="Index-Nested-Loop-Join"><a href="#Index-Nested-Loop-Join" class="headerlink" title="Index Nested-Loop Join"></a>Index Nested-Loop Join</h3><p><em>执行方式</em><br>连接条件为被驱动表的索引时，执行方式为：</p>
+<ol>
+<li>查找驱动表记录N</li>
+<li>对每个被驱动表记录，通过索引找被驱动表索引</li>
+<li>对每个被驱动表索引进行回表</li>
+</ol>
+<p><em>成本</em><br>扫描成本为<code>N + 2Nlog2(M)</code>，即驱动表行数 + 驱动表行数 × （被驱动表索引树查找复杂度 + 被驱动表回表）。<br>显然，N 对扫描行数的影响更大，因此应该让小表来做驱动表。</p>
+<p><em>驱动表选择</em><br>在可以使用被驱动表索引时，使用小表做驱动表</p>
+<h3 id="Block-Nested-Loop-Join"><a href="#Block-Nested-Loop-Join" class="headerlink" title="Block Nested-Loop Join"></a>Block Nested-Loop Join</h3><p><em>执行方式</em><br>连接条件不为被驱动表的索引时，如果再按照<code> Index Nested-Loop Join</code>中的方式执行，会导致N × M的极高复杂度，此时执行方式为：</p>
+<ol>
+<li>把驱动表的数据读入线程内存 <code>join_buffer</code> 中，由于我们这个语句中写的是 select ，因此是把整个驱动表放入了内存；</li>
+<li>扫描被驱动表，把被驱动表中的每一行取出来，跟 <code>join_buffer</code> 中的数据做对比，满足 join 条件的，作为结果集的一部分返回。</li>
+</ol>
+<p><em>成本</em><br>扫描成本为<code>N+M</code>，即分别对驱动表和被驱动表进行了全表扫描。实际上时间复杂度与不使用 <code>join_buffer</code>是相同的，但Block Nested-Loop Join是内存操作，速度上会快很多，性能也更好。</p>
+<p><em>join buffer大小</em><br>如果放不下驱动表的所有数据的话，就会分段放，即每次选出一组驱动表记录写入<code>join_buffer</code>，对被驱动表进行扫描，然后清空<code>join_buffer</code>，再选出一组驱动表记录进行相同的操作。<br>这个流程体现出了这个算法名字中“Block”的由来，表示“分块去 join”。</p>
+<p><em>驱动表选择</em><br>驱动表越大，分块越多，因此使用小表做驱动表。如果连接查询还是很慢，可以把<code>join_buffer_size</code>改大一些，减少分块次数。</p>
+<h2 id="连接结论"><a href="#连接结论" class="headerlink" title="连接结论"></a>连接结论</h2><p><em>可以使用join语句吗？</em></p>
+<ol>
+<li>如果可以使用 Index Nested-Loop Join 算法，也就是说可以用上被驱动表上的索引；</li>
+<li>如果使用 Block Nested-Loop Join 算法，扫描行数就会过多。尤其是在大表上的 join 操作，这样可能要扫描被驱动表很多次，会占用大量的系统资源。所以这种 join 尽量不要用。</li>
+</ol>
+<p>因此，判断要不要使用 join 语句时，就是看 explain 结果里面，Extra 字段里面有没有出现“Block Nested Loop”字样。</p>
+<p><em>如果要使用 join，应该选择大表做驱动表还是选择小表做驱动表？</em><br>小表，这里的小表指的是两表指的是各表按where条件过滤后较小的表。</p>
+<h2 id="连接优化"><a href="#连接优化" class="headerlink" title="连接优化"></a>连接优化</h2><h3 id="NLJ优化"><a href="#NLJ优化" class="headerlink" title="NLJ优化"></a>NLJ优化</h3><h4 id="Multi-Range-Read-优化"><a href="#Multi-Range-Read-优化" class="headerlink" title="Multi-Range Read 优化"></a>Multi-Range Read 优化</h4><p><em>回表操作是如何进行的？</em><br>回表：InnoDB 在普通索引 a 上查到主键 id 的值后，再根据一个个主键 id 的值到主键索引上去查整行数据的过程。而主键索引是一棵 B+ 树，在这棵树上，每次只能根据一个主键 id 查到一行数据。因此，<strong>回表肯定是一行行搜索主键索引的</strong>。<br>但是，如果对主键进行随机回表，就会出现随机IO，性能较差，因此若能够按照主键顺序进行回表，对磁盘的读比较接近顺序读，能够提升读性能。</p>
+<p><em>MRR 优化思路</em></p>
+<ol>
+<li>根据索引 a，定位到满足条件的记录，将 id 值放入 <code>read_rnd_buffer</code> 中；</li>
+<li>将 <code>read_rnd_buffer</code> 中的 id 进行递增排序；</li>
+<li>排序后的 id 数组，依次到主键 id 索引中查记录，并作为结果返回。</li>
+</ol>
+<p><em>MRR 参数</em><br><code>read_rnd_buffer</code> 的大小是由 <code>read_rnd_buffer_size</code> 参数控制的。如果步骤 1 中，<code>read_rnd_buffer</code> 放满了，就会先执行完步骤 2 和 3，然后清空 <code>read_rnd_buffer</code>。之后继续找索引 a 的下个记录，并继续循环。</p>
+<p><em>开启方式</em><br>如果你想要稳定地使用 <code>MRR</code> 优化的话，需要设置<code>set optimizer_switch=&quot;mrr_cost_based=off&quot;</code>。（官方文档的说法，是现在的优化器策略，判断消耗的时候，会更倾向于不使用 <code>MRR</code>，把 <code>mrr_cost_based</code> 设置为 <code>off</code>，就是固定使用 <code>MRR</code> 了。）</p>
+<p><em>总结</em><br>MRR 能够提升性能的核心在于，这条查询语句在索引 a 上做的是一个范围查询（也就是说，这是一个多值查询），可以得到足够多的主键 id。这样通过排序以后，再去主键索引查数据，才能体现出“顺序性”的优势。</p>
+<h4 id="Batched-Key-Access-优化"><a href="#Batched-Key-Access-优化" class="headerlink" title="Batched Key Access 优化"></a>Batched Key Access 优化</h4><p><em>BKA 优化思路</em><br>MySQL 在 5.6 版本后开始引入的 <code>Batched Key Access(BKA)</code> 算法，该算法是对<code>NLJ(Index Nested-Loop Join)</code>算法的优化。<br><code>NLJ</code> 算法中，对于被驱动表来说，每次都是匹配一个值。这时，<code>MRR</code> 的优势就用不上了。BKA算法利用<code>join-buffer</code>空间，将驱动表记录放在<code>join-buffer</code>中，排序后再查找被驱动表，若<code>join-buffer</code>空间不足则分多次执行。</p>
+<p><em>开启方式</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">set</span> optimizer_switch<span class="hljs-operator">=</span><span class="hljs-string">&#x27;mrr=on,mrr_cost_based=off,batched_key_access=on&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="BNL优化"><a href="#BNL优化" class="headerlink" title="BNL优化"></a>BNL优化</h3><p><em>BNL存在的问题</em><br>由于<code>join buffer</code>大小限制，可能需要对被驱动表进行多次扫描：</p>
+<ol>
+<li>冷表数据量小于整个BUFFER POLL的3&#x2F;8时：冷表数据进入LRU的old区后被多次访问，冷数据大量进入yound区。</li>
+<li>冷表数据量大于整个BUFFER POLL的3&#x2F;8时：由于我们的 join 语句在循环读磁盘和淘汰内存页，进入 old 区域的数据页，很可能在 1 秒之内就被淘汰了。那么正常业务中本该进入yound区的数据也可能被淘汰，影响young区数据的正常刷新。</li>
+</ol>
+<p>为了减少这种影响，你可以考虑增大 join_buffer_size 的值，减少对被驱动表的扫描次数。</p>
+<p><em>BNL问题总结</em></p>
+<ul>
+<li>可能会多次扫描被驱动表，占用磁盘 IO 资源；</li>
+<li>判断 join 条件需要执行 M* N 次对比（M、N 分别是两张表的行数），如果是大表就会占用非常多的 CPU 资源；</li>
+<li>可能会导致 Buffer Pool 的热数据被淘汰，影响内存命中率。</li>
+</ul>
+<p><em>BNL优化</em><br>优化的常见做法是，给被驱动表的 join 字段加上索引，把 BNL 算法转成 BKA 算法：</p>
+<ul>
+<li>适合在被驱动表上建索引的情况：直接在被驱动表上建索引</li>
+<li>不适合在被驱动表上建索引的情况：如被驱动表很大，但满足where筛选条件的行较少，而连接查询对于被驱动表的策略是先连接，再筛选，因此会造成大量的浪费。所以可以考虑使用<strong>临时表</strong>：<ol>
+<li>把表 t2 中满足条件的数据放在临时表 tmp_t 中；</li>
+<li>为了让 join 使用 BKA 算法，给临时表 tmp_t 的字段 b 加上索引；</li>
+<li>让表 t1 和 tmp_t 做 join 操作。</li>
+</ol>
+</li>
+</ul>
+<p><em>sql例子</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">create</span> temporary <span class="hljs-keyword">table</span> temp_t(id <span class="hljs-type">int</span> <span class="hljs-keyword">primary</span> key, a <span class="hljs-type">int</span>, b <span class="hljs-type">int</span>, index(b))engine<span class="hljs-operator">=</span>innodb;<br><span class="hljs-keyword">insert</span> <span class="hljs-keyword">into</span> temp_t <span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> t2 <span class="hljs-keyword">where</span> b<span class="hljs-operator">&gt;=</span><span class="hljs-number">1</span> <span class="hljs-keyword">and</span> b<span class="hljs-operator">&lt;=</span><span class="hljs-number">2000</span>;<br><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> t1 <span class="hljs-keyword">join</span> temp_t <span class="hljs-keyword">on</span> (t1.b<span class="hljs-operator">=</span>temp_t.b);<br></code></pre></td></tr></table></figure>
+
+<p><em>BNL优化总结</em><br>不论是在原表上加索引，还是用有索引的临时表，我们的思路都是让 join 语句能够用上被驱动表上的索引，来触发 BKA 算法，提升查询性能。</p>
+<h3 id="Hash-Join优化"><a href="#Hash-Join优化" class="headerlink" title="Hash Join优化"></a>Hash Join优化</h3><p>如果 join_buffer 里面维护的不是一个无序数组，而是一个哈希表的话，那么就不是 大量判断，而是 若干次 hash 查找。</p>
+<blockquote>
+<p>这正是MySQL的优化器和执行器一直被诟病的一个原因：不支持哈希 join。并且，MySQL 官方的 roadmap，也是迟迟没有把这个优化排上议程。</p>
+</blockquote>
+<p>因此，这个优化思路，我们可以自己实现在业务端。理论上，这个过程会比临时表方案的执行速度还要快一些。</p>
+<h3 id="连接优化总结"><a href="#连接优化总结" class="headerlink" title="连接优化总结"></a>连接优化总结</h3><ul>
+<li>NLJ优化（主要解决顺序问题）：<ul>
+<li>MRR优化（回表上的优化）：将被驱动表搜索结果<strong>排序后</strong>批量回表</li>
+<li>BKA优化（连接上的优化）：将驱动表记录<strong>排序后</strong>批量查被驱动表</li>
+</ul>
+</li>
+<li>BNL优化（主要解决批量扫问题）：<ul>
+<li>在被驱动表上加索引：类似BKA优化</li>
+<li>使用索引临时表先处理被驱动表的筛选条件：避免被驱动表全表参与连接判断</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://time.geekbang.org/column/article/79700">到底可不可以使用join？</a><br><a target="_blank" rel="noopener" href="https://time.geekbang.org/column/article/80147">join语句怎么优化？</a></p>
+</blockquote>
+<h2 id="on与where的区别？"><a href="#on与where的区别？" class="headerlink" title="on与where的区别？"></a>on与where的区别？</h2><p><em>执行顺序</em><br>在多表查询时，on和where都表示筛选条件，on先执行，where后执行<br><em>筛选结果</em></p>
+<ul>
+<li>内连接时，两者效果相同</li>
+<li>外连接时，<ul>
+<li>on条件是在生成临时表时使用的条件，它不管on中的条件是否为真，都会返回驱动表中的记录。</li>
+<li>where条件是在临时表生成好后，再对临时表进行过滤的条件。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-operator">-</span> 该语句使用 <span class="hljs-keyword">on</span> 筛选B.id <span class="hljs-operator">!=</span> <span class="hljs-number">1</span>，最后得到的结果集中会出现A.id <span class="hljs-operator">=</span> <span class="hljs-number">1</span>的记录<br><span class="hljs-keyword">select</span> A.id,B.name <span class="hljs-keyword">from</span> A <span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> B <span class="hljs-keyword">on</span> A.id <span class="hljs-operator">=</span> B.id <span class="hljs-keyword">and</span> B.id <span class="hljs-operator">!=</span> <span class="hljs-number">1</span><br><span class="hljs-operator">-</span> 该语句使用 <span class="hljs-keyword">where</span> 筛选B.id <span class="hljs-operator">!=</span> <span class="hljs-number">1</span>，最后得到的结果集中不会出现A.id <span class="hljs-operator">=</span> <span class="hljs-number">1</span>的记录<br><span class="hljs-keyword">select</span> A.id,B.name <span class="hljs-keyword">from</span> A <span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> B <span class="hljs-keyword">on</span> A.id <span class="hljs-operator">=</span> B.id <span class="hljs-keyword">where</span> B.id <span class="hljs-operator">!=</span> <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+
+<h1 id="排序问题"><a href="#排序问题" class="headerlink" title="排序问题"></a>排序问题</h1><h2 id="sort-buffer"><a href="#sort-buffer" class="headerlink" title="sort buffer"></a>sort buffer</h2><p><em>定义</em><br>MySQL 会为<strong>每个线程</strong>分配固定大小的 sort buffer 用作排序。sort buffer 是具有逻辑概念的内存区域，大小由 <code>sort_buffer_size</code> 参数控制，默认为 <strong>256 kb</strong>。</p>
+<p><em>排序算法</em><br>根据 sort buffer 与 data（待排序数据量）的大小差值，可分为内部排序和外部排序：</p>
+<ul>
+<li><code>data &lt;= sort buffer</code>：sort buffer够用，只需要在内存中进行排序即可，内部排序使用的是<strong>快速排序</strong></li>
+<li><code>data &gt; sort buffer</code>：sort buffer不够用，MySQL 需要借助外部“容器”（通常是文件）进行排序。通常会将待排序数据分成多个“小文件”，对各个“小文件”进行<strong>快速排序</strong>，再汇总成一个有序的“大文件”。外部排序使用的是<strong>归并排序</strong>。</li>
+</ul>
+<p><em>验证排序算法？</em><br>可以通过 <code>EXPLAIN</code> 命令来查看，如果在分析结果中的 <code>Extra</code> 字段里包含 <code>Using filesort</code> 字眼，说明执行了外部排序操作。</p>
+<h3 id="排序策略"><a href="#排序策略" class="headerlink" title="排序策略"></a>排序策略</h3><p>基于sort buffer大小的考虑，Mysql有两种排序策略。</p>
+<h4 id="单路排序（全字段排序）"><a href="#单路排序（全字段排序）" class="headerlink" title="单路排序（全字段排序）"></a>单路排序（全字段排序）</h4><p>「全字段排序是指，只要<strong>与最终结果集有关的字段</strong>都会被放进 sort buffer，而不管该字段本身是否参与排序。」</p>
+<h4 id="双路排序（rowId-排序）"><a href="#双路排序（rowId-排序）" class="headerlink" title="双路排序（rowId 排序）"></a>双路排序（rowId 排序）</h4><p>「rowId 排序是指只将<strong>与排序相关的字段和 rowId</strong> 放入 sort buffer，其余结果集需要用到的数据在排序完成后，通过 rowId 回表取得。」</p>
+<div class="note note-primary">
+            <p>双路排序不会等所有排序好的 id 回表完再返回，而是每个 id 回表一次，回表之后立即返回。</p>
+          </div>
+
+<h3 id="排序策略选择"><a href="#排序策略选择" class="headerlink" title="排序策略选择"></a>排序策略选择</h3><p>由于 rowId 排序相对于全字段排序，不可避免的多了一次回表操作，回表操作意味着随机读，而随机 IO 是数据库中最昂贵的操作。<br>MySQL 会在尽可能的情况下选择全字段排序。通过参数 <code>max_length_for_sort_data</code> 可以控制用于排序的行数据最大长度，默认值为 1024 字节。当单行数据长度超过该值，MySQL 就会觉得如果还用全字段排序，会导致 sort buffer 容纳下的行数太少，从而转为使用 rowId 排序。</p>
+<div class="note note-success">
+            <p>因此，在深翻页排序时最好利用子查询强制走<strong>双路索引</strong>进行排序，然后回表。</p>
+          </div>
+
+<h2 id="临时表排序"><a href="#临时表排序" class="headerlink" title="临时表排序"></a>临时表排序</h2><p>在使用 <code>EXPLAIN</code> 进行执行过程分析的时候除了能看到 <code>Using filesort</code> 以外，还能看到 <code>Using temporary</code>，代表在排序过程中使用到了临时表。<br><strong>临时表触发条件</strong>：<code>order by rand()</code>，由于每个记录的order都是实时生成的，因此需要先创建临时表再进行排序。</p>
+<h3 id="内存临时表排序"><a href="#内存临时表排序" class="headerlink" title="内存临时表排序"></a>内存临时表排序</h3><p><em>存储引擎</em><br>MySQL 优先使用内存临时表。当 MySQL 使用内存临时表时，<strong>临时表存储引擎为 memory</strong> 。<br><em>排序方式</em><br>如果当前 MySQL 使用的是<strong>内存临时表</strong>的话，将会<strong>直接使用 rowId 排序</strong>，因为这时候所谓的“回表”只是在内存表中读数据，操作不涉及硬盘的随机 IO 读。使用 rowId 可以在 sort buffer 容纳给多的行，避免或减少外部排序文件的使用。<br><img src="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230924164530.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="磁盘临时表排序"><a href="#磁盘临时表排序" class="headerlink" title="磁盘临时表排序"></a>磁盘临时表排序</h3><p>通常对于一个<strong>执行较慢</strong>的排序语句，如果系统中很多需要使用临时表的排序语句执行，而又不加以限制，全都使用临时表的话，内存很快就会被打满。所以 MySQL 提供了 <code>tmp_table_size</code> 参数限制了内存临时表的大小，默认值是 16M。如果临时表大小超过了<code>tmp_table_size</code>，那么内存临时表就会转成磁盘临时表。<br><em>存储引擎</em><br>当使用磁盘临时表的时候，表储存引擎将不再是 memory，而是由 <code>internal_tmp_disk_storage_engine</code> 参数控制，默认为 <code>InnoDB</code> 。<br><em>排序方式</em><br>这时候 MySQL 会<strong>根据单行大小是否超过 <code>max_length_for_sort_data</code> 决定采用全字段排序还是 rowId 排序</strong>。</p>
+<h2 id="优化排序"><a href="#优化排序" class="headerlink" title="优化排序"></a>优化排序</h2><p><em>排序算法</em><br><strong>优先队列算法</strong>：如果要取的有序元素个数比较少，MySQL会采取一种优先队列的算法来排序。</p>
+<p><em>触发条件</em><br><code>有序行数 × 每一行的大小 &lt; sort_buffer_size 的大小</code><br>执行计划的OPTIMIZER_TRACE结果中，<code>filesort_priority_queue_optimization</code>这个部分的<code>chosen=true</code>，就表示使用了优先队列排序算法，这个过程不需要临时文件，因此对应的<code>number_of_tmp_files</code>是0。</p>
+<h2 id="排序总结"><a href="#排序总结" class="headerlink" title="排序总结"></a>排序总结</h2><p>总结一下，MySQL 总是使用 <strong>「“最快”」</strong> 的排序方案：</p>
+<ol>
+<li>当排序数据量不超过 sort buffer 容量时，MySQL 将会在内存使用快速排序算法进行排序（内部排序）；当排序数据量超过 sort buffer 容量时，MySQL 将会借助临时磁盘文件使用归并排序算法进行排序（外部排序）</li>
+<li>在进行真正排序时，MySQL 又会根据数据单行长度是否超过 <code>max_length_for_sort_data</code>而决定使用 <strong>rowId 排序还是全字段排序</strong>，优先选择全字段排序，以减少回表次数。</li>
+<li>当需要借助临时表的时候，MySQL 会优先使用内存临时表（此时表引擎为 memory 引擎），回内存临时表取数据并不涉及随机读，也不涉及扫描行，效率较高。所以在配合内存临时表的时候，会使用 rowId 排序方式；当内存临时表大小超过 <code>tmp_table_size</code> 限制时，则需要将内存临时表转换为磁盘临时表，这时候由于回表意味着随机读，所以会搭配全字段排序方式。</li>
+</ol>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://time.geekbang.org/column/article/73479">“order by”是怎么工作的？</a><br><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1788764">MySQL 排序的艺术：你真的懂 Order By 吗？</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42230770/article/details/111311181">MySQL深度解析—临时表排序规则</a></p>
+</blockquote>
+<h1 id="索引问题"><a href="#索引问题" class="headerlink" title="索引问题"></a>索引问题</h1><h2 id="索引失效"><a href="#索引失效" class="headerlink" title="索引失效"></a>索引失效</h2><p><em>常见索引失效情形</em></p>
+<ol>
+<li>类型隐式转化（MySQL 在遇到字符串和数字比较的时候，会自动把字符串转为数字，然后再进行比较）导致的索引失效：<ol start="2">
+<li>筛选条件类型与索引类型不一致导致的索引失效</li>
+<li>关联表的两个字段类型不一致也会导致索引失效（解决：可以使用CAST、CONVERT等函数进行类型转化使类型一致）</li>
+</ol>
+</li>
+<li>函数导致的索引失效：索引字段使用函数时索引失效（这里指的是对索引执行函数，如截取等）</li>
+<li>运算符导致的索引失效：索引字段上使用了运算符时索引失效</li>
+<li>OR引起的索引失效：如果OR连接的是同一个字段，那么索引不会失效，反之索引失效</li>
+<li>模糊搜索导致的索引失效：搜索条件类似<code>&quot;%q&quot;</code>时索引失效。但是如果数据库表中的字段只有主键+二级索引，也可能不会走全表扫描（type&#x3D;all），而是走全扫描二级索引树(type&#x3D;index)，因为二级索引中没有额外的版本等主键索引中的信息，读取成本更低。</li>
+<li>使用!&#x3D; 或者 &lt;&gt; 导致索引失效：但对于可使用覆盖索引的情形索引生效</li>
+<li>NOT IN和NOT EXIST导致索引失效：但对于可使用覆盖索引的情形索引生效</li>
+<li>IS NOT NULL导致所有失效：一般IS NULL会走索引，因为NULL被视为最小的索引。<strong>但是IS NOT NULL也是可能会走索引的</strong>，本质上在二级索引上先过滤掉所有的NULL值即可，但实际上很少这样执行。</li>
+<li>组合索引<strong>不符合最左前缀原则</strong>导致索引失效：最左边的字段要出现在查询条件中。</li>
+<li>两个索引列做比较导致的索引失效：在查询条件中对两索引列数据进行了对比操作，则会导致索引失效。</li>
+<li>ORDER BY索引导致的索引失效：当查询条件涉及到order by、limit等条件时，是否走索引情况比较复杂，而且与Mysql版本有关，通常普通索引，如果未使用limit，则不会走索引。order by多个索引字段时，可能不会走索引。其他情况，建议在使用时进行expain验证。</li>
+<li>范围查询导致的索引失效：当查询条件为大于等于、in等范围查询时，根据查询结果占全表数据比例的不同，优化器有可能会放弃索引，进行全表扫描。</li>
+<li>成本原因导致的索引失效：Mysql优化器的其他优化策略，比如优化器认为在某些情况下，全表扫描比走索引快，则它就会放弃索引。</li>
+</ol>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1992920">15个必知的Mysql索引失效场景，别再踩坑了</a></p>
+</blockquote>
+<h2 id="索引使用"><a href="#索引使用" class="headerlink" title="索引使用"></a>索引使用</h2><p><em>索引的建立需要考虑哪些因素？</em></p>
+<ol>
+<li>查询频率：如果有些列会经常被用在查询条件中，那么这些列就应该被创建索引以提高查询效率。</li>
+<li>数据唯一性：如果某个列的值都是唯一的，那么这个列就非常适合作为索引列，因为可以利用索引的唯一性来加速查询。</li>
+<li>数据分布度：如果某个列的值分布很均匀，那么这个列就非常适合作为索引列，因为可以利用索引的分布度来加速查询。</li>
+<li>数据量大小：如果表的数据量很大，那么索引设计就需要更加小心谨慎，因为索引的过多或者过少都会对查询效率产生负面影响。</li>
+<li>索引类型：MySQL支持多种索引类型，包括B-Tree索引、哈希索引、全文索引等，不同类型的索引适用于不同的查询场景，需要根据具体情况进行选择。</li>
+<li>数据库性能：索引虽然可以提高查询效率，但同时也会影响插入、更新、删除等操作的性能，需要综合考虑数据库的整体性能来进行索引设计。</li>
+</ol>
+<p><em>SQL索引使用注意点？</em></p>
+<ul>
+<li>事前：合理建立索引，适当建立覆盖索引，定期更新统计信息帮助优化器更准确的判断成本</li>
+<li>事中：谨慎导致索引失效的场景，优化查询结构</li>
+<li>事后：对数据表进行分区表优化</li>
+</ul>
+<p><em>最左匹配原则详细解释？</em><br>即从最左边开始匹配的原则，mysql会一直向右匹配直到遇到范围查询(&gt;、&lt;、between、like)就停止匹配，索引可以任意顺序，mysql的查询优化器会帮你优化成索引可以识别的形式，其针对的是<strong>联合索引</strong>。</p>
+<h2 id="深度翻页问题"><a href="#深度翻页问题" class="headerlink" title="深度翻页问题"></a>深度翻页问题</h2><h3 id="常见翻页查询"><a href="#常见翻页查询" class="headerlink" title="常见翻页查询"></a>常见翻页查询</h3><p><em>无排序条件&#x2F;非索引排序</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> id,m_id, name, identity_no, address, create_time, modify_time <span class="hljs-keyword">from</span> t1 limit <span class="hljs-number">1000000</span>, <span class="hljs-number">20</span>;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>扫描方式：全表扫描</li>
+<li>效率：最低</li>
+</ul>
+<blockquote>
+<p><strong>如果不带排序条件，MySQL默认是什么排序？</strong><br>通常认为是主键，但通过查资料发现并不一定，这里有个物理顺序和逻辑顺序的区别，如：删除原有数据后再插入复用旧id的数据，可能会由于存放在不同页上造成物理顺序与逻辑顺序不一致，此时可以通过优化表改善：optimize table table_name。</p>
+</blockquote>
+<p><em>主键索引排序</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> id,m_id, name, identity_no, address, create_time, modify_time <span class="hljs-keyword">from</span> t1 <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> id limit <span class="hljs-number">1000000</span>, <span class="hljs-number">20</span>;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>扫描方式：主键扫描，扫描了offset+limit行</li>
+<li>效率：比不使用索引高。</li>
+</ul>
+<div class="note note-primary">
+            <p>即使业务上看起来没有任何条件也不需要排序，加上<code>order by 主键</code>也会让语句执行更快，因此这种场景应该总是加上排序功能。</p>
+          </div>
+
+<p><em>二级索引排序</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> id,m_id, name, identity_no, address, create_time, modify_time <span class="hljs-keyword">from</span> t1 <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> create_time <span class="hljs-keyword">desc</span> limit <span class="hljs-number">10000</span>, <span class="hljs-number">20</span>;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>扫描方式：二级索引扫描，扫描了offset+limit行（如果不是覆盖索引，还需要回表）</li>
+<li>效率：比使用主键索引效率低（回表消耗）</li>
+</ul>
+<div class="note note-primary">
+            <p>给常用的字段加索引，包括排序字段。</p>
+          </div>
+
+<p><em>二级索引深翻页</em><br>虽然命中了二级索引，但分页更深：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> id,m_id, name, identity_no, address, create_time, modify_time <span class="hljs-keyword">from</span> t2 <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> create_time <span class="hljs-keyword">desc</span> limit <span class="hljs-number">1000000</span>, <span class="hljs-number">20</span>;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>扫描方式：可能全表扫描（因为mysql发现该查询行数超过一定比例）就会转为全表扫描</li>
+<li>效率：最低</li>
+</ul>
+<p><em>强制二级索引深翻页</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> id,m_id, name, identity_no, address, create_time, modify_time <span class="hljs-keyword">from</span> t2 force index(idx_create_time) <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> create_time <span class="hljs-keyword">desc</span> limit <span class="hljs-number">1000000</span>, <span class="hljs-number">20</span>;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>扫描方式：二级索引扫描，扫描了offset+limit行（如果不是覆盖索引，还需要回表）</li>
+<li>效率：扫描大量索引，且需要回表，效率不一定比全表扫描高</li>
+</ul>
+<h3 id="深翻页为什么慢？"><a href="#深翻页为什么慢？" class="headerlink" title="深翻页为什么慢？"></a>深翻页为什么慢？</h3><p><em>针对深翻页问题，需要考虑的因素有哪些？</em></p>
+<ol>
+<li>是否加了order by：业务不需要order by时最好也加上<code>order by 主键</code></li>
+<li>是否命中索引：没有命中索引需要全表扫描</li>
+<li>是否为主键索引：非主键索引需要进行大量的回表</li>
+</ol>
+<p><em>深翻页问题的痛点？</em><br>出于业务需求，使用二级索引排序，但limit语句会先扫描offset+n行并回表，然后再丢弃掉前offset行，返回后n行数据。扫描更多的行数，也意味着<strong>回表</strong>更多的次数。</p>
+<h3 id="如何解决深翻页？"><a href="#如何解决深翻页？" class="headerlink" title="如何解决深翻页？"></a>如何解决深翻页？</h3><h4 id="规范化语句"><a href="#规范化语句" class="headerlink" title="规范化语句"></a>规范化语句</h4><ol>
+<li>无排序业务要求时：加主键排序，避免全表扫描</li>
+<li>有排序业务要求时：强制走二级索引，避免基于成本的全表扫描</li>
+</ol>
+<h4 id="避免大量回表"><a href="#避免大量回表" class="headerlink" title="避免大量回表"></a>避免大量回表</h4><p><em>构建覆盖索引</em><br>构建覆盖索引，避免回表操作。</p>
+<p><em>未知目标记录的索引或索引边界时</em><br>先以不回表&#x2F;少回表的方式确定目标范围记录的索引或索引边界</p>
+<ul>
+<li>边界子查询：将搜索条件转移到主键索引树<ul>
+<li>使用<strong>子查询</strong>确定offset所在索引（该操作只<code>select 主键索引</code>，需要扫描offset + 1行）</li>
+<li>以该索引为搜索条件搜索limit条记录。</li>
+</ul>
+</li>
+<li>连表子查询：INNER JOIN：延迟关联<ul>
+<li>类似于子查询，临时表检索目标记录的id（该操作只<code>select 主键索引</code>，需要扫描offset + limit行，不进行回表），然后将原表与连接表连接即可。</li>
+</ul>
+</li>
+</ul>
+<p><em>已知目标记录的索引或索引边界时</em><br>存在局限性：相比未知目标记录索引的情况，无法处理跳页，多排序字段等场景，常用于滑动加载下一页、只有上下页按钮的场景。</p>
+<ul>
+<li>标签记录法（相当于已知子查询结果）：应用上记录上一次翻页记录的id，下次直接使用该id做搜索条件</li>
+<li>between..and…（相当于已知临时表结果）：业务上清楚该limit查询对应id范围，也可以直接使用id搜索</li>
+</ul>
+<div class="note note-primary">
+            <p><em>为什么使用子查询&#x2F;连表查询可以提高效率？</em><br>Mysql有两种排序策略：</p><ol><li>单路排序<ol><li>根据条件将所有查询字段数据取出到sort buffer缓冲区。</li><li>缓冲区满了根据排序字段执行一次排序（快排）把然后把排序后的数据写到临时文件。</li><li>将所有数据取出排序后，对所有临时文件按顺序做合并（归并排序）再写回到文件，直到最后所有文件合并完成。</li><li>从临时文件中读取满足分页条件所需数据返回，如果首次归并就可以取到分页数据则直接返回（浅分页）。</li></ol></li><li>双路排序<ol><li>根据查询条件将row_id和排序字段取出放到sort buffer （区别1）。</li><li>缓冲区满了根据排序字段执行一次排序（快排）把然后把排序后的数据写到临时文件。</li><li>将所有数据取出排序后，对所有临时文件按顺序做合并（归并排序）再写回到文件，直到最后所有文件合并完成。</li><li>从临时文件中读取满足分页条件的row_id，再通过row_id读取对应行数据返回（区别2）。</li></ol></li></ol><p>MySQL在4.1之前都是双路排序，之后优化改为满足条件默认单路排序，条件为：查询字段数据大小小于max_length_for_sort_data值，但改到最小值测试也没有看到变化。</p>
+          </div>
+
+<h4 id="其他优化方式"><a href="#其他优化方式" class="headerlink" title="其他优化方式"></a>其他优化方式</h4><p><em>倒排表优化法</em><br>倒排表法类似建立索引，用一张表来维护页数，然后通过高效的连接得到数据，缺点是只适合数据数固定的情况，数据不能删除，维护页表困难<br><em>反向查找优化法</em><br>当偏移超过一半记录数的时候，先用排序，反转偏移。缺点是order by优化比较麻烦，要增加索引，索引影响数据的修改效率，并且要知道总记录数，且满足偏移大于数据的一半的条件</p>
+<h2 id="慢查询问题"><a href="#慢查询问题" class="headerlink" title="慢查询问题"></a>慢查询问题</h2><h3 id="排查慢查询"><a href="#排查慢查询" class="headerlink" title="排查慢查询"></a>排查慢查询</h3><p><em>慢查询日志</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-operator">-</span> 开启慢查询日志<br><span class="hljs-keyword">set</span> <span class="hljs-keyword">global</span> slow_query_log<span class="hljs-operator">=</span><span class="hljs-keyword">on</span>;<br><span class="hljs-operator">-</span> 设置慢查询阈值<br><span class="hljs-keyword">set</span> long_query_time<span class="hljs-operator">=</span><span class="hljs-number">0.3</span>;<br><span class="hljs-operator">-</span> 修改慢查询日志地址<br><span class="hljs-keyword">set</span> <span class="hljs-keyword">global</span> slow_query_log_file<span class="hljs-operator">=</span>’<span class="hljs-operator">/</span>usr<span class="hljs-operator">/</span><span class="hljs-keyword">local</span><span class="hljs-operator">/</span>mysql<span class="hljs-operator">/</span>data<span class="hljs-operator">/</span>slow_query.log’;<br></code></pre></td></tr></table></figure>
+
+<p><em>慢查询日志分析工具</em></p>
+<ul>
+<li>mysqldumpslow：主要可以输出总执行次数，总时间，总数据行及其平均值等</li>
+<li>pt_query_digest：比mysqldumpslow更完善，可以设置各种过滤条件</li>
+</ul>
+<p><em>排查慢查询</em><br>执行 EXPLAIN 命令<br><img src="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230918124620.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>检索方式(Type类型)</em></p>
+<ul>
+<li>all：全表查询</li>
+<li>system：该表只有一行（系统表）</li>
+<li>const：命中主键(primary key)或者唯一索引(unique) 且被连接的部分是一个常量值(const)</li>
+<li>ref：使用<strong>非唯一性索引</strong>或者唯一索引的前缀扫描</li>
+<li>eq_ref：类似ref，区别就在使用的索引是<strong>唯一索引</strong></li>
+<li>ref_or_null：二级索引 &#x3D; 常数 或 二级索引 &#x3D; null</li>
+<li>range：利用索引进行范围查询</li>
+<li>index：不用回表的二级索引搜索</li>
+<li>index merge：使用到多个索引来完成一次查询</li>
+</ul>
+<p><em>Extra额外信息</em></p>
+<ul>
+<li>Using index：查询的列被索引覆盖，并且 where 筛选条件是索引的是前导列，Extra 中为 Using index。意味着通过索引查找就能直接找到符合条件的数据，无须回表。</li>
+<li>Using where：说明 MySQL 服务器将在存储引擎检索行后再进行过滤；即没有用到索引，回表查询。</li>
+</ul>
+<h3 id="解决慢查询"><a href="#解决慢查询" class="headerlink" title="解决慢查询"></a>解决慢查询</h3><ul>
+<li>参考索引失效，避免<strong>索引失效</strong></li>
+<li>参考深翻页，避免<strong>回表代价</strong></li>
+<li>MySQL优化错误时：可以强制索引：<ul>
+<li>强制使用一个索引：FORCE INDEX (index_name)、USE INDEX (index_name)；</li>
+<li>强制忽略一个索引：IGNORE INDEX (index_name)。</li>
+</ul>
+</li>
+<li>单表瓶颈：分表，单表数据量维持在2000W（理论上）以内</li>
+<li>单库瓶颈：分库，做读写分离</li>
+<li>单节点问题：集群部署</li>
+</ul>
+<h2 id="COUNT问题"><a href="#COUNT问题" class="headerlink" title="COUNT问题"></a>COUNT问题</h2><p><em>count性能</em><br><img src="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230918120438.png" srcset="/img/loading.gif" lazyload><br>其中count(字段)不统计该字段为NULL的记录，其他则是全表记录统计。<br><em>count原理</em><br>count(?)的语义是指：对于所有记录，<code>?</code>这个表达式的值不为NULL的记录有多少条。</p>
+<p>在通过 count 函数统计有多少个记录时，MySQL 的 server 层会维护一个名叫 count 的变量。server 层会循环向 InnoDB 读取一条记录，如果 count 函数指定的参数不为 NULL，那么就会将变量 count 加 1，直到符合查询的全部记录被读完，就退出循环。最后将 count 变量的值发送给客户端。</p>
+<p>具体地：</p>
+<ul>
+<li><code>count(主键字段)</code>中，InnoDB<strong>根据成本选择遍历主键索引还是二级索引</strong>，逐个判断记录中主键值是否为NULL（虽然显然不会为空）。</li>
+<li><code>count(1)</code>中，因为不需要判断主键是否为空，所以不会读取记录中的任何字段的值，因此效率比count(主键)高。同理，其也优先遍历二级索引，因为成本更低。</li>
+<li><code>count(*)</code>中，<code>count(*)</code> 其实等于 <code>count(0)</code>。同理，其也优先遍历二级索引，因为成本更低。</li>
+<li><code>count(字段)</code>，需要全表扫描，逐个判断字段是否为空，效率最低。</li>
+</ul>
+<p><em>MyISAM存储引擎的count</em><br>快于innodb，因为innodb需要遍历计数，其在每个事务中的执行结果可能不同，而MyISAM因为没有事务，可以直接维护一个全局<code>row_count</code>变量。</p>
+<p><em>优化count</em></p>
+<ol>
+<li>二级索引：信息量更少，遍历更快</li>
+<li>近似值：show table status 或者 explain 命令（不会真正查询）来表进行估算</li>
+<li>额外表保存计数值：每次执行select 和 delete是修改计数</li>
+</ol>
+<h1 id="事务问题"><a href="#事务问题" class="headerlink" title="事务问题"></a>事务问题</h1><p><em>事务隔离级别</em></p>
+<table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>READ UNCOMMITTED</td>
+<td>Possible</td>
+<td>Possible</td>
+<td>Possible</td>
+</tr>
+<tr>
+<td>READ COMMITTED</td>
+<td>Not Possible</td>
+<td>Possible</td>
+<td>Possible</td>
+</tr>
+<tr>
+<td>REPEATABLE READ</td>
+<td>Not Possible</td>
+<td>Not Possible</td>
+<td>Possible</td>
+</tr>
+<tr>
+<td>SERIALIZABLE</td>
+<td>Not Possible</td>
+<td>Not Possible</td>
+<td>Not Possible</td>
+</tr>
+<tr>
+<td>脏读：读到其他事务未提交的操作</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>不可重复读：读到其他事务已提交的UPDATE</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>幻读：读到其他事务已提交的INSERT&#x2F;DELETE</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><em>InnoDB下的事务实现</em><br>MySQL InnoDB 引擎的默认隔离级别是<strong>可重复读</strong>，但它利用MVCC机制<strong>很大程度上</strong>也能避免幻读的发生：</p>
+<ul>
+<li>针对<strong>快照读</strong>（普通 select 语句），是<strong>通过 MVCC 方式解决了幻读</strong>，在事务中的第一个查询语句时会生成一个ReadView，其可以在 undo log 版本链找到事务开始时的数据。</li>
+<li>针对<strong>当前读</strong>（select … for update 等语句），是<strong>通过 next-key lock（记录锁+间隙锁）方式解决了幻读</strong>，此时其他事务要在间隙锁的范围内插入记录会失败。</li>
+</ul>
+<blockquote>
+<p>若开启事务时使用的是<code>start transaction with consistent snapshot</code>，则开启事务的时候就创建了ReadView，而不是执行第一个查询语句时。</p>
+</blockquote>
+<p><em>未完全解决的幻读</em><br>可重复读隔离级别下虽然很大程度上避免了幻读，但是还是没有能完全解决幻读，如以下情形：<br>事务先快照读一个不存在的记录，再当前读该被插入了的记录。<br><img src="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/Pasted-image-20230918145402.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>事务使用</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-operator">-</span> 关闭自动提交（作用范围为session）<br><span class="hljs-keyword">SET</span> autocommit<span class="hljs-operator">=</span><span class="hljs-number">0</span>;<br><br><span class="hljs-operator">-</span> 开启事务<br><span class="hljs-keyword">START</span> TRANSACTION<br><span class="hljs-operator">-</span> 提交事务<br><span class="hljs-keyword">commit</span><br><span class="hljs-operator">-</span> 回滚事务<br><span class="hljs-keyword">rollback</span><br></code></pre></td></tr></table></figure>
+
+<p><em>autocommit和start transaction的使用</em></p>
+<ul>
+<li>autocommit开启时：需要通过<code>start transaction</code>开启事务，此时自动提交将保持禁用状态，直到使用<code>COMMIT</code>或<code>ROLLBACK</code>结束事务。如果没有声明<code>start transaction</code>，则ROLLBACK语句是无效的（即使设置了save point）。</li>
+<li>autocommit关闭时：可以不通过<code>start transaction</code>开启事务，也可以进行正常的提交和回滚。</li>
+</ul>
+<h1 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h1><h2 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h2><h3 id="索引区别"><a href="#索引区别" class="headerlink" title="索引区别"></a>索引区别</h3><p><em>MyISAM可以没有主键吗？</em><br>MyISAM可以没有主键，因为其数据的存储不依赖于聚簇索引，其主键索引和二级索引也没有本质上的区别。对于没有主键的表不再需要维护索引树，直接到数据实际记录中扫描即可。<br>InnoDB按主键大小有序插入，MyISAM记录插入顺序，按记录插入顺序保存。</p>
+<p><em>MyISAM如何实现查找，为什么比InnoDB快？</em><br>MyISAM通过索引直接找到记录的物理地址，根据物理地址进行回表；InnoDB只能通过二级索引找到记录的主键，还需要根据主键再做一次回表。即MyISAM必然需要回表操作，但其回表操作是更为快速。</p>
+<h3 id="事务区别"><a href="#事务区别" class="headerlink" title="事务区别"></a>事务区别</h3><p><em>MyISAM为什么无法实现事务</em></p>
+<ul>
+<li>A：MyISAM不支持崩溃恢复，无法实现原子性。</li>
+<li>C：一致性本身就是事务的目的，由于原子性和持久性都做不到，所以一致性也无法实现。</li>
+<li>I：MyISAM支持表锁，只能实现串行化级别的隔离级别。</li>
+<li>D：MyISAM不支持崩溃恢复，无法实现持久性。</li>
+</ul>
+<p><em>为什么InnoDB没有行数统计呢？</em></p>
+<ul>
+<li>原因：因为InnoDB的事务特性，在同一时刻表中的行数对于不同的事务而言是不一样的，因此count统计会计算对于当前事务而言可以统计到的行数，而不是将总行数储存起来方便快速查询。</li>
+<li>实现：InnoDB会尝试遍历一个尽可能小的索引除非优化器提示使用别的索引。如果二级索引不存在，InnoDB还会尝试去遍历其他聚簇索引。</li>
+<li>优化：如果索引并没有完全处于InnoDB维护的缓冲区（Buffer Pool）中，count操作会比较费时。可以建立一个记录总行数的表并让你的程序在INSERT&#x2F;DELETE时更新对应的数据。和上面提到的问题一样，如果此时存在多个事务的话这种方案也不太好用。如果得到大致的行数值已经足够满足需求可以尝试SHOW TABLE STATUS</li>
+</ul>
+<h3 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h3><p><em>InnoDB与MyISAM的区别？</em></p>
+<ul>
+<li>事务相关：<ul>
+<li>事务：InnoDB支持事务，MyISAM不支持</li>
+<li>锁支持：InnoDB支持表、行(默认)级锁，而MyISAM支持表级锁。InnoDB的行锁是实现在索引上的，而不是锁在物理行记录上。<strong>潜台词是，如果访问没有命中索引，也无法使用行锁，将要退化为表锁。</strong></li>
+<li>统计：InnoDB不保存表的具体行数，执行<code>select count(*) from table</code>时需要全表扫描。而MyISAM用一个变量保存了整个表的行数，执行上述语句时只需要读出该变量即可，速度很快。</li>
+<li>恢复能力：InnoDB通过redo log实现崩溃恢复，MyISAM只能通过binlog进行恢复，而binlog恢复存在一致性问题。</li>
+</ul>
+</li>
+<li>索引相关：<ul>
+<li>索引：InnoDB是聚集索引，使用B+Tree作为索引结构，数据文件是和（主键）索引绑在一起的；MyISAM是非聚集索引，也是使用B+Tree作为索引结构，索引和数据文件是分离的，索引保存的是数据文件的指针。</li>
+<li>存储：InnoDB按主键大小有序插入，MyISAM记录插入顺序，按记录插入顺序保存。</li>
+<li>主键：InnoDB表必须有唯一索引（如主键）（用户没有指定的话会自己找&#x2F;生产一个隐藏列Row_id来充当默认主键），而MyISAM可以没有</li>
+<li>全文索引：Innodb不支持全文索引，而MyISAM支持全文索引，在涉及全文索引领域的查询效率上MyISAM速度更快高；（PS：5.7以后的InnoDB支持全文索引了）。</li>
+<li>外键：InnoDB支持外键，而MyISAM不支持</li>
+</ul>
+</li>
+<li>格式相关：<ul>
+<li>压缩：MyISAM表格可以被压缩后进行查询操作。</li>
+<li>文件格式：Innodb存储文件有frm、ibd，而Myisam是frm、MYD、MYI<ul>
+<li>Innodb：frm是表定义文件，ibd是数据文件</li>
+<li>Myisam：frm是表定义文件，myd是数据文件，myi是索引文件</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>适用场景：<ul>
+<li>MyISAM适合：插入不频繁，查询非常频繁，如果执行大量的SELECT，MyISAM是更好的选择，没有事务。</li>
+<li>InnoDB适合：可靠性要求比较高，或者要求事务；表更新和查询都相当的频繁， 大量的INSERT或UPDATE。</li>
+</ul>
+</li>
+</ul>
+<p><em>InnoDB相比MyISAM解决了什么问题？又有什么缺点？</em></p>
+<ul>
+<li>InnoDB优点：<strong>事务支持、行锁、崩溃恢复、主键索引查询效率更高、外键支持</strong></li>
+<li>MyISAM优点：count查询支持，回表更快（利用查询），存储空间小</li>
+</ul>
+<blockquote>
+<p>为什么MyISAM不支持行锁，因为其没有聚簇索引概念，锁记录的时候无法锁住行。</p>
+</blockquote>
+<p><em>为什么binlog进行故障恢复存在一致性问题？</em><br>数据文件更新和写入binlog的顺序有两种可能：</p>
+<ol>
+<li>先更新数据文件，再写入binlog：这种情况下若log写入失败，恢复时会有数据丢失</li>
+<li>先写入binlog，再更新数据文件：这种情况下若数据文件写入失败，使用binlog文件进行恢复数据库（比如备库），则会导致数据库不一致的情况。</li>
+</ol>
+<p><em>为什么redo log进行故障恢复不会有一致性问题？</em><br><img src="/Pasted-image-20230928172633.png" srcset="/img/loading.gif" lazyload><br>通过两阶段保证了redo log（本地持久化）和binlog的一致性。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1417482">MySQL崩溃恢复功臣—Redo Log</a></p>
+</blockquote>
+<h2 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h2><p>MEMORY引擎将数据全部放在内存中，访问速度较快，但是一旦系统奔溃的话，数据都会丢失，MEMORY引擎<strong>默认使用哈希索引</strong>，将键的哈希值和指向数据行的指针保存在哈希索引中。</p>
+<ul>
+<li>优点：访问速度较快。  </li>
+<li>缺点：哈希索引数据不是按照索引值顺序存储，无法用于排序，不支持部分索引匹配和范围查找。</li>
+</ul>
+<h2 id="ARCHIVE"><a href="#ARCHIVE" class="headerlink" title="ARCHIVE"></a>ARCHIVE</h2><p>ARCHIVE存储引擎非常适合存储大量独立的、作为历史记录的数据。ARCHIVE提供了压缩功能，拥有高效的插入速度，但是这种引擎不支持索引，所以查询性能较差。</p>
+<p><em>Innodb引擎的4大特性</em><br>插入缓冲（insert buffer)，二次写(double write)，自适应哈希索引(ahi)，预读(read ahead)</p>
+<h1 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h1><h2 id="自增ID"><a href="#自增ID" class="headerlink" title="自增ID"></a>自增ID</h2><p><em>存在形式</em></p>
+<ol>
+<li>MyISAM引擎的<strong>自增值保存在数据文件</strong>中</li>
+<li>InnoDB引擎的自增值，在MySQL5.7及之前的版本，<strong>自增值保存在内存</strong>里，并没有持久化。每次重启后，第一次打开表的时候，都会去找自增值的最大值max(id)，然后将max(id)+步长作为这个表当前的自增值。在MySQL8.0版本，将自增值的变更记录在了redo log中，重启的时候依靠redo log恢复重启之前的值。</li>
+</ol>
+<p><em>自增ID机制？</em></p>
+<ol>
+<li>如果插入数据时id字段指定为0、null或未指定值，那么就把这个表当前的AUTO_INCREMENT值填到自增字段</li>
+<li>如果插入数据时id字段指定了具体的值，就直接使用语句里指定的值。假设，某次要插入的值是X，当前的自增值是Y：<ol>
+<li>如果X&lt;Y，那么这个表的自增值不变（当然，如果发生主键冲突会报错）</li>
+<li>如果X&gt;&#x3D;Y，就需要把当前自增值修改为新的自增值（新的自增值生成算法是：从auto_increment_offset（初始值）开始，以auto_increment_increment（步长）为步长，持续叠加，直到找到第一个大于X的值，作为新的自增值。）</li>
+</ol>
+</li>
+</ol>
+<p><em>什么时候会出现自增ID不连续？</em><br>本质是申请了ID而没有实际使用造成的：</p>
+<ol>
+<li>插入事务回滚</li>
+<li>插入时获取自增ID，但插入时出现了唯一键冲突，导致插入失败</li>
+<li>事务做批量插入时，由于MYSQL优化，批量的申请了ID，但没有用完。</li>
+</ol>
+<p><em>批量插入优化</em><br>MySQL有一个批量申请自增id的策略：</p>
+<ol>
+<li>语句执行过程中，第一次申请自增id，会分配1个</li>
+<li>1个用完以后，这个语句第二次申请自增id，会分配2个</li>
+<li>2个用完以后，还是这个语句，第三次申请自增id，会分配4个</li>
+<li>依次类推，同一个语句去申请自增id，每次申请到的自增id个数都是上一次的两倍</li>
+</ol>
+<p><em>自增锁的锁配置</em><br>在MySQL5.0版本的时候，自增锁的范围是语句级别。也就是说，如果一个语句申请了一个表自增锁，这个锁会等语句执行结束以后才释放MySQL5.1.22版本引入了一个新策略，新增参数innodb_autoinc_lock_mode，默认值是1：</p>
+<ol>
+<li>该参数设置为0，表示采用之前MySQL5.0版本的策略，即语句执行结束后才释放锁</li>
+<li>该参数设置为1：<ol>
+<li>普通insert语句，自增锁在申请之后就马上释放</li>
+<li>类似insert … select这样的批量插入数据的语句，自增锁还是要等语句结束后才被释放<br>3.该参数设置为2，所有的申请自增主键的动作都是申请后就释放锁</li>
+</ol>
+</li>
+</ol>
+<p><em>自增锁可能导致的不一致</em></p>
+<ul>
+<li>问题：当binlog_format&#x3D;statement的时候，binlog记录语句时又是以session为单位记录，在 lock_mode &#x3D; 1的情形下，可能会造成主从不一致现象。</li>
+<li>解决：<ol>
+<li>让原库的批量插入（即insert … select&#x2F;replace … select&#x2F;load data）数据语句，固定生成连续的id值，自增锁直到语句执行结束才释放。</li>
+<li>在binlog里面把插入数据的操作都如实记录进来，到备库执行的时候，不再依赖于自增主键去生成。也就是把innodb_autoinc_lock_mode设置为2，同时binlog_format设置为row。</li>
+</ol>
+</li>
+</ul>
+<p><em>自增键用完后</em><br>报主键冲突异常</p>
+<p><em>ROW_ID什么时候启用？</em><br>InnoDB主键选择策略：</p>
+<ol>
+<li>在PRIMARY KEY表上定义a时，InnoDB将其用作聚簇索引。为您创建的每个表定义一个主键。如果没有逻辑唯一且非空的列或列集，请添加一个新的 自动递增 列，其值将自动填充。</li>
+<li>如果您没有PRIMARY KEY为表定义，MySQL会UNIQUE在所有键列所在的位置找到第一个索引，NOT NULL并将 InnoDB其用作聚集索引。</li>
+<li>如果表没有索引PRIMARY KEY或没有合适的 UNIQUE索引，则在InnoDB 内部生成一个隐藏的聚集索引GEN_CLUST_INDEX，该索引在包含行ID值的合成列上命名 （即ROW_ID）。</li>
+</ol>
+<p><em>为什么InnoDB表要建议用自增列做主键，rowID不行吗？</em><br>ROW_ID相比自增主键的缺点：</p>
+<ul>
+<li>无法使用：ROW_ID是一个隐藏的列，既不能被任何查询访问，也不能被内部使用。对我们的任何操作都没有什么用途。</li>
+<li>性能较差：<strong>所有用ROW_ID列的表，共享同一个被保存在数据字典中的全局序列数</strong>，且下一个将要使用的值被保存在系统表空间的page 7（type SYS），数据字段头里（字段名为DICT_HDR_ROW_ID）。获取ROW_ID的操作是互斥的，其会导致sql语句随机性地碰到插入停顿。多张这种表并行插入就会遇到性能限制，因为共享计数器的共享互斥锁和缓存争用是串行的。此外，每生成256个ID就会需要日志写入和刷新，这些都会引起性能毛刺问题。</li>
+</ul>
+<div class="note note-primary">
+            <p>ROW_ID当增加到<strong>256的倍数的时会刷新到硬盘中</strong>，(dict_hdr_flush_row_id())，这个频率通过字段DICT_HDR_ROW_ID_WRITE_MARGIN定义。在启动的时候，InnoDB将保存在磁盘上的DICT_HDR_ROW_ID增加256，这样就能确保已经生成的ID，不管是否被持久化到磁盘上，都会小于新生成的值，所以生成的ID不会有任何冲突。<br>这与事务的trx_id的生成策略类似。</p>
+          </div>
+
+<p><em>为什么MyISAM可以不设置自增ID？</em><br>MyISAM中主键并不是必须的，其他索引也不需要依赖主键来回表，而是根据记录的物理地址直接回表。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/0c452f829dd2">关于MySQL数据库自增主键，说几个容易被忽略的点</a></p>
+</blockquote>
+<h2 id="SQL优化"><a href="#SQL优化" class="headerlink" title="SQL优化"></a>SQL优化</h2><p>基于规则，Mysql会对查询语句做一定的优化，这个过程也可以被称作<code>查询重写</code>：</p>
+<ul>
+<li>条件化简：<ul>
+<li>表达式化简：移除不必要的括号、移除没用的条件、常量传递、等值传递、表达式计算（必须是常量类型简单表达式，不支持函数类型和复杂表达式）</li>
+<li>条件合并：HAVING子句和WHERE子句的合并：没有出现聚集函数时，合并HAVING子句和WHERE子句。</li>
+<li>常量表检测：表中只有一条数据或使用主键等值匹配的子句，优先执行。</li>
+</ul>
+</li>
+<li>IN子查询：<ul>
+<li>生成物化表（基于hash索引去重）后内连接</li>
+<li>semi连接（在条件允许的情况下将子查询直接连接，并去重避免连接算法造成的多次匹配）</li>
+<li>转化为exist语句，可能可以使用到索引</li>
+</ul>
+</li>
+<li>ANY&#x2F;ALL子查询优化：将<code> &lt; ANY(子查询)</code> 转化为 <code>&lt; 子查询(MAX)</code>。</li>
+<li>FROM子查询（派生表）：<ul>
+<li>派生表物化：将派生表物化为一个临时表。</li>
+<li>派生表合并：将派生表与外层查询的表连接，并将派生表的查询条件也移动至外层的查询条件。（当派生表有一些特殊函数或处理时，不能使用派生表合并）。</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/" class="category-chain-item">Mysql</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" class="category-chain-item">Mysql常见问题</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+      
+        <a href="/tags/Mysql/">#Mysql</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MySQL常见问题</div>
+      <div>http://example.com/2023/02/11/概念整理/数据库DB/Mysql/Mysql常见问题/MySQL常见问题/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年2月11日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E9%AB%98%E7%BA%A7%EF%BC%88%E7%B4%A2%E5%BC%95%EF%BC%89/" title="MySQL高级（索引）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MySQL高级（索引）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/02/10/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/" title="MySQL基础（InnoDB数据存储）">
+                        <span class="hidden-mobile">MySQL基础（InnoDB数据存储）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/twikoo/1.6.7/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"https://twikoo-api-lime.vercel.app/","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname',
+            onCommentLoaded: function() {
+              var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
+              Fluid.plugins.imageCaption(imgSelector);
+              Fluid.plugins.fancyBox(imgSelector);
+            }
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <div> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> </div> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/fluid-extention.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

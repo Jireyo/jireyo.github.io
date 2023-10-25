@@ -39,7 +39,7 @@
 <meta property="og:image" content="http://example.com/Pasted%20image%2020230326142111.png">
 <meta property="og:image" content="http://example.com/Pasted%20image%2020230326142306.png">
 <meta property="og:image" content="http://example.com/Pasted%20image%2020230326142621.png">
-<meta property="og:image" content="http://localhost:4000/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC3%E7%AB%A0%EF%BC%88Lock%E6%8E%A5%E5%8F%A3%EF%BC%89/Pasted-image-20230203170539.png">
+<meta property="og:image" content="http://example.com/Pasted-image-20230203170539.png">
 <meta property="og:image" content="http://example.com/Pasted%20image%2020230326142914.png">
 <meta property="og:image" content="http://example.com/Pasted%20image%2020230326143937.png">
 <meta property="og:image" content="http://example.com/Pasted%20image%2020230326145701.png">
@@ -61,7 +61,7 @@
 <meta property="og:image" content="http://example.com/Pasted%20image%2020230326235238.png">
 <meta property="og:image" content="http://example.com/Pasted%20image%2020230326235543.png">
 <meta property="article:published_time" content="2023-03-24T11:00:55.000Z">
-<meta property="article:modified_time" content="2023-05-05T06:57:04.721Z">
+<meta property="article:modified_time" content="2023-10-16T13:14:18.062Z">
 <meta property="article:author" content="Jin">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2023/03/24/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%A4%8D%E4%B9%A0/Java%E5%A4%8D%E4%B9%A0/Pasted-image-20230324213918.png">
@@ -268,7 +268,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          18k 字
+          20k 字
         
       </span>
     
@@ -279,7 +279,7 @@
         
         
         
-          154 分钟
+          170 分钟
         
       </span>
     
@@ -346,13 +346,13 @@
 <p><em>享元模式</em><br>利用共享的方式来支持大量细粒度的对象，这些对象一部分内部状态是相同的。</p>
 <p><em>观察者模式</em><br>定义对象之间的一对多依赖，当一个对象状态改变时，它的所有依赖都会收到通知并且自动更新状态。</p>
 <p><em>访问者模式</em><br>为数据结构中的每个元素提供多种访问方式。它将<strong>对数据的操作与数据结构进行分离</strong>。</p>
-<h1 id="二、Java基础复习"><a href="#二、Java基础复习" class="headerlink" title="二、Java基础复习"></a>二、Java基础复习</h1><h2 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h2><p><em>类型转换</em><br>字面浮点数是double类型的。<br>字面整数是int类型的。<br><code>+=</code>可以隐式转换</p>
+<h1 id="二、Java基础复习"><a href="#二、Java基础复习" class="headerlink" title="二、Java基础复习"></a>二、Java基础复习</h1><h2 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h2><p><em>类型转换</em><br>字面浮点数是double类型的。<br>字面整数是int类型的。<br><code>+=</code>可以隐式转换。</p>
 <p><em>缓存池</em><br>boolean、bytes、short、int、char有-128~127的缓存池，<code>valueOf()</code>可以获取。</p>
 <p><em>String</em></p>
 <ul>
 <li>不可变，便于hash使用和网络传输，线程安全</li>
 <li>StringBuffer线程安全，StringBuilder线程不安全</li>
-<li>JDK8前是<code>char[]</code>(UTF-16)，JDK9时是<code>byte[]</code>（Latin-1），动态调整字符集。</li>
+<li>JDK8及之前是<code>char[]</code>(UTF-16)，JDK9时是<code>byte[]</code>（Latin-1），动态调整字符集。</li>
 </ul>
 <p><em>字符串常量池</em><br>规范上在方法区，1.6在永久代，1.7在堆，1.8在堆中。</p>
 <p><em>运算</em><br>%向0取整，mod向下取整</p>
@@ -459,15 +459,26 @@
 <blockquote>
 <ul>
 <li>JDK动态代理是面向接口的，在创建代理实现类时比CGLib要快，创建代理速度快。</li>
-<li>CGLib动态代理是通过字节码底层继承要代理类来实现（如果被代理类被final关键字所修饰，那么抱歉会失败），在创建代理这一块没有JDK动态代理快，但是运行速度比JDK动态代理要快。</li>
+<li>CGLib动态代理是通过字节码底层继承要代理类来实现（如果被代理类被final关键字所修饰，那么代理会失败），在创建代理这一块没有JDK动态代理快，但是运行速度比JDK动态代理要快。</li>
 </ul>
 </blockquote>
-<h2 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h2><p><em>目的</em><br>代码复用，使用一个代码流程适配多个类型，提供类型检查<br><em>用法</em><br>泛型类、泛型接口、泛型方法、使用泛型类参数的普通方法<br><em>上下限</em><br>extends（生产T）、super（消费T）提供上下限检查<br><em>泛型数组</em></p>
+<h2 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h2><p><em>目的</em><br>代码复用，使用一个代码流程适配多个类型，提供类型检查</p>
+<p><em>“真泛型”与“伪泛型”的区别</em><br>Java属于伪泛型：</p>
+<ul>
+<li>真泛型：泛型中的类型是真实存在的。</li>
+<li>伪泛型：仅于编译时类型检查，在运行时擦除类型信息。</li>
+</ul>
+<p><em>用法</em><br>泛型类、泛型接口、泛型方法、使用泛型类参数的普通方法</p>
+<p><em>上下限</em><br>extends（生产T）、super（消费T）提供上下限检查</p>
+<p><em>泛型类的数组</em></p>
 <ul>
 <li>不能<code>new ArrayList&lt;String&gt;[n]</code></li>
 <li>可以<code>new ArrayList&lt;?&gt;[n]</code></li>
 </ul>
 <p><em>泛型擦除</em><br>编译前做检查，编译后类型擦除<br><code>extends T</code>会替换成T<br><code>super T</code>会提换成Object</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4a75bad9f65f">为什么Java的泛型要用”擦除”实现</a><br>因为“真泛型”的引入，势必会为原本不支持泛型的 API 平行添加一套泛型 API，为了引入泛型，又不影响原有的项目，使用了泛型擦除的方式。</p>
+</blockquote>
 <p><em>泛型方法</em></p>
 <ul>
 <li>不指定泛型，为同一父类的最小级</li>
@@ -600,7 +611,7 @@
 </ul>
 </li>
 <li>添加：<ul>
-<li>判断头节点类型，看使用链表头插还是红黑树（超过8个转红黑树）</li>
+<li>判断头节点类型，看使用链表尾插还是红黑树（超过8个转红黑树）</li>
 <li>先插入再判断是否扩容（有时put只会覆盖不会生产新节点，先插入后扩容可以避免不必要的扩容发生）</li>
 </ul>
 </li>
@@ -608,6 +619,16 @@
 <li>rehash 2倍</li>
 </ul>
 </li>
+</ul>
+<div class="note note-primary">
+            <p>java7是先扩容再插值，java8是先插值再扩容，猜测的原因为：</p><ul><li>java7基于头插法，先扩容后可以直接计算目标值hash，插入扩容后的集合。</li><li>java8基于尾插法，且使用了红黑树结构，先将元素插入后在改变结构更方便。</li></ul>
+          </div>
+
+<p><em>Hash的计算方法</em></p>
+<ul>
+<li>Integer类的hashCode()为其ascii值</li>
+<li>String类的hashCode()为其各字符的ascii值（前一位字符相比后一位字符多×32）</li>
+<li>Object类的hashCode的方法返回的哈希值是该对象在内存中的地址值。</li>
 </ul>
 <p><em>LinkedHashMap</em><br>HashMap的子类，使用双向链表将所有entry相连接，遍历更快。</p>
 <p><em>WeakHashMap</em><br>弱引用管理，可用作缓存。</p>
@@ -710,7 +731,7 @@
 <li>创建一个类并实现Callable，使用FutureTask包装该Callable对象成Runnable，传入Thread的构造器</li>
 </ul>
 <h2 id="三大关键字"><a href="#三大关键字" class="headerlink" title="三大关键字"></a>三大关键字</h2><h3 id="锁类型"><a href="#锁类型" class="headerlink" title="锁类型"></a>锁类型</h3><ul>
-<li>synchronized 关键词是悲观锁、排他锁、可重入锁、(某些状态下可自旋)、非公平锁。</li>
+<li>synchronized 关键词是悲观锁、可重入锁、(某些状态下可自旋)、非公平锁、排他锁。</li>
 <li>Lock接口的实现是悲观锁、可重入锁<ul>
 <li>ReentrantLock是排他锁、有公平和非公平两种实现。</li>
 <li>ReentrantReadWriteLock读锁是共享的，写锁是排他的。</li>
@@ -743,7 +764,7 @@
 </ul>
 <p><em>MarkWord</em><br>32位：<br><img src="/Pasted%20image%2020230325224333.png" srcset="/img/loading.gif" lazyload><br>64位：<br><img src="/Pasted%20image%2020230325224349.png" srcset="/img/loading.gif" lazyload></p>
 <h4 id="锁优化"><a href="#锁优化" class="headerlink" title="锁优化"></a>锁优化</h4><p><em>等级</em><br>无锁-&gt;偏向锁-&gt;轻量级锁-&gt;重量级锁</p>
-<p><em>无锁（自旋）</em><br>自旋-&gt;适应性自选（自旋成功率高才自旋，默认10次获取不到锁就阻塞）</p>
+<p><em>无锁（自旋）</em><br>自旋-&gt;适应性自旋（自旋成功率高才自旋，默认10次获取不到锁就阻塞）</p>
 <p><em>轻量级锁</em><br>栈帧上使用LockRecord（displace hdr、owner）记录获得到的锁对象头，步骤：<br><img src="/Pasted%20image%2020230325225005.png" srcset="/img/loading.gif" lazyload></p>
 <ol>
 <li>确定对象的无锁状态</li>
@@ -774,9 +795,9 @@
 <li>标量替换</li>
 </ul>
 <p><em>锁粗化</em><br>连续的加锁操作合并成一个</p>
-<h3 id="Volatile"><a href="#Volatile" class="headerlink" title="Volatile"></a>Volatile</h3><p>保证可见性和有序性，不能保证原子性。</p>
+<h3 id="Volatile"><a href="#Volatile" class="headerlink" title="Volatile"></a>Volatile</h3><p>保证<strong>可见性</strong>和<strong>有序性</strong>，不能保证<strong>原子性</strong>。</p>
 <p><em>可见性</em><br>通过写内存的内存语义，写时会直接将工作内存同步到主内存并无效其他线程中的内存。</p>
-<p><em>有序性</em><br>volatile写：前插入storestore内存屏障，后插入storeload内存屏障。<br>volatile读：后插入loadload,loadstore内存屏障。</p>
+<p><em>有序性</em><br>volatile写：前插入storestore内存屏障，后插入storeload内存屏障。<br>volatile读：后插入loadload，loadstore内存屏障。</p>
 <p><em>双重校验锁</em><br>单例模式的健全版</p>
 <h3 id="Final"><a href="#Final" class="headerlink" title="Final"></a>Final</h3><p>保证<strong>可见性</strong>。<br><strong>不可变对象永远是线程安全的。</strong>（只要发生方法逃逸）</p>
 <p><em>重排序规则</em></p>
@@ -875,7 +896,7 @@
 <li>只开放了tryAcquire和tryRelease这样的方法：以供子类来做是否公平的实现，改写内容一般是对state的CAS处理</li>
 <li>不论被重写成什么样，失败后都走的AQS的排队方法，获取者会死循环直到添加成功；释放者也会死循环直到释放成功。</li>
 </ul>
-<p><em>ReentrantReadWriteLock</em><br><img src="/Pasted%20image%2020230326142621.png" srcset="/img/loading.gif" lazyload><br>使用一个state同时维护读、写状态，将 32 位的整型变量 state 切分成两个部分，高 16 位表示读，低 16 位表示写：<br>[<img src="http://localhost:4000/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/JUC/JUC%E7%AC%AC3%E7%AB%A0%EF%BC%88Lock%E6%8E%A5%E5%8F%A3%EF%BC%89/Pasted-image-20230203170539.png" srcset="/img/loading.gif" lazyload></p>
+<p><em>ReentrantReadWriteLock</em><br><img src="/Pasted%20image%2020230326142621.png" srcset="/img/loading.gif" lazyload><br>使用一个state同时维护读、写状态，将 32 位的整型变量 state 切分成两个部分，高 16 位表示读，低 16 位表示写：<br>[<img src="/Pasted-image-20230203170539.png" srcset="/img/loading.gif" lazyload></p>
 <p><em>锁降级</em><br>读写锁中的锁降级指的是，<strong>写锁降级成为读锁</strong>。</p>
 <p><em>Condition</em><br><img src="/Pasted%20image%2020230326142914.png" srcset="/img/loading.gif" lazyload><br>步骤：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Codition</span> <span class="hljs-variable">condition</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Codition</span>()<br>condition.await()<br>condition.signal()<br>condition.signalAll()<br></code></pre></td></tr></table></figure>
@@ -897,7 +918,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Entry</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">WeakReference</span>&lt;ThreadLocal&lt;?&gt;&gt; &#123;  <br>    <span class="hljs-comment">/** The value associated with this ThreadLocal. */</span>  <br>    Object value;<br>    <span class="hljs-comment">//private ThreadLocal referent; 继承字段</span><br>  <br>    Entry(ThreadLocal&lt;?&gt; k, Object v) &#123;  <br>        <span class="hljs-built_in">super</span>(k);  <span class="hljs-comment">// referent = k</span><br>        value = v;  <br>    &#125;  <br>&#125;<br></code></pre></td></tr></table></figure>
 
 <div class="note note-primary">
-            <p>注意ThreadLocalMap.Entry中：</p><ul><li>key是<strong>弱引用</strong>，因为ThreadLocal过多时会出现内存泄漏，而在强引用下其是不可回收的。</li><li>value是强引用，因为value可能还存在其他引用，不可盲目回收，且要避免key还在而value为null的情况。</li></ul><p>因此，需要手动的remove(key)实现资源释放。</p>
+            <p>注意ThreadLocalMap.Entry中：</p><ul><li>key是<strong>弱引用</strong>，因为ThreadLocal过多时会出现内存泄漏，而在强引用下其是不可回收的。</li><li>value是<strong>强引用</strong>，因为value可能还存在其他引用，不可盲目回收，且要避免key还在而value为null的情况。</li></ul><p>因此，需要手动的remove(key)实现资源释放。</p>
           </div>
 
 <h2 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h2><p><img src="/Pasted%20image%2020230326145701.png" srcset="/img/loading.gif" lazyload><br><em>工作流程</em><br><img src="/Pasted%20image%2020230326145908.png" srcset="/img/loading.gif" lazyload></p>
@@ -952,7 +973,7 @@
 </ul>
 <h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2><p><em>加载类的过程</em></p>
 <ul>
-<li>加载：二进制字节流 &#x3D;&gt; 方法去运行时数据结构</li>
+<li>加载：二进制字节流 &#x3D;&gt; 方法区运行时数据结构</li>
 <li>链接<ul>
 <li>验证：<ul>
 <li>文件格式验证(文件格式、魔数、长度等)</li>
@@ -976,14 +997,27 @@
 </ul>
 <p><em>为什么需要自定义加载器</em><br>隔离加载类、扩展加载源、自定义加载方式（还可防止源码泄漏）</p>
 <p><em>如何自定义加载器</em><br>一般继承URLClassLoader，再重写findClass即可。</p>
+<p><em>两个相同的class对象</em><br>同加载器（在同一个命名空间里）、同完整类名。</p>
 <p><em>双亲委派</em><br>加载类时向上委托，父加载器加载不了时才主动加载，保证了可见性和单一性。</p>
 <p><em>双亲委派机制的破坏</em></p>
 <ul>
 <li>早期的loadClass()方法被重写</li>
-<li>线程上下文加载器：为了实现系统类调用用户类</li>
-<li>热替换&#x2F;热部署。</li>
+<li>线程上下文加载器：为了实现系统类调用用户类（<strong>引导类加载器</strong>无法找到 SPI 的实现类）</li>
+<li>热替换&#x2F;热部署</li>
 </ul>
-<p><em>两个相同的class对象</em><br>同加载器（在同一个命名空间里）、同完整类名。</p>
+<p><em>线程上下文加载器</em><br>ContextClassLoader其实只是一个概念，是Thread的一个成员变量。如果没有主动设置则默认继承父线程的上下文加载器（默认为System ClassLoader）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Thread</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Runnable</span> &#123;<br>   <span class="hljs-keyword">private</span> ClassLoader contextClassLoader;<br> <br>   <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setContextClassLoader</span><span class="hljs-params">(ClassLoader cl)</span> &#123;<br>       <span class="hljs-comment">// 省略：安全检查</span><br>       contextClassLoader = cl;<br>   &#125;<br><br>   <span class="hljs-keyword">public</span> ClassLoader <span class="hljs-title function_">getContextClassLoader</span><span class="hljs-params">()</span> &#123;<br>       <span class="hljs-comment">// 省略：安全检查</span><br>       <span class="hljs-keyword">return</span> contextClassLoader;<br>   &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>为了能让应用程序访问到这些jar包中的实现类，即用<code>appClassLoarder</code>去加载这些实现类。可以用<code>getContextClassLoader</code>取得当前线程的<code>ClassLoader</code>（即<code>appClassLoarder</code>），然后去加载这些实现类，就能让应用访问到。</p>
+<p><em>Tomcat的类加载器设计</em></p>
+<ul>
+<li>目的：容器不希望它下面的webapps之间能互相访问到</li>
+<li>实现：<ul>
+<li>cataline类加载器：tomcat新建了一个sharedClassLoader。其父加载器类为commonClassLoader，再父加载器类是appClassLoarder，默认情况下，sharedClassLoader和commonClassLoader是同一个urlClassLoader实例。</li>
+<li>app类加载器：对于每个webapp，为其新建一个webappClassLoader，用于加载webapp下面的类。且webappClassLoader加载。</li>
+</ul>
+</li>
+<li>注意：tomcat的ClassLoader没有使用双亲委派，其自身优先加载类，加载不到才委托给父类（java核心类除外）</li>
+</ul>
 <p><em>类主动使用</em><br>使用静态字段、静态方法、生成实例、forName()</p>
 <p><em>数组类加载</em><br>由数组对应的类的类加载器加载。</p>
 <p><em>static与static final</em><br>两者都在堆中，跟随class对象：</p>
@@ -1043,7 +1077,7 @@
 <ol>
 <li>类信息，包括类本身、字段、方法的所有信息。</li>
 <li>运行时常量池，静态常量池（class文件中）加载后就变成了运行时常量池（方法区中），符号引用被转化为真实地址。</li>
-<li>字符串常量池，逻辑上在方法去，<strong>实际上在堆中</strong>。</li>
+<li>字符串常量池，逻辑上在方法区，<strong>实际上在堆中</strong>。</li>
 </ol>
 <blockquote>
 <p>JDK1.7时，字符串常量池和静态变量就从永久代移动到了堆中，后续又取消了永久代，变成元空间。</p>
@@ -1078,10 +1112,21 @@
 <li>回收：标记-清除算法、复制算法、标记-压缩算法、增量收集（G1）</li>
 <li>分配内存方法：指针碰撞法、空闲列表法</li>
 </ul>
-<p><em>应用</em><br>复制算法一般在YoungGC中，迁移到Survivor。<br>标记压缩算法一般在OldGC中。<br>标记清除算法一般在CMS或G1的GC中，因为其需要并发标记清除。<br>增量收集只在G1中，</p>
+<p><em>应用</em><br>复制算法一般在YoungGC中，迁移到Survivor。<br>标记压缩算法一般在OldGC中。<br>标记清除算法一般在CMS或G1的GC中，因为其需要并发标记清除。<br>增量收集只在G1中。</p>
 <p><em>System.gc()</em><br>不一定立刻生效</p>
 <p><em>STW</em><br>枚举GCRoots和修正标记结果时必须STW。</p>
-<p><em>安全点&#x2F;安全区域</em><br>引用关系不会发送变化的时点或区域。<br>中断方式：抢占式（让线程在安全点时中断）、主动式（线程在安全的主动询问）</p>
+<p><em>GCRoots</em><br>枚举出整个“GC Roots”是非常麻烦的，在<strong>HotSpot</strong>的解决方案中，使用了一组称为<strong>OopMap</strong>的数据结构来存放这些对象的引用。即当用户线程暂停下来之后，并不需要一个不漏的检查完所有的执行上下文和全局的引用位置。而是直接通过OopMap来获取栈上或寄存器里哪里有GC管理的指针（引用指针）。</p>
+<p><em>安全点</em><br>如果每次执行一条字节码指令都去生成一个<strong>OopMap</strong>那就必须消耗大量额外的存储空间，因此HotSpot并没有让每条指令都生成<strong>OopMap</strong>，而是只在特定的位置生成OopMap，这个位置就被称为安全点（safe point）。<br>放置的安全点不能太多，当然也不能太少。放置安全点的位置一般是以“是否具有让程序长时间执行特征”为标准进行选定，当线程运行到安全点时，其状态是确定的。不同虚拟机对于自己safe point的实现不一定一样，对于HotSpot：</p>
+<ul>
+<li>解释器：每一段字节码的边界都可以作为一个safe point，因为对于解释器来说找到完整的执行状态实在是一件非常容易的事。</li>
+<li>JIT：对于来说则是以每个方法临返回前，以及所有的非 counted loop（可数循环） 循环回跳之前，放置一个safe point。并且在每个safepoint生成一些“调试符号信息”，方便VM找到需要的运行状态。</li>
+</ul>
+<p><em>中断方式</em></p>
+<ul>
+<li>抢占式（让线程在安全点时中断）：几乎没有虚拟机采用这种实现</li>
+<li>主动式（线程在安全的主动询问）：主流的实现方式，由于询问也有开销，所以安全点不宜过多。</li>
+</ul>
+<p><em>安全区域</em><br>扩大的安全点（某个不会不会发生引用关系变化的区域）例如：线程被挂起，或者线程执行JNI函数等等。</p>
 <p><em>引用</em><br>强&#x2F;软&#x2F;弱&#x2F;虚。软引用空间不足时回收，弱引用GC则回收，虚引用关联一个引用队列，可以获取其回收通知。<br>终结器引用，GC时，终结器引用进入F-QUEUE，Finalizer线程执行队列中对象的finalize()方法。</p>
 <p><em>并行与并发</em><br>并行（Parallel）：<strong>多条GC线程</strong>同时执行GC。<br>串行（Serial）：<strong>单GC线程</strong>执行GC。<br>并发（Concurrent）：<strong>用户线程与GC线程</strong>交替执行。</p>
 <h3 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h3><p><em>分类</em><br>按线程数分，可以分为<strong>串行垃圾回收器</strong>和<strong>并行垃圾回收器</strong>。<br>按照工作模式分，可以分为<strong>并发式垃圾回收器</strong>和<strong>独占式垃圾回收器</strong>。<br>按碎片处理方式分，可分为<strong>压缩式垃圾回收器</strong>和<strong>非压缩式垃圾回收器</strong>。<br>按工作的内存区间分，又可分为<strong>年轻代垃圾回收器</strong>和<strong>老年代垃圾回收器</strong>。</p>
@@ -1094,7 +1139,7 @@
 <ul>
 <li>单&#x2F;多线程，重新标记时使用多线程，低延迟。</li>
 <li>因为并发清理，所以使用了标记清除算法，存在内存碎片</li>
-<li>三色标记法，修正时把不考虑浮动垃圾，若A新增了指向B的指针，则把A标记为灰色。</li>
+<li>三色标记法，修正时不考虑浮动垃圾，若A新增了指向B的指针，则把A标记为灰色。</li>
 </ul>
 <p><em>G1</em><br>延迟可控的情况下吞吐量，一般设置延迟和最大堆内存即可。<br><strong>现在互联网的项目，基本都是使用G1。</strong></p>
 <p><em>G1分区</em><br>H区装大对象，Region之间使用空闲链表，Region内部使用指针压缩。<br><img src="/Pasted%20image%2020230326234923.png" srcset="/img/loading.gif" lazyload></p>
@@ -1164,7 +1209,7 @@
 <li>内存泄漏：有不用或不常用的垃圾无法回收</li>
 <li>内存溢出：内存泄漏常常导致内存溢出</li>
 </ul>
-<h1 id="五、IO"><a href="#五、IO" class="headerlink" title="五、IO"></a>五、IO</h1><h1 id="六、Spring"><a href="#六、Spring" class="headerlink" title="六、Spring"></a>六、Spring</h1>
+<h1 id="五、IO"><a href="#五、IO" class="headerlink" title="五、IO"></a>五、IO</h1>
                 
               </div>
             
@@ -1261,9 +1306,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E5%BE%AE%E6%9C%8D%E5%8A%A1/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" title="微服务">
+                      <a href="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%88%86%E5%B8%83%E5%BC%8F/%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF/Docker&amp;K8S/" title="Docker&amp;K8S">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">微服务</span>
+                        <span class="hidden-mobile">Docker&amp;K8S</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/323cfcda53f98034ed15372c0ea43685.png">
 <meta property="og:image" content="http://example.com/2023/02/01/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java-JVM/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202004846.png">
 <meta property="article:published_time" content="2023-02-01T08:17:20.000Z">
-<meta property="article:modified_time" content="2023-03-20T11:01:07.707Z">
+<meta property="article:modified_time" content="2023-10-03T11:37:32.840Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="JVM">
@@ -247,7 +247,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          12k 字
+          13k 字
         
       </span>
     
@@ -258,7 +258,7 @@
         
         
         
-          101 分钟
+          105 分钟
         
       </span>
     
@@ -1214,6 +1214,9 @@
 <li>引用某个的常量static final（常量在链接的准备阶段就已经完成赋值）</li>
 <li><code>loadClass()</code>也不会主动初始化。</li>
 </ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/d432a94be182">JVM：类加载的五个过程：加载、验证、准备、解析、初始化</a></p>
+</blockquote>
 <h2 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h2><p><strong>类加载器</strong>与<strong>被该加载器加载的类</strong>的内部实现中，存在着双向引用。因此根据GC的原理，当某一个类的Class对象不再被引用时，即可回收，因此回收类的前提是回收其加载器。</p>
 <h3 id="类的卸载"><a href="#类的卸载" class="headerlink" title="类的卸载"></a>类的卸载</h3><ul>
 <li><strong>启动类加载器</strong>加载的类型在整个运行期间是<strong>不可能被卸载的。</strong></li>
@@ -1259,13 +1262,13 @@
 <li>Java语言编写，由sun.misc.Launcher$ExtClassLoader实现。</li>
 <li>加载ext.dirs目录下的类库</li>
 <li>父类加载器为启动类加载器</li>
-<li>直接继承于URLClassLoader，最终继承于ClassLoader类（一个抽象类）</li>
+<li>直接继承于URLClassLoader，其继承于ClassLoader类（一个抽象类）</li>
 </ul>
 <h4 id="系统类加载器（AppClassLoader）"><a href="#系统类加载器（AppClassLoader）" class="headerlink" title="系统类加载器（AppClassLoader）"></a>系统类加载器（AppClassLoader）</h4><ul>
 <li>java语言编写，由sun.misc.Launcher$AppClassLoader实现</li>
 <li>它负责加载环境变量classpath或系统属性java.class.path 指定路径下的类库</li>
 <li>父类加载器为扩展类加载器</li>
-<li>直接继承于URLClassLoader，最终继承于ClassLoader类（一个抽象类）</li>
+<li>直接继承于URLClassLoader，其继承于ClassLoader类（一个抽象类）</li>
 </ul>
 <h4 id="用户自定义加载器"><a href="#用户自定义加载器" class="headerlink" title="用户自定义加载器"></a>用户自定义加载器</h4><p>可以通过自定义实现插件机制，此外加载器可以实现应用隔离。</p>
 <h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><h3 id="ClassLoader主要方法"><a href="#ClassLoader主要方法" class="headerlink" title="ClassLoader主要方法"></a>ClassLoader主要方法</h3><p>ClassLoader是一个抽象类，基本java实现的加载器都继承自它。<br>其有以下方法：</p>
@@ -1308,8 +1311,22 @@
 
 <h3 id="破坏双亲委派机制"><a href="#破坏双亲委派机制" class="headerlink" title="破坏双亲委派机制"></a>破坏双亲委派机制</h3><h4 id="第一次：覆盖loadClass"><a href="#第一次：覆盖loadClass" class="headerlink" title="第一次：覆盖loadClass"></a>第一次：覆盖loadClass</h4><p>双亲委派机制推出前就有ClassLoader存在，loadClass方法已经被用户使用自定义加载器覆盖（没有双亲委派），后来才推荐用户改写findClass。</p>
 <h4 id="第二次：线程上下文类加载器"><a href="#第二次：线程上下文类加载器" class="headerlink" title="第二次：线程上下文类加载器"></a>第二次：线程上下文类加载器</h4><p>解决系统类无法调用用户类的缺点，如JNDI服务就需要调用，管理用户类。</p>
+<h5 id="JNDI"><a href="#JNDI" class="headerlink" title="JNDI"></a>JNDI</h5><p>JNDI是 Java 命名与目录接口（Java Naming and Directory Interface），在J2EE规范中是重要的规范之一。</p>
+<ul>
+<li>JDBC：JDBC模式下，连接数据库需要对JDBC相关Driver进行编码，获取数据库连接，其存在以下问题：<ul>
+<li>数据库服务器名称MyDBServer 、用户名和口令都可能需要改变，由此引发JDBC URL需要修改；</li>
+<li>数据库可能改用别的产品，如改用DB2或者Oracle，引发JDBC驱动程序包和类名需要修改；</li>
+</ul>
+</li>
+<li>解决思路：不应该关心具体的数据库后台，驱动程序，URL格式等问题，而是将这些交给J2EE容器来配置和管理</li>
+<li>JNDI：JNDI模式下，在J2EE容器中配置JNDI参数，定义一个数据源，也就是JDBC引用参数，给这个数据源设置一个名称；然后，在程序中，通过数据源名称引用数据源从而访问后台数据库。（本质上就是由J2EE容器实现服务发现，用户程序直接获取服务即可）</li>
+</ul>
 <h5 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h5><p>如果创建线程时还未设置，它将会从父线程中继承一个，如果在应用程序的全局范围内都没有设置过的话，那这个类加载器默认就是应用程序类加载器。<br><img src="/2023/02/01/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java-JVM/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202002835.png" srcset="/img/loading.gif" lazyload><br>父类加载器可以通过线程上下文类加载器委托给子类加载器完成类的加载。这样以上下文加载器为中介，使得启动类加载器中的代码也可以访问应用类加载器中的类。</p>
 <h4 id="第三次：用户的要求"><a href="#第三次：用户的要求" class="headerlink" title="第三次：用户的要求"></a>第三次：用户的要求</h4><p>第三次破坏源于用户需求：代码热替换(Hot Swap)、模块热部署(Hot Deployment)等。</p>
+<ul>
+<li>**热部署(Hot Deploy)**：热部署针对的是容器或者是整个应用，包括运行需要使用到的各种文件（jar包、JS、CSS、html、配置文件），新的资源或者修改了一些代码，需要在不停机的情况下的重新加载整个应用；</li>
+<li>**热加载(Hot Swap)**：热加载针对的是单个字节码文件，指的是重新编译后， 不需要停机 ，应用程序就可以加载使用新的class文件。</li>
+</ul>
 <p>背景：IBM公司主导的JSR-291(即OSGiR4.2)实现模块化热部署的关键是它自定义的类加载器机制的实现，每一个程序模块(osGi中称为Bundle)都有一个自己的类加载器，当需要更换一个Bundle时，就把Bund1e连同类加载器一起换掉以实现代码的热替换。在oSGi环境下，类加载器不再双亲委派模型推荐的树状结构，而是进一步发展为更加复杂的网状结构。</p>
 <p>搜索顺序：</p>
 <ol>
@@ -1317,7 +1334,6 @@
 <li>若在委派列表名单中，委托父类（双亲）</li>
 <li>在各种列表中寻找类加载器进行加载（平行）</li>
 </ol>
-<p>PS：了解一下就行。</p>
 <h3 id="热替换的实现"><a href="#热替换的实现" class="headerlink" title="热替换的实现"></a>热替换的实现</h3><p><img src="/2023/02/01/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java-JVM/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202003613.png" srcset="/img/loading.gif" lazyload></p>
 <h2 id="沙箱安全机制"><a href="#沙箱安全机制" class="headerlink" title="沙箱安全机制"></a>沙箱安全机制</h2><p>Java安全模型的核心就是Java沙箱。即将Java代码限定在虚拟机（JVM）特定的运行范围中，并且严格限制代码对本地系统资源（CPU、内存、文件系统、网络）访问。</p>
 <h3 id="JDK1-0"><a href="#JDK1-0" class="headerlink" title="JDK1.0"></a>JDK1.0</h3><p><img src="/2023/02/01/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java-JVM/JVM%E4%B8%AD%E7%AF%87-%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD/Pasted-image-20230202003843.png" srcset="/img/loading.gif" lazyload></p>

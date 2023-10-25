@@ -40,7 +40,7 @@
 <meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java-JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230203011141.png">
 <meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java-JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230203011315.png">
 <meta property="article:published_time" content="2023-02-02T09:26:14.000Z">
-<meta property="article:modified_time" content="2023-03-22T04:36:59.428Z">
+<meta property="article:modified_time" content="2023-10-05T04:27:43.877Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="JUC">
@@ -581,7 +581,7 @@
 <p>事实上，更底层来讲，有 volatile 变量修饰的共享变量进行写操作的时候会多出一条Lock前缀的指令，根据 IA-32 架构软件开发者手册，这条指令会引发两件事情：<br>1）将当前处理器缓存行的数据写回到系统内存<br>2）这个写回内存的操作会使在其他 CPU 里缓存了该内存地址的数据无效<br>即<strong>无效其他线程本地内存的操作实际上是在写时就发生了</strong>。</p>
 <h2 id="volatile禁止指令重排"><a href="#volatile禁止指令重排" class="headerlink" title="volatile禁止指令重排"></a>volatile禁止指令重排</h2><p>绿色表示可以重排序，红色则不能：<br><img src="/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java-JUC/JUC%E7%AC%AC2%E7%AB%A0%EF%BC%88%E4%B8%89%E5%A4%A7%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%89/Pasted-image-20230203010905.png" srcset="/img/loading.gif" lazyload><br>简而言之：</p>
 <ul>
-<li>volatile写之前的不许被排序在其后(写之后不被修改)</li>
+<li>volatile写之前的不许被排序在其后（写之后不被修改）</li>
 <li>volatile读之后的不许排序在其前（读之前不被修改）</li>
 <li>volatile写和读不可以重排序</li>
 </ul>
