@@ -57,7 +57,7 @@
 <meta property="og:image" content="http://example.com/2023/03/16/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/Pasted-image-20230207155715.png">
 <meta property="og:image" content="http://example.com/2023/03/16/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E7%AB%AF%E5%8F%A3%E9%80%89%E6%8B%A9.webp">
 <meta property="article:published_time" content="2023-03-16T14:46:30.000Z">
-<meta property="article:modified_time" content="2023-10-09T03:21:17.502Z">
+<meta property="article:modified_time" content="2023-10-27T06:02:08.538Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="计算机网络">
@@ -568,9 +568,9 @@
 <h1 id="四、传输层"><a href="#四、传输层" class="headerlink" title="四、传输层"></a>四、传输层</h1><p>传输层的作用是<strong>向上面的应用层提供通信服务</strong>。只有位于网络边缘部分的主机的协议栈才有运输层，<strong>NAT虽然实现上涉及到了端口，但在规范中我们仍将其只视为网络层的协议</strong>。</p>
 <p><em>端口号</em><br>端口号由16bit表示，范围为0-65535，<strong>不同的传输层协议（TCP、UDP）可以使用相同的端口，这是两个不同的通信模块。</strong><br>常见端口号：HTTP（80）、HTTPS（443）、FTP（20&#x2F;21）、DNS（53）</p>
 <h2 id="TCP与UDP对比"><a href="#TCP与UDP对比" class="headerlink" title="TCP与UDP对比"></a>TCP与UDP对比</h2><blockquote>
-<p>记忆思路：<br>从TCP的特点来看：</p>
+<p><em>记忆思路</em><br>从TCP的特点来看：</p>
 <ul>
-<li>面向连接、基于字节流、可靠性；</li>
+<li><strong>面向连接、基于字节流、可靠性</strong>；</li>
 </ul>
 <p>然后对比UDP展开细节：</p>
 <ul>
@@ -621,7 +621,7 @@
 <li>UDP用于总量较少的数据如DNS，视频音频、广播通讯</li>
 </ul>
 <h2 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>TCP 是<strong>面向连接的、可靠的、基于字节流</strong>的传输层通信协议。<br><em>头结构</em><br><img src="/2023/03/16/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/Pasted-image-20230207114528.png" srcset="/img/loading.gif" lazyload></p>
-<p><em>TCP连接本质</em><br>四元组、滑动窗口、序列号的信息组合，在Linux中就是一个文件。针对系统、用户、进程，有不同先最大个数文件描述符数量限制。</p>
+<p><em>TCP连接本质</em><br>四元组、滑动窗口、序列号的信息组合，在Linux中就是一个文件。针对系统、用户、进程，有最大个数文件描述符数量限制。</p>
 <p><em>唯一的TCP连接</em><br>源地址、源端口、目标地址、目标端口。</p>
 <p><em>TCP为什么分片MSS</em><br>将重传的基本单位由整个IP数据包缩小到TCP报文，实现最高的传输效率。</p>
 <p><em>MSS与MTU</em><br>MTU &#x3D; IP头+TCP头+MSS</p>
@@ -640,7 +640,7 @@
 <li>其中F是Hash函数，推荐使用MD5防止被推测。</li>
 </ul>
 <div class="note note-primary">
-            <p>只有初始化序列号的生成是随机的，后续序列号随字节数增长，循环的速度会很快，一圈大概为4G？，所以有时需要开启时间戳额外判断历史报文。</p>
+            <p>只有初始化序列号的生成是随机的，后续序列号随字节数增长，循环的速度会很快，一圈大概为4G，所以有时需要开启时间戳额外判断历史报文。</p>
           </div>
 
 <h4 id="TCP握手丢失"><a href="#TCP握手丢失" class="headerlink" title="TCP握手丢失"></a>TCP握手丢失</h4><p><em>第一次握手丢失</em></p>
@@ -695,7 +695,7 @@
 <li><code>shutdown</code>函数，立刻将该连接的写方向关闭，并发送FIN报文，更加优雅。</li>
 </ul>
 <div class="note note-primary">
-            <p>SHUTDOWN比CLOSE优雅，但CLOSE仍然是主流的断开连接方式，并且可以指定CLOSE行为（挥手或直接RST）</p>
+            <p><code>SHUTDOWN</code>比<code>CLOSE</code>优雅，但<code>CLOSE</code>仍然是主流的断开连接方式，并且可以指定<code>CLOSE</code>行为（挥手或直接RST）</p>
           </div>
 
 <p>当客户端调用<code>close</code>且发送FIN后，再收到服务端的数据时，会回复RST：<br><img src="/2023/03/16/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/%E8%AE%A1%E7%BD%91%E5%A4%8D%E4%B9%A0/Pasted-image-20230208001214.png" srcset="/img/loading.gif" lazyload></p>
@@ -1013,7 +1013,7 @@
 <p><em>ECDHE</em><br>使用椭圆曲线加速DHE的计算过程，需要协商曲线和基点，步骤：</p>
 <ul>
 <li>第一次握手类似，发出<strong>随机数1</strong>。</li>
-<li>第二次握手回复<strong>随机数2</strong>，服务器选择DHE密码套件，并选择<strong>曲线和基点</strong>，<strong>使用RSA签名曲线公钥</strong></li>
+<li>第二次握手回复<strong>随机数2</strong>，服务器选择DHE密码套件，并选择<strong>曲线和基点</strong>，<strong>使用RSA签名曲线公钥</strong>。</li>
 <li>第三次握手客户端验证CA后，就可以计算出<strong>曲线私钥和曲线公钥</strong>，<strong>使用对称加密的方式加密公钥并回复</strong></li>
 <li>第四次握手类似。</li>
 </ul>

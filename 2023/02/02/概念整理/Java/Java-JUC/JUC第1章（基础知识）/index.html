@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java-JUC/JUC%E7%AC%AC1%E7%AB%A0%EF%BC%88%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%89/Pasted-image-20230202170624.png">
 <meta property="og:image" content="http://example.com/2023/02/02/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java-JUC/JUC%E7%AC%AC1%E7%AB%A0%EF%BC%88%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%89/Pasted-image-20230202173309.png">
 <meta property="article:published_time" content="2023-02-02T07:32:30.000Z">
-<meta property="article:modified_time" content="2023-04-23T10:58:04.254Z">
+<meta property="article:modified_time" content="2023-10-26T01:31:06.677Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="JUC">
@@ -451,7 +451,7 @@
 <h4 id="RUNNABLE"><a href="#RUNNABLE" class="headerlink" title="RUNNABLE"></a>RUNNABLE</h4><p>调用start后</p>
 <h4 id="BLOCKED"><a href="#BLOCKED" class="headerlink" title="BLOCKED"></a>BLOCKED</h4><p>阻塞于锁，即同步资源获取失败，指<code>synchronized</code>。</p>
 <blockquote>
-<p>LOCK接口下，线程会进入WAITING状态</p>
+<p>LOCK接口中，线程会进入<strong>WAITING状态</strong></p>
 </blockquote>
 <h5 id="何时进入BLOCKED状态"><a href="#何时进入BLOCKED状态" class="headerlink" title="何时进入BLOCKED状态"></a>何时进入BLOCKED状态</h5><ol>
 <li>首次竞争锁失败 RUNNABLE -&gt; BLOCKED</li>

@@ -235,6 +235,258 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/" target="_self">
+          MySQL基础（查询与优化）
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88%E6%9F%A5%E8%AF%A2%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89/" target="_self">
+        <div>
+          一、单表访问访问方法（access method）Mysql中查询的执行方式大致分两种：  使用全表扫描进行查询 使用索引进行查询（使用xx索引的xx查询）  访问方法分类：  all：全表查询 system：该表只有一行（系统表） const：命中主键(primary key)或者唯一索引(unique) 且被连接的部分是一个常量值(const) ref：使用非唯一性索引或者唯一索引的前缀扫描
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-02-11 20:43" pubdate>
+              2023-02-11
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/" class="category-chain-item">Mysql</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/" class="category-chain-item">Mysql基础</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+            
+              <a href="/tags/Mysql/">#Mysql</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E9%AB%98%E7%BA%A7%EF%BC%88%E7%B4%A2%E5%BC%95%EF%BC%89/" target="_self">
+          MySQL高级（索引）
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E9%AB%98%E7%BA%A7%EF%BC%88%E7%B4%A2%E5%BC%95%EF%BC%89/" target="_self">
+        <div>
+          一、MySQL索引类型按结构分  B+Tree 索引：即B+树索引。 R-Tree索引：即空间索引，仅支持geometry数据类型，优势在于范围查找。 S-Full-text索引：即全文索引，通过倒排索引实现。 Hash索引：不支持范围查询，主要用于内存临时表，实现O(1)时间复杂度的精准查找，对于范围查询、排序及组合索引效率不高。   按性质分  普通索引：仅加速查询 唯一索引：加速查询 + 列
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-02-11 20:43" pubdate>
+              2023-02-11
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/" class="category-chain-item">Mysql</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E9%AB%98%E7%BA%A7/" class="category-chain-item">Mysql高级</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+            
+              <a href="/tags/Mysql/">#Mysql</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" target="_self">
+          MySQL常见问题
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/02/11/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/MySQL%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" target="_self">
+        <div>
+          临时表外部临时表通过CREATE TEMPORARY TABLE 创建的临时表，这种临时表称为外部临时表。这种临时表只对当前用户可见，当前会话结束的时候，该临时表会自动关闭。这种临时表的命名与非临时表可以同名（同名后非临时表将对当前会话不可见，直到临时表被删除）。 内部临时表union 执行流程union场景需要去重，会建立一个临时表存储前一个表的记录。如果是union all场景，就依次执行子查
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-02-11 20:43" pubdate>
+              2023-02-11
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/" class="category-chain-item">Mysql</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" class="category-chain-item">Mysql常见问题</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">#概念整理</a>
+            
+              <a href="/tags/Mysql/">#Mysql</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2023/02/10/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/Mysql/Mysql%E5%9F%BA%E7%A1%80/MySQL%E5%9F%BA%E7%A1%80%EF%BC%88InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%EF%BC%89/" target="_self">
           MySQL基础（InnoDB数据存储）
         </a>
@@ -740,220 +992,6 @@
               <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
             
               <a href="/tags/%E9%93%BE%E8%A1%A8/">#链表</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/02/10/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88DFS%E4%B8%8EBFS%EF%BC%89/" target="_self">
-          算法专题（DFS与BFS）
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/02/10/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88DFS%E4%B8%8EBFS%EF%BC%89/" target="_self">
-        <div>
-          一、DFS与BFS例题79. 单词搜索简单的搜索，注意终止条件的写法，由于不需要记录路径，所以不需要使用回溯，成功时直接返回即可。 419. 甲板上的战舰DFS，也可以只找左上角块统计。 248. 中心对称数 III思路：  长度为0的对称数为{null}; 长度为1的对称数为{0,1,8}; 在s的基础上，左右扩充{0+s+0,1+s+1,6+s+9,8+s+8,9+s+6};  1234567
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-02-10 14:03" pubdate>
-              2023-02-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/" class="category-chain-item">算法整理</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/" class="category-chain-item">算法专题</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
-            
-              <a href="/tags/DFS/">#DFS</a>
-            
-              <a href="/tags/BFS/">#BFS</a>
-            
-              <a href="/tags/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/">#回溯算法</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/02/09/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E6%A0%91%EF%BC%89/" target="_self">
-          算法专题（树）
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/02/09/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E6%A0%91%EF%BC%89/" target="_self">
-        <div>
-          一、二叉树二叉树遍历、路径与构造先中后序遍历例题94. 二叉树的中序遍历  DFS 迭代，使用队列作为栈，然后让所有左节点入栈，出栈时添加其右节点（及其所有左子节点）到栈中。  1028. 从先序遍历还原二叉树  可以将遍历理解成一个回溯的过程！  逐个取出节点，使用链表保存路径上的节点，根据节点的深度判断：  其是沿着上一个节点的左节点 之前别的的节点的右节点，此时可不停出列直到找到对应深度的节
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-02-09 16:24" pubdate>
-              2023-02-09
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/" class="category-chain-item">算法整理</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/" class="category-chain-item">算法专题</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
-            
-              <a href="/tags/%E6%A0%91/">#树</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/02/08/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BA%94%E7%94%A8%E7%B1%BB%EF%BC%89/" target="_self">
-          算法专题（设计与应用类）
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/02/08/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BA%94%E7%94%A8%E7%B1%BB%EF%BC%89/" target="_self">
-        <div>
-          设计类编码271. 字符串的编码与解码使用非ascii码编解码，或使用长度协议。 集合281. 锯齿迭代器716. 最大栈 综合应用类对比两个文件&#x2F;数组，文件过大时怎么办？ 为了解决文件过大，使用分治； 最后需要将结果合并； 为了合并结果，可使用hash结构记录每一块的对比结果或对后续的影响；
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-02-08 23:05" pubdate>
-              2023-02-08
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/" class="category-chain-item">算法整理</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/" class="category-chain-item">算法专题</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
-            
-              <a href="/tags/%E5%BA%94%E7%94%A8/">#应用</a>
             
           </div>
         

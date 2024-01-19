@@ -42,7 +42,7 @@
 <meta property="og:image" content="http://example.com/2023/09/14/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6/Spring/Spring%E7%AC%94%E8%AE%B0/Pasted-image-20230213140151.jpg">
 <meta property="og:image" content="http://example.com/Pasted%20image%2020230916132048.png">
 <meta property="article:published_time" content="2023-09-14T08:28:55.000Z">
-<meta property="article:modified_time" content="2023-10-06T07:15:05.706Z">
+<meta property="article:modified_time" content="2023-10-26T01:38:33.445Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="Spring">
@@ -364,13 +364,13 @@
 <p><em>Spring IOC容器初始化过程（Bean创建过程）</em><br><img src="/Pasted%20image%2020231006143551.png" srcset="/img/loading.gif" lazyload></p>
 <ol>
 <li><strong>读取Bean定义信息</strong>：通过BeanDefinitionReader这个接口解析xml配置、配置类或其他的一些方式定义的类，得到BeanDefinition（Bean定义信息）</li>
-<li><strong>实例化Bean</strong>：通过<code>BeanPostProcessor</code>这个接口（增强器）可以对BeanDefinition进行一些修改，然后BeanFactory通过反射实例化Bean对象，但是此时的Bean对象还没有进行初始化，没有填充属性等操作。</li>
+<li><strong>实例化Bean</strong>：通过<code>BeanPostProcessor</code>这个接口（增强器）可以对<strong>BeanDefinition进行一些修改</strong>，然后BeanFactory通过反射实例化Bean对象，但是此时的Bean对象还没有进行初始化，没有填充属性等操作。</li>
 <li><strong>初始化Bean</strong>：<ol>
 <li>自定义属性赋值是用 set 方法赋值populateBean()</li>
 <li>容器对象的属性赋值是用实现Aware接口的方式来赋值（invokeAwareMethods()），如BeanNameAware</li>
 <li>调用BeanPostProcessor的前置处理方法</li>
 <li>调用init初始化方法：init-method</li>
-<li>调用BeanPostProcessor的后置处理方法（AOP在这里实现）</li>
+<li><strong>调用BeanPostProcessor的后置处理方法（AOP在这里实现）</strong></li>
 <li>获得一个完整的对象，并将对象放入map中（通过Context.getBean()可以获取到Bean对象并使用）</li>
 </ol>
 </li>
@@ -431,7 +431,7 @@
 <h1 id="Spring-MVC"><a href="#Spring-MVC" class="headerlink" title="Spring MVC"></a>Spring MVC</h1><p><em>什么是Spring MVC</em><br>在 Spring MVC 下，⼀般把后端项⽬分为 Service层（处理业务）、Dao层（数据库操作）、Entity层（实体类）、Controller层。</p>
 <p><em>SpringMVC 的核心入口类是什么</em><br>DispatchServlet</p>
 <p><em>SpringMVC 的控制器是不是单例模式？</em><br>是单例模式，所以在多线程访问的时候有线程安全问题，但不能使用<code>synchronize</code>，会影响性能的，其解决方案是在控制器提供属性，即无状态。</p>
-<h1 id="Spring-AOP"><a href="#Spring-AOP" class="headerlink" title="Spring AOP"></a>Spring AOP</h1><p><strong>OOP（面向对象编程）</strong> 针对业务处理过程的实体及其属性和行为进行抽象封装，以获得更加清晰高效的逻辑单元划分，但无法聚焦提供某一功能，如日志。<br><strong>AOP（面向切面编程）针对业务处理过程中的切面进行提取</strong>，它所面对的是处理过程中的某个步骤或阶段，以获得逻辑过程中各部分之间低耦合性的隔离效果。<br><strong>AOP是OOP的延续</strong>，是函数式编程的一种衍生范型。</p>
+<h1 id="Spring-AOP"><a href="#Spring-AOP" class="headerlink" title="Spring AOP"></a>Spring AOP</h1><p><strong>OOP（面向对象编程）</strong> 针对业务处理过程的<strong>实体及其属性和行为进行抽象封装</strong>，以获得更加清晰高效的逻辑单元划分，但<strong>无法聚焦提供某一功能，如日志</strong>。<br><strong>AOP（面向切面编程）针对业务处理过程中的切面进行提取</strong>，它所面对的是<strong>处理过程</strong>中的某个步骤或阶段，以获得逻辑过程中各部分之间低耦合性的隔离效果。<br><strong>AOP是OOP的延续</strong>，是函数式编程的一种衍生范型。</p>
 <h2 id="SpringAOP与AspectJ"><a href="#SpringAOP与AspectJ" class="headerlink" title="SpringAOP与AspectJ"></a>SpringAOP与AspectJ</h2><h3 id="框架定位"><a href="#框架定位" class="headerlink" title="框架定位"></a>框架定位</h3><ul>
 <li>Spring AOP是基于Spring IoC实现的，它解决大部分常见的需求（<strong>方法级织入</strong>），属于动态代理。</li>
 <li>AspectJ旨在提供完整的AOP方案，属于静态代理</li>

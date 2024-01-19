@@ -61,7 +61,7 @@
 <meta property="og:image" content="http://example.com/Pasted%20image%2020230326235238.png">
 <meta property="og:image" content="http://example.com/Pasted%20image%2020230326235543.png">
 <meta property="article:published_time" content="2023-03-24T11:00:55.000Z">
-<meta property="article:modified_time" content="2023-10-16T13:14:18.062Z">
+<meta property="article:modified_time" content="2023-10-27T06:13:38.422Z">
 <meta property="article:author" content="Jin">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2023/03/24/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/Java/Java%E5%A4%8D%E4%B9%A0/Java%E5%A4%8D%E4%B9%A0/Pasted-image-20230324213918.png">
@@ -381,7 +381,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">Color</span>  <br>&#123;  <br>RED, GREEN, BLUE;  <br>&#125;<br><br><span class="hljs-keyword">enum</span> <span class="hljs-title class_">Color</span> &#123;  <br>	RED(<span class="hljs-string">&quot;红色&quot;</span>, <span class="hljs-number">1</span>), GREEN(<span class="hljs-string">&quot;绿色&quot;</span>, <span class="hljs-number">2</span>), BLANK(<span class="hljs-string">&quot;白色&quot;</span>, <span class="hljs-number">3</span>), YELLO(<span class="hljs-string">&quot;黄色&quot;</span>, <span class="hljs-number">4</span>);  <br>	<span class="hljs-comment">// 成员变量  </span><br>	<span class="hljs-keyword">private</span> String name;  <br>	<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> index;  <br>	<span class="hljs-comment">// 构造方法  </span><br>	<span class="hljs-keyword">private</span> <span class="hljs-title function_">Color</span><span class="hljs-params">(String name, <span class="hljs-type">int</span> index)</span> &#123;  <br>	<span class="hljs-built_in">this</span>.name = name;  <br>	<span class="hljs-built_in">this</span>.index = index;  <br>	&#125;  <br>	<span class="hljs-comment">// 普通方法  </span><br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title function_">getName</span><span class="hljs-params">(<span class="hljs-type">int</span> index)</span> &#123;  <br>	<span class="hljs-keyword">for</span> (Color c : Color.values()) &#123;  <br>	<span class="hljs-keyword">if</span> (c.getIndex() == index) &#123;  <br>	<span class="hljs-keyword">return</span> c.name;  <br>	&#125;  <br>	&#125;  <br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;  <br>	&#125;  <br>	get,set...  <br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p><em>Externalizable</em><br>继承<code>externalizable</code>，重写<code>writeExternal</code>和<code>readExternal</code>。</p>
-<p><em>序列化</em><br>声明为static和transient类型的数据不能被序列化，只存在内存，Externalizable不受影响。</p>
+<p><em>序列化</em><br>声明为static和transient类型的数据不能被序列化，只存在内存，Externalizable不受影响。<br>serialVersionUID可用于验证对象类的版本一致性。</p>
 <p><em>finally</em><br>finally必然执行，其会插入在return语句前：</p>
 <ul>
 <li>如果在finally中return，会影响return结果。</li>
@@ -429,7 +429,7 @@
 <li>增强功能，如添加权限，访问控制和申计</li>
 <li>延迟加载</li>
 </ul>
-<p><em>条件</em><br>被代理类A实现接口C，使用类B实现代理</p>
+<p><em>条件</em><br>被代理类A实现接口C，使用类B实现代理：</p>
 <ul>
 <li>静态代理：类B实现接口C，聚合A类对象；</li>
 <li>动态代理：<ul>
@@ -462,7 +462,7 @@
 <li>CGLib动态代理是通过字节码底层继承要代理类来实现（如果被代理类被final关键字所修饰，那么代理会失败），在创建代理这一块没有JDK动态代理快，但是运行速度比JDK动态代理要快。</li>
 </ul>
 </blockquote>
-<h2 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h2><p><em>目的</em><br>代码复用，使用一个代码流程适配多个类型，提供类型检查</p>
+<h2 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h2><p><em>目的</em><br>代码复用，使用一个代码流程适配多个类型，提供类型检查。</p>
 <p><em>“真泛型”与“伪泛型”的区别</em><br>Java属于伪泛型：</p>
 <ul>
 <li>真泛型：泛型中的类型是真实存在的。</li>
@@ -993,7 +993,7 @@
 <ul>
 <li>引导类加载器由C、C++编写</li>
 <li>系统类加载器也叫应用程序类加载器AppClassLoader</li>
-<li>底层loadClass()模板方法实现了双亲委派，一般重写findClass()即可。</li>
+<li>底层<code>loadClass()</code>模板方法实现了双亲委派，一般重写<code>findClass()</code>即可。</li>
 </ul>
 <p><em>为什么需要自定义加载器</em><br>隔离加载类、扩展加载源、自定义加载方式（还可防止源码泄漏）</p>
 <p><em>如何自定义加载器</em><br>一般继承URLClassLoader，再重写findClass即可。</p>
