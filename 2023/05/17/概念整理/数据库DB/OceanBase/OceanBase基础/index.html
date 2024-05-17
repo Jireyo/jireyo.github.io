@@ -18,8 +18,8 @@
   
     <meta name="description" content="基本概念分布式数据库传统集中式数据库  优势：成熟、稳定，生态完善 劣势：成本高、无法横向扩展  分库分表方案  优势：水平扩展，技术成本低（不需要改造数据库引擎） 劣势： 全局一致性：多个数据库服务器时间戳不一致； 负载均衡：无法动态调整分片规则，需要停机； 跨库分布式事务：只能在中间件层面完成，但中间件难以做到RPO&#x3D;0； 跨库复杂SQL：只能在中间件层面完成，但中间件又不具备分布式">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Jin&#39;s Blog">
-<meta property="og:url" content="http://example.com/2023/10/15/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/OceanBase/OceanBase%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:title" content="OceanBase基础">
+<meta property="og:url" content="http://example.com/2023/05/17/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/OceanBase/OceanBase%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="Jin&#39;s Blog">
 <meta property="og:description" content="基本概念分布式数据库传统集中式数据库  优势：成熟、稳定，生态完善 劣势：成本高、无法横向扩展  分库分表方案  优势：水平扩展，技术成本低（不需要改造数据库引擎） 劣势： 全局一致性：多个数据库服务器时间戳不一致； 负载均衡：无法动态调整分片规则，需要停机； 跨库分布式事务：只能在中间件层面完成，但中间件难以做到RPO&#x3D;0； 跨库复杂SQL：只能在中间件层面完成，但中间件又不具备分布式">
 <meta property="og:locale" content="zh_CN">
@@ -45,15 +45,16 @@
 <meta property="og:image" content="http://example.com/Pasted%20image%2020231015172928.png">
 <meta property="og:image" content="http://example.com/Pasted%20image%2020231015173004.png">
 <meta property="og:image" content="http://example.com/Pasted%20image%2020231015173557.png">
-<meta property="article:published_time" content="2023-10-15T04:22:06.067Z">
-<meta property="article:modified_time" content="2023-10-17T08:46:04.915Z">
+<meta property="article:published_time" content="2023-05-17T05:19:12.000Z">
+<meta property="article:modified_time" content="2024-05-17T13:27:33.141Z">
 <meta property="article:author" content="Jin">
+<meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/Pasted%20image%2020231015131227.png">
   
   
   
-  <title>Jin&#39;s Blog</title>
+  <title>OceanBase基础 - Jin&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -230,7 +231,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text=""></span>
+            <span id="subtitle" data-typed-text="OceanBase基础"></span>
           
         </div>
 
@@ -241,8 +242,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-10-15 12:22" pubdate>
-          2023年10月15日 中午
+        <time datetime="2023-05-17 13:19" pubdate>
+          2023年5月17日 下午
         </time>
       </span>
     
@@ -302,7 +303,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none"></h1>
+            <h1 style="display: none">OceanBase基础</h1>
             
             
               <div class="markdown-body">
@@ -489,6 +490,41 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/" class="category-chain-item">概念整理</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E6%95%B0%E6%8D%AE%E5%BA%93DB/" class="category-chain-item">数据库DB</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
+      
+    </div>
   
 </div>
 
@@ -498,8 +534,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div></div>
-      <div>http://example.com/2023/10/15/概念整理/数据库DB/OceanBase/OceanBase基础/</div>
+      <div>OceanBase基础</div>
+      <div>http://example.com/2023/05/17/概念整理/数据库DB/OceanBase/OceanBase基础/</div>
     </div>
     <div class="license-meta">
       
@@ -511,7 +547,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年10月15日</div>
+          <div>2023年5月17日</div>
         </div>
       
       
@@ -538,17 +574,6 @@
 
 
 
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                  </article>
-                </div>
               
             </div>
 
