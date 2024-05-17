@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://example.com/2023/02/08/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%89/Pasted-image-20230227154845.png">
 <meta property="og:image" content="http://example.com/2023/02/08/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98%EF%BC%88%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%89/Pasted-image-20230227154815.png">
 <meta property="article:published_time" content="2023-02-08T10:44:05.000Z">
-<meta property="article:modified_time" content="2023-12-02T04:20:39.135Z">
+<meta property="article:modified_time" content="2024-05-04T09:27:20.865Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="算法">
 <meta property="article:tag" content="动态规划">
@@ -239,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          62k 字
+          63k 字
         
       </span>
     
@@ -250,7 +250,7 @@
         
         
         
-          521 分钟
+          525 分钟
         
       </span>
     
@@ -437,6 +437,9 @@
 <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/integer-break/">343. 整数拆分</a></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">integerBreak</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> &#123;<br>        <span class="hljs-comment">//dp[i]表示数字i任意拆分再相乘后能得到的最大值</span><br>        <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n+<span class="hljs-number">1</span>];<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)&#123;<br>            <span class="hljs-type">int</span> <span class="hljs-variable">curMax</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;i;j++)&#123;<br>                curMax = Math.max(curMax,Math.max((i-j)*j,j*dp[i-j]));<br>            &#125;<br>            dp[i] = curMax;<br>        &#125;<br>        <span class="hljs-keyword">return</span> dp[n];<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sum-of-subarray-minimums/">907. 子数组的最小值之和</a><br>递增序列维护区间最小值信息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">sumSubarrayMins</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr)</span> &#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> arr.length;<br>        <span class="hljs-type">long</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">MOD</span> <span class="hljs-operator">=</span> <span class="hljs-number">1000000007</span>;<br>        Deque&lt;Integer&gt; monoStack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;Integer&gt;();<br>        <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) &#123;<br>            <span class="hljs-keyword">while</span> (!monoStack.isEmpty() &amp;&amp; arr[monoStack.peek()] &gt; arr[i]) &#123;<br>                monoStack.pop();<br>            &#125;<br>            <span class="hljs-type">int</span> <span class="hljs-variable">k</span> <span class="hljs-operator">=</span> monoStack.isEmpty() ? (i + <span class="hljs-number">1</span>) : (i - monoStack.peek());<br>            dp[i] = k * arr[i] + (monoStack.isEmpty() ? <span class="hljs-number">0</span> : dp[i - k]);<br>            ans = (ans + dp[i]) % MOD;<br>            monoStack.push(i);<br>        &#125;<br>        <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>) ans;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
 
 <h1 id="四、区间dp"><a href="#四、区间dp" class="headerlink" title="四、区间dp"></a>四、区间dp</h1><p><em>例题</em><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/burst-balloons/">312. 戳气球</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/largest-sum-of-averages/">813. 最大平均值和的分组</a><br>可以分析，我们对数进行k次分组，递推公式为：<br><code>dp[k][i] = dp[k-1][j]+avg[j,i];</code><br>此时可以判断每次只利用上一次循环比i小的索引，所以只要更新索引时从大到小更新，就可以只使用一个数组判断：<br><code>dp[i] = dp[j] + avg[j,i]</code></p>
 <p>临界条件的判断：<br>当k &#x3D;&#x3D; 1时，<code>dp[1][i] = pre[i]/i</code>，所以预先处理dp函数后，循环的次数应该减少一次。</p>
@@ -458,11 +461,12 @@
 <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-number-of-nice-subarrays/">1248. 统计「优美子数组」</a></p>
 <ol>
 <li>统计不同奇数个数的前缀子数组个数</li>
-<li>统计不同奇数个数的前缀子数组的开始坐标，两个开始坐标只差即为对应前缀子数组个数。<br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/subarray-sums-divisible-by-k/">974. 和可被 K 整除的子数组</a><br>通过取模，模相等即说明可整除，避免了枚举前缀和。<blockquote>
+<li>统计不同奇数个数的前缀子数组的开始坐标，两个开始坐标只差即为对应前缀子数组个数。</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/subarray-sums-divisible-by-k/">974. 和可被 K 整除的子数组</a><br>通过取模，模相等即说明可整除，避免了枚举前缀和。</p>
+<blockquote>
 <p>java的%是取余，向零取整，<strong>结果符号随被除数</strong>。<br>取模为<code>Math.floorMod(a,b)</code>，向下取整，<strong>结果符号随除数</strong>。</p>
 </blockquote>
-</li>
-</ol>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">subarraysDivByK</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> &#123;<br>        Map&lt;Integer, Integer&gt; record = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;Integer, Integer&gt;();<br>        record.put(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);<br>        <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, ans = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> elem : nums) &#123;<br>            sum += elem;<br>            <span class="hljs-comment">// 注意 Java 取模的特殊性，当被除数为负数时取模结果为负数，需要纠正</span><br>            <span class="hljs-type">int</span> <span class="hljs-variable">modulus</span> <span class="hljs-operator">=</span> (sum % k + k) % k;<br>            <span class="hljs-type">int</span> <span class="hljs-variable">same</span> <span class="hljs-operator">=</span> record.getOrDefault(modulus, <span class="hljs-number">0</span>);<br>            ans += same;<br>            record.put(modulus, same + <span class="hljs-number">1</span>);<br>        &#125;<br>        <span class="hljs-keyword">return</span> ans;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-two-non-overlapping-sub-arrays-each-with-target-sum/">1477. 找两个和为目标值且不重叠的子数组</a></p>

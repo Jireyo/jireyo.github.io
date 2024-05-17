@@ -16,20 +16,29 @@
   <meta name="author" content="Jin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="SSH先删除.ssh，生成密钥 1ssh-keygen -t rsa -C renyu.jin@outlook.com  基本命令123456789git config --global user.name 用户名	设置用户签名git config --global user.email 邮箱	设置用户email地址git init	初始化本地库git status	查看本地库状态git add">
+    <meta name="description" content="SSH生成密钥 1ssh-keygen -t rsa -C renyu.jin@outlook.com  配置命令123# 以下配置如果不使用global则只在当前仓库生效git config --global user.name 用户名	#设置用户签名git config --global user.email 邮箱	#设置用户email地址  本地命令123456789101112131415">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Git">
 <meta property="og:url" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/index.html">
 <meta property="og:site_name" content="Jin&#39;s Blog">
-<meta property="og:description" content="SSH先删除.ssh，生成密钥 1ssh-keygen -t rsa -C renyu.jin@outlook.com  基本命令123456789git config --global user.name 用户名	设置用户签名git config --global user.email 邮箱	设置用户email地址git init	初始化本地库git status	查看本地库状态git add">
+<meta property="og:description" content="SSH生成密钥 1ssh-keygen -t rsa -C renyu.jin@outlook.com  配置命令123# 以下配置如果不使用global则只在当前仓库生效git config --global user.name 用户名	#设置用户签名git config --global user.email 邮箱	#设置用户email地址  本地命令123456789101112131415">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/Pasted-image-20240120040900.png">
+<meta property="og:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/Pasted-image-20240120211227.png">
+<meta property="og:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/Pasted-image-20240120214755.png">
+<meta property="og:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/Pasted-image-20240120222948.png">
+<meta property="og:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/Pasted-image-20240120223014.png">
+<meta property="og:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/Pasted-image-20240120233513.png">
+<meta property="og:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/Pasted-image-20240120215010.png">
+<meta property="og:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/Pasted-image-20240121001345.png">
 <meta property="article:published_time" content="2023-03-27T14:46:30.000Z">
-<meta property="article:modified_time" content="2023-03-31T01:27:43.457Z">
+<meta property="article:modified_time" content="2024-01-20T17:10:11.425Z">
 <meta property="article:author" content="Jin">
 <meta property="article:tag" content="概念整理">
 <meta property="article:tag" content="Git">
 <meta property="article:tag" content="常用工具">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/Pasted-image-20240120040900.png">
   
   
   
@@ -233,7 +242,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          495 字
+          5.6k 字
         
       </span>
     
@@ -244,7 +253,7 @@
         
         
         
-          5 分钟
+          47 分钟
         
       </span>
     
@@ -287,17 +296,150 @@
             
               <div class="markdown-body">
                 
-                <h1 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h1><p>先删除<code>.ssh</code>，生成密钥</p>
+                <h1 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h1><p>生成密钥</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">ssh-keygen -t rsa -C renyu.jin@outlook.com<br></code></pre></td></tr></table></figure>
 
-<h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs shell">git config --global user.name 用户名	设置用户签名<br>git config --global user.email 邮箱	设置用户email地址<br>git init	初始化本地库<br>git status	查看本地库状态<br>git add 文件名	添加到暂存区<br>git commit -m “日志信息” 文件名	提交到本地库<br>git reflog	查看所有历史记录<br>git log 查看版本信息<br>git reset --hard 版本号	版本穿梭<br></code></pre></td></tr></table></figure>
+<h1 id="配置命令"><a href="#配置命令" class="headerlink" title="配置命令"></a>配置命令</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 以下配置如果不使用global则只在当前仓库生效</span><br>git config --global user.name 用户名	<span class="hljs-comment">#设置用户签名</span><br>git config --global user.email 邮箱	<span class="hljs-comment">#设置用户email地址</span><br></code></pre></td></tr></table></figure>
 
+<h1 id="本地命令"><a href="#本地命令" class="headerlink" title="本地命令"></a>本地命令</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 基础操作</span><br>git init	<span class="hljs-comment">#初始化本地库</span><br>git status	<span class="hljs-comment">#当前工作目录的状态，包括已修改的文件、未跟踪的文件、已暂存的文件等信息</span><br>git add 文件名	<span class="hljs-comment">#添加到暂存区</span><br>git diff <span class="hljs-comment">#比较文件或提交之间差异的 Git 命令</span><br>	git diff <span class="hljs-comment">#比较工作目录与暂存区差异</span><br>	git diff HEAD <span class="hljs-comment">#比较工作目录中的未提交更改与最新提交之间的差异（可以使用 -- filename指定具体比较文件）</span><br>	git diff commit1 commit2 <span class="hljs-comment">#显示两个提交之间的差异</span><br>	git diff filename <span class="hljs-comment">#显示指定文件的差异</span><br>	git diff branch1..branch2 <span class="hljs-comment">#显示两个分支的差异</span><br>git commit -m “日志信息” 文件名	<span class="hljs-comment">#提交到本地库</span><br><br><span class="hljs-comment"># 本地版本</span><br>git reflog	<span class="hljs-comment">#查看所有历史记录</span><br>git <span class="hljs-built_in">log</span> <span class="hljs-comment">#查看版本信息</span><br>git reset --hard 版本号	<span class="hljs-comment">#版本穿梭</span><br>	git reset --hard HEAD^ <span class="hljs-comment">#回退到上一个版本(有几个^就是几个版本前)</span><br>	git reset filename <span class="hljs-comment"># 撤销暂存区文件的更改</span><br>git checkout -- filename <span class="hljs-comment">#将暂存区/版本库的文件覆盖到工作区(使用--指定文件)</span><br>git <span class="hljs-built_in">rm</span> filename <span class="hljs-comment">#删除版本库中的指定文件</span><br>	<span class="hljs-comment"># 也可以先手动删除，然后再git add filename，这样也会把删除操作添加到暂存区</span><br></code></pre></td></tr></table></figure>
 
-<h1 id="分支切换"><a href="#分支切换" class="headerlink" title="分支切换"></a>分支切换</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">git branch 分支名	创建分支<br>git branch -v	查看分支<br>git checkout 分支名	切换分支<br>git merge 分支名	把指定的分支合并到当前分支上<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>注意<code>git reset filename</code>只恢复暂存区内容，<code>git checkout -- filename</code>只恢复工作区内容。</p>
+</blockquote>
+<p><em>工作区和暂存区</em><br><img src="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/Pasted-image-20240120040900.png" srcset="/img/loading.gif" lazyload><br>commit后暂存区即为空。</p>
+<h1 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">git remote -v <span class="hljs-comment">#查看当前所有远程地址别名</span><br>git remote add origin git@github.com:michaelliao/learngit.git <span class="hljs-comment">#添加远程仓库并取别名为origin</span><br>git push 远程仓库别名 远程分支 <span class="hljs-comment">#把本地分支推送到远程master分支，可以添加 -u命令</span><br>	git push -u origin master <span class="hljs-comment"># 这样会把本地分支推送到远程的master，并添加分支关联关系，折后就可以直接使用git push origin master了</span><br>git <span class="hljs-built_in">clone</span> 远程地址 <span class="hljs-comment">#将远程仓库的内容克隆到本地</span><br></code></pre></td></tr></table></figure>
 
+<p><em>初始提交问题</em><br>由于创建仓库时的配置（<code>.gitignore</code>或<code>README.md</code>）会导致远程仓库存在一个初始提交（与本地的仓库存在不相关历史），解决办法有：<br><strong>1.重写本地历史</strong><br><code>git clone</code>远程仓库后，将本地仓库文件复制到新仓库并提交更改。</p>
+<p><strong>2.合并本地和远程历史</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">git remote add origin https://github.com/username/repository.git<br>git pull origin master --allow-unrelated-histories <span class="hljs-comment"># 拉取远程仓库并允许不相关历史</span><br><span class="hljs-comment"># 解决冲突</span><br>git commit -m <span class="hljs-string">&quot;Merged remote and local histories&quot;</span><br>git push origin master<br></code></pre></td></tr></table></figure>
 
-<h1 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">git remote -v	查看当前所有远程地址别名<br>git remote add 别名 远程地址	起别名<br>git push 别名 分支	推送本地分支上的内容到远程仓库<br>git clone 远程地址	将远程仓库的内容克隆到本地<br>git pull 远程库地址别名 远程分支名	将远程仓库对于分支最新内容拉下来后与 当前本地分支直接合并<br></code></pre></td></tr></table></figure>
+<h1 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">分支切换</span><br>git branch # 查看当前分支<br>git branch 分支名  # 创建分支<br>git branch -d 分支名 # 删除分支<br>git branch -D 分支名 # 强制删除分支（一般由于有提交未合并到其他分支）<br>git branch -v     #查看分支<br>git checkout 分支名	# 切换分支<br>git checkout -b 分支名  # 创建并切换分支<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">可以使用switch替换checkout</span><br>git switch 分支名 = git checkout 分支名<br>git switch -c 分支名 = git checkout -b 分支名<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">暂存</span><br>git stash # 将工作区和暂存区内容缓存起来<br>git stash list # 列出所有stash内容<br>git stash apply [stashid,可选] # 恢复缓存内容（stash内容并不删除）<br>git stash drop # 删除stash<br>git stasg pop = git stash apply+git stash drop<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">将一个commit应用于当前分支（避免使用整个合并）</span><br>git cherry-pick [commitid]<br></code></pre></td></tr></table></figure>
+<p><em>checkout操作</em></p>
+<ul>
+<li>行为：<ul>
+<li>对于工作区：如果做了修改但未暂存，则Git会检查更改与新分支上文件的冲突。</li>
+<li>对于暂存区：会随着分支切换出现在新分支的暂存区。</li>
+</ul>
+</li>
+<li>处理：<ul>
+<li>若需要更改到当前分支：需要先<code>add</code>，<code>commit</code></li>
+<li>若暂时不想提交：需要使用<code>git stash</code>保存工作区和暂存区内容</li>
+<li>若要放弃更改：使用<code>git checkout -- &lt;file&gt;</code>放弃更改。</li>
+</ul>
+</li>
+</ul>
+<h2 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">git <span class="hljs-built_in">log</span> --graph <span class="hljs-comment"># 查看提交历史和分支图</span><br>git merge 分支名	<span class="hljs-comment"># 把指定的分支合并到当前分支上</span><br>git merge 分支名 -m <span class="hljs-string">&quot;comment&quot;</span> --no-ff <span class="hljs-comment"># 添加描述 &amp; 禁用快进模式</span><br></code></pre></td></tr></table></figure>
+<p><em>merge操作</em><br>行为：</p>
+<ul>
+<li>对于工作区：将工作区、当前分支和merge分支的合并结果添加到工作区（包括冲突文件）</li>
+<li>对于暂存区：如果merge合并成功，则文件会被自动添加到暂存区并提交。若出现冲突，需要手动将冲突文件add进暂存区再手动<code>commit</code>。</li>
+</ul>
+<p>处理：</p>
+<ul>
+<li>merge行为会使用暂存区，因此最好先<code>commit</code>好暂存区再<code>merge</code>。</li>
+<li>merge行为会将利用三个文件（工作区、版本库、merge分支）合并，因此如果工作区存在需要先添加到版本库的更改也要先进行<code>add</code>、<code>commit</code>。</li>
+</ul>
+<p>模式：</p>
+<ul>
+<li>Fast-forward模式（快进模式）：如果目标分支dev是本分支master的child（本分支在merge前相对dev没有其他提交），则本分支的指针会直接指向目标分支实现合并（以dev分支的最新提交作为本分支状态），这样的方式会屏蔽掉dev分支的改动细节，如下图所示。</li>
+</ul>
+<p><img src="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/Pasted-image-20240120211227.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>No Fast-forward：当无法快进（即存在冲突）或强制禁用快进模式（使用–no-ff）时，会在merge时生成新的commit，如下图所示。</li>
+</ul>
+<p><img src="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/Pasted-image-20240120214755.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="rebase"><a href="#rebase" class="headerlink" title="rebase"></a>rebase</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git rebase main <span class="hljs-comment"># 换基为main的最新提交，然后将本分支的commit应用在这个最新提交上。</span><br></code></pre></td></tr></table></figure>
+<p><em>对比merge与rebase</em><br><img src="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/Pasted-image-20240120222948.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/Pasted-image-20240120223014.png" srcset="/img/loading.gif" lazyload><br>rebase的场景一把是创建分支后，原分支有了一些新的提交，此时可以使用rebase将本分支的基更换为新提交，其优缺点如下：</p>
+<ul>
+<li>优点：让项目提交历史变得非常干净整洁，形成线性的项目提交历史。</li>
+<li>缺点：失去了安全性和可追溯性，因为这相当于对该分支的历史进行了修改，且其会为本分支的提交生成新的提交信息（commit id会变化）</li>
+</ul>
+<p><em>可交互式rebase</em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">git checkout feature<br>git rebase -i main<br></code></pre></td></tr></table></figure>
+<p>执行以上命令会打开一个文本编辑器，其中内容为分支中需要移动的所有提交列表：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">pick</span> <span class="hljs-number">33</span>d5b7a Message for commit #<span class="hljs-number">1</span><br><span class="hljs-attribute">pick</span> <span class="hljs-number">9480</span>b3d Message for commit #<span class="hljs-number">2</span><br><span class="hljs-attribute">pick</span> <span class="hljs-number">5</span>c67e61 Message for commit #<span class="hljs-number">3</span><br></code></pre></td></tr></table></figure>
+<p>可以将<code>pick</code>修改成<code>fixup</code>，表示将<code>commit #1</code>和<code>commit #2</code>合并。<br>当保存并关闭这个文件之后，Git会根据调改结果执行rebase操作。</p>
+<h3 id="rebase使用"><a href="#rebase使用" class="headerlink" title="rebase使用"></a>rebase使用</h3><p><em>rebase使用黄金法则</em><br><strong>永远不要在公共分支上使用它</strong>，它会改变该分支的历史，导致其他使用该分支的用户出现历史错乱。</p>
+<p><em>Force-Pushing</em><br>背景：如果确实对main分支进行了rebase操作，然后想把main分支推送到远程仓库。这时Git会因为本地分支的提交与远程分支的提交发生了冲突，而阻止这次的推送。<br>但是仍然可以通过使用–force选项来强行进行推送，这样会将远程仓库的历史更换为本地仓库的历史。<br>建议不要这样做，除非远程仓库的工作流确实需要被变更。此时仍要确认是否有其他也在这个分支上协作的用户。</p>
+<p><em>本地清理</em><br>可以利用rebase重塑历史的能力对本地的多次提交进行修改、合并：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">git checkout feature<br>git rebase -i HEAD~3<br></code></pre></td></tr></table></figure>
+<p>上面命令将允许编辑HEAD前的3个提交，如下图所示：<br><img src="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/Pasted-image-20240120233513.png" srcset="/img/loading.gif" lazyload><br>如果我们希望从基节点开始重塑feature，可以调用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git merge-base feature main<br></code></pre></td></tr></table></figure>
+<p>该命令会返回原始base的commit ID，便于我们使用<code>rebase -i</code>重塑feature的提交。这种不同于<code>rebase -i main</code>，它不会换基到main的最新提交上，只是单纯的重塑提交。</p>
+<blockquote>
+<p>参考文档：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/493953965">Git使用Merge和Rebase区别及心得技巧</a></p>
+</blockquote>
+<h1 id="远程分支"><a href="#远程分支" class="headerlink" title="远程分支"></a>远程分支</h1><h2 id="分支策略"><a href="#分支策略" class="headerlink" title="分支策略"></a>分支策略</h2><p><img src="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/Pasted-image-20240120215010.png" srcset="/img/loading.gif" lazyload><br>在多人合作开发中，本地仓库分支状态：</p>
+<ul>
+<li>master分支需要时刻与远程同步</li>
+<li>dev分支也需要时刻与远程同步</li>
+<li>bug分支无需推送到远程</li>
+<li>feature分支根据需要推送到远程</li>
+</ul>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">git branch --set-upstream-to=origin/dev dev[可选，默认本分支] <span class="hljs-comment"># 建立分支关联</span><br>	git branch -u origin/dev dev[可选，默认本分支] <span class="hljs-comment"># 简写</span><br>git branch -vv <span class="hljs-comment"># 查看本地分支和远程分支跟踪情况</span><br>git pull = git fetch + git merge<br>	git pull --rebase <span class="hljs-comment"># 将merge操作替换为rebase</span><br>git push origin &lt;branch-name&gt; <span class="hljs-comment"># 推送修改</span><br>git push -u origin &lt;branch-name&gt; <span class="hljs-comment"># 同时推送并建立分支关联</span><br><br></code></pre></td></tr></table></figure>
+<ul>
+<li>Clone下来时，本地只有<code>master</code>分支，需要使用<code>git checkout -b dev origin/dev</code>拉取远程的<code>dev</code>分支。</li>
+<li>正常情况，可以直接在本地修改<code>dev</code>分支后<code>push</code>到远端；但此时远端已经发生变换时，需要先<code>pull</code>合并解决<code>dev</code>分支的冲突后再<code>push</code>上去。</li>
+</ul>
+<h1 id="标签管理"><a href="#标签管理" class="headerlink" title="标签管理"></a>标签管理</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash">git tag 标签 <span class="hljs-comment"># 为当前commit加标签</span><br>git tag 标签 提交ID <span class="hljs-comment"># 为目标提交ID加标签</span><br>git tag -a 标签 -m <span class="hljs-string">&quot;comment&quot;</span> 提交ID <span class="hljs-comment">#为目标提交ID加标签，并加描述</span><br>git tag -d 标签 <span class="hljs-comment"># 删除标签</span><br><br><span class="hljs-comment"># 上面的操作只存在于本地，若要推送到远端，需执行：</span><br>git push origin 标签 <span class="hljs-comment"># 推送指定标签</span><br>git push origin --tags <span class="hljs-comment"># 推送所有标签</span><br><br>git push origin :refs/tags/标签 <span class="hljs-comment">#删除远程指定标签</span><br></code></pre></td></tr></table></figure>
 
+<h1 id="管理规范"><a href="#管理规范" class="headerlink" title="管理规范"></a>管理规范</h1><h2 id="分支命名"><a href="#分支命名" class="headerlink" title="分支命名"></a>分支命名</h2><ul>
+<li>master：主分支，部署生产环境</li>
+<li>develop：开发分支，保持最新完成</li>
+<li>feature：基于dev分支，命名为<code>feature/module</code>，module为开发的功能模块</li>
+<li>test：测试环境，相对稳定</li>
+<li>release：预发模块，由test或hotfix分支合并，不建议在release上修改代码</li>
+<li>hotfix：以master为基线，创建hotfix分支及时修复，需要合并到master分支和develop分支</li>
+</ul>
+<h2 id="分支与环境"><a href="#分支与环境" class="headerlink" title="分支与环境"></a>分支与环境</h2><ul>
+<li>DEV 环境（Development environment）：用于开发者调试使用。</li>
+<li>FAT环境（Feature Acceptance Test environment）：功能验收测试环境，用于测试环境下的软件测试者测试使用。</li>
+<li>UAT环境 （User Acceptance Test environment）：用户验收测试环境，用于生产环境下的软件测试者测试使用。</li>
+<li>PRO 环境（Production environment）：生产环境。</li>
+</ul>
+<h2 id="合并规范"><a href="#合并规范" class="headerlink" title="合并规范"></a>合并规范</h2><p><img src="/2023/03/27/%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/Git/Pasted-image-20240121001345.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Commit-Message规范"><a href="#Commit-Message规范" class="headerlink" title="Commit Message规范"></a>Commit Message规范</h2><p><em>简易版</em></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>(<span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>):<span class="hljs-tag">&lt;<span class="hljs-name">subject</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><em>标准版</em></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs text">&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;<br>&lt;BLANK LINE&gt;<br>&lt;body&gt;<br>&lt;BLANK LINE&gt;<br>&lt;footer&gt;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>type：提交类型  </li>
+<li>scope：可选项，本次 commit 波及的范围  </li>
+<li>subject：简明扼要的阐述下本次 commit 的主旨，在<code>Angular Git Commit Guidelines</code>中强调了三点。使用祈使句，首字母不要大写，结尾无需添加标点  </li>
+<li>body: 同样使用祈使句，在主体内容中我们需要把本次 commit 详细的描述一下，比如此次变更的动机  </li>
+<li>footer: 描述下与之关联的 issue 或 break change</li>
+</ul>
+<p><em>type规范</em></p>
+<ul>
+<li>feat: 新增功能  </li>
+<li>fix: 修复bug  </li>
+<li>docs: 仅文档更改  </li>
+<li>style: 不影响代码含义的更改（空白、格式设置、缺失 分号等）  </li>
+<li>refactor: 既不修复bug也不添加特性的代码更改  </li>
+<li>perf: 改进性能的代码更改  </li>
+<li>test: 添加缺少的测试或更正现有测试  </li>
+<li>chore: 对构建过程或辅助工具和库（如文档）的更改</li>
+</ul>
+<p>此外还有：</p>
+<ul>
+<li>delete：删除功能或文件  </li>
+<li>modify：修改功能  </li>
+<li>build：改变构建流程，新增依赖库、工具等（例如webpack、gulp、npm修改）  </li>
+<li>test：测试用例的新增、修改  </li>
+<li>ci：自动化流程配置修改  </li>
+<li>revert：回滚到上一个版本</li>
+</ul>
+<p><em>单次提交注意事项</em></p>
+<ul>
+<li>提交问题必须为同一类别  </li>
+<li>提交问题不要超过3个  </li>
+<li>提交的commit发现不符合规范，需要通过进行以下的任一策略解决：<ul>
+<li><code>git commit --amend -m &quot;新的提交信息&quot;</code>补充提交（该语句可以补充提交的文件内容，并修改message）。</li>
+<li><code>git reset --hard HEAD</code> 重新提交一次。</li>
+</ul>
+</li>
+</ul>
 
                 
               </div>
